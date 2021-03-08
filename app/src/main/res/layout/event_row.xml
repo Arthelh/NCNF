@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -36,7 +35,6 @@
             android:layout_height="wrap_content"
             android:text="Data"
             android:id="@+id/data"
-            android:layout_below="@+id/timestamp"
             android:textAlignment="center"
             android:layout_marginTop="8dp" />
 

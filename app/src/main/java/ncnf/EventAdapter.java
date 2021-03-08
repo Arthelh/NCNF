@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bootcamp.R;
+import com.ncnf.R;
 
 import java.util.LinkedList;
 import java.util.List;
