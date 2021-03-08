@@ -7,6 +7,8 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bootcamp.map.MapActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE = "com.example.bootcamp.EXTRA_MESSAGE";
@@ -19,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     /*Called when the user clicks the button*/
     public void sendMessage(View view){
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
+        Intent intent = new Intent(this, MapActivity.class);
         EditText editText = (EditText) findViewById(R.id.name_field);
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
