@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
 
-import ncnf.FeedActivity;
+import ncnf.feed.FeedActivity;
 
 public class MainActivity extends AppCompatActivity {
 

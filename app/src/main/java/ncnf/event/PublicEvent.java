@@ -1,13 +1,15 @@
-package ncnf;
+package ncnf.event;
 
 import java.util.UUID;
+
+import ncnf.organizer.Organizer;
 
 public class PublicEvent implements Event {
 
     private final Organizer organiser;
     private final EventType eventType;
     private final String name;
-    private final String uniqueID = UUID.randomUUID().toString();
+    private final String uniqueID;
     //temporary placeholder for event content
     private String data;
 
@@ -16,7 +18,9 @@ public class PublicEvent implements Event {
         this.eventType = type;
         this.name = name;
         this.data = data;
+        uniqueID = UUID.randomUUID().toString();
     }
+
 
     @Override
     public Organizer getOrganizer() {

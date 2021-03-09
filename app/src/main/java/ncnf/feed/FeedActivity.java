@@ -1,5 +1,6 @@
-package ncnf;
+package ncnf.feed;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,9 +12,15 @@ import com.ncnf.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedActivity extends AppCompatActivity {
+import ncnf.event.Event;
+import ncnf.event.EventType;
+import ncnf.event.PublicEvent;
+import ncnf.organizer.PublicOrganizer;
+
+public class FeedActivity extends AppCompatActivity implements EventAdapter.OnEventListener {
     private RecyclerView.LayoutManager lManager;
     private EventAdapter adapter;
+    private List<Event> eventList;
     private static final String CHANNEL_NAME = "events_to_be_shown";
 
     @Override
@@ -30,9 +37,9 @@ public class FeedActivity extends AppCompatActivity {
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter
-        List<Event> eventList = new ArrayList<>();
+        eventList = new ArrayList<>();
         eventList.add(new PublicEvent(new PublicOrganizer("testOrganizer"), EventType.Museum, "testName", "testData"));
-        adapter = new EventAdapter(eventList);
+        adapter = new EventAdapter(eventList, this);
         recycler.setAdapter(adapter);
 
         EventListener eventListener = event -> runOnUiThread(new Runnable() {
@@ -43,5 +50,12 @@ public class FeedActivity extends AppCompatActivity {
                 ((LinearLayoutManager)lManager).scrollToPositionWithOffset(0, 0);
             }
         });
+    }
+
+    @Override
+    public void onEventClick(int position) {
+        Intent intent = new Intent(this, EventActivity.class);
+        intent.putExtra("event_uid", eventList.get(position).getUID());
+        startActivity(intent);
     }
 }

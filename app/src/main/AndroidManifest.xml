@@ -27,14 +27,21 @@
             android:value="true" />
 
         <activity
-            android:name="ncnf.FeedActivity"
+            android:name="ncnf.feed.FeedActivity"
             android:label="@string/title_activity_feed"
             android:parentActivityName="ncnf.main.MainActivity" >
         </activity>
+
         <activity
             android:name="ncnf.main.DisplayMessageActivity"
             android:parentActivityName="ncnf.main.MainActivity" >
         </activity>
+
+        <activity
+            android:name="ncnf.feed.EventActivity"
+            android:parentActivityName="ncnf.feed.FeedActivity">
+        </activity>
+
         <activity android:name="ncnf.main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
