@@ -5,10 +5,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.bootcamp.PlaceholderEvent;
-import com.example.bootcamp.PlaceholderVenue;
 import com.example.bootcamp.R;
-import com.example.bootcamp.Utilities;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -18,20 +15,33 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    // Indicate whether Events or Venues are shown
     private boolean events_shown = true;
-    private ArrayList<PlaceholderEvent> event_list;
-    private ArrayList<PlaceholderVenue> venue_list;
+
     private ArrayList<Marker> event_markers, venue_markers;
-    private MarkerOptions position_marker;
+
+    @Inject
+    EventProvider eventProvider;
+
+    @Inject
+    VenueProvider venueProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        
+        // Initialize Google Map with the callback onMapReady
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -43,21 +53,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         // Add a marker near EPFL and move the camera
         LatLng position = new LatLng(46.526120f, 6.576330f);
-        position_marker = new MarkerOptions().position(position).title("Your Position").icon(Utilities.bitmapDescriptorFromVector(this));
+        MarkerOptions position_marker = new MarkerOptions().position(position).title("Your Position").icon(Utilities.bitmapDescriptorFromVector(this));
         mMap.addMarker(position_marker);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(11));
 
-        event_list = PlaceholderEvent.getTestEvents();
+        // Add a marker for each event
+        List<Event> events = eventProvider.getAll();
         event_markers = new ArrayList<>();
-        for (PlaceholderEvent p : event_list) {
+        for (Event p : events) {
             event_markers.add(mMap.addMarker(new MarkerOptions().position(new LatLng(p.getLatitude(), p.getLongitude())).title(p.getName())));
         }
-        venue_list = PlaceholderVenue.getTestVenues();
+        // Add a marker for each venue
+        List<Venue> venues = venueProvider.getAll();
         venue_markers = new ArrayList<>();
-        for (PlaceholderVenue p : venue_list) {
+        for (Venue p : venues) {
             venue_markers.add(mMap.addMarker(new MarkerOptions().position(new LatLng(p.getLatitude(), p.getLongitude())).title(p.getName())));
-            venue_markers.get(venue_list.indexOf(p)).setVisible(false);
+            venue_markers.get(venues.indexOf(p)).setVisible(false);
         }
     }
 
@@ -77,22 +89,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             m.setVisible(events_shown);
         }
         events_shown = !events_shown;
-    }
-
-    public GoogleMap getMap(){
-        return mMap;
-    }
-
-    public ArrayList<Marker> getEvent_markers(){
-        return event_markers;
-    }
-
-    public ArrayList<Marker> getVenue_markers(){
-        return venue_markers;
-    }
-
-    public boolean getEvents_shown(){
-        return events_shown;
     }
 
 }
