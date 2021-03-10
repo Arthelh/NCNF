@@ -3,15 +3,12 @@ package com.example.bootcamp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bootcamp.map.MapActivity;
 
 public class MainActivity extends AppCompatActivity {
-
-    public static final String EXTRA_MESSAGE = "com.example.bootcamp.EXTRA_MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +17,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*Called when the user clicks the button*/
-    public void sendMessage(View view){
+    public void goToMap(View view){
         Intent intent = new Intent(this, MapActivity.class);
-        EditText editText = (EditText) findViewById(R.id.name_field);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
     }
 }
