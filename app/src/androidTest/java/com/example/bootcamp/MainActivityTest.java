@@ -30,6 +30,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ncnf.feed.FeedActivity;
 import ncnf.main.DisplayMessageActivity;
 import ncnf.main.MainActivity;
 
@@ -48,6 +49,20 @@ public class MainActivityTest {
 
         Intents.intended(hasComponent(DisplayMessageActivity.class.getName()));
         
+
+        Intents.release();
+    }
+
+    @Test
+    public void feedActivityButtonWorks(){
+       /* Espresso.onView(ViewMatchers.withId(R.id.feed_view_button)).perform(click());
+        Espresso.onView(ViewMatchers.withId(R.id.feed_activity)).check(matches(isDisplayed()));*/
+        Intents.init();
+
+        String test_string = "This is a test";
+        onView(withId(R.id.feed_view_button)).perform(click());
+        Intents.intended(hasComponent(FeedActivity.class.getName()));
+
 
         Intents.release();
     }

@@ -13,6 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ncnf.feed.EventActivity;
 import ncnf.feed.FeedActivity;
 import ncnf.main.DisplayMessageActivity;
 import ncnf.main.MainActivity;
@@ -32,18 +33,16 @@ import static org.junit.Assert.*;
 public class FeedActivityTests {
 
     @Rule
-    public ActivityScenarioRule<MainActivity> testRule =
-            new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityScenarioRule<FeedActivity> testRule =
+            new ActivityScenarioRule<>(FeedActivity.class);
 
     @Test
-    public void feedActivityButtonWorks(){
-       /* Espresso.onView(ViewMatchers.withId(R.id.feed_view_button)).perform(click());
-        Espresso.onView(ViewMatchers.withId(R.id.feed_activity)).check(matches(isDisplayed()));*/
+    public void eventActivityOpens(){
         Intents.init();
 
         String test_string = "This is a test";
-        onView(withId(R.id.feed_view_button)).perform(click());
-        Intents.intended(hasComponent(FeedActivity.class.getName()));
+        onView(withId(R.id.event)).perform(click());
+        Intents.intended(hasComponent(EventActivity.class.getName()));
 
 
         Intents.release();
