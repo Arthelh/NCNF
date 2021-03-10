@@ -2,9 +2,11 @@ package com.example.bootcamp.map;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiSelector;
+import androidx.test.uiautomator.Until;
 
 import com.example.bootcamp.R;
 
@@ -14,7 +16,6 @@ import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.mockito.Mockito;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,6 +55,7 @@ public final class MapActivityTest {
     @Test
     public final void switchMarkersUpdatesMap() {
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+        device.wait(Until.hasObject(By.desc("MAP_READY")), 5000);
 
         // Events are shown
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Math"));

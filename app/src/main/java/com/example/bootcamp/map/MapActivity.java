@@ -71,6 +71,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             venue_markers.add(mMap.addMarker(new MarkerOptions().position(new LatLng(p.getLatitude(), p.getLongitude())).title(p.getName())));
             venue_markers.get(venues.indexOf(p)).setVisible(false);
         }
+
+        mMap.setContentDescription("MAP_READY");
     }
 
     public void zoomOut(View view) {
