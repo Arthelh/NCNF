@@ -84,8 +84,5 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 
-# IDE
-.idea
-
 # Misc
 *.DS_Store
