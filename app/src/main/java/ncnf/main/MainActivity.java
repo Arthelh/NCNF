@@ -15,7 +15,7 @@ import ncnf.feed.FeedActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String EXTRA_MESSAGE = "Hello there!";
+    public static final String EXTRA_MESSAGE = "com.example.bootcamp.EXTRA_MESSAGE";
 
 
     @Override
