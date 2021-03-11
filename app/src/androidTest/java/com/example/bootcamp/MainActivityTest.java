@@ -11,7 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.bootcamp.map.MapActivity;
+import com.ncnf.R;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -30,6 +30,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ncnf.feed.FeedActivity;
+import ncnf.main.DisplayMessageActivity;
+import ncnf.main.MainActivity;
+import ncnf.main.map.MapActivity;
+
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
     @Rule
@@ -45,6 +50,20 @@ public class MainActivityTest {
 
         Intents.intended(hasComponent(MapActivity.class.getName()));
         
+
+        Intents.release();
+    }
+
+    @Test
+    public void feedActivityButtonWorks(){
+       /* Espresso.onView(ViewMatchers.withId(R.id.feed_view_button)).perform(click());
+        Espresso.onView(ViewMatchers.withId(R.id.feed_activity)).check(matches(isDisplayed()));*/
+        Intents.init();
+
+        String test_string = "This is a test";
+        onView(withId(R.id.feed_view_button)).perform(click());
+        Intents.intended(hasComponent(FeedActivity.class.getName()));
+
 
         Intents.release();
     }

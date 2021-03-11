@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.bootcamp">
+    package="com.ncnf" >
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -31,13 +35,37 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".map.MapActivity"
+            android:name="ncnf.main.map.MapActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName="ncnf.main.MainActivity" />
         <activity
-            android:name=".DisplayMessageActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity">
+            android:name="ncnf.main.DisplayMessageActivity"
+            android:parentActivityName="ncnf.main.MainActivity" />
+
+        <uses-library
+            android:name="com.google.android.wearable"
+            android:required="false" />
+
+        <!--
+               Set to true if your app is Standalone, that is, it does not require the handheld
+               app to run.
+        -->
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <activity
+            android:name="ncnf.feed.FeedActivity"
+            android:label="@string/title_activity_feed"
+            android:parentActivityName="ncnf.main.MainActivity" >
+        </activity>
+
+        <activity
+            android:name="ncnf.feed.EventActivity"
+            android:parentActivityName="ncnf.feed.FeedActivity">
+        </activity>
+
+        <activity android:name="ncnf.main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
