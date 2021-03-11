@@ -11,6 +11,8 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.example.bootcamp.map.MapActivity;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -41,7 +43,7 @@ public class MainActivityTest {
         onView(withId(R.id.name_field)).perform(typeText(test_string), closeSoftKeyboard());
         onView(withId(R.id.name_button)).perform(click());
 
-        Intents.intended(hasComponent(DisplayMessageActivity.class.getName()));
+        Intents.intended(hasComponent(MapActivity.class.getName()));
         
 
         Intents.release();
