@@ -59,13 +59,13 @@ public final class MapActivityTest {
 
         // Events are shown
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Math"));
-        assertTrue(marker.exists());
+        assertTrue("Events markers exist", marker.exists());
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
         // Venues are shown
         marker = device.findObject(new UiSelector().descriptionContains("EPFL"));
-        assertTrue(marker.exists());
+        assertTrue("Venue markers exist", marker.exists());
 
         Mockito.verify(eventProvider).getAll();
         Mockito.verify(venueProvider).getAll();
