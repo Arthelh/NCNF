@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "141424639240",
+    "project_id": "ncnf-sdp",
+    "storage_bucket": "ncnf-sdp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141424639240:android:b51df47f3df52bf79780bd",
+        "android_client_info": {
+          "package_name": "com.example.bootcamp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141424639240-38r4u89ts8bpodgsh4mu5am2ue8elt81.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4RJ3qkKLG1ZR83pO90tItBov61At87yc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141424639240-38r4u89ts8bpodgsh4mu5am2ue8elt81.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
