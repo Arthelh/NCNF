@@ -5,10 +5,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.bootcamp.PlaceholderEvent;
-import com.example.bootcamp.PlaceholderVenue;
 import com.example.bootcamp.R;
-import com.example.bootcamp.Utilities;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

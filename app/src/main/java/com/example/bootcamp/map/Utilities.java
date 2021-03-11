@@ -1,4 +1,4 @@
-package com.example.bootcamp;
+package com.example.bootcamp.map;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 
+import com.example.bootcamp.R;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
