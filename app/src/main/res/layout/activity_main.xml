@@ -6,83 +6,47 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/first_field"
+    <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="97dp"
-        android:layout_marginBottom="47dp"
-        android:ems="10"
-        android:hint="Enter your first name"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/save_button"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="152dp"
+        android:onClick="signUp"
+        android:text="Sign Up"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.198" />
-
-    <EditText
-        android:id="@+id/birth_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="97dp"
-        android:layout_marginBottom="47dp"
-        android:ems="10"
-        android:hint="Enter your year of birth"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/save_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.914" />
-
-    <EditText
-        android:id="@+id/last_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="97dp"
-        android:layout_marginBottom="47dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="Enter your last name"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/save_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.545" />
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <Button
-        android:id="@+id/save_button"
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="368dp"
-        android:layout_marginEnd="160dp"
-        android:onClick="sendMessage"
-        android:text="Save User"
+        android:layout_marginTop="196dp"
+        android:layout_marginEnd="156dp"
+        android:onClick="signIn"
+        android:text="Sign In"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/title_text"
+    <Switch
+        android:id="@+id/connected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="144dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="144dp"
-        android:text="Sign Up"
-        android:textSize="30sp"
+        android:layout_marginTop="16dp"
+        android:clickable="false"
+        android:text="Disconnected"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/mainProfileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="152dp"
+        android:onClick="gotToProfile"
+        android:text="Profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
