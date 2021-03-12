@@ -69,7 +69,8 @@ public class SignUpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     Log.d(MainActivity.TAG,"User successfully created");
-                    createDBUser();
+                    user = PrivateUser.getInstance();
+                    user.createDBUser();
                     setProgressBar(View.INVISIBLE);
                     startActivity(intent);
                     finish();
@@ -92,10 +93,4 @@ public class SignUpActivity extends AppCompatActivity {
         TextView exception = findViewById(R.id.exceptionSignUp);
         exception.setText(s);
     }
-
-    private void createDBUser(){
-        this.user = PrivateUser.getInstance();
-    }
-
-
 }

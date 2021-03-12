@@ -1,8 +1,6 @@
 package com.example.bootcamp;
 
-import android.graphics.ImageDecoder;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -10,6 +8,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
@@ -22,9 +21,7 @@ public class PrivateUser {
     private static PrivateUser instance = new PrivateUser();
     private final FirebaseUser user;
     private DocumentReference docRef;
-    private String first_name;
-    private String family_name;
-    private Date birth;
+    private Map<String, Object> data;
 
     public static PrivateUser getInstance(){
         return instance;
@@ -32,11 +29,10 @@ public class PrivateUser {
 
     private PrivateUser(){
         this.user = FirebaseAuth.getInstance().getCurrentUser();
-        this.docRef = FirebaseFirestore.getInstance().collection("users").document(user.getUid());
-        this.storeDB();
+        this.docRef = FirebaseFirestore.getInstance().document("users/" + user.getUid());
     }
 
-    private void storeDB(){
+    public void createDBUser(){
 
         Log.d(MainActivity.TAG, "Trying to store in DB");
 
@@ -77,8 +73,30 @@ public class PrivateUser {
         this.update("first_name", name);
     }
 
-    public void updateBirth(Date birth){
-        this.update("year_of_birth", birth);
+    public void updateBirth(int year){
+        this.update("year_of_birth", year);
+    }
+
+    public void loadBD(DatabaseLambda l){
+        this.docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        l.applyAfterLoad(document.getData());
+                    } else {
+                        Log.d(MainActivity.TAG, "No such document");
+                    }
+                } else {
+                    Log.d(MainActivity.TAG, "Failing retrieving data : ", task.getException());
+                }
+            }
+        });
+    }
+
+    public Map<String, Object> getData(){
+        return this.data;
     }
 
     @Override
