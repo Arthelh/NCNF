@@ -79,6 +79,7 @@ public class SignUpActivity extends AppCompatActivity {
                     Log.d(MainActivity.TAG,"DB User successfully created");
                     setProgressBar(View.INVISIBLE);
                     startActivity(intent);
+                    finish();
                 } else {
                     Log.d(MainActivity.TAG,"Error creating user " + task.getException().toString());
                     setException(task.getException().getMessage());

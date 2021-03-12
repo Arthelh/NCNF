@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(MainActivity.TAG,"User successfully connected");
                     setProgressBar(View.INVISIBLE);
                     startActivity(intent);
+                    finish();
                 } else {
                     Log.d(MainActivity.TAG,"Error connecting user " + task.getException().toString());
                     setException(task.getException().getMessage());

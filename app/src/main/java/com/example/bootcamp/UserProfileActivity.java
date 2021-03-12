@@ -26,9 +26,10 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(MainActivity.TAG, "current user : " + this.auth.getCurrentUser().getUid().toString());
-        user = new PrivateUser(this.auth.getCurrentUser());
-        fillEmailAddress();
+        if(this.auth.getCurrentUser() != null){
+            user = new PrivateUser(this.auth.getCurrentUser());
+            fillEmailAddress();
+        }
     }
 
     public void logOut(View view) {

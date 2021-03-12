@@ -31,13 +31,19 @@ public class MainActivity extends AppCompatActivity {
 
         Switch s = findViewById(R.id.connected);
         Button profile = findViewById(R.id.mainProfileButton);
+        Button signIn = findViewById(R.id.mainSignInButton);
+        Button signUp = findViewById(R.id.mainSignUpButton);
 
         if(isConnected()){
             profile.setEnabled(true);
+            signIn.setEnabled(false);
+            signUp.setEnabled(false);
             s.setText("Connected");
             s.setChecked(true);
         } else {
             profile.setEnabled(false);
+            signIn.setEnabled(true);
+            signUp.setEnabled(true);
             s.setText("Disconnected");
             s.setChecked(false);
         }
