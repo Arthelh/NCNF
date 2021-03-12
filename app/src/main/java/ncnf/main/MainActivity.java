@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ncnf.R;
 
 import ncnf.feed.FeedActivity;
+import ncnf.main.map.MapActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     /*Called when the user clicks the button*/
     public void sendMessage(View view){
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
+        Intent intent = new Intent(this, MapActivity.class);
         EditText editText = (EditText) findViewById(R.id.name_field);
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);

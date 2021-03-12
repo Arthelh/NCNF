@@ -33,6 +33,7 @@ import org.junit.runner.RunWith;
 import ncnf.feed.FeedActivity;
 import ncnf.main.DisplayMessageActivity;
 import ncnf.main.MainActivity;
+import ncnf.main.map.MapActivity;
 
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
@@ -47,7 +48,7 @@ public class MainActivityTest {
         onView(withId(R.id.name_field)).perform(typeText(test_string), closeSoftKeyboard());
         onView(withId(R.id.name_button)).perform(click());
 
-        Intents.intended(hasComponent(DisplayMessageActivity.class.getName()));
+        Intents.intended(hasComponent(MapActivity.class.getName()));
         
 
         Intents.release();
