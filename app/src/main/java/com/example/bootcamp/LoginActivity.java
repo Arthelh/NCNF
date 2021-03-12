@@ -34,8 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         setProgressBar(View.INVISIBLE);
-        ((EditText)findViewById(R.id.signInEmail)).setText("");
-        ((EditText)findViewById(R.id.signInPassword)).setText("");
+        ((EditText)findViewById(R.id.signInEmail)).getText().clear();
+        ((EditText)findViewById(R.id.signInPassword)).getText().clear();
     }
 
     public void signIn(View view) {
@@ -66,7 +66,6 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(MainActivity.TAG,"Error connecting user " + task.getException().toString());
                     setException(task.getException().getMessage());
                     setProgressBar(View.INVISIBLE);
-                    return;
                 }
 
             }
@@ -81,6 +80,5 @@ public class LoginActivity extends AppCompatActivity {
     private void setException(String s){
         TextView exception = findViewById(R.id.exceptionSignIn);
         exception.setText(s);
-        return;
     }
 }

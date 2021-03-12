@@ -1,6 +1,5 @@
 package com.example.bootcamp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,15 +9,12 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Date;
 import java.util.Map;
+
+import static com.example.bootcamp.Utils.*;
 
 public class UserProfileActivity extends AppCompatActivity {
 
@@ -51,9 +47,9 @@ public class UserProfileActivity extends AppCompatActivity {
             user.loadBD(new DatabaseLambda() {
                 @Override
                 public void applyAfterLoad(Map<String, Object> map) {
-                    String first_name = map.getOrDefault("first_name", "").toString();
-                    String last_name = map.getOrDefault("last_name", "").toString();
-                    String birth_date = map.getOrDefault("year_of_birth", "").toString();
+                    String first_name = map.getOrDefault(FIRST_NAME_KEY, EMPTY_STRING).toString();
+                    String last_name = map.getOrDefault(LAST_NAME_KEY, EMPTY_STRING).toString();
+                    String birth_date = map.getOrDefault(BIRTH_YEAR_KEY, EMPTY_STRING).toString();
 
                     firstName.setText(first_name);
                     lastName.setText(last_name);

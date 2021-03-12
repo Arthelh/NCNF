@@ -2,7 +2,6 @@ package com.example.bootcamp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
@@ -10,7 +9,8 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+import static com.example.bootcamp.Utils.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
             profile.setEnabled(true);
             signIn.setEnabled(false);
             signUp.setEnabled(false);
-            s.setText("Connected");
+            s.setText(CONNECTED_KEYWORD);
             s.setChecked(true);
         } else {
             profile.setEnabled(false);
             signIn.setEnabled(true);
             signUp.setEnabled(true);
-            s.setText("Disconnected");
+            s.setText(DISCONNECTED_KEYWORD);
             s.setChecked(false);
         }
     }
@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         if(!isConnected()){
             return;
         }
-        Log.d(MainActivity.TAG, "going to logged screen");
         Intent intent = new Intent(this, UserProfileActivity.class);
         startActivity(intent);
     }

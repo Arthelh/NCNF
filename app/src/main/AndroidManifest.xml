@@ -13,16 +13,13 @@
         android:theme="@style/Theme.Bootcamp">
         <activity
             android:name=".UserProfileActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SignUpActivity"
             android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".LoginActivity"
             android:parentActivityName=".MainActivity"/>
-        <activity
-            android:name=".DisplayMessageActivity"
-            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

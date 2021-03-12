@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import static com.example.bootcamp.Utils.*;
+
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -22,11 +24,7 @@ public class SignUpActivity extends AppCompatActivity {
     private Intent intent;
     private PrivateUser user;
 
-    public static String EMPTY_STRING =  "";
-    public static String EMPTY_FIELD_STRING = "One of the fields is empty.";
-    public static String PASSWORDS_DO_NOT_MATCH_STRING = "Passwords do not match.";
-    public static String BADLY_FORMATTED_EMAIL_STRING = "The email address is badly formatted.";
-    public static String INVALID_PASSWORD_STRING = "The given password is invalid.";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +72,14 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Log.d(MainActivity.TAG,"User successfully created");
+                    Log.d(MainActivity.TAG,"New user successfully authenticated");
                     user = PrivateUser.getInstance();
                     user.createDBUser();
                     setProgressBar(View.INVISIBLE);
                     startActivity(intent);
                     finish();
                 } else {
-                    Log.d(MainActivity.TAG,"Error creating user " + task.getException().toString());
+                    Log.d(MainActivity.TAG,"Error authenticating new user " + task.getException().toString());
                     setException(task.getException().getMessage());
                     setProgressBar(View.INVISIBLE);
                 }
