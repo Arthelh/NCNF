@@ -22,6 +22,12 @@ public class SignUpActivity extends AppCompatActivity {
     private Intent intent;
     private PrivateUser user;
 
+    public static String EMPTY_STRING =  "";
+    public static String EMPTY_FIELD_STRING = "One of the fields is empty.";
+    public static String PASSWORDS_DO_NOT_MATCH_STRING = "Passwords do not match.";
+    public static String BADLY_FORMATTED_EMAIL_STRING = "The email address is badly formatted.";
+    public static String INVALID_PASSWORD_STRING = "The given password is invalid.";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,30 +42,30 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         setProgressBar(View.INVISIBLE);
-        ((EditText)findViewById(R.id.signUpEmail)).setText("");
-        ((EditText)findViewById(R.id.signUpPassword)).setText("");
-        ((EditText)findViewById(R.id.signUpConfirmPassword)).setText("");
+        ((EditText)findViewById(R.id.signUpEmail)).setText(EMPTY_STRING);
+        ((EditText)findViewById(R.id.signUpPassword)).setText(EMPTY_STRING);
+        ((EditText)findViewById(R.id.signUpConfirmPassword)).setText(EMPTY_STRING);
     }
 
     public void signUp(View view) {
-
         EditText emailField = findViewById(R.id.signUpEmail);
         String email = emailField.getText().toString();
-        emailField.setText("");
 
         EditText passwordField = findViewById(R.id.signUpPassword);
         String password = passwordField.getText().toString();
-        passwordField.setText("");
 
         EditText confirmField = findViewById(R.id.signUpConfirmPassword);
         String confirmed = confirmField.getText().toString();
-        confirmField.setText("");
+
+        ((EditText)findViewById(R.id.signUpEmail)).setText(EMPTY_STRING);
+        ((EditText)findViewById(R.id.signUpPassword)).setText(EMPTY_STRING);
+        ((EditText)findViewById(R.id.signUpConfirmPassword)).setText(EMPTY_STRING);
 
         if(email.isEmpty() || password.isEmpty() || confirmed.isEmpty()){
-            setException("One of the fields is empty");
+            setException(EMPTY_FIELD_STRING);
             return;
         } else if(!password.equals(confirmed)){
-            setException("Password aren't equal");
+            setException(PASSWORDS_DO_NOT_MATCH_STRING);
             return;
         }
 
