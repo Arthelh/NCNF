@@ -25,4 +25,16 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
     }
+
+    public void seeEvent1(View view) {
+        Intent intent = new Intent(this, EventActivity.class);
+        intent.putExtra("EVENT_NUM", 0);
+        startActivity(intent);
+    }
+
+    public void seeEvent2(View view) {
+        Intent intent = new Intent(this, EventActivity.class);
+        intent.putExtra("EVENT_NUM", 1);
+        startActivity(intent);
+    }
 }
