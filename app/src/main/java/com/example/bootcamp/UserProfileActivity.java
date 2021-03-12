@@ -28,9 +28,7 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onStart();
         Log.d(MainActivity.TAG, "current user : " + this.auth.getCurrentUser().getUid().toString());
         user = new PrivateUser(this.auth.getCurrentUser());
-        TextView text = findViewById(R.id.userProfileEmail);
-        text.setClickable(false);
-        text.setText(this.auth.getCurrentUser().getEmail());
+        fillEmailAddress();
     }
 
     public void logOut(View view) {
@@ -40,4 +38,17 @@ public class UserProfileActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+
+    private void fillEmailAddress(){
+        TextView text = findViewById(R.id.userProfileEmail);
+        text.setEnabled(false);
+        text.setText(this.auth.getCurrentUser().getEmail());
+    }
+
+//    private void fillFirstName(){
+//        if(user.)
+//        TextView text = findViewById(R.id.userProfileEmail);
+//        text.setEnabled(false);
+//        text.setText(this.auth.getCurrentUser().getEmail());
+//    }
 }
