@@ -15,12 +15,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -76,7 +70,6 @@ public class SignUpActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     Log.d(MainActivity.TAG,"User successfully created");
                     createDBUser();
-                    Log.d(MainActivity.TAG,"DB User successfully created");
                     setProgressBar(View.INVISIBLE);
                     startActivity(intent);
                     finish();
@@ -101,7 +94,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void createDBUser(){
-        this.user = new PrivateUser(this.auth.getCurrentUser());
+        this.user = PrivateUser.getInstance();
     }
 
 

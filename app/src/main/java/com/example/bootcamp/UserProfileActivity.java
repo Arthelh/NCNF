@@ -27,7 +27,7 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if(this.auth.getCurrentUser() != null){
-            user = new PrivateUser(this.auth.getCurrentUser());
+            user = PrivateUser.getInstance();
             fillEmailAddress();
         }
     }
