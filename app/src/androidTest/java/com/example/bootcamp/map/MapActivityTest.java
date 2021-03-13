@@ -56,14 +56,14 @@ public final class MapActivityTest {
     public final void switchMarkersUpdatesMap() {
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
-        device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 5000);
+        device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 10000);
         // Events are shown
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Math"));
         assertTrue("Events markers exist", marker.exists());
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
-        device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 5000);
+        device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 10000);
         // Venues are shown
         marker = device.findObject(new UiSelector().descriptionContains("EPFL"));
         assertTrue("Venue markers exist", marker.exists());
