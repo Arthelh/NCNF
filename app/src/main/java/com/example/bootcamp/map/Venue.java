@@ -1,7 +1,5 @@
 package com.example.bootcamp.map;
 
-import java.util.ArrayList;
-
 public class Venue {
 
     private String name;

@@ -1,9 +1,5 @@
 package com.example.bootcamp.map;
 
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-
 public class Event {
 
     private String name;
