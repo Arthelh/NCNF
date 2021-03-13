@@ -25,7 +25,9 @@ import dagger.hilt.android.testing.HiltAndroidTest;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @HiltAndroidTest
@@ -56,14 +58,18 @@ public final class MapActivityTest {
     public final void switchMarkersUpdatesMap() {
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
-        device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 10000);
+        assertNotNull("Map with events is loaded",
+                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 10000)
+        );
         // Events are shown
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Math"));
         assertTrue("Events markers exist", marker.exists());
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
-        device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 10000);
+        assertNotNull("Map with venues is loaded",
+                device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 10000)
+        );
         // Venues are shown
         marker = device.findObject(new UiSelector().descriptionContains("EPFL"));
         assertTrue("Venue markers exist", marker.exists());
