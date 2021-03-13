@@ -1,11 +1,10 @@
-package com.example.bootcamp.map;
+package com.ncnf.map;
 
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.bootcamp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,6 +19,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import com.ncnf.R;
 
 @AndroidEntryPoint
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {

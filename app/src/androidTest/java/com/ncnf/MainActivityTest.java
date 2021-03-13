@@ -1,8 +1,11 @@
-package com.example.bootcamp;
+package com.ncnf;
 
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import com.example.bootcamp.map.MapActivity;
+
+import com.ncnf.main.MainActivity;
+import com.ncnf.map.MapActivity;
+import com.ncnf.feed.FeedActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,8 +33,17 @@ public final class MainActivityTest {
         Intents.init();
 
         onView(withId(R.id.to_map_link)).perform(click());
-
         Intents.intended(hasComponent(MapActivity.class.getName()));
+        
+        Intents.release();
+    }
+
+    @Test
+    public void feedActivityButtonWorks(){
+        Intents.init();
+
+        onView(withId(R.id.feed_view_button)).perform(click());
+        Intents.intended(hasComponent(FeedActivity.class.getName()));
 
         Intents.release();
     }

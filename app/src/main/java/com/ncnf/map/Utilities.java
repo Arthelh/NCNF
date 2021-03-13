@@ -1,16 +1,16 @@
-package com.example.bootcamp.map;
+package com.ncnf.map;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
-import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 
-import com.example.bootcamp.R;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
+import com.ncnf.R;
 
 public class Utilities {
 

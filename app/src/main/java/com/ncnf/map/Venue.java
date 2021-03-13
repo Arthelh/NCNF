@@ -1,4 +1,4 @@
-package com.example.bootcamp.map;
+package com.ncnf.map;
 
 public class Venue {
 

@@ -1,4 +1,4 @@
-package com.example.bootcamp.map;
+package com.ncnf.map;
 
 import java.util.ArrayList;
 import java.util.List;
