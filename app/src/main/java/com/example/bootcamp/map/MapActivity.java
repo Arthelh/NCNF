@@ -72,7 +72,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             venue_markers.get(venues.indexOf(p)).setVisible(false);
         }
 
-        mMap.setContentDescription("MAP_READY");
+        mMap.setContentDescription("MAP_WITH_EVENTS");
     }
 
     public void zoomOut(View view) {
@@ -91,6 +91,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             m.setVisible(events_shown);
         }
         events_shown = !events_shown;
+        if (events_shown) {
+            mMap.setContentDescription("MAP_WITH_EVENTS");
+        } else {
+            mMap.setContentDescription("MAP_WITH_VENUES");
+        }
     }
 
 }
