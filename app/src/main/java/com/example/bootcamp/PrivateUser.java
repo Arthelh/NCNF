@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -31,21 +31,28 @@ public class PrivateUser {
         this.docRef = FirebaseFirestore.getInstance().document(USERs_COLLECTION + user.getUid());
     }
 
-    public void createDBUser(){
+    public void createDBUser(DatabaseLambda l){
 
-        Log.d(MainActivity.TAG, "Integrating new user to DB");
+        Log.d(DEBUG_TAG, "Integrating new user to DB");
 
         Map<String, Object> initial_data = new HashMap<>();
-        initial_data.put(UID_KEY, this.user.getUid());
         initial_data.put(EMAIL_KEY, this.user.getEmail());
+        initial_data.put(LAST_NAME_KEY, EMPTY_STRING);
+        initial_data.put(FIRST_NAME_KEY, EMPTY_STRING);
+        initial_data.put(BIRTH_YEAR_KEY, null);
+        initial_data.put(FRIENDS_KEY, new ArrayList<String>());
+        initial_data.put(OWNED_EVENTS, new ArrayList<String>());
+        initial_data.put(SAVED_EVENTS, new ArrayList<String>());
+
         this.docRef.set(initial_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Log.d(MainActivity.TAG, "Successfully stored new user in DB");
+                    Log.d(DEBUG_TAG, "Successfully stored new user in DB");
+                    l.applyAfterStoreSuccess();
                 } else {
-                    user.delete();
-                    Log.d(MainActivity.TAG, "Error adding new user to DB : " + task.getException().getMessage());
+                    l.applyAfterStoreFailure();
+                    Log.d(DEBUG_TAG, "Error adding new user to DB : " + task.getException().getMessage());
                 }
             }
         });
@@ -57,9 +64,9 @@ public class PrivateUser {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    Log.d(MainActivity.TAG, "Successfully updated the DB");
+                    Log.d(DEBUG_TAG, "Successfully updated the DB");
                 } else {
-                    Log.d(MainActivity.TAG, "Error updating DB : " + task.getException().getMessage());
+                    Log.d(DEBUG_TAG, "Error updating DB : " + task.getException().getMessage());
                 }
             }
         });
@@ -84,12 +91,13 @@ public class PrivateUser {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        l.applyAfterLoad(document.getData());
+                        l.applyAfterLoadSuccess(document.getData());
                     } else {
-                        Log.d(MainActivity.TAG, "No such document");
+                        l.applyAfterLoadFailure();
+                        Log.d(DEBUG_TAG, "No such document");
                     }
                 } else {
-                    Log.d(MainActivity.TAG, "Failing retrieving data : ", task.getException());
+                    Log.d(DEBUG_TAG, "Failing retrieving data : ", task.getException());
                 }
             }
         });

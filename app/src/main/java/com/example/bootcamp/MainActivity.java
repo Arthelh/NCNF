@@ -15,9 +15,6 @@ import static com.example.bootcamp.Utils.*;
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE = "com.example.bootcamp.EXTRA_MESSAGE";
-    public static final String TAG = "debugging";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

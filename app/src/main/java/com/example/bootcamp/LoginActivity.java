@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import static com.example.bootcamp.Utils.*;
+
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
@@ -58,12 +60,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Log.d(MainActivity.TAG,"User successfully connected");
+                    Log.d(DEBUG_TAG,"User successfully connected");
                     setProgressBar(View.INVISIBLE);
                     startActivity(intent);
                     finish();
                 } else {
-                    Log.d(MainActivity.TAG,"Error connecting user " + task.getException().toString());
+                    Log.d(DEBUG_TAG,"Error connecting user " + task.getException().toString());
                     setException(task.getException().getMessage());
                     setProgressBar(View.INVISIBLE);
                 }

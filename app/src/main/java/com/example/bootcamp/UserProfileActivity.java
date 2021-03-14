@@ -46,7 +46,7 @@ public class UserProfileActivity extends AppCompatActivity {
             user = PrivateUser.getInstance();
             user.loadBD(new DatabaseLambda() {
                 @Override
-                public void applyAfterLoad(Map<String, Object> map) {
+                public void applyAfterLoadSuccess(Map<String, Object> map) {
                     String first_name = map.getOrDefault(FIRST_NAME_KEY, EMPTY_STRING).toString();
                     String last_name = map.getOrDefault(LAST_NAME_KEY, EMPTY_STRING).toString();
                     String birth_date = map.getOrDefault(BIRTH_YEAR_KEY, EMPTY_STRING).toString();
@@ -127,7 +127,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     public void saveNewFields(View view){
 
-        Log.d(MainActivity.TAG, "we have changed first : " + firstNameChanged + " last : " + lastNameChanged + " birth : " + birthDateChanged);
+        Log.d(DEBUG_TAG, "we have changed first : " + firstNameChanged + " last : " + lastNameChanged + " birth : " + birthDateChanged);
 
         if(firstNameChanged){
             this.user.updateFirstName(firstName.getText().toString());

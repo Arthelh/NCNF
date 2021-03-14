@@ -15,6 +15,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Map;
+
 import static com.example.bootcamp.Utils.*;
 
 
@@ -72,14 +75,27 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Log.d(MainActivity.TAG,"New user successfully authenticated");
+                    Log.d(DEBUG_TAG,"New user successfully authenticated");
                     user = PrivateUser.getInstance();
-                    user.createDBUser();
-                    setProgressBar(View.INVISIBLE);
-                    startActivity(intent);
-                    finish();
+                    user.createDBUser(new DatabaseLambda() {
+
+                        @Override
+                        public void applyAfterStoreSuccess() {
+                            setProgressBar(View.INVISIBLE);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void applyAfterStoreFailure() {
+                            auth.getCurrentUser().delete();
+                            setProgressBar(View.INVISIBLE);
+                            ((TextView)findViewById(R.id.exceptionSignUp)).setText("Couldn't create a new user : please try again");
+                        }
+                    });
+
                 } else {
-                    Log.d(MainActivity.TAG,"Error authenticating new user " + task.getException().toString());
+                    Log.d(DEBUG_TAG,"Error authenticating new user " + task.getException().toString());
                     setException(task.getException().getMessage());
                     setProgressBar(View.INVISIBLE);
                 }
