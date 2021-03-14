@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name=".NCNF"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -31,12 +32,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="ncnf.main.map.MapActivity"
+            android:name="com.ncnf.map.MapActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName="ncnf.main.MainActivity" />
-        <activity
-            android:name="ncnf.main.DisplayMessageActivity"
-            android:parentActivityName="ncnf.main.MainActivity" />
+            android:parentActivityName="com.ncnf.main.MainActivity" />
 
         <uses-library
             android:name="com.google.android.wearable"
@@ -51,17 +49,17 @@
             android:value="false" />
 
         <activity
-            android:name="ncnf.feed.FeedActivity"
+            android:name="com.ncnf.feed.FeedActivity"
             android:label="@string/title_activity_feed"
-            android:parentActivityName="ncnf.main.MainActivity" >
+            android:parentActivityName="com.ncnf.main.MainActivity" >
         </activity>
 
         <activity
-            android:name="ncnf.feed.EventActivity"
-            android:parentActivityName="ncnf.feed.FeedActivity">
+            android:name="com.ncnf.feed.EventActivity"
+            android:parentActivityName="com.ncnf.feed.FeedActivity">
         </activity>
 
-        <activity android:name="ncnf.main.MainActivity" >
+        <activity android:name="com.ncnf.main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

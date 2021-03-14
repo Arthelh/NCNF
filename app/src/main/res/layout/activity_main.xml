@@ -4,38 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ncnf.main.MainActivity">
-
-    <EditText
-        android:id="@+id/name_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="276dp"
-        android:layout_marginEnd="97dp"
-        android:layout_marginBottom="47dp"
-        android:ems="10"
-        android:hint="You can enter your name here if you want"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/name_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context="com.ncnf.main.MainActivity">
 
     <Button
-        android:id="@+id/name_button"
+        android:id="@+id/to_map_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="159dp"
         android:layout_marginTop="47dp"
         android:layout_marginEnd="160dp"
         android:layout_marginBottom="315dp"
-        android:onClick="sendMessage"
-        android:text="Open Map"
+        android:onClick="goToMap"
+        android:text="Map"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_field" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/feed_view_button"
@@ -51,7 +34,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.226"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_field"
         app:layout_constraintVertical_bias="0.056" />
 
     <Button
