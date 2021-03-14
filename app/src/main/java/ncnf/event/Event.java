@@ -1,5 +1,7 @@
 package ncnf.event;
 
+import java.util.Date;
+
 import ncnf.organizer.Organizer;
 
 public interface Event {
@@ -8,4 +10,5 @@ public interface Event {
     String getUID();
     EventType getType();
     String getData();
+    Date getDate();
 }

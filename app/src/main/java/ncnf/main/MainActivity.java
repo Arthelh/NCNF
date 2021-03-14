@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
 
+import ncnf.eventCreation.EventCreationActivity;
 import ncnf.feed.FeedActivity;
 import ncnf.main.map.MapActivity;
 
@@ -24,15 +25,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView r = (RecyclerView)findViewById(R.id.recycler_view);
-
         Button launchFeed = (Button) findViewById(R.id.feed_view_button);
+        Button launchEventCreation = (Button) findViewById(R.id.create_event_button);
 
         launchFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 feedView();
+            }
+        });
+
+        launchEventCreation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eventCreationView();
             }
         });
     }
@@ -48,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void feedView() {
         Intent intent = new Intent(this, FeedActivity.class);
+        startActivity(intent);
+    }
+
+    public void eventCreationView(){
+        Intent intent = new Intent(this, EventCreationActivity.class);
         startActivity(intent);
     }
 }
