@@ -23,15 +23,15 @@
 
         <activity
             android:name="com.ncnf.user.UserProfileActivity"
-            android:parentActivityName="com.ncnf.MainActivity"
+            android:parentActivityName="com.ncnf.main.MainActivity"
             tools:ignore="MissingClass" />
         <activity
             android:name="com.ncnf.authentication.SignUpActivity"
-            android:parentActivityName="com.ncnf.MainActivity"
+            android:parentActivityName="com.ncnf.main.MainActivity"
             tools:ignore="MissingClass" />
         <activity
             android:name="com.ncnf.authentication.SignInActivity"
-            android:parentActivityName="com.ncnf.MainActivity"
+            android:parentActivityName="com.ncnf.main.MainActivity"
             tools:ignore="MissingClass" />
 
         <!--
@@ -49,7 +49,7 @@
         <activity
             android:name="com.ncnf.map.MapActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName="com.ncnf.MainActivity" />
+            android:parentActivityName="com.ncnf.main.MainActivity" />
 
         <uses-library
             android:name="com.google.android.wearable"
@@ -66,7 +66,7 @@
         <activity
             android:name="com.ncnf.feed.FeedActivity"
             android:label="@string/title_activity_feed"
-            android:parentActivityName="com.ncnf.MainActivity" >
+            android:parentActivityName="com.ncnf.main.MainActivity" >
         </activity>
 
         <activity
@@ -74,8 +74,7 @@
             android:parentActivityName="com.ncnf.feed.FeedActivity">
         </activity>
 
-        <activity android:name="com.ncnf.MainActivity" >
-
+        <activity android:name="com.ncnf.main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

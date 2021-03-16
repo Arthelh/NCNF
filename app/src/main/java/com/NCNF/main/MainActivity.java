@@ -1,4 +1,4 @@
-package com.ncnf;
+package com.ncnf.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.ncnf.R;
 import com.ncnf.authentication.SignInActivity;
 import com.ncnf.authentication.SignUpActivity;
 import com.ncnf.feed.FeedActivity;
