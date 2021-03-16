@@ -20,6 +20,16 @@
 
         android:theme="@style/Theme.Bootcamp"
         android:usesCleartextTraffic="true">
+
+        <activity android:name="com.ncnf.main.MainActivity" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name="com.ncnf.user.UserProfileActivity"
             android:parentActivityName="com.ncnf.main.MainActivity"
@@ -71,15 +81,6 @@
         <activity
             android:name="com.ncnf.feed.EventActivity"
             android:parentActivityName="com.ncnf.feed.FeedActivity">
-        </activity>
-
-        <activity android:name="com.ncnf.main.MainActivity" >
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
