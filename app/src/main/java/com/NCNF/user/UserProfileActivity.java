@@ -53,9 +53,13 @@ public class UserProfileActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Object o) {
                     Map<String, Object> map = (Map<String, Object>) o;
-                    String first_name = map.getOrDefault(FIRST_NAME_KEY, EMPTY_STRING).toString();
-                    String last_name = map.getOrDefault(LAST_NAME_KEY, EMPTY_STRING).toString();
-                    String birth_date = map.getOrDefault(BIRTH_YEAR_KEY, EMPTY_STRING).toString();
+//                    String first_name = map.getOrDefault(FIRST_NAME_KEY, EMPTY_STRING).toString();
+//                    String last_name = map.getOrDefault(LAST_NAME_KEY, EMPTY_STRING).toString();
+//                    String birth_date = map.getOrDefault(BIRTH_YEAR_KEY, EMPTY_STRING).toString();
+
+                    String first_name = "test";
+                    String last_name = "test";
+                    String birth_date = "1234";
 
                     firstName.setText(first_name);
                     lastName.setText(last_name);
