@@ -4,6 +4,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,20 +20,28 @@ import static com.example.bootcamp.Utils.*;
 
 public class PrivateUser {
 
-    private static final PrivateUser instance = new PrivateUser();
-    private final FirebaseUser user;
-    private final DocumentReference docRef;
+    private static PrivateUser instance = new PrivateUser();
+    private static FirebaseUser user;
+    private static DocumentReference docRef;
 
     public static PrivateUser getInstance(){
+        if(user == null || docRef == null){
+            instance = new PrivateUser();
+        }
         return instance;
     }
 
     private PrivateUser(){
         this.user = FirebaseAuth.getInstance().getCurrentUser();
-        this.docRef = FirebaseFirestore.getInstance().document(USERs_COLLECTION + user.getUid());
+        if(this.user != null){
+            this.docRef = FirebaseFirestore.getInstance().document(USERs_COLLECTION_KEY + user.getUid());
+            Log.d(DEBUG_TAG, this.docRef.toString());
+        } else {
+            this.docRef = null;
+        }
     }
 
-    public void createDBUser(DatabaseLambda l){
+    public void createDBUser(OnSuccessListener s, OnFailureListener f){
 
         Log.d(DEBUG_TAG, "Integrating new user to DB");
 
@@ -39,19 +49,19 @@ public class PrivateUser {
         initial_data.put(EMAIL_KEY, this.user.getEmail());
         initial_data.put(LAST_NAME_KEY, EMPTY_STRING);
         initial_data.put(FIRST_NAME_KEY, EMPTY_STRING);
-        initial_data.put(BIRTH_YEAR_KEY, null);
+        initial_data.put(BIRTH_YEAR_KEY, 0);
         initial_data.put(FRIENDS_KEY, new ArrayList<String>());
-        initial_data.put(OWNED_EVENTS, new ArrayList<String>());
-        initial_data.put(SAVED_EVENTS, new ArrayList<String>());
+        initial_data.put(OWNED_EVENTS_KEY, new ArrayList<String>());
+        initial_data.put(SAVED_EVENTS_KEY, new ArrayList<String>());
 
         this.docRef.set(initial_data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Log.d(DEBUG_TAG, "Successfully stored new user in DB");
-                    l.applyAfterStoreSuccess();
+                    s.onSuccess(task.getResult());
                 } else {
-                    l.applyAfterStoreFailure();
+                    f.onFailure(task.getException());
                     Log.d(DEBUG_TAG, "Error adding new user to DB : " + task.getException().getMessage());
                 }
             }
@@ -84,16 +94,16 @@ public class PrivateUser {
         this.update(BIRTH_YEAR_KEY, year);
     }
 
-    public void loadBD(DatabaseLambda l){
+    public void loadUserFromBD(OnSuccessListener s, OnFailureListener f){
         this.docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        l.applyAfterLoadSuccess(document.getData());
+                        s.onSuccess(document.getData());
                     } else {
-                        l.applyAfterLoadFailure();
+                        f.onFailure(task.getException());
                         Log.d(DEBUG_TAG, "No such document");
                     }
                 } else {
@@ -101,6 +111,11 @@ public class PrivateUser {
                 }
             }
         });
+    }
+
+    public void delete(){
+        this.user = null;
+        this.docRef = null;
     }
 
     @Override

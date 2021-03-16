@@ -26,7 +26,7 @@ public class MainActivityTest {
 
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             onView(withId(R.id.mainSignInButton)).perform(click());
-            Intents.intended(hasComponent(LoginActivity.class.getName()));
+            Intents.intended(hasComponent(SignInActivity.class.getName()));
         }
 
         Intents.release();

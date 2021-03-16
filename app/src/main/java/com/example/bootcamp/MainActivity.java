@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signIn(View view) {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
     }
 

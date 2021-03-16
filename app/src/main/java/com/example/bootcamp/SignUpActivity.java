@@ -12,6 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +28,6 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private Intent intent;
     private PrivateUser user;
-
 
 
     @Override
@@ -77,17 +78,16 @@ public class SignUpActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     Log.d(DEBUG_TAG,"New user successfully authenticated");
                     user = PrivateUser.getInstance();
-                    user.createDBUser(new DatabaseLambda() {
-
+                    user.createDBUser(new OnSuccessListener() {
                         @Override
-                        public void applyAfterStoreSuccess() {
+                        public void onSuccess(Object o) {
                             setProgressBar(View.INVISIBLE);
                             startActivity(intent);
                             finish();
                         }
-
+                    }, new OnFailureListener() {
                         @Override
-                        public void applyAfterStoreFailure() {
+                        public void onFailure(@NonNull Exception e) {
                             auth.getCurrentUser().delete();
                             setProgressBar(View.INVISIBLE);
                             ((TextView)findViewById(R.id.exceptionSignUp)).setText("Couldn't create a new user : please try again");

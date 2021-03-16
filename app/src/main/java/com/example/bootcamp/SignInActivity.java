@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import static com.example.bootcamp.Utils.*;
 
-public class LoginActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private Intent intent;
@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signin);
 
         auth = FirebaseAuth.getInstance();
         intent = new Intent(this, UserProfileActivity.class);

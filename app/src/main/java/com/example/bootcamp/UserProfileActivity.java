@@ -1,5 +1,7 @@
 package com.example.bootcamp;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,9 +12,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 import static com.example.bootcamp.Utils.*;
 
@@ -44,9 +50,10 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onStart();
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
             user = PrivateUser.getInstance();
-            user.loadBD(new DatabaseLambda() {
+            user.loadUserFromBD(new OnSuccessListener() {
                 @Override
-                public void applyAfterLoadSuccess(Map<String, Object> map) {
+                public void onSuccess(Object o) {
+                    Map<String, Object> map = (Map<String, Object>) o;
                     String first_name = map.getOrDefault(FIRST_NAME_KEY, EMPTY_STRING).toString();
                     String last_name = map.getOrDefault(LAST_NAME_KEY, EMPTY_STRING).toString();
                     String birth_date = map.getOrDefault(BIRTH_YEAR_KEY, EMPTY_STRING).toString();
@@ -54,23 +61,25 @@ public class UserProfileActivity extends AppCompatActivity {
                     firstName.setText(first_name);
                     lastName.setText(last_name);
                     birthDate.setText(birth_date);
+                    findViewById(R.id.userProfileSaveButton).setEnabled(false);
+
+                    email.setEnabled(false);
+                    email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                }
+            }, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(DEBUG_TAG, "Unable to load user from db : " + e.getMessage());
                 }
             });
-            fillEmailAddress();
         }
     }
 
     public void logOut(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         FirebaseAuth.getInstance().signOut();
+        this.user.delete();
         startActivity(intent);
-    }
-
-    private void fillEmailAddress(){
-        email.setEnabled(false);
-        email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-
-
     }
 
     private void prepareFields(){
@@ -126,8 +135,6 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     public void saveNewFields(View view){
-
-        Log.d(DEBUG_TAG, "we have changed first : " + firstNameChanged + " last : " + lastNameChanged + " birth : " + birthDateChanged);
 
         if(firstNameChanged){
             this.user.updateFirstName(firstName.getText().toString());
