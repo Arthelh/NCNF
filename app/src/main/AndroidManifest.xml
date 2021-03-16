@@ -74,7 +74,7 @@
             android:parentActivityName="com.ncnf.feed.FeedActivity">
         </activity>
 
-        <activity android:name="com.ncnf.main.MainActivity" >
+        <activity android:name=".main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
