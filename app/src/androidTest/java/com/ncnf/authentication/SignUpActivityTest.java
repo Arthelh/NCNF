@@ -6,6 +6,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.ncnf.R;
+import com.ncnf.main.MainActivity;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -16,22 +17,39 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
+
+import dagger.hilt.android.testing.HiltAndroidRule;
+import dagger.hilt.android.testing.HiltAndroidTest;
 
 import static com.ncnf.Utils.*;
 
-@RunWith(AndroidJUnit4.class)
+@HiltAndroidTest
 public class SignUpActivityTest {
-    @Rule
-    public ActivityScenarioRule<SignUpActivity> testRule = new ActivityScenarioRule<>(SignUpActivity.class);
 
+    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private ActivityScenarioRule activityTestRule = new ActivityScenarioRule<>(SignUpActivity.class);
+
+    @Rule
+    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(activityTestRule);
+
+    @Before
+    public void setup(){
+        Intents.init();
+    }
+
+    @After
+    public void cleanup(){
+        Intents.release();
+    }
 
     @Test
     public void wrongInputsTest() {
-        Intents.init();
-
         String invalidEmail = "test";
         String validEmail = "test@test.com";
         String invalidPassword = "test";
@@ -57,8 +75,6 @@ public class SignUpActivityTest {
         onView(withId(R.id.signUpConfirmPassword)).perform(typeText(invalidPassword), closeSoftKeyboard());
         onView(withId(R.id.signUpButton)).perform(click());
         onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(INVALID_PASSWORD_STRING))));
-
-        Intents.release();
     }
 
 }

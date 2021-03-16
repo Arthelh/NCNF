@@ -43,8 +43,6 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void signIn(View view) {
-
-
         EditText emailField = findViewById(R.id.signInEmail);
         String email = emailField.getText().toString();
 
@@ -53,7 +51,10 @@ public class SignInActivity extends AppCompatActivity {
         String password = passwordField.getText().toString();
 
         if(email.isEmpty() || password.isEmpty()) {
-            setException("One of the fields is empty");
+            setException(EMPTY_FIELD_STRING);
+            return;
+        } else if (!isValidEmail(email)){
+            setException(BADLY_FORMATTED_EMAIL_STRING);
             return;
         }
 
@@ -63,17 +64,18 @@ public class SignInActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     Log.d(DEBUG_TAG,"User successfully connected");
-                    setProgressBar(View.INVISIBLE);
                     startActivity(intent);
                     finish();
                 } else {
                     Log.d(DEBUG_TAG,"Error connecting user " + task.getException().toString());
-                    setException(task.getException().getMessage());
-                    setProgressBar(View.INVISIBLE);
+                    /*
+                    TODO: Match exception to check if user exists or not
+                     */
                 }
 
             }
         });
+        setProgressBar(View.INVISIBLE);
     }
 
     private void setProgressBar(int visibility){

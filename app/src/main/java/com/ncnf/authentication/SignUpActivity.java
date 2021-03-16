@@ -95,7 +95,9 @@ public class SignUpActivity extends AppCompatActivity {
 
                 } else {
                     Log.d(DEBUG_TAG,"Error authenticating new user " + task.getException().toString());
-
+                    /*
+                    TODO: Match exception to check if user exists or not
+                     */
                 }
 
             }
@@ -107,14 +109,6 @@ public class SignUpActivity extends AppCompatActivity {
         ((EditText)findViewById(R.id.signUpEmail)).setText(EMPTY_STRING);
         ((EditText)findViewById(R.id.signUpPassword)).setText(EMPTY_STRING);
         ((EditText)findViewById(R.id.signUpConfirmPassword)).setText(EMPTY_STRING);
-    }
-
-    private boolean isValidEmail(String email){
-        return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
-    }
-
-    private boolean isValidPassword(String password){
-        return password.length() >= PASSWORD_MINIMUM_LENGTH;
     }
 
     private String getFieldText(int id){

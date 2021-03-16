@@ -1,6 +1,17 @@
 package com.ncnf;
 
+import android.text.TextUtils;
+import android.util.Patterns;
+
 public class Utils {
+
+    public static boolean isValidEmail(String email){
+        return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
+    }
+
+    public static boolean isValidPassword(String password){
+        return password.length() >= PASSWORD_MINIMUM_LENGTH;
+    }
 
     /**
      * Global variables
