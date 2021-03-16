@@ -52,7 +52,7 @@ public final class MainActivityTest {
 
     @Test
     public void feedActivityButtonWorks(){
-        onView(withId(R.id.feed_view_button)).perform(click());
+        onView(withId(R.id.feedViewButton)).perform(click());
         Intents.intended(hasComponent(FeedActivity.class.getName()));
     }
 
