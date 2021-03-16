@@ -1,4 +1,4 @@
-package com.ncnf.main;
+package com.ncnf;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,6 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.ncnf.R;
 import com.ncnf.authentication.SignInActivity;
 import com.ncnf.authentication.SignUpActivity;
 import com.ncnf.feed.FeedActivity;
@@ -18,9 +17,7 @@ import com.ncnf.user.UserProfileActivity;
 
 import static com.ncnf.Utils.*;
 
-
 public class MainActivity extends AppCompatActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

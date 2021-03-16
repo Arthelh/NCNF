@@ -3,7 +3,6 @@ package com.ncnf;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
-import com.ncnf.main.MainActivity;
 import com.ncnf.map.MapActivity;
 import com.ncnf.feed.FeedActivity;
 

@@ -15,7 +15,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
-import com.ncnf.main.MainActivity;
+import com.ncnf.MainActivity;
 
 import java.util.Map;
 
