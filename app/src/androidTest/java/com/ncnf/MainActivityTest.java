@@ -11,6 +11,8 @@ import com.ncnf.map.MapActivity;
 import com.ncnf.feed.FeedActivity;
 import com.ncnf.user.UserProfileActivity;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
@@ -32,60 +34,50 @@ public final class MainActivityTest {
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(activityTestRule);
 
-    @Test
-    public void testMapButton(){
+    @Before
+    public void setup(){
         Intents.init();
+    }
 
-        onView(withId(R.id.to_map_link)).perform(click());
-        Intents.intended(hasComponent(MapActivity.class.getName()));
-        
+    @After
+    public void cleanup(){
         Intents.release();
     }
 
-//    @Test
-//    public void feedActivityButtonWorks(){
-//        Intents.init();
-//
-//        onView(withId(R.id.feed_view_button)).perform(click());
-//        Intents.intended(hasComponent(FeedActivity.class.getName()));
-//
-//        Intents.release();
-//    }
+    @Test
+    public void testMapButton(){
+        onView(withId(R.id.to_map_link)).perform(click());
+        Intents.intended(hasComponent(MapActivity.class.getName()));
+    }
+
+    @Test
+    public void feedActivityButtonWorks(){
+        onView(withId(R.id.feed_view_button)).perform(click());
+        Intents.intended(hasComponent(FeedActivity.class.getName()));
+    }
 
     @Test
     public void signInTest(){
-        Intents.init();
-
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             onView(withId(R.id.mainSignInButton)).perform(click());
             Intents.intended(hasComponent(SignInActivity.class.getName()));
         }
-
-        Intents.release();
     }
 
     @Test
     public void signUpTest(){
-        Intents.init();
-
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             onView(withId(R.id.mainSignUpButton)).perform(click());
             Intents.intended(hasComponent(SignUpActivity.class.getName()));
         }
-
-        Intents.release();
     }
 
     @Test
     public void profileTest(){
-        Intents.init();
-
         if(FirebaseAuth.getInstance().getCurrentUser() != null) {
             onView(withId(R.id.mainProfileButton)).perform(click());
             Intents.intended(hasComponent(UserProfileActivity.class.getName()));
         }
-
-        Intents.release();
     }
 
 }
