@@ -5,12 +5,13 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -18,7 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ncnf.R;
-import com.ncnf.feed.FeedActivity;
+import com.ncnf.event.EventType;
 import com.ncnf.main.MainActivity;
 
 import java.time.LocalDate;
@@ -26,23 +27,16 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class EventCreationActivity extends AppCompatActivity {
+public class EventCreationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    private EditText eventName;
-    private EditText eventDescription;
-    private EditText eventAddress;
-    private EditText eventEmailContact;
-    private EditText eventPhoneNumber;
-    private EditText eventPrice;
-    private EditText eventWebsite;
-
+    private Spinner eventTypeSelSpinner;
+    private EventType eventType;
     private LocalDate eventDate = LocalDate.now();
     private LocalTime eventTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
     private LocalDateTime dbEventEntry;
@@ -55,15 +49,20 @@ public class EventCreationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_creation);
 
+        eventTypeSelSpinner = findViewById(R.id.event_creation_spinner);
+        eventTypeSelSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, EventType.values()));
+        eventTypeSelSpinner.setSelection(EventType.values().length-1);
+
         Button validateCreation = findViewById(R.id.event_create_button);
 
-        eventName = findViewById(R.id.event_name);
-        eventDescription = findViewById(R.id.event_description);
-        eventAddress = findViewById(R.id.event_address);
-        eventEmailContact = findViewById(R.id.event_email_contact);
-        eventPhoneNumber = findViewById(R.id.event_phone_contact);
-        eventPrice = findViewById(R.id.event_price);
-        eventWebsite = findViewById(R.id.event_website);
+        EditText eventName = findViewById(R.id.event_name);
+        EditText eventDescription = findViewById(R.id.event_description);
+        EditText eventAddress = findViewById(R.id.event_address);
+        EditText eventEmailContact = findViewById(R.id.event_email_contact);
+        EditText eventPhoneNumber = findViewById(R.id.event_phone_contact);
+        EditText eventPrice = findViewById(R.id.event_price);
+        EditText eventWebsite = findViewById(R.id.event_website);
+
         allFields.addAll(Arrays.asList(eventName, eventDescription, eventAddress, eventEmailContact, eventPhoneNumber, eventPrice, eventWebsite));
 
 
@@ -131,6 +130,21 @@ public class EventCreationActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getId() == R.id.event_creation_spinner) {
+            eventType = (EventType) parent.getItemAtPosition(position);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        eventType = EventType.NOTHING;
+        TextView errorText = (TextView)eventTypeSelSpinner.getSelectedView();
+        errorText.setError("please select an item");
+
+    }
+
     //TODO : decide what next step is
     private void nextStep(){
         Intent intent = new Intent(this, MainActivity.class);
@@ -139,7 +153,7 @@ public class EventCreationActivity extends AppCompatActivity {
 
 
     private boolean checkAllFieldsAreFilledAndCorrect() {
-        return allFields.stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b);
+        return allFields.stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != EventType.NOTHING;
     }
 
 }
