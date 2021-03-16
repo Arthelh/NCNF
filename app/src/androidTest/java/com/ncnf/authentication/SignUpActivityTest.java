@@ -1,11 +1,11 @@
-package com.example.bootcamp;
+package com.ncnf.authentication;
 
 import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-
-import com.NCNF.authentication.SignUpActivity;
+import com.ncnf.R;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -37,7 +37,7 @@ public class SignUpActivityTest {
         String invalidPassword = "test";
         String validPassword = "test12";
 
-        onView(withId(R.id.signUpButton)).perform(click());
+        onView(ViewMatchers.withId(R.id.signUpButton)).perform(click());
         onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(EMPTY_FIELD_STRING))));
 
         onView(withId(R.id.signUpEmail)).perform(typeText(invalidEmail), closeSoftKeyboard());

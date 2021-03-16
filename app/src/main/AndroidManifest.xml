@@ -21,14 +21,17 @@
         android:theme="@style/Theme.Bootcamp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.NCNF.user.UserProfileActivity"
-            android:parentActivityName="com.NCNF.main.MainActivity" />
+            android:name="com.ncnf.user.UserProfileActivity"
+            android:parentActivityName="com.ncnf.main.MainActivity"
+            tools:ignore="MissingClass" />
         <activity
-            android:name="com.NCNF.authentication.SignUpActivity"
-            android:parentActivityName="com.NCNF.main.MainActivity" />
+            android:name="com.ncnf.authentication.SignUpActivity"
+            android:parentActivityName="com.ncnf.main.MainActivity"
+            tools:ignore="MissingClass" />
         <activity
-            android:name="com.NCNF.authentication.SignInActivity"
-            android:parentActivityName="com.NCNF.main.MainActivity" />
+            android:name="com.ncnf.authentication.SignInActivity"
+            android:parentActivityName="com.ncnf.main.MainActivity"
+            tools:ignore="MissingClass" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

@@ -1,4 +1,4 @@
-package com.NCNF.authentication;
+package com.ncnf.authentication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,12 +11,12 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.bootcamp.R;
-import com.NCNF.user.UserProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.ncnf.R;
+import com.ncnf.user.UserProfileActivity;
 
 import static com.NCNF.Utils.*;
 

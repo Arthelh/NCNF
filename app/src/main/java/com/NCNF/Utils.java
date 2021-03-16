@@ -1,4 +1,4 @@
-package com.NCNF;
+package com.ncnf;
 
 public class Utils {
 

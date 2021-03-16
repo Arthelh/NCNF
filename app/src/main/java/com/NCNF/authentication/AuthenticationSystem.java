@@ -1,4 +1,4 @@
-package com.NCNF.authentication;
+package com.ncnf.authentication;
 
 import com.google.firebase.auth.FirebaseAuth;
 

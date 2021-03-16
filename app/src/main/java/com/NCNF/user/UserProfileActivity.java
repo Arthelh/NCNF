@@ -1,4 +1,4 @@
-package com.NCNF.user;
+package com.ncnf.user;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,11 +11,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import com.NCNF.main.MainActivity;
-import com.example.bootcamp.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.ncnf.R;
+import com.ncnf.main.MainActivity;
 
 import java.util.Map;
 

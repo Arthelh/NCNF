@@ -1,4 +1,4 @@
-package com.NCNF.main;
+package com.ncnf.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,13 +8,16 @@ import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.bootcamp.R;
-import com.NCNF.authentication.SignInActivity;
-import com.NCNF.authentication.SignUpActivity;
-import com.NCNF.user.UserProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.ncnf.R;
+import com.ncnf.authentication.SignInActivity;
+import com.ncnf.authentication.SignUpActivity;
+import com.ncnf.feed.FeedActivity;
+import com.ncnf.map.MapActivity;
+import com.ncnf.user.UserProfileActivity;
 
-import static com.NCNF.Utils.*;
+import static com.NCNF.Utils.CONNECTED_KEYWORD;
+import static com.NCNF.Utils.DISCONNECTED_KEYWORD;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +51,16 @@ public class MainActivity extends AppCompatActivity {
             s.setText(DISCONNECTED_KEYWORD);
             s.setChecked(false);
         }
+    }
+
+    public void goToMap(View view){
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+    }
+
+    public void feedView() {
+        Intent intent = new Intent(this, FeedActivity.class);
+        startActivity(intent);
     }
 
     public void signUp(View view) {
