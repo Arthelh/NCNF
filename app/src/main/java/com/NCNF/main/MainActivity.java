@@ -16,8 +16,8 @@ import com.ncnf.feed.FeedActivity;
 import com.ncnf.map.MapActivity;
 import com.ncnf.user.UserProfileActivity;
 
-import static com.NCNF.Utils.CONNECTED_KEYWORD;
-import static com.NCNF.Utils.DISCONNECTED_KEYWORD;
+import static com.ncnf.Utils.*;
+
 
 public class MainActivity extends AppCompatActivity {
 

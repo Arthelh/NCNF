@@ -19,7 +19,7 @@ import com.ncnf.main.MainActivity;
 
 import java.util.Map;
 
-import static com.NCNF.Utils.*;
+import static com.ncnf.Utils.*;
 
 public class UserProfileActivity extends AppCompatActivity {
 

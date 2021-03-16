@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.user.UserProfileActivity;
 
-import static com.NCNF.Utils.*;
+import static com.ncnf.Utils.*;
 
 public class SignInActivity extends AppCompatActivity {
 

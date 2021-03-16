@@ -21,7 +21,7 @@ import com.ncnf.R;
 import com.ncnf.user.PrivateUser;
 import com.ncnf.user.UserProfileActivity;
 
-import static com.NCNF.Utils.*;
+import static com.ncnf.Utils.*;
 
 
 public class SignUpActivity extends AppCompatActivity {
