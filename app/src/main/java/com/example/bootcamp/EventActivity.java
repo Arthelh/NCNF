@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
+import java.util.Date;
 
 public class EventActivity extends AppCompatActivity {
 
@@ -22,7 +23,7 @@ public class EventActivity extends AppCompatActivity {
         name.setText(event.getName());
 
         TextView date = findViewById(R.id.eventDate);
-        date.setText("Event takes place on : " + event.getDate().getDay() + "/" + event.getDate().getMonth() + "/" + event.getDate().getYear());
+        date.setText("Event takes place on : " + event.getDate().toString());
 
         TextView loc = findViewById(R.id.eventLocation);
         loc.setText("Event held at : " + event.getLocation().getAddress());
