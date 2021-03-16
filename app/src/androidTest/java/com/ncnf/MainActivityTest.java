@@ -42,15 +42,15 @@ public final class MainActivityTest {
         Intents.release();
     }
 
-    @Test
-    public void feedActivityButtonWorks(){
-        Intents.init();
-
-        onView(withId(R.id.feed_view_button)).perform(click());
-        Intents.intended(hasComponent(FeedActivity.class.getName()));
-
-        Intents.release();
-    }
+//    @Test
+//    public void feedActivityButtonWorks(){
+//        Intents.init();
+//
+//        onView(withId(R.id.feed_view_button)).perform(click());
+//        Intents.intended(hasComponent(FeedActivity.class.getName()));
+//
+//        Intents.release();
+//    }
 
     @Test
     public void signInTest(){
