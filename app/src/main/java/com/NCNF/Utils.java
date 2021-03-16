@@ -2,6 +2,10 @@ package com.ncnf;
 
 public class Utils {
 
+    /**
+     * Global variables
+     */
+    public static final int PASSWORD_MINIMUM_LENGTH = 6;
 
     /**
      * Keys related to users
@@ -37,7 +41,7 @@ public class Utils {
     public static final String EMPTY_FIELD_STRING = "One of the fields is empty.";
     public static final String PASSWORDS_DO_NOT_MATCH_STRING = "Passwords do not match.";
     public static final String BADLY_FORMATTED_EMAIL_STRING = "The email address is badly formatted.";
-    public static final String INVALID_PASSWORD_STRING = "The given password is invalid.";
+    public static final String INVALID_PASSWORD_STRING = "The password should contain at least 6 characters.";
 
     /**
      * Keys related to Log

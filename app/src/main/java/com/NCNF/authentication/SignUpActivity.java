@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -38,31 +40,22 @@ public class SignUpActivity extends AppCompatActivity {
 
         this.auth = FirebaseAuth.getInstance();
         this.intent = new Intent(this, UserProfileActivity.class);
-        setProgressBar(View.INVISIBLE);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
         setProgressBar(View.INVISIBLE);
-        ((EditText)findViewById(R.id.signUpEmail)).setText(EMPTY_STRING);
-        ((EditText)findViewById(R.id.signUpPassword)).setText(EMPTY_STRING);
-        ((EditText)findViewById(R.id.signUpConfirmPassword)).setText(EMPTY_STRING);
+        setFieldsEmpty();
     }
 
     public void signUp(View view) {
-        EditText emailField = findViewById(R.id.signUpEmail);
-        String email = emailField.getText().toString();
+        String email = getFieldText(R.id.signUpEmail);
+        String password = getFieldText(R.id.signUpPassword);
+        String confirmed = getFieldText(R.id.signUpConfirmPassword);
 
-        EditText passwordField = findViewById(R.id.signUpPassword);
-        String password = passwordField.getText().toString();
-
-        EditText confirmField = findViewById(R.id.signUpConfirmPassword);
-        String confirmed = confirmField.getText().toString();
-
-        ((EditText)findViewById(R.id.signUpEmail)).setText(EMPTY_STRING);
-        ((EditText)findViewById(R.id.signUpPassword)).setText(EMPTY_STRING);
-        ((EditText)findViewById(R.id.signUpConfirmPassword)).setText(EMPTY_STRING);
+        setFieldsEmpty();
 
         if(email.isEmpty() || password.isEmpty() || confirmed.isEmpty()){
             setException(EMPTY_FIELD_STRING);
@@ -70,9 +63,16 @@ public class SignUpActivity extends AppCompatActivity {
         } else if(!password.equals(confirmed)){
             setException(PASSWORDS_DO_NOT_MATCH_STRING);
             return;
+        } else if (!isValidEmail(email)){
+            setException(BADLY_FORMATTED_EMAIL_STRING);
+            return;
+        } else if (!isValidPassword(password)){
+            setException(INVALID_PASSWORD_STRING);
+            return;
         }
 
         setProgressBar(View.VISIBLE);
+
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -82,7 +82,6 @@ public class SignUpActivity extends AppCompatActivity {
                     user.createDBUser(new OnSuccessListener() {
                         @Override
                         public void onSuccess(Object o) {
-                            setProgressBar(View.INVISIBLE);
                             startActivity(intent);
                             finish();
                         }
@@ -90,19 +89,36 @@ public class SignUpActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             auth.getCurrentUser().delete();
-                            setProgressBar(View.INVISIBLE);
-                            ((TextView)findViewById(R.id.exceptionSignUp)).setText("Couldn't create a new user : please try again");
+                            setException("Couldn't create a new user : please try again");
                         }
                     });
 
                 } else {
                     Log.d(DEBUG_TAG,"Error authenticating new user " + task.getException().toString());
-                    setException(task.getException().getMessage());
-                    setProgressBar(View.INVISIBLE);
+
                 }
 
             }
         });
+        setProgressBar(View.INVISIBLE);
+    }
+
+    private void setFieldsEmpty(){
+        ((EditText)findViewById(R.id.signUpEmail)).setText(EMPTY_STRING);
+        ((EditText)findViewById(R.id.signUpPassword)).setText(EMPTY_STRING);
+        ((EditText)findViewById(R.id.signUpConfirmPassword)).setText(EMPTY_STRING);
+    }
+
+    private boolean isValidEmail(String email){
+        return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
+    }
+
+    private boolean isValidPassword(String password){
+        return password.length() >= PASSWORD_MINIMUM_LENGTH;
+    }
+
+    private String getFieldText(int id){
+        return ((EditText)findViewById(id)).getText().toString();
     }
 
     private void setProgressBar(int visibility){

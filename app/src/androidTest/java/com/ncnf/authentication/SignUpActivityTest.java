@@ -20,7 +20,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static com.NCNF.Utils.*;
+import static com.ncnf.Utils.*;
 
 @RunWith(AndroidJUnit4.class)
 public class SignUpActivityTest {
