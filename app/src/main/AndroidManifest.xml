@@ -12,15 +12,15 @@
         android:theme="@style/Theme.Bootcamp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".UserProfileActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name="com.NCNF.user.UserProfileActivity"
+            android:parentActivityName="com.NCNF.main.MainActivity" />
         <activity
-            android:name=".SignUpActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name="com.NCNF.authentication.SignUpActivity"
+            android:parentActivityName="com.NCNF.main.MainActivity" />
         <activity
-            android:name=".SignInActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity">
+            android:name="com.NCNF.authentication.SignInActivity"
+            android:parentActivityName="com.NCNF.main.MainActivity" />
+        <activity android:name="com.NCNF.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

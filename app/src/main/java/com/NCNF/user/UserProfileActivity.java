@@ -1,7 +1,6 @@
-package com.example.bootcamp;
+package com.NCNF.user;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,15 +11,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.NCNF.main.MainActivity;
+import com.example.bootcamp.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
-import static com.example.bootcamp.Utils.*;
+import static com.NCNF.Utils.*;
 
 public class UserProfileActivity extends AppCompatActivity {
 

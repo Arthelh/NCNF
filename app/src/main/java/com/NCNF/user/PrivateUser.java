@@ -1,4 +1,4 @@
-package com.example.bootcamp;
+package com.NCNF.user;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import static com.example.bootcamp.Utils.*;
+import static com.NCNF.Utils.*;
 
 public class PrivateUser {
 
