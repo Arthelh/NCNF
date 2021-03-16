@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ncnf.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.ncnf.event.Event;
@@ -38,7 +39,7 @@ public class FeedActivity extends AppCompatActivity implements EventAdapter.OnEv
 
         // Set the custom adapter
         eventList = new ArrayList<>();
-        eventList.add(new PublicEvent(new PublicOrganizer("testOrganizer"), EventType.Museum, "testName", "testData"));
+        eventList.add(new PublicEvent(new PublicOrganizer("testOrganizer"), EventType.Museum, "testName", "testData", new Date()));
         adapter = new EventAdapter(eventList, this);
         recycler.setAdapter(adapter);
 

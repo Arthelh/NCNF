@@ -6,18 +6,11 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
-
-<<<<<<< HEAD:app/src/main/java/ncnf/main/MainActivity.java
-import ncnf.eventCreation.EventCreationActivity;
-import ncnf.feed.FeedActivity;
-import ncnf.main.map.MapActivity;
-=======
+import com.ncnf.eventCreation.EventCreationActivity;
 import com.ncnf.feed.FeedActivity;
 import com.ncnf.map.MapActivity;
->>>>>>> main:app/src/main/java/com/ncnf/main/MainActivity.java
 
 public class MainActivity extends AppCompatActivity {
 
