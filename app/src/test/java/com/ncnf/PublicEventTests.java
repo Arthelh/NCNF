@@ -17,9 +17,7 @@ import static org.junit.Assert.*;
 public class PublicEventTests {
 
     private PublicOrganizer po = new PublicOrganizer("publicOrganizer");
-    private PublicEvent pe = new PublicEvent("museumEvent", new Date(), new Location(0, 0, "test"), "museumEvent", EventType.Museum, 0, 0, po);=======
-    private PublicEvent pe = new PublicEvent(po, EventType.Museum, "museumEvent", "EventData");
-
+    private PublicEvent pe = new PublicEvent("museumEvent", new Date(), new Location(0, 0, "test"), "museumEvent", EventType.Museum, 0, 0, po);
 
     @Test
     public void getOrganizerNameWorks(){assertEquals(po.getName(), "publicOrganizer");}
