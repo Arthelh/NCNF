@@ -5,11 +5,13 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+    </androidx.fragment.app.FragmentContainerView>
 
     <com.mancj.materialsearchbar.MaterialSearchBar
         android:id="@+id/searchBarMap"
@@ -23,7 +25,7 @@
         android:elevation="5dp"
         android:outlineProvider="bounds"
         app:mt_hint="Location"
-        app:mt_maxSuggestionsCount="10"
+        app:mt_maxSuggestionsCount="5"
         app:mt_speechMode="false"
         app:mt_navIconEnabled="true"
         app:mt_placeholder="Set the location" />
@@ -51,6 +53,18 @@
         android:layout_marginStart="13dp"
         android:layout_marginBottom="90dp"
         android:text="Zoom in"/>
+
+    <Button
+        android:id="@+id/map_settings_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="150dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="90dp"
+        android:onClick="start_settings"
+        android:text="Settings" />
 
     <Button
         android:id="@+id/map_zoomout_button"
