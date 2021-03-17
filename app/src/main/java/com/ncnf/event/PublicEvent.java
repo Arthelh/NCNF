@@ -1,5 +1,6 @@
 package com.ncnf.event;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -11,11 +12,11 @@ public class PublicEvent implements Event {
     private final EventType eventType;
     private final String name;
     private final String uniqueID;
-    private final Date date;
+    private final LocalDateTime date;
     //temporary placeholder for event content
     private String data;
 
-    public PublicEvent(Organizer organiser, EventType type, String name, String data, Date date){
+    public PublicEvent(Organizer organiser, EventType type, String name, String data, LocalDateTime date){
         this.organiser = organiser;
         this.eventType = type;
         this.name = name;
@@ -50,7 +51,7 @@ public class PublicEvent implements Event {
     }
 
     @Override
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 

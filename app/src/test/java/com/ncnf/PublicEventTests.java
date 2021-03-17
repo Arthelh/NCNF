@@ -2,6 +2,7 @@ package com.ncnf;
 
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.ncnf.event.EventType;
@@ -13,7 +14,7 @@ import static org.junit.Assert.*;
 public class PublicEventTests {
 
     private PublicOrganizer po = new PublicOrganizer("publicOrganizer");
-    private PublicEvent pe = new PublicEvent(po, EventType.Museum, "museumEvent", "EventData");
+    private PublicEvent pe = new PublicEvent(po, EventType.Museum, "museumEvent", "EventData", LocalDateTime.now());
 
 
     @Test

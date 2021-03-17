@@ -1,6 +1,6 @@
 package com.ncnf.event;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import com.ncnf.organizer.Organizer;
 
 public interface Event {
@@ -9,5 +9,5 @@ public interface Event {
     String getUID();
     EventType getType();
     String getData();
-    Date getDate();
+    LocalDateTime getDate();
 }
