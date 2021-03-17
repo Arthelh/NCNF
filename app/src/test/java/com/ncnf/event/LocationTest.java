@@ -1,4 +1,4 @@
-package com.example.bootcamp;
+package com.ncnf.event;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

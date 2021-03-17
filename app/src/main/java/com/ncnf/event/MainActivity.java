@@ -1,4 +1,4 @@
-package com.example.bootcamp;
+package com.ncnf.event;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,15 +15,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
-
-    /*Called when the user clicks the button*/
-    public void sendMessage(View view){
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.name_field);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
     }
 
     public void seeEvent1(View view) {

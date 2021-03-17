@@ -1,4 +1,4 @@
-package com.example.bootcamp;
+package com.ncnf.event;
 
 import java.util.ArrayList;
 import java.util.List;
