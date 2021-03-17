@@ -1,4 +1,4 @@
-package com.ncnf.eventCreation;
+package com.ncnf.event.create;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ncnf.R;
 import com.ncnf.event.EventType;
 import com.ncnf.main.MainActivity;
+import com.ncnf.map.MapActivity;
 import com.ncnf.utilities.InputValidator;
 
 import java.time.LocalDate;
@@ -34,7 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class EventCreationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class EventCreateActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private Spinner eventTypeSelSpinner;
     private EventType eventType;
@@ -80,7 +81,7 @@ public class EventCreationActivity extends AppCompatActivity implements AdapterV
                 selMonth = calendar.get(Calendar.MONTH);
                 selDay = calendar.get(Calendar.DATE);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(EventCreationActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(EventCreateActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -104,7 +105,7 @@ public class EventCreationActivity extends AppCompatActivity implements AdapterV
         timeSelection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(EventCreationActivity.this,
+                TimePickerDialog timePickerDialog = new TimePickerDialog(EventCreateActivity.this,
                         new TimePickerDialog.OnTimeSetListener() {
 
                             @Override
@@ -124,8 +125,8 @@ public class EventCreationActivity extends AppCompatActivity implements AdapterV
             @Override
             public void onClick(View v) {
                 if (checkAllFieldsAreFilledAndCorrect()) {
-                    //TODO
-                    finish();
+                    // TODO
+                    nextStep();
                 }
             }
         });

@@ -8,7 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ncnf.R;
-import com.ncnf.eventCreation.EventCreationActivity;
+import com.ncnf.event.create.EventCreateActivity;
 import com.ncnf.feed.FeedActivity;
 import com.ncnf.map.MapActivity;
 
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void eventCreationView(){
-        Intent intent = new Intent(this, EventCreationActivity.class);
+        Intent intent = new Intent(this, EventCreateActivity.class);
         startActivity(intent);
     }
 }

@@ -55,7 +55,7 @@
         </activity>
 
         <activity
-            android:name=".eventCreation.EventCreationActivity"
+            android:name=".event.create.EventCreateActivity"
             android:label="@string/title_event_creation"
             android:parentActivityName="com.ncnf.main.MainActivity" >
         </activity>

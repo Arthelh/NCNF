@@ -55,7 +55,7 @@ public class InputValidator {
         }
 
         switch(inputType) {
-            case InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS:
+            case (InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_CLASS_TEXT):
                 if (!verifyEmailInput(inputText)) textField.setError("Please enter a correct email address");
                 break;
             case InputType.TYPE_CLASS_PHONE:
@@ -64,7 +64,7 @@ public class InputValidator {
             case InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS: // Postal Address
                 if (!verifyPostalCode(inputText)) textField.setError("Please enter a valid postal code");
                 break;
-            case InputType.TYPE_TEXT_VARIATION_URI:
+            case (InputType.TYPE_TEXT_VARIATION_URI | InputType.TYPE_CLASS_TEXT):
                 if (!verifyWebAddress(inputText)) textField.setError("Please enter a valid url");
                 break;
         }
