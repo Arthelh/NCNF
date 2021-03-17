@@ -14,7 +14,7 @@ public class PrivateEventTest {
     String name = "Jane Doe";
     Date date = new Date(2021, 03, 11);
     Location loc = new Location(46.518689, 6.568067, "Rolex Learning Center, 1015 Ecublens");
-    Event.PubPriv type = Event.PubPriv.PRIVATE;
+    EventType type = EventType.Conference;
     String description = "Event description goes here";
     PublicOrganizer owner = new PublicOrganizer("John Doe");
 

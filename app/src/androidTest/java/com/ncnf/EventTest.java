@@ -1,4 +1,4 @@
-package com.ncnf.event;
+package com.ncnf;
 
 import android.content.Intent;
 
@@ -6,6 +6,11 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.ncnf.event.Event;
+import com.ncnf.event.EventActivity;
+import com.ncnf.event.EventType;
+import com.ncnf.event.Location;
+import com.ncnf.event.PublicEvent;
 import com.ncnf.organizer.PublicOrganizer;
 
 import static androidx.test.espresso.Espresso.onView;

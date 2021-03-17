@@ -14,7 +14,7 @@ public class PublicEventTest {
     String name = "Jane Doe";
     Date date = new Date(2021, 03, 11);
     Location loc = new Location(46.518689, 6.568067, "Rolex Learning Center, 1015 Ecublens");
-    Event.PubPriv type = Event.PubPriv.PUBLIC;
+    EventType type = EventType.Conference;
     String description = "Event description goes here";
     PublicOrganizer owner = new PublicOrganizer("EPFL");
 
@@ -107,7 +107,7 @@ public class PublicEventTest {
         assertEquals(event.getName(), "Christmas Party");
         assertEquals(event.getLocation(), newLocation);
         assertEquals(event.getDescription(), "Another description");
-        assertEquals(event.getOrganizer(), "EPFL-IC");
+        assertEquals(event.getOrganizer().getName(), "EPFL-IC");
         assertEquals(event.getNumOfAttendees(), 1);
         assertTrue(event.getAttendees().size() == attendees.size());
         for(int i = 0; i < attendees.size(); ++i) {
