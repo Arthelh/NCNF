@@ -1,5 +1,7 @@
 package com.ncnf.event;
 
+import com.ncnf.organizer.Organizer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -7,7 +9,7 @@ import java.util.Date;
 
 public abstract class Event {
 
-    public enum Type {
+    public enum PubPriv {
         PUBLIC, PRIVATE;
     }
 
@@ -16,33 +18,36 @@ public abstract class Event {
     private String name;
     private Date date;
     private Location location;
-    private Type type;
+    private EventType type;
+    private PubPriv pubPriv;
     private List<String> attendees;
     private int numOfAttendees;
     private String description;
-    private String owner;
+    private Organizer organizer;
 
-    public Event(String name, Date date, Location location, Type type, String description, String owner) {
+    public Event(String name, Date date, Location location, EventType type, PubPriv pubPriv, String description, Organizer organizer) {
         this.name = name;
         this.date = date;
         this.location = location;
         this.type = type;
+        this.pubPriv = pubPriv;
         attendees = new ArrayList<String>();
         numOfAttendees = 0;
         this.description = description;
         this.uuid = UUID.randomUUID();
-        this.owner = owner;
+        this.organizer = organizer;
     }
 
     public String getName() { return name; }
     public Date getDate() { return date; }
     public Location getLocation() { return location; }
-    public Type getType() { return type; }
+    public EventType getType() { return type; }
+    public PubPriv getPubPriv() { return pubPriv; }
     public List<String> getAttendees() { return attendees; }
     public int getNumOfAttendees() { return numOfAttendees; }
     public String getDescription() { return description; }
     public UUID getUuid() { return uuid; }
-    public String getOwner() { return owner; }
+    public Organizer getOrganizer() { return organizer; }
 
     public void setName(String name) { this.name = name; }
     public void setDate(Date date) { this.date = date; }
@@ -56,6 +61,6 @@ public abstract class Event {
     }
     public void setDescription(String description)  { this.description = description; }
 
-    public void setNewOwner(String newOwner) { this.owner = newOwner; }
+    public void setNewOrganizer(Organizer newOwner) { this.organizer = newOwner; }
 
 }

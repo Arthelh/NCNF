@@ -1,4 +1,6 @@
 package com.ncnf.event;
+import com.ncnf.organizer.PublicOrganizer;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -12,14 +14,14 @@ public class PublicEventTest {
     String name = "Jane Doe";
     Date date = new Date(2021, 03, 11);
     Location loc = new Location(46.518689, 6.568067, "Rolex Learning Center, 1015 Ecublens");
-    Event.Type type = Event.Type.PUBLIC;
+    Event.PubPriv type = Event.PubPriv.PUBLIC;
     String description = "Event description goes here";
-    String owner = "EPFL";
+    PublicOrganizer owner = new PublicOrganizer("EPFL");
 
     @Test
     public void publicEventGeneratesCorrectly() {
 
-        PublicEvent event = new PublicEvent(name, date, loc, description, 0, 0, owner);
+        PublicEvent event = new PublicEvent(name, date, loc, description, EventType.Conference,0, 0, owner);
         assertEquals(event.getDate(), date);
         assertEquals(event.getName(), name);
         assertEquals(event.getLocation(), loc);
@@ -27,7 +29,7 @@ public class PublicEventTest {
         assertEquals(event.getDescription(), description);
         assertEquals(event.getMinAge(), 0);
         assertEquals(event.getPrice(), 0);
-        assertEquals(event.getOwner(), owner);
+        assertEquals(event.getOrganizer(), owner);
         assertEquals(event.getNumOfAttendees(), 0);
         assertTrue(event.getAttendees().size() == 0);
 
@@ -35,25 +37,25 @@ public class PublicEventTest {
 
     @Test
     public void publicEventRejectsOnInvalidAge() {
-        assertThrows(IllegalArgumentException.class, () -> new PublicEvent(name, date, loc, description, -1, 0, owner));
+        assertThrows(IllegalArgumentException.class, () -> new PublicEvent(name, date, loc, description, EventType.Conference,-1, 0, owner));
     }
 
     @Test
     public void setMinAgeRejectsOnInvalidAge() {
-        PublicEvent event = new PublicEvent(name, date, loc, description, 0, 0, owner);
+        PublicEvent event = new PublicEvent(name, date, loc, description, EventType.Conference, 0, 0, owner);
         assertThrows(IllegalArgumentException.class, () -> event.setMinAge(-1));
     }
 
     @Test
     public void setMinAgeWorks() {
-        PublicEvent event = new PublicEvent(name, date, loc, description, 0, 0, owner);
+        PublicEvent event = new PublicEvent(name, date, loc, description, EventType.Conference, 0, 0, owner);
         event.setMinAge(0);
         assertEquals(event.getMinAge(), 0);
     }
 
     @Test
     public void addTagWorks() {
-        PublicEvent event = new PublicEvent(name, date, loc, description, 0, 0, owner);
+        PublicEvent event = new PublicEvent(name, date, loc, description, EventType.Conference, 0, 0, owner);
         Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
         event.addTag(tag);
         assertTrue(event.getTags().contains(tag));
@@ -61,7 +63,7 @@ public class PublicEventTest {
 
     @Test
     public void addTagRejectsOnDuplicateTag() {
-        PublicEvent event = new PublicEvent(name, date, loc, description, 0, 0, owner);
+        PublicEvent event = new PublicEvent(name, date, loc, description, EventType.Conference,0, 0, owner);
         Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
         event.addTag(tag);
         assertThrows(IllegalArgumentException.class, () -> event.addTag(tag));
@@ -74,7 +76,7 @@ public class PublicEventTest {
         Tag tag2 = new Tag("\uD83C\uDFB8", "Folk Music");
         list.add(tag);
         list.add(tag2);
-        PublicEvent event = new PublicEvent(name, date, loc, description, 0, 0, owner);
+        PublicEvent event = new PublicEvent(name, date, loc, description, EventType.Conference,0, 0, owner);
         event.setTags(list);
 
         List<Tag> result = event.getTags();
@@ -87,7 +89,7 @@ public class PublicEventTest {
 
     @Test
     public void basicSettersWork() {
-        PublicEvent event = new PublicEvent(name, date, loc, description, 0, 0, owner);
+        PublicEvent event = new PublicEvent(name, date, loc, description, EventType.Conference,0, 0, owner);
         List<String> attendees = new ArrayList<>();
         Date newDate = new Date(2021, 3, 12);
         Location newLocation = new Location(0, 0, "North Pole");
@@ -97,7 +99,7 @@ public class PublicEventTest {
         event.setPrice(4);
         event.setAttendees(attendees);
         event.setDate(newDate);
-        event.setNewOwner("EPFL-IC");
+        event.setNewOrganizer(new PublicOrganizer("EPFL-IC"));
         event.setLocation(newLocation);
         event.setDescription("Another description");
 
@@ -105,7 +107,7 @@ public class PublicEventTest {
         assertEquals(event.getName(), "Christmas Party");
         assertEquals(event.getLocation(), newLocation);
         assertEquals(event.getDescription(), "Another description");
-        assertEquals(event.getOwner(), "EPFL-IC");
+        assertEquals(event.getOrganizer(), "EPFL-IC");
         assertEquals(event.getNumOfAttendees(), 1);
         assertTrue(event.getAttendees().size() == attendees.size());
         for(int i = 0; i < attendees.size(); ++i) {

@@ -1,5 +1,7 @@
 package com.ncnf.event;
 
+import com.ncnf.organizer.PublicOrganizer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -14,8 +16,8 @@ public class PublicEvent extends Event {
     private int price;
     private int minAge;
 
-    public PublicEvent(String name, Date date, Location location, String description, int minAge, int price, String owner) {
-        super(name, date, location, Type.PUBLIC, description, owner);
+    public PublicEvent(String name, Date date, Location location, String description, EventType type, int minAge, int price, PublicOrganizer owner) {
+        super(name, date, location, type, PubPriv.PUBLIC, description, owner);
 
         if(!(minAge >= MIN_AGE && minAge <= MAX_AGE)) {
             throw new IllegalArgumentException();

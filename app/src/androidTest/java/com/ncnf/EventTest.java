@@ -1,10 +1,12 @@
-package com.example.bootcamp;
+package com.ncnf.event;
 
 import android.content.Intent;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.ncnf.organizer.PublicOrganizer;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -20,7 +22,7 @@ import java.util.Date;
 @RunWith(AndroidJUnit4.class)
 public class EventTest {
 
-    private Event event1 = new PublicEvent("EPFL event", new Date(2021, 03, 11), new Location(46.518689, 6.568067, "Rolex Learning Center, 1015 Ecublens"), "Event description goes here", 0, 0, "EPFL");
+    private Event event1 = new PublicEvent("EPFL event", new Date(2021, 03, 11), new Location(46.518689, 6.568067, "Rolex Learning Center, 1015 Ecublens"), "Event description goes here", EventType.Conference, 0, 0, new PublicOrganizer("EPFL"));
 
 
     @Test
@@ -64,7 +66,7 @@ public class EventTest {
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
         intent.putExtra("EVENT_NUM", 0);
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.eventOwner)).check(matches(withText(containsString(event1.getOwner()))));
+            onView(withId(R.id.eventOwner)).check(matches(withText(containsString(event1.getOrganizer().getName()))));
         }
     }
 }
