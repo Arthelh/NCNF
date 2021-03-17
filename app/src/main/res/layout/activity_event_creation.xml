@@ -16,14 +16,14 @@
             android:id="@+id/event_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="29dp"
             android:layout_marginBottom="28dp"
             android:ems="10"
             android:hint="@string/event_create_hint_name"
             android:inputType="text"
             app:layout_constraintBottom_toTopOf="@+id/event_description"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,12 +31,12 @@
             android:id="@+id/event_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="35dp"
+            android:layout_marginBottom="8dp"
             android:ems="10"
             android:gravity="start|top"
             android:hint="@string/event_create_hint_description"
             android:inputType="textMultiLine"
-            app:layout_constraintBottom_toTopOf="@+id/spinner"
+            app:layout_constraintBottom_toTopOf="@+id/imageView2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,13 +46,13 @@
             android:id="@+id/event_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="35dp"
+            android:layout_marginBottom="14dp"
             android:ems="10"
             android:hint="@string/event_create_hint_postaladdress_"
             android:inputType="textPostalAddress"
-            app:layout_constraintBottom_toTopOf="@+id/event_website"
+            app:layout_constraintBottom_toTopOf="@+id/event_price"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.457"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_create_display_date" />
 
@@ -60,57 +60,57 @@
             android:id="@+id/event_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="10dp"
             android:ems="10"
             android:hint="@string/event_create_hint_price"
             android:inputType="number"
-            app:layout_constraintBottom_toTopOf="@+id/event_email_contact"
+            app:layout_constraintBottom_toTopOf="@+id/event_website"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.487"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_website" />
+            app:layout_constraintTop_toBottomOf="@+id/event_address" />
 
         <EditText
             android:id="@+id/event_website"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="37dp"
+            android:layout_marginBottom="12dp"
             android:ems="10"
             android:hint="@string/event_create_hint_website"
             android:inputType="textUri"
-            app:layout_constraintBottom_toTopOf="@+id/event_price"
+            app:layout_constraintBottom_toTopOf="@+id/event_creation_spinner"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.477"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_address" />
+            app:layout_constraintTop_toBottomOf="@+id/event_price" />
 
         <EditText
             android:id="@+id/event_phone_contact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="29dp"
+            android:layout_marginBottom="14dp"
             android:ems="10"
             android:hint="@string/event_create_hint_phone"
             android:inputType="phone"
-            app:layout_constraintBottom_toTopOf="@+id/event_create_button"
+            app:layout_constraintBottom_toTopOf="@+id/event_email_contact"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_email_contact" />
+            app:layout_constraintTop_toBottomOf="@+id/event_creation_spinner" />
 
         <EditText
             android:id="@+id/event_email_contact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="21dp"
+            android:layout_marginBottom="19dp"
             android:ems="10"
             android:hint="@string/event_create_hint_emailaddress"
             android:inputType="textEmailAddress"
-            app:layout_constraintBottom_toTopOf="@+id/event_phone_contact"
+            app:layout_constraintBottom_toTopOf="@+id/event_create_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_price" />
+            app:layout_constraintTop_toBottomOf="@+id/event_phone_contact" />
 
         <Button
             android:id="@+id/event_create_button"
@@ -122,28 +122,25 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_phone_contact" />
+            app:layout_constraintTop_toBottomOf="@+id/event_email_contact" />
 
         <TextView
             android:id="@+id/event_create_display_time"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="21dp"
+            android:layout_width="251dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="9dp"
             android:text="@string/event_create_display_time"
             app:layout_constraintBottom_toTopOf="@+id/event_create_display_date"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
         <TextView
             android:id="@+id/event_create_display_date"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="11dp"
+            android:layout_width="251dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/event_create_display_date"
             app:layout_constraintBottom_toTopOf="@+id/event_address"
             app:layout_constraintEnd_toEndOf="parent"
@@ -153,23 +150,23 @@
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="11dp"
             android:src="@drawable/blobfish"
             app:layout_constraintBottom_toTopOf="@+id/event_create_display_time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_creation_spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/event_description" />
 
         <Spinner
             android:id="@+id/event_creation_spinner"
             android:layout_width="251dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="262dp"
-            app:layout_constraintBottom_toTopOf="@+id/event_create_display_time"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/event_phone_contact"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_description" />
+            app:layout_constraintTop_toBottomOf="@+id/event_website" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
