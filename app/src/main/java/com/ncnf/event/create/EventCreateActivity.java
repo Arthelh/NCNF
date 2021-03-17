@@ -35,7 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class EventCreateActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class EventCreateActivity extends AppCompatActivity {
 
     private Spinner eventTypeSelSpinner;
     private EventType eventType;
@@ -130,21 +130,6 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
                 }
             }
         });
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (parent.getId() == R.id.event_creation_spinner) {
-            eventType = (EventType) parent.getItemAtPosition(position);
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        eventType = EventType.NOTHING;
-        TextView errorText = (TextView)eventTypeSelSpinner.getSelectedView();
-        errorText.setError("please select an item");
-
     }
 
     //TODO : decide what next step is

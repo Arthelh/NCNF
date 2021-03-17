@@ -1,14 +1,18 @@
 package com.ncnf.event.create;
 
+import android.widget.DatePicker;
+import android.widget.TimePicker;
+
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.espresso.contrib.PickerActions;
 
 import com.ncnf.R;
 import com.ncnf.event.EventType;
 import com.ncnf.main.MainActivity;
-import com.ncnf.map.MapActivity;
 
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,6 +24,7 @@ import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
@@ -60,8 +65,17 @@ public class EventCreateActivityTest {
         onView(withId(R.id.event_website)).perform(scrollTo(), replaceText("bar.com"));
         onView(withId(R.id.event_phone_contact)).perform(scrollTo(), replaceText("0771112233"));
         onView(withId(R.id.event_email_contact)).perform(scrollTo(), replaceText("foo@bar.com"));
+        // Spinner
         onView(withId(R.id.event_creation_spinner)).perform(scrollTo(), click());
         onData(allOf(is(instanceOf(EventType.class)), is(EventType.Movie))).perform(click());
+        // Date
+        onView(withId(R.id.event_create_display_date)).perform(scrollTo(), click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
+        onView(withId(android.R.id.button1)).perform(click()); // click OK
+        // Time
+        onView(withId(R.id.event_create_display_time)).perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(20, 0));
+        onView(withId(android.R.id.button1)).perform(click()); // click OK
 
         onView(withId(R.id.event_create_button)).perform(scrollTo(), click());
 
