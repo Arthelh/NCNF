@@ -2,11 +2,13 @@ package com.ncnf;
 
 import org.junit.Test;
 
+
 import java.util.Date;
 import java.util.UUID;
 
 import com.ncnf.event.EventType;
 import com.ncnf.event.Location;
+
 import com.ncnf.event.PublicEvent;
 import com.ncnf.organizer.PublicOrganizer;
 
@@ -15,7 +17,8 @@ import static org.junit.Assert.*;
 public class PublicEventTests {
 
     private PublicOrganizer po = new PublicOrganizer("publicOrganizer");
-    private PublicEvent pe = new PublicEvent("museumEvent", new Date(), new Location(0, 0, "test"), "museumEvent", EventType.Museum, 0, 0, po);
+    private PublicEvent pe = new PublicEvent("museumEvent", new Date(), new Location(0, 0, "test"), "museumEvent", EventType.Museum, 0, 0, po);=======
+    private PublicEvent pe = new PublicEvent(po, EventType.Museum, "museumEvent", "EventData");
 
 
     @Test
@@ -31,16 +34,19 @@ public class PublicEventTests {
     @Test
     public void getUUIDWorks(){assertEquals(pe.getUuid().toString().length(), UUID.randomUUID().toString().length());}
 
+
     @Test
     public void getTypeWorks(){assertEquals(pe.getType(), EventType.Museum);}
 
     @Test
+
     public void getDataWorks(){assertEquals(pe.getDescription(), "EventData");}
 
     @Test
     public void setDataWorks(){
         pe.setDescription("TestSetData");
         assertEquals(pe.getDescription(), "TestSetData");
+
     }
 
 }

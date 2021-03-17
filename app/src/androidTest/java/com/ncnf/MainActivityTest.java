@@ -1,51 +1,50 @@
-package com.ncnf.event;
+package com.ncnf;
 
-import android.content.Intent;
-import android.view.View;
-
-import androidx.test.core.app.ActivityScenario;
-import androidx.test.espresso.Espresso;
-import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.ncnf.main.MainActivity;
+import com.ncnf.map.MapActivity;
+import com.ncnf.feed.FeedActivity;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.RuleChain;
+
+import dagger.hilt.android.testing.HiltAndroidRule;
+import dagger.hilt.android.testing.HiltAndroidTest;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.typeText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.junit.Assert.assertThat;
 
-import com.ncnf.main.MainActivity;
+@HiltAndroidTest
+public final class MainActivityTest {
 
-import org.hamcrest.Matcher;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private ActivityScenarioRule activityTestRule = new ActivityScenarioRule<>(MainActivity.class);
 
-@RunWith(AndroidJUnit4.class)
-public class MainActivityTest {
     @Rule
-    public ActivityScenarioRule<MainActivity> testRule = new ActivityScenarioRule<MainActivity>(MainActivity.class);
+    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(activityTestRule);
 
     @Test
+    public void testMapButton(){
+        Intents.init();
+
+        onView(withId(R.id.to_map_link)).perform(click());
+        Intents.intended(hasComponent(MapActivity.class.getName()));
+        
+        Intents.release();
+    }
+  
+  @Test
     public void test_event1(){
         Intents.init();
 
         onView(withId(R.id.eventButton)).perform(click());
 
         Intents.intended(hasComponent(EventActivity.class.getName()));
-
-
-        Intents.release();
-    }
 
     @Test
     public void test_event2(){
@@ -55,9 +54,13 @@ public class MainActivityTest {
 
         Intents.intended(hasComponent(EventActivity.class.getName()));
 
+    public void feedActivityButtonWorks(){
+        Intents.init();
+
+        onView(withId(R.id.feed_view_button)).perform(click());
+        Intents.intended(hasComponent(FeedActivity.class.getName()));
 
         Intents.release();
     }
-
 
 }

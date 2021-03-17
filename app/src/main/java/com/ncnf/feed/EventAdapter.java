@@ -80,6 +80,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         viewHolder.event.setText(event.getName());
         viewHolder.id.setText(event.getUuid().toString());
         viewHolder.data.setText(event.getDescription());
+
     }
 
 
