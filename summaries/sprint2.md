@@ -20,6 +20,10 @@ Except for that however my estimates were quite close to the time I ended up inv
 
 # Jérémie
 
+I implemented tests for the authentication UI (SignUp and SignIn activities) but faced issues with the previous implementation. I had to reformat the whole Firebase integration in order to moduralize in a clean way. I also merged the main branch into the branch I'm working on.
+
+The estimates for my tasks were way off since I had to do more work than expected. I did not merge back to main since the sprint tasks for this week and the concerned user stories in the sprint backlog are not finished yet. Next week, I'll finish the testing part in order to match the required coverage. 
+
 # Keran (scrum master)
 
 I tested the creation of an event which was implemented by David. The testing was split into two tasks. First, the input validator for the fields was unit tested because this task was extracted in a class that can be used to validate any field. Then an instrumented test checks that a user can successfully create an event or see the appropriate errors in the form.
