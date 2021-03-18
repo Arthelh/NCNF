@@ -1,18 +1,8 @@
 package com.ncnf;
 
-import android.text.TextUtils;
-import android.util.Patterns;
+import androidx.core.util.PatternsCompat;
 
 public class Utils {
-
-    public static boolean isValidEmail(String email){
-        return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
-    }
-
-    public static boolean isValidPassword(String password){
-        return password.length() >= PASSWORD_MINIMUM_LENGTH;
-    }
-
     /**
      * Global variables
      */
@@ -44,8 +34,6 @@ public class Utils {
     public static final String DESCRIPTION_KEY = "description";
     public static final String OWNER_KEY = "owner";
 
-
-
     /**
      * Keys related to tests
      */
@@ -62,4 +50,16 @@ public class Utils {
     public static final String CONNECTED_KEYWORD = "Connected";
     public static final String DISCONNECTED_KEYWORD = "Disconnected";
 
+
+    public static boolean isValidEmail(String email){
+        return (!stringIsEmpty(email) && PatternsCompat.EMAIL_ADDRESS.matcher(email).matches());
+    }
+
+    public static boolean isValidPassword(String password){
+        return password.length() >= PASSWORD_MINIMUM_LENGTH;
+    }
+
+    public static boolean stringIsEmpty(String s){
+        return s == null || s.length() == 0;
+    }
 }
