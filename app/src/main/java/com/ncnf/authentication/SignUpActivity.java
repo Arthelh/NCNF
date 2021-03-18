@@ -1,12 +1,15 @@
 package com.ncnf.authentication;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,11 +17,10 @@ import com.ncnf.R;
 import com.ncnf.user.PrivateUser;
 import com.ncnf.user.UserProfileActivity;
 
-import javax.inject.Inject;
-
-import dagger.hilt.android.AndroidEntryPoint;
+import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.Utils.BADLY_FORMATTED_EMAIL_STRING;
+import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EMPTY_FIELD_STRING;
 import static com.ncnf.Utils.EMPTY_STRING;
 import static com.ncnf.Utils.INVALID_PASSWORD_STRING;
@@ -26,13 +28,10 @@ import static com.ncnf.Utils.PASSWORDS_DO_NOT_MATCH_STRING;
 import static com.ncnf.Utils.isValidEmail;
 import static com.ncnf.Utils.isValidPassword;
 
-@AndroidEntryPoint
 public class SignUpActivity extends AppCompatActivity {
 
     private Intent intent;
 
-    @Inject
-    AuthenticationService auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,6 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         this.intent = new Intent(this, UserProfileActivity.class);
-        this.auth = new AuthenticationService();
     }
 
     @Override
@@ -51,7 +49,7 @@ public class SignUpActivity extends AppCompatActivity {
         setFieldsEmpty();
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void signUp(View view) {
         String email = getFieldText(R.id.signUpEmail);
         String password = getFieldText(R.id.signUpPassword);
@@ -73,23 +71,33 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
+
+        register(email, password);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void register(String email, String password){
+        AuthenticationService auth = new AuthenticationService();
+
         setProgressBar(View.VISIBLE);
 
-        auth.register(email, password).observe(this, exception-> {
-            if(exception == null){
+        CompletableFuture<AuthenticationResponse> futureResponse= auth.register(email, password);
+
+        futureResponse.thenAccept(response -> {
+            if(response.isSuccessful()){
+                Log.d(DEBUG_TAG, "Successful register for " + email);
                 PrivateUser user = PrivateUser.getInstance();
                 user.createDBUser(o -> {
                     startActivity(intent);
                     finish();
                 }, e -> {
+                    Log.d(DEBUG_TAG, "Deleting user.");
                     FirebaseAuth.getInstance().getCurrentUser().delete();
                     setException("Couldn't create a new user : please try again");
                 });
             } else {
-                setException(exception.getMessage());
-                /*
-                    TODO: Match exception to check if user exists or not
-                */
+                Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + response.getException().getMessage());
+                setException(response.getException().getMessage());
             }
             setProgressBar(View.INVISIBLE);
         });
