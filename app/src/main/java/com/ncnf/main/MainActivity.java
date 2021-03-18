@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
 
+import com.ncnf.event.EventActivity;
 import com.ncnf.feed.FeedActivity;
 import com.ncnf.map.MapActivity;
 
@@ -41,6 +42,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void feedView() {
         Intent intent = new Intent(this, FeedActivity.class);
+        startActivity(intent);
+    }
+
+    public void seeEvent1(View view) {
+        Intent intent = new Intent(this, EventActivity.class);
+        intent.putExtra("EVENT_NUM", 0);
+        startActivity(intent);
+    }
+
+    public void seeEvent2(View view) {
+        Intent intent = new Intent(this, EventActivity.class);
+        intent.putExtra("EVENT_NUM", 1);
         startActivity(intent);
     }
 }

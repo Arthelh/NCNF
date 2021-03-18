@@ -55,6 +55,10 @@
         </activity>
 
         <activity
+            android:name="com.ncnf.event.EventActivity"
+            android:parentActivityName="com.ncnf.main.MainActivity"></activity>
+
+        <activity
             android:name="com.ncnf.feed.EventActivity"
             android:parentActivityName="com.ncnf.feed.FeedActivity">
         </activity>
