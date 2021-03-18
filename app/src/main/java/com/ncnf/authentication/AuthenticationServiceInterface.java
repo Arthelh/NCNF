@@ -1,12 +1,14 @@
 package com.ncnf.authentication;
 
-import androidx.lifecycle.MutableLiveData;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.concurrent.CompletableFuture;
 
 public interface AuthenticationServiceInterface {
 
-    MutableLiveData<Exception> register(String email, String password);
+    CompletableFuture<AuthenticationResponse> register(String email, String password);
 
-    MutableLiveData<Exception> signIn(String email, String password);
+    CompletableFuture<AuthenticationResponse> logIn(String email, String password);
 
-
+    CompletableFuture<AuthenticationResponse> logOut(FirebaseUser user);
 }
