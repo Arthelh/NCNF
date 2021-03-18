@@ -4,6 +4,7 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.authentication.SignInActivity;
 import com.ncnf.authentication.SignUpActivity;
 import com.ncnf.main.MainActivity;
