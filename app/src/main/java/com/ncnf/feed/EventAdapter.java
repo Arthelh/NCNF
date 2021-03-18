@@ -78,8 +78,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         Event event = items.get(position);
 
         viewHolder.event.setText(event.getName());
-        viewHolder.id.setText(event.getUID());
-        viewHolder.data.setText(event.getData());
+        viewHolder.id.setText(event.getUuid().toString());
+        viewHolder.data.setText(event.getDescription());
+
     }
 
 

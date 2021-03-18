@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Bootcamp">
-        <activity android:name=".settings.SettingsActivity"></activity>
+        <activity android:name=".settings.SettingsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -49,11 +49,17 @@
         <activity
             android:name=".feed.FeedActivity"
             android:label="@string/title_activity_feed"
-            android:parentActivityName=".main.MainActivity"></activity>
+            android:parentActivityName=".main.MainActivity" />
+
         <activity
-            android:name=".feed.EventActivity"
-            android:parentActivityName=".feed.FeedActivity"></activity>
-        <activity android:name=".main.MainActivity">
+            android:name="com.ncnf.feed.EventActivity"
+            android:parentActivityName="com.ncnf.feed.FeedActivity">
+        </activity>
+
+        <activity android:name=".event.EventActivity"
+            android:parentActivityName=".main.MainActivity"/>
+
+        <activity android:name="com.ncnf.main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

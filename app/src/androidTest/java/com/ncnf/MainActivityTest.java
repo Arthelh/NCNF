@@ -3,6 +3,7 @@ package com.ncnf;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import com.ncnf.event.EventActivity;
 import com.ncnf.main.MainActivity;
 import com.ncnf.map.MapActivity;
 import com.ncnf.feed.FeedActivity;
@@ -35,6 +36,26 @@ public final class MainActivityTest {
         onView(withId(R.id.to_map_link)).perform(click());
         Intents.intended(hasComponent(MapActivity.class.getName()));
         
+        Intents.release();
+    }
+  
+  @Test
+    public void test_event1() {
+      Intents.init();
+
+      onView(withId(R.id.eventButton)).perform(click());
+
+      Intents.intended(hasComponent(EventActivity.class.getName()));
+      Intents.release();
+  }
+
+    @Test
+    public void test_event2() {
+        Intents.init();
+
+        onView(withId(R.id.event2Button)).perform(click());
+
+        Intents.intended(hasComponent(EventActivity.class.getName()));
         Intents.release();
     }
 
