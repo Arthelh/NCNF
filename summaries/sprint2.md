@@ -20,6 +20,14 @@ Except for that however my estimates were quite close to the time I ended up inv
 
 # Jérémie
 
-# Keran
+# Keran (scrum master)
+
+I tested the creation of an event which was implemented by David. The testing was split into two tasks. First, the input validator for the fields was unit tested because this task was extracted in a class that can be used to validate any field. Then an instrumented test checks that a user can successfully create an event or see the appropriate errors in the form.
+
+The challenges were the use of Expresso to fill in form, especially for date picker and spinner, and the refactor of the input validator to separate the logic part of the UI one.
 
 # Overall team
+
+Great progresses were made to have a common conception of the basic entities: events, public and private users such that everyone can work on a common basis. However, it is still a work in progress that must finalized next week. Another challenge tackled by the team is the implementation of the Firebase database and authentification. This work spans a few weeks to be fully working.
+
+Another part of the team works on concrete feature that can be seen on the end product (e.g map features, event creation). Efforts need to be made to better estimate the work load and split the work into feasible task, but the learning curve is steep ! The organization get better every day thanks to the standup meeting and constant communication.
