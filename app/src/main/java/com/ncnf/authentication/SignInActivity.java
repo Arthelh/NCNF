@@ -1,9 +1,11 @@
 package com.ncnf.authentication;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,13 +18,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
+import com.ncnf.user.PrivateUser;
 import com.ncnf.user.UserProfileActivity;
+
+import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.Utils.*;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private FirebaseAuth auth;
     private Intent intent;
 
     @Override
@@ -30,7 +34,6 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
-        auth = FirebaseAuth.getInstance();
         intent = new Intent(this, UserProfileActivity.class);
     }
 
@@ -42,10 +45,10 @@ public class SignInActivity extends AppCompatActivity {
         ((EditText)findViewById(R.id.signInPassword)).getText().clear();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void signIn(View view) {
         EditText emailField = findViewById(R.id.signInEmail);
         String email = emailField.getText().toString();
-
 
         EditText passwordField = findViewById(R.id.signInPassword);
         String password = passwordField.getText().toString();
@@ -58,24 +61,28 @@ public class SignInActivity extends AppCompatActivity {
             return;
         }
 
-        setProgressBar(View.VISIBLE);
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(DEBUG_TAG,"User successfully connected");
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Log.d(DEBUG_TAG,"Error connecting user " + task.getException().toString());
-                    /*
-                    TODO: Match exception to check if user exists or not
-                     */
-                }
+        logIn(email, password);
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void logIn(String email, String password){
+        AuthenticationService auth = new AuthenticationService();
+
+        setProgressBar(View.VISIBLE);
+
+        CompletableFuture<AuthenticationResponse> futureResponse = auth.logIn(email, password);
+
+        futureResponse.thenAccept(response -> {
+            if(response.isSuccessful()){
+                Log.d(DEBUG_TAG,"Successful login for " + email);
+                startActivity(intent);
+                finish();
+            } else {
+                Log.d(DEBUG_TAG,"Unsuccessful login for " + email + " : " + response.getException().getMessage());
+                setException(response.getException().getMessage());
             }
+            setProgressBar(View.INVISIBLE);
         });
-        setProgressBar(View.INVISIBLE);
     }
 
     private void setProgressBar(int visibility){
