@@ -69,7 +69,6 @@ public class PrivateUser {
     }
 
     private void update(String key, Object value){
-
         this.docRef.update(key, value).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
