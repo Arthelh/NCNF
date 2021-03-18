@@ -1,45 +1,46 @@
 package com.ncnf.authentication;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.user.PrivateUser;
 import com.ncnf.user.UserProfileActivity;
 
-import static com.ncnf.Utils.*;
+import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
 
+import static com.ncnf.Utils.BADLY_FORMATTED_EMAIL_STRING;
+import static com.ncnf.Utils.EMPTY_FIELD_STRING;
+import static com.ncnf.Utils.EMPTY_STRING;
+import static com.ncnf.Utils.INVALID_PASSWORD_STRING;
+import static com.ncnf.Utils.PASSWORDS_DO_NOT_MATCH_STRING;
+import static com.ncnf.Utils.isValidEmail;
+import static com.ncnf.Utils.isValidPassword;
+
+@AndroidEntryPoint
 public class SignUpActivity extends AppCompatActivity {
 
-    private FirebaseAuth auth;
     private Intent intent;
-    private PrivateUser user;
 
+    @Inject
+    AuthenticationService auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        this.auth = FirebaseAuth.getInstance();
         this.intent = new Intent(this, UserProfileActivity.class);
+        this.auth = new AuthenticationService();
     }
 
     @Override
@@ -49,6 +50,7 @@ public class SignUpActivity extends AppCompatActivity {
         setProgressBar(View.INVISIBLE);
         setFieldsEmpty();
     }
+
 
     public void signUp(View view) {
         String email = getFieldText(R.id.signUpEmail);
@@ -73,36 +75,24 @@ public class SignUpActivity extends AppCompatActivity {
 
         setProgressBar(View.VISIBLE);
 
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(DEBUG_TAG,"New user successfully authenticated");
-                    user = PrivateUser.getInstance();
-                    user.createDBUser(new OnSuccessListener() {
-                        @Override
-                        public void onSuccess(Object o) {
-                            startActivity(intent);
-                            finish();
-                        }
-                    }, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            auth.getCurrentUser().delete();
-                            setException("Couldn't create a new user : please try again");
-                        }
-                    });
-
-                } else {
-                    Log.d(DEBUG_TAG,"Error authenticating new user " + task.getException().toString());
-                    /*
+        auth.register(email, password).observe(this, exception-> {
+            if(exception == null){
+                PrivateUser user = PrivateUser.getInstance();
+                user.createDBUser(o -> {
+                    startActivity(intent);
+                    finish();
+                }, e -> {
+                    FirebaseAuth.getInstance().getCurrentUser().delete();
+                    setException("Couldn't create a new user : please try again");
+                });
+            } else {
+                setException(exception.getMessage());
+                /*
                     TODO: Match exception to check if user exists or not
-                     */
-                }
-
+                */
             }
+            setProgressBar(View.INVISIBLE);
         });
-        setProgressBar(View.INVISIBLE);
     }
 
     private void setFieldsEmpty(){
