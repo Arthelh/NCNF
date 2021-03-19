@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ncnf.R;
+import com.ncnf.event.EventType;
 import com.ncnf.main.MainActivity;
 import com.ncnf.utilities.InputValidator;
 
@@ -34,7 +35,6 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class EventCreateActivity extends AppCompatActivity {
 
-    private Spinner eventTypeSelSpinner;
     private EventType eventType;
     private LocalDate eventDate = LocalDate.now();
     private LocalTime eventTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
@@ -48,7 +48,7 @@ public class EventCreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_creation);
 
-        eventTypeSelSpinner = findViewById(R.id.event_creation_spinner);
+        Spinner eventTypeSelSpinner = findViewById(R.id.event_creation_spinner);
         eventTypeSelSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, EventType.values()));
         eventTypeSelSpinner.setSelection(EventType.values().length-1);
 
