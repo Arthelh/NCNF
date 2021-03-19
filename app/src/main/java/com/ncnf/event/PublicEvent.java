@@ -58,6 +58,5 @@ public class PublicEvent implements Event {
     public void setData(String data){
         this.data = data;
     }
-
-
+    
 }
