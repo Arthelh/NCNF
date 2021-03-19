@@ -3,11 +3,12 @@ package com.ncnf.event.create;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.espresso.contrib.PickerActions;
 
 import com.ncnf.R;
+import com.ncnf.event.EventType;
 import com.ncnf.main.MainActivity;
 
 import org.hamcrest.Matcher;
