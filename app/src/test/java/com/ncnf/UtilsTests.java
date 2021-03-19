@@ -1,20 +1,12 @@
 package com.ncnf;
 
-import android.text.TextUtils;
-import android.util.Patterns;
-
-import com.ncnf.authentication.AuthenticationService;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.stubbing.Answer;
 
-import static com.ncnf.Utils.*;
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static com.ncnf.Utils.isValidEmail;
+import static com.ncnf.Utils.isValidPassword;
+import static com.ncnf.Utils.stringIsEmpty;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class UtilsTests {
 
