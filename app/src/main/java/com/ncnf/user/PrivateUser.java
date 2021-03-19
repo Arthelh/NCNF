@@ -113,8 +113,8 @@ public class PrivateUser {
     }
 
     public void delete(){
-        this.user = null;
-        this.docRef = null;
+        user = null;
+        docRef = null;
     }
 
     @Override
@@ -122,7 +122,8 @@ public class PrivateUser {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PrivateUser that = (PrivateUser) o;
-        return this.user.getUid().equals(that.user.getUid()) && this.docRef == that.docRef;
+        if(this.user == null || that.user == null) return false;
+        return user.getUid().equals(that.user.getUid()) && this.docRef == that.docRef;
     }
 
     @Override
