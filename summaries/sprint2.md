@@ -14,6 +14,9 @@ Except for that however my estimates were quite close to the time I ended up inv
 
 # David
 
+I added a the user interface for creating events. This includes name, description, an image, website, etc. There were no particular issues beside sanitizing the user input. The solution I settled on was to add a utility class that offers static methods that perform input verification. This can be expanded on and reused in other parts of th projects. 
+It took way more time to build the event creation UI, Keran created the tests and overall this task took 3 to 4 times the expected time for completion
+
 # Eloi
 
 I extended to Event class for Database Support : added method to load an Event from the Database, update a particular field et store an event on the database. Took more time than expected because of merging every Event class previously made. I also coded a first version of the "Saved a feature event" which took the expected time. It's very basic for now : press on a button to save event and the id of the button is added to a saved_event array list of the user.
