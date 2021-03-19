@@ -57,6 +57,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private boolean events_shown = true;
     // Indicates whether searchBar is in setLocation or filter by tag mode
     private boolean bar_location_mode = true;
+    //Indicates whether map is ready, useful for onResume() method
+    private boolean map_ready = false;
 
     private ArrayList<Marker> event_markers, venue_markers;
 
@@ -88,7 +90,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
-        update_markers();
+        if (map_ready)
+            update_markers();
     }
 
     @Override
@@ -100,6 +103,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.setContentDescription("MAP_WITH_EVENTS");
 
         setup_search_bar();
+
+        map_ready = true;
     }
 
     public void zoomOut(View view) {
@@ -131,8 +136,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void show_markers(){
-        if (mMap == null)
-            return;
         // Add a marker near EPFL and move the camera
         MarkerOptions position_marker = new MarkerOptions().position(position).title("Your Position").icon(Utilities.bitmapDescriptorFromVector(this));
         mMap.addMarker(position_marker);
