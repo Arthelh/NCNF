@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ncnf.R;
+import com.ncnf.event.EventType;
 import com.ncnf.main.MainActivity;
 import com.ncnf.utilities.InputValidator;
 
