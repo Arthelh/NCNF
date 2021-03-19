@@ -48,7 +48,7 @@ public class FeedActivity extends AppCompatActivity implements EventAdapter.OnEv
             @Override
             public void run() {
                 System.out.println("Received event with data: " + event.getDescription());
-              
+
                 adapter.addEvent(event);
                 ((LinearLayoutManager)lManager).scrollToPositionWithOffset(0, 0);
             }

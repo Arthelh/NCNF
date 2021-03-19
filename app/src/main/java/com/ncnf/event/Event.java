@@ -53,10 +53,7 @@ public abstract class Event {
     public void setDate(Date date) { this.date = date; }
     public void setLocation(Location location) { this.location = location; }
     public void setAttendees(List<String> attendees) {
-        this.attendees = new ArrayList<String>();
-        for(int i = 0; i < attendees.size(); ++i) {
-            this.attendees.add(attendees.get(i));
-        }
+        this.attendees = new ArrayList<>(attendees);
         numOfAttendees = attendees.size();
     }
     public void setDescription(String description)  { this.description = description; }
