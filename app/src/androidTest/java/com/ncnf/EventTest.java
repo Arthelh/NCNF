@@ -6,6 +6,7 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.ncnf.event.Event;
 import com.ncnf.event.EventActivity;
 import com.ncnf.event.Location;
 import com.ncnf.event.PublicEvent;
