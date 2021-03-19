@@ -1,5 +1,5 @@
 package com.ncnf.event;
 
 public enum EventType {
-    Movie, Museum, Other, NOTHING
+    Movie, Museum, Conference, Opera, NOTHING
 }

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,9 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ncnf.R;
-import com.ncnf.event.EventType;
 import com.ncnf.main.MainActivity;
-import com.ncnf.map.MapActivity;
 import com.ncnf.utilities.InputValidator;
 
 import java.time.LocalDate;
