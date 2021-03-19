@@ -18,6 +18,10 @@ Except for that however my estimates were quite close to the time I ended up inv
 
 # Emmanuelle
 
+I first finished writing tests for the code that I wrote last week. Then, I merged my branch with the main branch and launched a pull request. Finally, I started working on a way to cache Event entities.
+
+The merge took a lot longer than I expected since I ran into quite a few issues. Also, my estimate for the caching of event entities was off, and therefore I am not finished yet. For next week, I hope to estimate better.
+
 # Jérémie
 
 I implemented tests for the authentication UI (SignUp and SignIn activities) but faced issues with the previous implementation. I had to reformat the whole Firebase integration in order to moduralize in a clean way. I also merged the main branch into the branch I'm working on.
