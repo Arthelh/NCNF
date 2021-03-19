@@ -31,23 +31,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <!-- MAP -->
         <activity
             android:name="com.ncnf.map.MapActivity"
             android:label="@string/title_activity_maps"
             android:parentActivityName="com.ncnf.main.MainActivity" />
 
-        <uses-library
-            android:name="com.google.android.wearable"
-            android:required="false" />
 
-        <!--
-               Set to true if your app is Standalone, that is, it does not require the handheld
-               app to run.
-        -->
-        <meta-data
-            android:name="com.google.android.wearable.standalone"
-            android:value="false" />
-
+        <!-- FEED -->
         <activity
             android:name="com.ncnf.feed.FeedActivity"
             android:label="@string/title_activity_feed"
@@ -60,11 +51,18 @@
             android:parentActivityName="com.ncnf.main.MainActivity" >
         </activity>
 
+        <!-- TODO: merge these two event activity -->
         <activity
             android:name="com.ncnf.feed.EventActivity"
             android:parentActivityName="com.ncnf.feed.FeedActivity">
         </activity>
 
+        <activity
+            android:name="com.ncnf.event.EventActivity">
+        </activity>
+
+
+        <!-- LANDING PAGE -->
         <activity android:name="com.ncnf.main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
