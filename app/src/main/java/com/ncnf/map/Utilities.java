@@ -17,7 +17,7 @@ import com.ncnf.settings.Settings;
 public class Utilities {
 
     public static final double LAT_TO_KM = 110.574;
-    public static double LONG_TO_KM = 111.320; //MUST BE ADJUSTED BY cos(lat)!!
+    public static final double LONG_TO_KM = 111.320; //MUST BE ADJUSTED BY cos(lat)!!
     public static final String[] supported_countries = {"ch"};
 
     public static boolean position_in_range(LatLng target_position, LatLng current_position){
