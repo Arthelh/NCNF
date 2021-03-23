@@ -5,8 +5,8 @@ check_android_task:
     TARGET: google_apis
     ARCH: x86
     CC_TEST_REPORTER_ID: ENCRYPTED[ad8b9c987ff0f1314535a4f5c05d4a67554dd3ff5935923460281fe213a9f881480b249d14419ad238b0c44eca833aa4]
-    MAPS_API_KEY:
-    PLACES_API_KEY:
+    MAPS_API_KEY: ENCRYPTED[d3e2ab8592cba6f329799fb2b6da4930194ed33420d3c391d5693fbd3e77823c239709912fa45f9d575a736a143e9576]
+    PLACES_API_KEY: ENCRYPTED[2c61e4dadf67149b858bfc949602805051564d34b73de14d272efbcc3f23e8b4ae1f290d0404d2128e2733eb8f2f1c26]
   container:
     image: reactivecircus/android-emulator-$API_LEVEL:latest
     kvm: true
@@ -16,10 +16,9 @@ check_android_task:
     echo no | avdmanager create avd --force --name test --abi "$TARGET/$ARCH" --package "system-images;android-$API_LEVEL;$TARGET;$ARCH"
   start_emulator_background_script:
     $ANDROID_SDK_ROOT/emulator/emulator -avd test -no-window -gpu swiftshader_indirect -no-snapshot -no-audio -no-boot-anim -camera-back none
-  prepare_secrets: |
+  build_script: |
     echo "MAPS_API_KEY=$MAPS_API_KEY" > local.properties
     echo "PLACES_API_KEY=$PLACES_API_KEY" >> local.properties
-  build_script: |
     chmod +x gradlew
     ./gradlew assembleDebugAndroidTest
   wait_for_emulator_script: |
