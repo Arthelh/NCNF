@@ -17,4 +17,22 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+    <string name="event_name">Event Name</string>
+    <string name="default_event_name">Event Name</string>
+    <string name="default_event_description">Event Description</string>
+    <string name="default_validate_button">Validate Selection</string>
+    <string name="default_select_event_date">Select Event Date</string>
+    <string name="create_event_button">Create Event</string>
+    <string name="title_event_creation" />
+    <string name="event_create_display_dat" />
+    <string name="event_create_display_date">Date</string>
+    <string name="event_create_time_button">Select Event Time</string>
+    <string name="event_create_display_time">Time</string>
+    <string name="event_create_hint_name">Event Name</string>
+    <string name="event_create_hint_description">Event Description</string>
+    <string name="event_create_hint_phone">Contact Phone</string>
+    <string name="event_create_hint_postaladdress_">Event Address</string>
+    <string name="event_create_hint_emailaddress">Contact Email</string>
+    <string name="event_create_hint_price">Event Price</string>
+    <string name="event_create_hint_website">Event Website</string>
 </resources>

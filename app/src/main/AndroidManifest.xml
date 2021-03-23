@@ -30,6 +30,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${mapsApiKey}" />
 
+        <!-- MAP -->
         <activity
             android:name=".map.MapActivity"
             android:label="@string/title_activity_maps"
@@ -45,20 +46,29 @@
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
-
+<!-- FEED -->
         <activity
             android:name=".feed.FeedActivity"
             android:label="@string/title_activity_feed"
             android:parentActivityName=".main.MainActivity" />
 
         <activity
+            android:name=".event.create.EventCreateActivity"
+            android:label="@string/title_event_creation"
+            android:parentActivityName="com.ncnf.main.MainActivity" >
+        </activity>
+<!-- TODO: merge these two event activity -->
+        <activity
             android:name="com.ncnf.feed.EventActivity"
             android:parentActivityName="com.ncnf.feed.FeedActivity">
         </activity>
 
+
         <activity android:name=".event.EventActivity"
             android:parentActivityName=".main.MainActivity"/>
 
+
+        <!-- LANDING PAGE -->
         <activity android:name="com.ncnf.main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
