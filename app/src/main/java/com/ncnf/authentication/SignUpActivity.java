@@ -19,6 +19,10 @@ import com.ncnf.user.UserProfileActivity;
 
 import java.util.concurrent.CompletableFuture;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 import static com.ncnf.Utils.BADLY_FORMATTED_EMAIL_STRING;
 import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EMPTY_FIELD_STRING;
@@ -28,7 +32,10 @@ import static com.ncnf.Utils.PASSWORDS_DO_NOT_MATCH_STRING;
 import static com.ncnf.Utils.isValidEmail;
 import static com.ncnf.Utils.isValidPassword;
 
+@AndroidEntryPoint
 public class SignUpActivity extends AppCompatActivity {
+    @Inject
+    AuthenticationService auth;
 
     private Intent intent;
 
@@ -77,8 +84,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void register(String email, String password){
-        AuthenticationService auth = new AuthenticationService();
-
         setProgressBar(View.VISIBLE);
 
         CompletableFuture<AuthenticationResponse> futureResponse= auth.register(email, password);
@@ -87,13 +92,15 @@ public class SignUpActivity extends AppCompatActivity {
             if(response.isSuccessful()){
                 Log.d(DEBUG_TAG, "Successful register for " + email);
                 PrivateUser user = PrivateUser.getInstance();
-                user.createDBUser(o -> {
-                    startActivity(intent);
-                    finish();
-                }, e -> {
-                    Log.d(DEBUG_TAG, "Deleting user.");
-                    FirebaseAuth.getInstance().getCurrentUser().delete();
-                    setException("Couldn't create a new user : please try again");
+                user.saveUserToDB().thenAccept(dbResponse -> {
+                    if (dbResponse.isSuccessful()) {
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Log.d(DEBUG_TAG, "Deleting user.");
+                        FirebaseAuth.getInstance().getCurrentUser().delete();
+                        setException("Couldn't create a new user : please try again");
+                    }
                 });
             } else {
                 Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + response.getException().getMessage());

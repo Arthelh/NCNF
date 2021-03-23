@@ -17,6 +17,7 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.testing.BindValue;
 import dagger.hilt.android.testing.HiltAndroidRule;
 import dagger.hilt.android.testing.HiltAndroidTest;
 
@@ -37,6 +38,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
@@ -44,8 +46,8 @@ public class SignUpActivityTest {
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private ActivityScenarioRule activityTestRule = new ActivityScenarioRule<>(SignUpActivity.class);
 
-    @Inject
-    AuthenticationService mockedAuth;
+    @BindValue
+    AuthenticationService mockedAuth = mock(AuthenticationService.class);;
 
     String invalidEmail = "test";
     String validEmail = "test@test.com";
@@ -58,15 +60,11 @@ public class SignUpActivityTest {
 
     @Before
     public void setup(){
-        Intents.init();
-
-        mockedAuth = mock(AuthenticationService.class);
+        hiltRule.inject();
     }
 
     @After
-    public void cleanup(){
-        Intents.release();
-    }
+    public void cleanup(){ }
     
     @Test
     public void emptyInputTest(){
@@ -133,7 +131,9 @@ public class SignUpActivityTest {
         onView(withId(R.id.signUpConfirmPassword)).perform(typeText(validPassword), closeSoftKeyboard());
         onView(withId(R.id.signUpButton)).perform(click());
 
-//        onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(unsuccessfulRegister))));
+        verify(mockedAuth).register(anyString(), anyString());
+
+        onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(unsuccessfulRegister))));
     }
 
 }
