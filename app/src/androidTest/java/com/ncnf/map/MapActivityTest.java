@@ -58,20 +58,20 @@ public final class MapActivityTest {
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
         assertNotNull("Map with events is loaded",
-                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 20000)
+                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 10000)
         );
         // Events are shown
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Math"));
-        assertTrue("Events markers exist", marker.waitForExists(20000));
+        assertTrue("Events markers exist", marker.waitForExists(10000));
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
         assertNotNull("Map with venues is loaded",
-                device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 20000)
+                device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 10000)
         );
         // Venues are shown
         marker = device.findObject(new UiSelector().descriptionContains("EPFL"));
-        assertTrue("Venue markers exist", marker.waitForExists(20000));
+        assertTrue("Venue markers exist", marker.waitForExists(10000));
 
         Mockito.verify(eventProvider).getAll();
         Mockito.verify(venueProvider).getAll();
