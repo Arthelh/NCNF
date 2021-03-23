@@ -1,3 +1,4 @@
+MAPS_API_KEY: ENCRYPTED[59b8ea41cf08cd248bc63b4cd219c72fdc6a94398b402454bc6dd1de9e6b87766401a7055dbad8525c45ba11defef74b]
 check_android_task:
   name: Run Android tests
   env:
@@ -5,7 +6,6 @@ check_android_task:
     TARGET: google_apis
     ARCH: x86
     CC_TEST_REPORTER_ID: ENCRYPTED[ad8b9c987ff0f1314535a4f5c05d4a67554dd3ff5935923460281fe213a9f881480b249d14419ad238b0c44eca833aa4]
-    MAPS_API_KEY: ENCRYPTED[59b8ea41cf08cd248bc63b4cd219c72fdc6a94398b402454bc6dd1de9e6b87766401a7055dbad8525c45ba11defef74b]
   container:
     image: reactivecircus/android-emulator-$API_LEVEL:latest
     kvm: true
@@ -16,7 +16,6 @@ check_android_task:
   start_emulator_background_script:
     $ANDROID_SDK_ROOT/emulator/emulator -avd test -no-window -gpu swiftshader_indirect -no-snapshot -no-audio -no-boot-anim -camera-back none
   build_script: |
-    echo MAPS_API_KEY=ENCRYPTED[59b8ea41cf08cd248bc63b4cd219c72fdc6a94398b402454bc6dd1de9e6b87766401a7055dbad8525c45ba11defef74b] >> local.properties
     chmod +x gradlew
     ./gradlew assembleDebugAndroidTest
   wait_for_emulator_script: |
@@ -30,7 +29,6 @@ check_android_task:
     curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
     chmod +x ./cc-test-reporter
     ./cc-test-reporter before-build
-    echo MAPS_API_KEY=ENCRYPTED[59b8ea41cf08cd248bc63b4cd219c72fdc6a94398b402454bc6dd1de9e6b87766401a7055dbad8525c45ba11defef74b] >> local.properties
   check_script:
     ./gradlew check connectedCheck
   report_codeclimate_script: |
