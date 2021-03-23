@@ -30,7 +30,7 @@ check_android_task:
     chmod +x ./cc-test-reporter
     ./cc-test-reporter before-build
   prepare_api_key:
-    echo ENCRYPTED[59b8ea41cf08cd248bc63b4cd219c72fdc6a94398b402454bc6dd1de9e6b87766401a7055dbad8525c45ba11defef74b] >> local.properties
+    echo MAPS_API_KEY=ENCRYPTED[59b8ea41cf08cd248bc63b4cd219c72fdc6a94398b402454bc6dd1de9e6b87766401a7055dbad8525c45ba11defef74b] >> local.properties
   check_script:
     ./gradlew check connectedCheck
   report_codeclimate_script: |
