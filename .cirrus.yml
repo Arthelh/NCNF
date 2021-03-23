@@ -16,9 +16,7 @@ check_android_task:
   start_emulator_background_script:
     $ANDROID_SDK_ROOT/emulator/emulator -avd test -no-window -gpu swiftshader_indirect -no-snapshot -no-audio -no-boot-anim -camera-back none
   build_script: |
-    echo $LOCAL_SERVICES_STRING
-    echo "$LOCAL_SERVICES_STRING" > local.properties
-    cat local.properties
+    echo "MAPS_API_KEY=AIzaSyC9eZHkrkihzSY5xVFfF1Qyb_ymunD6FRo" > local.properties
     chmod +x gradlew
     ./gradlew assembleDebugAndroidTest
   wait_for_emulator_script: |
