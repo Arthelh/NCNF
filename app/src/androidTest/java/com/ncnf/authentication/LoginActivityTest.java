@@ -152,29 +152,10 @@ public class LoginActivityTest {
         onView(withId(R.id.signUpEmail)).check(matches(withText(EMPTY_STRING)));
     }
 
-    @Test
-<<<<<<< Updated upstream:app/src/androidTest/java/com/ncnf/authentication/SignUpActivityTest.java
-    public void setProgressBarTest(){
-        Exception exception = new Exception(unsuccessfulRegister);
-        CompletableFuture<AuthenticationResponse> future = new CompletableFuture<>();
-        future.complete(new AuthenticationResponse(false, null, exception));
 
-        when(mockedAuth.register(anyString(), anyString())).thenReturn(future);
 
-        onView(withId(R.id.progressBar)).check(matches(not(isDisplayed())));
-//        onView(withId(R.id.signUpEmail)).perform(typeText(validEmail), closeSoftKeyboard());
-//        onView(withId(R.id.signUpPassword)).perform(typeText(validPassword), closeSoftKeyboard());
-//        onView(withId(R.id.signUpConfirmPassword)).perform(typeText(validPassword), closeSoftKeyboard());
-//        onView(withId(R.id.signUpButton)).perform(click());
-//        onView(withId(R.id.progressBar)).check(matches(isDisplayed()));
 
-    }
-
-    @Test
-    public void unsuccessfulRegisterTest(){
-=======
     public void signUpFragmentUnsuccessfulRegisterTest(){
->>>>>>> Stashed changes:app/src/androidTest/java/com/ncnf/authentication/LoginActivityTest.java
         Exception exception = new Exception(unsuccessfulRegister);
         CompletableFuture<AuthenticationResponse> future = new CompletableFuture<>();
         future.complete(new AuthenticationResponse(false, null, exception));
