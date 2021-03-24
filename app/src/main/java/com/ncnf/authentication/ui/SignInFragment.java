@@ -1,4 +1,4 @@
-package com.ncnf.authentication;
+package com.ncnf.authentication.ui;
 
 import android.content.Intent;
 import android.os.Build;
@@ -13,11 +13,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ncnf.R;
+import com.ncnf.authentication.AuthenticationResponse;
+import com.ncnf.authentication.AuthenticationService;
 import com.ncnf.user.UserProfileActivity;
 
 import java.util.concurrent.CompletableFuture;
@@ -36,6 +40,11 @@ public class SignInFragment extends Fragment {
     @Inject
     AuthenticationService auth;
 
+    private EditText email;
+    private EditText password;
+    private TextView exceptionText;
+    private Button loginButton;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,36 +56,27 @@ public class SignInFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setProgressBar(View.INVISIBLE);
-        ((EditText)getView().findViewById(R.id.signInEmail)).getText().clear();
-        ((EditText)getView().findViewById(R.id.signInPassword)).getText().clear();
+        getItemsFromView();
 
-        getView().findViewById(R.id.signInButton).setOnClickListener(v -> signIn());
+        showProgressBar(false);
+
+        loginButton.setOnClickListener(v -> signIn());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void signIn() {
-        EditText emailField = getView().findViewById(R.id.signInEmail);
-        String email = emailField.getText().toString();
+        String emailString = email.getText().toString();
+        String passwordString = password.getText().toString();
 
-        EditText passwordField = getView().findViewById(R.id.signInPassword);
-        String password = passwordField.getText().toString();
-
-        if(email.isEmpty() || password.isEmpty()) {
-            setException(EMPTY_FIELD_STRING);
-            return;
-        } else if (!isValidEmail(email)){
-            setException(BADLY_FORMATTED_EMAIL_STRING);
-            return;
+        if(checkInputs()){
+            logIn(emailString, passwordString);
         }
-
-        logIn(email, password);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void logIn(String email, String password){
 
-        setProgressBar(View.VISIBLE);
+        showProgressBar(true);
 
         CompletableFuture<AuthenticationResponse> futureResponse = auth.logIn(email, password);
 
@@ -89,17 +89,44 @@ public class SignInFragment extends Fragment {
                 Log.d(DEBUG_TAG,"Unsuccessful login for " + email + " : " + response.getException().getMessage());
                 setException(response.getException().getMessage());
             }
-            setProgressBar(View.INVISIBLE);
+            showProgressBar(false);
         });
     }
 
-    private void setProgressBar(int visibility){
+    private boolean checkInputs(){
+        String emailString = email.getText().toString();
+        String passwordString = password.getText().toString();
+
+        if(emailString.isEmpty() || passwordString.isEmpty()) {
+            setException(EMPTY_FIELD_STRING);
+            return false;
+        } else if (!isValidEmail(emailString)){
+            setException(BADLY_FORMATTED_EMAIL_STRING);
+            email.setError(BADLY_FORMATTED_EMAIL_STRING);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void getItemsFromView(){
+        this.email = getView().findViewById(R.id.signInEmail);
+        this.password = getView().findViewById(R.id.signInPassword);
+        this.exceptionText = getView().findViewById(R.id.exceptionSignIn);
+        this.loginButton = getView().findViewById(R.id.signInLoginButton);
+    }
+
+    private void showProgressBar(Boolean show){
         ProgressBar bar = getView().findViewById(R.id.progressBar2);
-        bar.setVisibility(visibility);
+        if(show){
+            bar.setVisibility(View.VISIBLE);
+        } else {
+            bar.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setException(String s){
-        TextView exception = getView().findViewById(R.id.exceptionSignIn);
-        exception.setText(s);
+        exceptionText.setText(s);
+        Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
     }
 }

@@ -1,7 +1,6 @@
-package com.ncnf.authentication;
+package com.ncnf.authentication.ui;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
