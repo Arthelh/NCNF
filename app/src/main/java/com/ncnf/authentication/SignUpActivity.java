@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.user.PrivateUser;
 import com.ncnf.user.UserProfileActivity;
@@ -29,6 +30,7 @@ import static com.ncnf.Utils.EMPTY_FIELD_STRING;
 import static com.ncnf.Utils.EMPTY_STRING;
 import static com.ncnf.Utils.INVALID_PASSWORD_STRING;
 import static com.ncnf.Utils.PASSWORDS_DO_NOT_MATCH_STRING;
+import static com.ncnf.Utils.USERs_COLLECTION_KEY;
 import static com.ncnf.Utils.isValidEmail;
 import static com.ncnf.Utils.isValidPassword;
 
@@ -78,7 +80,6 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-
         register(email, password);
     }
 
@@ -91,14 +92,15 @@ public class SignUpActivity extends AppCompatActivity {
         futureResponse.thenAccept(response -> {
             if(response.isSuccessful()){
                 Log.d(DEBUG_TAG, "Successful register for " + email);
-                PrivateUser user = PrivateUser.getInstance();
+                FirebaseUser fb = response.getResult().getUser();
+                PrivateUser user = new PrivateUser(fb, USERs_COLLECTION_KEY + fb.getUid());
                 user.saveUserToDB().thenAccept(dbResponse -> {
                     if (dbResponse.isSuccessful()) {
                         startActivity(intent);
                         finish();
                     } else {
                         Log.d(DEBUG_TAG, "Deleting user.");
-                        FirebaseAuth.getInstance().getCurrentUser().delete();
+                        fb.delete();
                         setException("Couldn't create a new user : please try again");
                     }
                 });
