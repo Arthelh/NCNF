@@ -215,11 +215,9 @@ public class UserProfileActivity extends AppCompatActivity {
         });
     }
 
-
-
-    public void viewBookmark(View view){
-        startActivity(intent);
-    }
+//    public void viewBookmark(View view){
+//        startActivity(intent);
+//    }
 
 //    @RequiresApi(api = Build.VERSION_CODES.N)
 //    public void saveEvent(View view){
