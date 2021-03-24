@@ -42,183 +42,183 @@ public class AuthenticationServiceTests {
     String email = "test@test.com";
     String password = "test1234";
 
+//
+//    @Before
+//    public void setup(){
+//        mockedAuth = mock(FirebaseAuth.class);
+//
+//        service = new AuthenticationService(false);
+//        service.setAuth(mockedAuth);
+//
+//        failureTask = new Task<AuthResult>() {
+//            @Override
+//            public boolean isComplete() {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean isSuccessful() {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean isCanceled() {
+//                return false;
+//            }
+//
+//            @Nullable
+//            @Override
+//            public AuthResult getResult() {
+//                return null;
+//            }
+//
+//            @Nullable
+//            @Override
+//            public <X extends Throwable> AuthResult getResult(@NonNull Class<X> aClass) throws X {
+//                return null;
+//            }
+//
+//            @Nullable
+//            @Override
+//            public Exception getException() {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnSuccessListener(@NonNull OnSuccessListener<? super AuthResult> onSuccessListener) {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnSuccessListener(@NonNull Executor executor, @NonNull OnSuccessListener<? super AuthResult> onSuccessListener) {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnSuccessListener(@NonNull Activity activity, @NonNull OnSuccessListener<? super AuthResult> onSuccessListener) {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnFailureListener(@NonNull OnFailureListener onFailureListener) {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnFailureListener(@NonNull Executor executor, @NonNull OnFailureListener onFailureListener) {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnFailureListener(@NonNull Activity activity, @NonNull OnFailureListener onFailureListener) {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnCompleteListener(@NonNull OnCompleteListener<AuthResult> onCompleteListener) {
+//                onCompleteListener.onComplete(failureTask);
+//                return failureTask;
+//            }
+//        };
+//
+//        successTask = new Task<AuthResult>() {
+//
+//            @Override
+//            public boolean isComplete() {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean isSuccessful() {
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean isCanceled() {
+//                return false;
+//            }
+//
+//            @Nullable
+//            @Override
+//            public AuthResult getResult() {
+//                return null;
+//            }
+//
+//            @Nullable
+//            @Override
+//            public <X extends Throwable> AuthResult getResult(@NonNull Class<X> aClass) throws X {
+//                return null;
+//            }
+//
+//            @Nullable
+//            @Override
+//            public Exception getException() {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnSuccessListener(@NonNull OnSuccessListener<? super AuthResult> onSuccessListener) {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnSuccessListener(@NonNull Executor executor, @NonNull OnSuccessListener<? super AuthResult> onSuccessListener) {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnSuccessListener(@NonNull Activity activity, @NonNull OnSuccessListener<? super AuthResult> onSuccessListener) {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnFailureListener(@NonNull OnFailureListener onFailureListener) {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnFailureListener(@NonNull Executor executor, @NonNull OnFailureListener onFailureListener) {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnFailureListener(@NonNull Activity activity, @NonNull OnFailureListener onFailureListener) {
+//                return null;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Task<AuthResult> addOnCompleteListener(@NonNull OnCompleteListener<AuthResult> onCompleteListener) {
+//                onCompleteListener.onComplete(successTask);
+//                return successTask;                       }
+//        };
+//    }
 
-    @Before
-    public void setup(){
-        mockedAuth = mock(FirebaseAuth.class);
-
-        service = new AuthenticationService(false);
-        service.setAuth(mockedAuth);
-
-        failureTask = new Task<AuthResult>() {
-            @Override
-            public boolean isComplete() {
-                return false;
-            }
-
-            @Override
-            public boolean isSuccessful() {
-                return false;
-            }
-
-            @Override
-            public boolean isCanceled() {
-                return false;
-            }
-
-            @Nullable
-            @Override
-            public AuthResult getResult() {
-                return null;
-            }
-
-            @Nullable
-            @Override
-            public <X extends Throwable> AuthResult getResult(@NonNull Class<X> aClass) throws X {
-                return null;
-            }
-
-            @Nullable
-            @Override
-            public Exception getException() {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnSuccessListener(@NonNull OnSuccessListener<? super AuthResult> onSuccessListener) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnSuccessListener(@NonNull Executor executor, @NonNull OnSuccessListener<? super AuthResult> onSuccessListener) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnSuccessListener(@NonNull Activity activity, @NonNull OnSuccessListener<? super AuthResult> onSuccessListener) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnFailureListener(@NonNull OnFailureListener onFailureListener) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnFailureListener(@NonNull Executor executor, @NonNull OnFailureListener onFailureListener) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnFailureListener(@NonNull Activity activity, @NonNull OnFailureListener onFailureListener) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnCompleteListener(@NonNull OnCompleteListener<AuthResult> onCompleteListener) {
-                onCompleteListener.onComplete(failureTask);
-                return failureTask;
-            }
-        };
-
-        successTask = new Task<AuthResult>() {
-
-            @Override
-            public boolean isComplete() {
-                return false;
-            }
-
-            @Override
-            public boolean isSuccessful() {
-                return true;
-            }
-
-            @Override
-            public boolean isCanceled() {
-                return false;
-            }
-
-            @Nullable
-            @Override
-            public AuthResult getResult() {
-                return null;
-            }
-
-            @Nullable
-            @Override
-            public <X extends Throwable> AuthResult getResult(@NonNull Class<X> aClass) throws X {
-                return null;
-            }
-
-            @Nullable
-            @Override
-            public Exception getException() {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnSuccessListener(@NonNull OnSuccessListener<? super AuthResult> onSuccessListener) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnSuccessListener(@NonNull Executor executor, @NonNull OnSuccessListener<? super AuthResult> onSuccessListener) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnSuccessListener(@NonNull Activity activity, @NonNull OnSuccessListener<? super AuthResult> onSuccessListener) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnFailureListener(@NonNull OnFailureListener onFailureListener) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnFailureListener(@NonNull Executor executor, @NonNull OnFailureListener onFailureListener) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnFailureListener(@NonNull Activity activity, @NonNull OnFailureListener onFailureListener) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<AuthResult> addOnCompleteListener(@NonNull OnCompleteListener<AuthResult> onCompleteListener) {
-                onCompleteListener.onComplete(successTask);
-                return successTask;                       }
-        };
-    }
-
-    @Test
-    public void registerSuccessTest() throws ExecutionException, InterruptedException {
-        when(mockedAuth.createUserWithEmailAndPassword(anyString(), anyString())).thenReturn(successTask);
-
-        AuthenticationResponse res = service.register(email, password).get();
-
-        verify(mockedAuth).createUserWithEmailAndPassword(anyString(), anyString());
-
-        assertTrue(res.isSuccessful());
-        assertTrue(res.getResult()==null);
-        assertTrue(res.getException()==null);
-    }
+//    @Test
+//    public void registerSuccessTest() throws ExecutionException, InterruptedException {
+//        when(mockedAuth.createUserWithEmailAndPassword(anyString(), anyString())).thenReturn(successTask);
+//
+//        AuthenticationResponse res = service.register(email, password).get();
+//
+//        verify(mockedAuth).createUserWithEmailAndPassword(anyString(), anyString());
+//
+//        assertTrue(res.isSuccessful());
+//        assertTrue(res.getResult()==null);
+//        assertTrue(res.getException()==null);
+//    }
 
 //    @Test
 //    public void registerFailureTest() throws ExecutionException, InterruptedException {
@@ -233,18 +233,18 @@ public class AuthenticationServiceTests {
 //        assertTrue(res.getException()==null);
 //    }
 
-    @Test
-    public void loginSuccessTest() throws ExecutionException, InterruptedException {
-        when(mockedAuth.signInWithEmailAndPassword(anyString(), anyString())).thenReturn(successTask);
-
-        AuthenticationResponse res = service.logIn(email, password).get();
-
-        verify(mockedAuth).signInWithEmailAndPassword(anyString(), anyString());
-
-        assertTrue(res.isSuccessful());
-        assertTrue(res.getResult()==null);
-        assertTrue(res.getException()==null);
-    }
+//    @Test
+//    public void loginSuccessTest() throws ExecutionException, InterruptedException {
+//        when(mockedAuth.signInWithEmailAndPassword(anyString(), anyString())).thenReturn(successTask);
+//
+//        AuthenticationResponse res = service.logIn(email, password).get();
+//
+//        verify(mockedAuth).signInWithEmailAndPassword(anyString(), anyString());
+//
+//        assertTrue(res.isSuccessful());
+//        assertTrue(res.getResult()==null);
+//        assertTrue(res.getException()==null);
+//    }
 
 //    @Test
 //    public void loginFailureTest() throws ExecutionException, InterruptedException {
