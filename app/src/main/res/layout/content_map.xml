@@ -16,7 +16,7 @@
     <com.mancj.materialsearchbar.MaterialSearchBar
         android:id="@+id/searchBarMap"
         style="@style/MaterialSearchBarLight"
-        android:layout_width="388dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -30,54 +30,57 @@
         app:mt_navIconEnabled="true"
         app:mt_placeholder="Set the location" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/map_switch_button"
         android:onClick="switchMarkers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:text="Switch between Events and Venues"
+        android:text="@string/map_switch_button"
         android:textColor="#FFFFFF"
-        android:background="@color/cardview_dark_background"
         android:elevation="5dp"
         android:outlineProvider="bounds" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/map_zoomin_button"
         android:onClick="zoomIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="13dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="90dp"
-        android:text="Zoom in"/>
+        android:textColor="#FFFFFF"
+        android:text="@string/map_zoom_in_button"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/map_settings_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="150dp"
+        android:layout_marginStart="160dp"
         android:layout_marginEnd="150dp"
         android:layout_marginBottom="90dp"
+        android:layout_toEndOf="@id/map_zoomin_button"
+        android:layout_centerHorizontal="true"
         android:onClick="start_settings"
-        android:text="Settings" />
+        android:textColor="#FFFFFF"
+        android:text="@string/map_settings_button" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/map_zoomout_button"
         android:onClick="zoomOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="283dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="13dp"
+        android:layout_toEndOf="@id/map_settings_button"
+        android:layout_marginStart="306dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="90dp"
-        android:text="Zoom Out" />
+        android:text="@string/map_zoom_out_button" />
 
 
 </RelativeLayout>

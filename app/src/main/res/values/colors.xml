@@ -7,4 +7,16 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorRipple">#33FFFFFF</color>
+
+    <!-- Two cool shades of blue -->
+    <color name="blue_dark">#FF000249</color>
+    <color name="blue_light">#FF0F4392</color>
+
+    <!-- Red and orange for buttons -->
+    <color name="red">#FFCE2029</color>
+    <color name="orange">#FFD84528</color>
+
+    <!-- Clear text color -->
+    <color name="light_cyan">#FFA7E7FE</color>
 </resources>

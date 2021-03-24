@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">NCNF</string>
 
+    <!-- Strings for Main Menu -->
+    <string name="main_map_button">Map</string>
+    <string name="main_feedview_button">Events Feed</string>
+    <string name="main_event_creation_button">Create Event</string>
+    <string name="main_placeholder_event_view">PH Event</string>
+
+    <!-- Strings used for Map Activity -->
+    <string name="map_switch_button">Switch between Events and Venues</string>
+    <string name="map_zoom_in_button">Zoom In</string>
+    <string name="map_zoom_out_button">Zoom Out</string>
+    <string name="map_settings_button">Settings</string>
+
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_map">MapActivity</string>
     <!-- Strings used for fragments for navigation -->
@@ -36,9 +48,7 @@
     <string name="event_create_hint_price">Event Price</string>
     <string name="event_create_hint_website">Event Website</string>
 
-    <!--
-    Strings for Settings
-    -->
+    <!-- Strings for Settings -->
     <string name="settings_distance_slider">Max distance = </string>
     <string name="settings_accept_button">Accept</string>
     <string name="settings_discard_button">Discard</string>
