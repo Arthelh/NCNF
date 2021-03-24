@@ -131,32 +131,34 @@ public class SignUpFragment extends Fragment {
     }
 
     private boolean checkInputs(){
+        boolean passed = true;
+
         String emailString = this.email.getText().toString();
         String passwordString = this.password.getText().toString();
         String confirmPasswordString = this.confirmPassword.getText().toString();
 
         if(emailString.isEmpty() || passwordString.isEmpty() || confirmPasswordString.isEmpty()){
             setException(EMPTY_FIELD_STRING);
-            return false;
+            passed = false;
         } else if(!passwordString.equals(confirmPasswordString)){
             setException(PASSWORDS_DO_NOT_MATCH_STRING);
             confirmPassword.setError(PASSWORDS_DO_NOT_MATCH_STRING);
             password.setText(EMPTY_STRING);
             confirmPassword.setText(EMPTY_STRING);
-            return false;
+            passed = false;
         } else if (!isValidEmail(emailString)){
             setException(BADLY_FORMATTED_EMAIL_STRING);
             email.setError(BADLY_FORMATTED_EMAIL_STRING);
-            return false;
+            passed = false;
         } else if (!isValidPassword(passwordString)){
             setException(INVALID_PASSWORD_STRING);
             password.setError(INVALID_PASSWORD_STRING);
             password.setText(EMPTY_STRING);
             confirmPassword.setText(EMPTY_STRING);
-            return false;
+            passed = false;
         }
 
-        return true;
+        return passed;
     }
 
     private void showProgressBar(Boolean show){

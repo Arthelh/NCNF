@@ -133,9 +133,8 @@ public class PrivateUser {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
         PrivateUser that = (PrivateUser) o;
-        if(this.user == null || that.user == null) return false;
+        if (o == null || getClass() != o.getClass() ||this.user == null || that.user == null) return false;
         return user.getUid().equals(that.user.getUid()) && this.path == that.path;
     }
 

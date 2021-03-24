@@ -52,7 +52,9 @@ public class UserProfileActivity extends AppCompatActivity {
         firstName = findViewById(R.id.userProfileFirstName);
         lastName = findViewById(R.id.userProfileLastName);
         birthDate = findViewById(R.id.userProfileDateOfBirth);
-        this.prepareFields();
+        addTextWatcherFirstName();
+        addTextWatcherLastName();
+        addTextWatcherBirthDate();
         // this.intent = new Intent(this, UserBookmark.class);
         // findViewById(R.id.userProfileProgresssBar).setVisibility(View.INVISIBLE);
     }
@@ -96,7 +98,7 @@ public class UserProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void prepareFields(){
+    private void addTextWatcherFirstName(){
         firstName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -112,14 +114,14 @@ public class UserProfileActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void addTextWatcherLastName(){
         lastName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
             @Override
             public void afterTextChanged(Editable s) {
                 if(!lastName.getText().toString().isEmpty()) {
@@ -128,7 +130,9 @@ public class UserProfileActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void addTextWatcherBirthDate(){
         birthDate.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -160,41 +164,58 @@ public class UserProfileActivity extends AppCompatActivity {
         findViewById(R.id.userProfileSaveButton).setEnabled(false);
 
         if(firstNameChanged){
-            CompletableFuture<DatabaseResponse> changed = this.user.updateFirstName(firstName.getText().toString());
-            changed.thenAccept(task -> {
-                if(task.isSuccessful()) {
-                    firstNameChanged = false;
-                } else {
-                    findViewById(R.id.userProfileSaveButton).setEnabled(true);
-                }
-                setProgressBar(View.INVISIBLE);
-            });
+            saveFirstName();
         }
 
         if(lastNameChanged){
-            CompletableFuture<DatabaseResponse> changed = this.user.updateLastName(lastName.getText().toString());
-            changed.thenAccept(task -> {
-                if(task.isSuccessful()){
-                    lastNameChanged = false;
-                } else {
-                    findViewById(R.id.userProfileSaveButton).setEnabled(true);
-                }
-                setProgressBar(View.INVISIBLE);
-            });
+            saveLastName();
         }
-        if(birthDateChanged){
-            CompletableFuture<DatabaseResponse> changed = this.user.updateBirth(Integer.parseInt(birthDate.getText().toString()));
-            changed.thenAccept(task -> {
-                if(task.isSuccessful()){
-                    birthDateChanged = false;
-                } else {
-                    findViewById(R.id.userProfileSaveButton).setEnabled(true);
-                }
-                setProgressBar(View.INVISIBLE);
-            });
 
+        if(birthDateChanged){
+            saveBirthDate();
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void saveFirstName(){
+        CompletableFuture<DatabaseResponse> changed = this.user.updateFirstName(firstName.getText().toString());
+        changed.thenAccept(task -> {
+            if(task.isSuccessful()) {
+                firstNameChanged = false;
+            } else {
+                findViewById(R.id.userProfileSaveButton).setEnabled(true);
+            }
+            setProgressBar(View.INVISIBLE);
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void saveLastName(){
+        CompletableFuture<DatabaseResponse> changed = this.user.updateLastName(lastName.getText().toString());
+        changed.thenAccept(task -> {
+            if(task.isSuccessful()){
+                lastNameChanged = false;
+            } else {
+                findViewById(R.id.userProfileSaveButton).setEnabled(true);
+            }
+            setProgressBar(View.INVISIBLE);
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void saveBirthDate(){
+        CompletableFuture<DatabaseResponse> changed = this.user.updateBirth(Integer.parseInt(birthDate.getText().toString()));
+        changed.thenAccept(task -> {
+            if(task.isSuccessful()){
+                birthDateChanged = false;
+            } else {
+                findViewById(R.id.userProfileSaveButton).setEnabled(true);
+            }
+            setProgressBar(View.INVISIBLE);
+        });
+    }
+
+
 
     public void viewBookmark(View view){
         startActivity(intent);
