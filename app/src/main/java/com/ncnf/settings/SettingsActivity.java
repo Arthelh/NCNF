@@ -31,7 +31,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 distanceSeekBarValue = progress + 1;
-                String textViewText = LanguagePack.settings_distance_slider[Settings.getLang().index] + distanceSeekBarValue + " km";
+                String textViewText = getString(R.string.settings_distance_slider) + distanceSeekBarValue + " km";
                 textView.setText(textViewText);
             }
 
@@ -48,14 +48,14 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void setText(){
-        String textViewText = LanguagePack.settings_distance_slider[Settings.getLang().index] + distanceSeekBarValue + " km";
+        String textViewText = getString(R.string.settings_distance_slider) + distanceSeekBarValue + " km";
         textView.setText(textViewText);
 
         Button discard = findViewById(R.id.discardButton);
-        discard.setText(LanguagePack.settings_discard_button[Settings.getLang().index]);
+        discard.setText(R.string.settings_discard_button);
 
         Button accept = findViewById(R.id.validateButton);
-        accept.setText(LanguagePack.settings_accept_button[Settings.getLang().index]);
+        accept.setText(getString(R.string.settings_accept_button));
     }
 
     public void validate(View view){
