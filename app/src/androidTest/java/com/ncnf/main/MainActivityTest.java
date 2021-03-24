@@ -1,12 +1,12 @@
-package com.ncnf;
+package com.ncnf.main;
 
 import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.ncnf.authentication.SignInActivity;
-import com.ncnf.authentication.SignUpActivity;
+import com.ncnf.R;
+import com.ncnf.authentication.LoginActivity;
 import com.ncnf.main.MainActivity;
 import com.ncnf.map.MapActivity;
 import com.ncnf.feed.FeedActivity;
@@ -47,7 +47,7 @@ public final class MainActivityTest {
 
     @Test
     public void testMapButton(){
-        onView(withId(R.id.to_map_link)).perform(click());
+        onView(ViewMatchers.withId(R.id.to_map_link)).perform(click());
         Intents.intended(hasComponent(MapActivity.class.getName()));
     }
 
@@ -58,26 +58,12 @@ public final class MainActivityTest {
     }
 
     @Test
-    public void signInTest(){
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
-            onView(withId(R.id.mainSignInButton)).perform(click());
-            Intents.intended(hasComponent(SignInActivity.class.getName()));
-        }
-    }
-
-    @Test
-    public void signUpTest(){
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
-            onView(withId(R.id.mainSignUpButton)).perform(click());
-            Intents.intended(hasComponent(SignUpActivity.class.getName()));
-        }
-    }
-
-    @Test
     public void profileTest(){
+        onView(withId(R.id.mainProfileButton)).perform(click());
         if(FirebaseAuth.getInstance().getCurrentUser() != null) {
-            onView(withId(R.id.mainProfileButton)).perform(click());
             Intents.intended(hasComponent(UserProfileActivity.class.getName()));
+        } else {
+            Intents.intended(hasComponent(LoginActivity.class.getName()));
         }
     }
 

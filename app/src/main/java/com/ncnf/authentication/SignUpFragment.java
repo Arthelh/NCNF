@@ -4,13 +4,18 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,31 +40,30 @@ import static com.ncnf.Utils.isValidEmail;
 import static com.ncnf.Utils.isValidPassword;
 
 @AndroidEntryPoint
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpFragment extends Fragment {
+
     @Inject
     AuthenticationService auth;
 
-    private Intent intent;
-
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
-
-        this.intent = new Intent(this, UserProfileActivity.class);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        setProgressBar(View.INVISIBLE);
-        setFieldsEmpty();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_sign_up, container, false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void signUp(View view) {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setProgressBar(View.INVISIBLE);
+        setFieldsEmpty();
+
+        getView().findViewById(R.id.signUpButton).setOnClickListener(v -> signUp());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void signUp() {
         String email = getFieldText(R.id.signUpEmail);
         String password = getFieldText(R.id.signUpPassword);
         String confirmed = getFieldText(R.id.signUpConfirmPassword);
@@ -96,8 +100,8 @@ public class SignUpActivity extends AppCompatActivity {
                 PrivateUser user = new PrivateUser(fb, USERs_COLLECTION_KEY + fb.getUid());
                 user.saveUserToDB().thenAccept(dbResponse -> {
                     if (dbResponse.isSuccessful()) {
+                        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
                         startActivity(intent);
-                        finish();
                     } else {
                         Log.d(DEBUG_TAG, "Deleting user.");
                         fb.delete();
@@ -113,22 +117,25 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void setFieldsEmpty(){
-        ((EditText)findViewById(R.id.signUpEmail)).setText(EMPTY_STRING);
-        ((EditText)findViewById(R.id.signUpPassword)).setText(EMPTY_STRING);
-        ((EditText)findViewById(R.id.signUpConfirmPassword)).setText(EMPTY_STRING);
+        ((EditText)getView().findViewById(R.id.signUpEmail)).setText(EMPTY_STRING);
+        ((EditText)getView().findViewById(R.id.signUpPassword)).setText(EMPTY_STRING);
+        ((EditText)getView().findViewById(R.id.signUpConfirmPassword)).setText(EMPTY_STRING);
     }
 
     private String getFieldText(int id){
-        return ((EditText)findViewById(id)).getText().toString();
+        return ((EditText)getView().findViewById(id)).getText().toString();
     }
 
     private void setProgressBar(int visibility){
-        ProgressBar bar = findViewById(R.id.progressBar);
+        ProgressBar bar = getView().findViewById(R.id.progressBar);
         bar.setVisibility(visibility);
     }
 
     private void setException(String s){
-        TextView exception = findViewById(R.id.exceptionSignUp);
+        TextView exception = getView().findViewById(R.id.exceptionSignUp);
         exception.setText(s);
+        Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
     }
+
+
 }
