@@ -18,16 +18,23 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
+import dagger.Provides;
+
 import static com.ncnf.Utils.DEBUG_TAG;
 
 public class AuthenticationService implements AuthenticationServiceInterface {
 
-    private final FirebaseAuth auth;
-    private AuthenticationResponse response;
+    private FirebaseAuth auth;
 
     @Inject
     public AuthenticationService(){
-        this.auth = FirebaseAuth.getInstance();
+        this(true);
+    }
+
+    protected AuthenticationService(boolean getAuth){
+        if(getAuth){
+            this.auth = FirebaseAuth.getInstance();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -35,16 +42,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
     public CompletableFuture<AuthenticationResponse> register(String email, String password){
         CompletableFuture<AuthenticationResponse> futureResponse = new CompletableFuture<>();
 
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            try {
-                futureResponse.complete(new AuthenticationResponse(task.isSuccessful(), task.getResult(), task.getException()));
-            } catch (Exception e){
-                futureResponse.complete(new AuthenticationResponse(task.isSuccessful(), null, task.getException()));
-                /*
-                    TODO: Match exception to check if user exists or not
-                */
-            }
-        });
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> onTaskComplete(task, futureResponse));
 
         return futureResponse;
     }
@@ -54,16 +52,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
     public CompletableFuture<AuthenticationResponse> logIn(String email, String password) {
         CompletableFuture<AuthenticationResponse> futureResponse = new CompletableFuture<>();
 
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            try{
-                futureResponse.complete(new AuthenticationResponse(task.isSuccessful(), task.getResult(), task.getException()));
-            } catch (Exception e) {
-                futureResponse.complete(new AuthenticationResponse(task.isSuccessful(), null, task.getException()));
-                /*
-                    TODO: Match exception to check if user exists or not
-                */
-            }
-        });
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> onTaskComplete(task, futureResponse));
 
         return futureResponse;
     }
@@ -71,6 +60,22 @@ public class AuthenticationService implements AuthenticationServiceInterface {
     @Override
     public CompletableFuture<AuthenticationResponse> logOut(FirebaseUser user) {
         return null;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected void onTaskComplete(Task<AuthResult> task, CompletableFuture<AuthenticationResponse> futureResponse){
+        try {
+            futureResponse.complete(new AuthenticationResponse(task.isSuccessful(), task.getResult(), task.getException()));
+        } catch (Exception e){
+            futureResponse.complete(new AuthenticationResponse(task.isSuccessful(), null, task.getException()));
+                /*
+                    TODO: Match exception to check if user exists or not
+                */
+        }
+    }
+
+    protected void setAuth(FirebaseAuth auth){
+        this.auth = auth;
     }
 
 }
