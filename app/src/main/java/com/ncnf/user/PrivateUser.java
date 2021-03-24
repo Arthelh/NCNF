@@ -1,60 +1,42 @@
 package com.ncnf.user;
 
-import android.app.VoiceInteractor;
 import android.os.Build;
-import android.provider.ContactsContract;
 import android.util.Log;
-import androidx.annotation.NonNull;
+
 import androidx.annotation.RequiresApi;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirestoreRegistrar;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 
-import org.xml.sax.SAXException;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-import static com.ncnf.Utils.*;
+import static com.ncnf.Utils.BIRTH_YEAR_KEY;
+import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.Utils.EMAIL_KEY;
+import static com.ncnf.Utils.EMPTY_STRING;
+import static com.ncnf.Utils.FIRST_NAME_KEY;
+import static com.ncnf.Utils.FRIENDS_KEY;
+import static com.ncnf.Utils.LAST_NAME_KEY;
+import static com.ncnf.Utils.OWNED_EVENTS_KEY;
+import static com.ncnf.Utils.SAVED_EVENTS_KEY;
+import static com.ncnf.Utils.USERs_COLLECTION_KEY;
 
 public class PrivateUser {
 
-    private static PrivateUser instance = new PrivateUser();
-    private static FirebaseUser user;
-    private static String path;
+    private FirebaseUser user;
+    private String path;
 
-    public static PrivateUser getInstance(){
-        if(user == null || path == null){
-            instance = new PrivateUser();
-        }
-        return instance;
-    }
-
-    private PrivateUser(){
-        this.user = FirebaseAuth.getInstance().getCurrentUser();
-        if(this.user != null){
-            this.path = USERs_COLLECTION_KEY + user.getUid();
-        } else {
-            this.path = null;
-        }
+    public PrivateUser(FirebaseUser user, String path) {
+        this.user = user;
+        this.path = path;
     }
 
     public String getID(){
@@ -91,7 +73,7 @@ public class PrivateUser {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse> getField(String field){
         verifyCredential();
-        return DatabaseService.getInstance().getField(this.path, field);
+        return DatabaseService.getInstance().getField(path, field);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -141,6 +123,11 @@ public class PrivateUser {
         if(user == null || path == null){
             throw new IllegalStateException("User doesn't have the right credentials to perform current operation");
         }
+    }
+
+    public void signOut() {
+        FirebaseAuth.getInstance().signOut();
+        user.delete();
     }
 
     @Override

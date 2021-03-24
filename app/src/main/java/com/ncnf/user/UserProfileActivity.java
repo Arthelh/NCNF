@@ -1,9 +1,6 @@
 package com.ncnf.user;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,27 +12,28 @@ import android.widget.EditText;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseResponse;
-import com.ncnf.event.Event;
-import com.ncnf.event.PublicEvent;
 import com.ncnf.main.MainActivity;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.ncnf.Utils.BIRTH_YEAR_KEY;
 import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
 
+@AndroidEntryPoint
 public class UserProfileActivity extends AppCompatActivity {
 
-    private PrivateUser user;
+    @Inject
+    public PrivateUser user;
+
     private boolean firstNameChanged;
     private boolean lastNameChanged;
     private boolean birthDateChanged;
@@ -44,7 +42,7 @@ public class UserProfileActivity extends AppCompatActivity {
     EditText lastName;
     EditText birthDate;
     private Intent intent;
-//    private final Event event = new PublicEvent("name of event", new Date(), new GeoPoint(1.2, 2.1), "data", "1234", EventCategory.Conference, 0, 0, new ArrayList<>());
+    // private final Event event = new PublicEvent("name of event", new Date(), new GeoPoint(1.2, 2.1), "data", "1234", EventCategory.Conference, 0, 0, new ArrayList<>());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,45 +53,46 @@ public class UserProfileActivity extends AppCompatActivity {
         lastName = findViewById(R.id.userProfileLastName);
         birthDate = findViewById(R.id.userProfileDateOfBirth);
         this.prepareFields();
-//        this.intent = new Intent(this, UserBookmark.class);
-//        findViewById(R.id.userProfileProgresssBar).setVisibility(View.INVISIBLE);
+        // this.intent = new Intent(this, UserBookmark.class);
+        // findViewById(R.id.userProfileProgresssBar).setVisibility(View.INVISIBLE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onStart() {
         super.onStart();
-        if(FirebaseAuth.getInstance().getCurrentUser() != null){
-            user = PrivateUser.getInstance();
-            user.loadUserFromBD().thenAccept(task -> {
+        if(user != null){
+             CompletableFuture<DatabaseResponse> future = user.loadUserFromBD();
+             future.thenAccept(task -> {
 
                 if(task.isSuccessful()) {
                     Map<String, Object> map = (Map<String, Object>) task.getResult();
                     String first_name = map.get(FIRST_NAME_KEY).toString();
                     String last_name = map.get(LAST_NAME_KEY).toString();
                     String birth_date = map.get(BIRTH_YEAR_KEY).toString();
+                    // TODO: include email in the request
+                    String user_email = "foo@bar.com";
 
                     firstName.setText(first_name);
                     lastName.setText(last_name);
                     birthDate.setText(birth_date);
                     findViewById(R.id.userProfileSaveButton).setEnabled(false);
                     email.setEnabled(false);
-                    email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    email.setText(user_email);
                 } else {
                     Log.d(DEBUG_TAG, "Unable to load user from db : " + task.getException().getMessage());
                 }
             });
 
-//            this.event.setOwner(PrivateUser.getInstance().getID());
-//            event.storeEventInDB();
+            // this.event.setOwner(PrivateUser.getInstance().getID());
+            // event.storeEventInDB();
         }
 
     }
 
     public void logOut(View view) {
         Intent intent = new Intent(this, MainActivity.class);
-        FirebaseAuth.getInstance().signOut();
-        this.user.delete();
+        this.user.signOut();
         startActivity(intent);
     }
 
@@ -150,12 +149,12 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void setProgressBar(int visibility){
-//        if(!firstNameChanged && !lastNameChanged && !birthDateChanged){
-//            findViewById(R.id.userProfileProgresssBar).setVisibility(View.INVISIBLE);
-//        }
+        // if(!firstNameChanged && !lastNameChanged && !birthDateChanged){
+        //   findViewById(R.id.userProfileProgresssBar).setVisibility(View.INVISIBLE);
+        // }
     }
 
-    ///TODO: find a way to refactor -> save multiple fields at the time but how ?
+    // TODO: find a way to refactor -> save multiple fields at the time but how ?
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void saveNewFields(View view){
         findViewById(R.id.userProfileSaveButton).setEnabled(false);
