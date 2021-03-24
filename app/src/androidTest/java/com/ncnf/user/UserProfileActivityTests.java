@@ -34,10 +34,8 @@ import static com.ncnf.Utils.BIRTH_YEAR_KEY;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -57,7 +55,7 @@ public class UserProfileActivityTests {
         values.put(BIRTH_YEAR_KEY, "2012");
         future.complete(new DatabaseResponse(true, values, new Exception()));
 
-        when(mockUser.loadUserFromBD()).thenReturn(future);
+        when(mockUser.loadUserFromDB()).thenReturn(future);
     }
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);

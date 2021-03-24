@@ -5,11 +5,10 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
+import com.ncnf.database.DatabaseServiceInterface;
 import com.ncnf.event.Event;
 
 import java.util.ArrayList;
@@ -27,33 +26,38 @@ import static com.ncnf.Utils.FRIENDS_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
 import static com.ncnf.Utils.OWNED_EVENTS_KEY;
 import static com.ncnf.Utils.SAVED_EVENTS_KEY;
-import static com.ncnf.Utils.USERs_COLLECTION_KEY;
 
 public class PrivateUser {
 
-    private FirebaseUser user;
+    private DatabaseServiceInterface db;
+
+    private String email;
+    private String UUID;
     private String path;
 
-    public PrivateUser(FirebaseUser user, String path) {
-        this.user = user;
+    public PrivateUser(DatabaseServiceInterface db, String path, String UUID, String email) {
+        if(UUID == null || email == null || path == null) {
+            throw new IllegalStateException("User doesn't have the right credentials to perform current operation");
+        }
+
+        this.db = db;
         this.path = path;
+        this.UUID = UUID;
+        this.email = email;
     }
 
     public String getID(){
-        if(this.user != null) {
-            return this.user.getUid();
-        }
-        return null;
+        return UUID;
+    }
+
+    public String getEmail(){
+        return email;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse> saveUserToDB(){
-        verifyCredential();
-
-        Log.d(DEBUG_TAG, "Integrating new user to DB");
-
         Map<String, Object> initial_data = new HashMap<>();
-        initial_data.put(EMAIL_KEY, this.user.getEmail());
+        initial_data.put(EMAIL_KEY, this.email);
         initial_data.put(LAST_NAME_KEY, EMPTY_STRING);
         initial_data.put(FIRST_NAME_KEY, EMPTY_STRING);
         initial_data.put(BIRTH_YEAR_KEY, 0);
@@ -61,19 +65,17 @@ public class PrivateUser {
         initial_data.put(OWNED_EVENTS_KEY, new ArrayList<String>());
         initial_data.put(SAVED_EVENTS_KEY, new ArrayList<String>());
 
-        return DatabaseService.getInstance().setDocument(this.path, initial_data);
+        return this.db.setDocument(this.path, initial_data);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private CompletableFuture<DatabaseResponse> update(String key, Object value){
-        verifyCredential();
-        return DatabaseService.getInstance().updateField(path, key, value);
+        return this.db.updateField(path, key, value);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse> getField(String field){
-        verifyCredential();
-        return DatabaseService.getInstance().getField(path, field);
+        return this.db.getField(path, field);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -92,10 +94,8 @@ public class PrivateUser {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public CompletableFuture<DatabaseResponse> loadUserFromBD(){
-        verifyCredential();
-        return DatabaseService.getInstance().getData(this.path);
-
+    public CompletableFuture<DatabaseResponse> loadUserFromDB(){
+        return this.db.getData(this.path);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -110,24 +110,11 @@ public class PrivateUser {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private CompletableFuture<DatabaseResponse> addEvent(Event event, String array){
-        verifyCredential();
-        return this.update(array, FieldValue.arrayUnion(event.getUID().toString()));
-    }
-
-    public void delete(){
-        user = null;
-        path = null;
-    }
-
-    public void verifyCredential(){
-        if(user == null || path == null){
-            throw new IllegalStateException("User doesn't have the right credentials to perform current operation");
-        }
+        return this.update(array, FieldValue.arrayUnion(event.getUID()));
     }
 
     public void signOut() {
-        FirebaseAuth.getInstance().signOut();
-        user.delete();
+        CurrentUserModule.signOut();
     }
 
     @Override
@@ -135,12 +122,11 @@ public class PrivateUser {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PrivateUser that = (PrivateUser) o;
-        if(this.user == null || that.user == null) return false;
-        return user.getUid().equals(that.user.getUid()) && this.path == that.path;
+        return this.UUID.equals(that.UUID) && this.path.equals(that.path);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user);
+        return Objects.hash(UUID);
     }
 }

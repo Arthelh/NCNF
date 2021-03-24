@@ -62,7 +62,7 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if(user != null){
-             CompletableFuture<DatabaseResponse> future = user.loadUserFromBD();
+             CompletableFuture<DatabaseResponse> future = user.loadUserFromDB();
              future.thenAccept(task -> {
 
                 if(task.isSuccessful()) {

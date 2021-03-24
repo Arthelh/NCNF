@@ -11,7 +11,7 @@ public class Utils {
     /**
      * Keys related to users
      */
-    public static final String USERs_COLLECTION_KEY  = "/users/";
+    public static final String USERS_COLLECTION_KEY = "/users/";
     public static final String FIRST_NAME_KEY = "first_name";
     public static final String LAST_NAME_KEY = "last_name";
     public static final String BIRTH_YEAR_KEY = "year_of_birth";
