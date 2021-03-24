@@ -109,6 +109,12 @@ public class SignUpActivityTest {
 
     @Test
     public void setProgressBarTest(){
+        Exception exception = new Exception(unsuccessfulRegister);
+        CompletableFuture<AuthenticationResponse> future = new CompletableFuture<>();
+        future.complete(new AuthenticationResponse(false, null, exception));
+
+        when(mockedAuth.register(anyString(), anyString())).thenReturn(future);
+
         onView(withId(R.id.progressBar)).check(matches(not(isDisplayed())));
         onView(withId(R.id.signUpEmail)).perform(typeText(validEmail), closeSoftKeyboard());
         onView(withId(R.id.signUpPassword)).perform(typeText(validPassword), closeSoftKeyboard());
