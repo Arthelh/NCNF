@@ -34,9 +34,9 @@ public class UserProfileActivity extends AppCompatActivity {
     @Inject
     public PrivateUser user;
 
-    private boolean firstNameChanged;
-    private boolean lastNameChanged;
-    private boolean birthDateChanged;
+    private boolean firstNameChanged = false;
+    private boolean lastNameChanged = false;
+    private boolean birthDateChanged = false;
     EditText email;
     EditText firstName;
     EditText lastName;

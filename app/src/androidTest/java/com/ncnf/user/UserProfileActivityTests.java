@@ -33,7 +33,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.ncnf.Utils.BIRTH_YEAR_KEY;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -47,13 +51,20 @@ public class UserProfileActivityTests {
     // BeforeClass is required because the mocking must be done before the activity is launched
     @BeforeClass
     public static void setup() {
+        HashMap<String, String> values = new HashMap<>();
+        values.put(FIRST_NAME_KEY, "John");
+        values.put(LAST_NAME_KEY, "Doe");
+        values.put(BIRTH_YEAR_KEY, "2012");
+        future.complete(new DatabaseResponse(true, values, new Exception()));
+
         when(mockUser.loadUserFromBD()).thenReturn(future);
     }
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private ActivityScenarioRule scenario = new ActivityScenarioRule<>(UserProfileActivity.class);
 
     @Rule
-    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(UserProfileActivity.class));
+    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);
 
     @BindValue
     public PrivateUser user = mockUser;
@@ -75,15 +86,6 @@ public class UserProfileActivityTests {
     }
 
     @Test
-    public void saveIsDisabledAfterSave() {
-        CompletableFuture<DatabaseResponse> future = new CompletableFuture<>();
-        when(user.updateFirstName(anyString())).thenReturn(future);
-        onView(withId(R.id.userProfileFirstName)).perform(typeText("John"), closeSoftKeyboard());
-        onView(withId(R.id.userProfileSaveButton)).perform(click());
-        onView(withId(R.id.userProfileSaveButton)).check(matches(not(isEnabled())));
-    }
-
-    @Test
     public void logOutReturnsToHome() {
         Intents.init();
         onView(withId(R.id.logOutButton)).perform(click());
@@ -92,13 +94,54 @@ public class UserProfileActivityTests {
     }
 
     @Test
-    public void attributesAreDisplayed() throws InterruptedException {
-        HashMap<String, String> values = new HashMap<>();
-        values.put(FIRST_NAME_KEY, "John");
-        values.put(LAST_NAME_KEY, "Doe");
-        values.put(BIRTH_YEAR_KEY, "2012-08-02");
-        future.complete(new DatabaseResponse(true, values, null));
+    public void attributesAreDisplayed() {
         onView(withId(R.id.userProfileFirstName)).check(matches(withText("John")));
+        onView(withId(R.id.userProfileLastName)).check(matches(withText("Doe")));
+    }
+
+
+    @Test
+    public void saveIsDisabledAfterSave() {
+        CompletableFuture<DatabaseResponse> future = new CompletableFuture<>();
+        future.complete(new DatabaseResponse(true, new HashMap<>(), new Exception()));
+
+        when(user.updateFirstName(anyString())).thenReturn(future);
+        when(user.updateLastName(anyString())).thenReturn(future);
+        when(user.updateBirth(anyInt())).thenReturn(future);
+
+        onView(withId(R.id.userProfileFirstName)).perform(typeText("Jean"), closeSoftKeyboard());
+        onView(withId(R.id.userProfileSaveButton)).perform(click());
+        onView(withId(R.id.userProfileSaveButton)).check(matches(not(isEnabled())));
+
+        onView(withId(R.id.userProfileLastName)).perform(typeText("Dupont"), closeSoftKeyboard());
+        onView(withId(R.id.userProfileSaveButton)).perform(click());
+        onView(withId(R.id.userProfileSaveButton)).check(matches(not(isEnabled())));
+
+        onView(withId(R.id.userProfileDateOfBirth)).perform(typeText("2013"), closeSoftKeyboard());
+        onView(withId(R.id.userProfileSaveButton)).perform(click());
+        onView(withId(R.id.userProfileSaveButton)).check(matches(not(isEnabled())));
+    }
+
+    @Test
+    public void saveIsEnabledIfRequestFails() {
+        CompletableFuture<DatabaseResponse> future = new CompletableFuture<>();
+        future.complete(new DatabaseResponse(false, new HashMap<>(), new Exception()));
+
+        when(user.updateFirstName(anyString())).thenReturn(future);
+        when(user.updateLastName(anyString())).thenReturn(future);
+        when(user.updateBirth(anyInt())).thenReturn(future);
+
+        onView(withId(R.id.userProfileFirstName)).perform(typeText("Jean"), closeSoftKeyboard());
+        onView(withId(R.id.userProfileSaveButton)).perform(click());
+        onView(withId(R.id.userProfileSaveButton)).check(matches(isEnabled()));
+
+        onView(withId(R.id.userProfileLastName)).perform(typeText("Dupont"), closeSoftKeyboard());
+        onView(withId(R.id.userProfileSaveButton)).perform(click());
+        onView(withId(R.id.userProfileSaveButton)).check(matches(isEnabled()));
+
+        onView(withId(R.id.userProfileDateOfBirth)).perform(typeText("2013"), closeSoftKeyboard());
+        onView(withId(R.id.userProfileSaveButton)).perform(click());
+        onView(withId(R.id.userProfileSaveButton)).check(matches(isEnabled()));
     }
 
 
