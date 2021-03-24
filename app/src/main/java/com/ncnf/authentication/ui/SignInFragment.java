@@ -127,6 +127,6 @@ public class SignInFragment extends Fragment {
 
     private void setException(String s){
         exceptionText.setText(s);
-        Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 }
