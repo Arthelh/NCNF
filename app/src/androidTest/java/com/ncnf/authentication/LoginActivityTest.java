@@ -4,6 +4,7 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
+import com.ncnf.authentication.ui.LoginActivity;
 
 import org.junit.After;
 import org.junit.Before;

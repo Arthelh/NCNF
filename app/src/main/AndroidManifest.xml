@@ -26,7 +26,7 @@
             android:parentActivityName="com.ncnf.main.MainActivity"
             tools:ignore="MissingClass" />
         <activity
-            android:name="com.ncnf.authentication.LoginActivity"
+            android:name="com.ncnf.authentication.ui.LoginActivity"
             android:parentActivityName="com.ncnf.main.MainActivity"
             tools:ignore="MissingClass" />
 

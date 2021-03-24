@@ -1,4 +1,4 @@
-package com.ncnf.authentication;
+package com.ncnf.authentication.ui;
 
 import android.content.Intent;
 import android.os.Build;
@@ -20,6 +20,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
+import com.ncnf.authentication.AuthenticationResponse;
+import com.ncnf.authentication.AuthenticationService;
 import com.ncnf.user.PrivateUser;
 import com.ncnf.user.UserProfileActivity;
 

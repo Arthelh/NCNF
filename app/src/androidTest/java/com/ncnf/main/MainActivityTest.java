@@ -6,8 +6,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
-import com.ncnf.authentication.LoginActivity;
-import com.ncnf.main.MainActivity;
+import com.ncnf.authentication.ui.LoginActivity;
 import com.ncnf.map.MapActivity;
 import com.ncnf.feed.FeedActivity;
 import com.ncnf.user.UserProfileActivity;

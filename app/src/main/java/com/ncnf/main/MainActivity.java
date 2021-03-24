@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
-import com.ncnf.authentication.LoginActivity;
+import com.ncnf.authentication.ui.LoginActivity;
 import com.ncnf.feed.FeedActivity;
 import com.ncnf.map.MapActivity;
 import com.ncnf.user.UserProfileActivity;

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="600dp"
-    tools:context=".authentication.SignUpFragment">
+    tools:context=".authentication.ui.SignUpFragment">
 
     <EditText
         android:id="@+id/signUpEmail"
