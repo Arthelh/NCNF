@@ -3,15 +3,13 @@ package com.ncnf.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
-import com.ncnf.authentication.SignInActivity;
-import com.ncnf.authentication.SignUpActivity;
+import com.ncnf.authentication.LoginActivity;
 import com.ncnf.feed.FeedActivity;
 import com.ncnf.map.MapActivity;
 import com.ncnf.user.UserProfileActivity;
@@ -31,20 +29,11 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         Switch s = findViewById(R.id.connected);
-        Button profile = findViewById(R.id.mainProfileButton);
-        Button signIn = findViewById(R.id.mainSignInButton);
-        Button signUp = findViewById(R.id.mainSignUpButton);
 
         if(isConnected()){
-            profile.setEnabled(true);
-            signIn.setEnabled(false);
-            signUp.setEnabled(false);
             s.setText(CONNECTED_KEYWORD);
             s.setChecked(true);
         } else {
-            profile.setEnabled(false);
-            signIn.setEnabled(true);
-            signUp.setEnabled(true);
             s.setText(DISCONNECTED_KEYWORD);
             s.setChecked(false);
         }
@@ -60,21 +49,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void signUp(View view) {
-        Intent intent = new Intent(this, SignUpActivity.class);
-        startActivity(intent);
-    }
-
-    public void signIn(View view) {
-        Intent intent = new Intent(this, SignInActivity.class);
-        startActivity(intent);
-    }
-
     public void gotToProfile(View view){
+        Intent intent;
+
         if(!isConnected()){
-            return;
+            intent = new Intent(this, LoginActivity.class);
+        } else {
+            intent = new Intent(this, UserProfileActivity.class);
         }
-        Intent intent = new Intent(this, UserProfileActivity.class);
+
         startActivity(intent);
     }
 
