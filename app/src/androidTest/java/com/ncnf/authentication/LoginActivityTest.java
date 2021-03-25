@@ -141,11 +141,11 @@ public class LoginActivityTest {
     public void signUpOrganizerViewTest(){
         onView(withId(R.id.registerButton)).perform(click());
 
-        onView(withId(R.id.signUpOrganizerText)).perform(click());
+        onView(withId(R.id.organizerButton)).perform(click());
         onView(withId(R.id.signUpEmail)).check(matches(withHint(containsString("Business Email.."))));
         onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString("Organizer Registration"))));
 
-        onView(withId(R.id.signUpOrganizerText)).perform(click());
+        onView(withId(R.id.organizerButton)).perform(click());
         onView(withId(R.id.signUpEmail)).check(matches(withHint(containsString("Email.."))));
         onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString("Register"))));
     }
