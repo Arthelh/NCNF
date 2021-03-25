@@ -13,29 +13,15 @@ import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.Utils.DEBUG_TAG;
 
-
 public class DatabaseService implements DatabaseServiceInterface {
 
     private final FirebaseFirestore db;
-    private static DatabaseService instance;
-
-    public static DatabaseService getInstance(){
-        if (instance == null)
-            instance = new DatabaseService();
-        return instance;
-    }
-
-    public static DatabaseService getInstance(FirebaseFirestore db){
-        if (instance == null)
-            instance = new DatabaseService(db);
-        return instance;
-    }
-
-    private DatabaseService() {
+   
+    public DatabaseService(){
         this.db = FirebaseFirestore.getInstance();
     }
 
-    private DatabaseService(FirebaseFirestore db) {
+    public DatabaseService(FirebaseFirestore db)  {
         this.db = db;
     }
 

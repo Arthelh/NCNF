@@ -7,7 +7,6 @@ import com.ncnf.event.PublicEvent;
 import com.ncnf.organizer.PublicOrganizer;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -23,13 +22,14 @@ import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
 public class PrivateUserTests {
 
-    private static DatabaseService db = Mockito.mock(DatabaseService.class);
+    DatabaseService db = mock(DatabaseService.class);
 
     @Test
     public void equalsMatches() {
@@ -138,7 +138,5 @@ public class PrivateUserTests {
         user.ownEvent(event);
         verify(db).updateField(eq("/users"), eq(OWNED_EVENTS_KEY), anyObject());
     }
-
-
 
 }

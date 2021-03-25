@@ -1,26 +1,17 @@
 package com.ncnf.authentication;
 
 import android.os.Build;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApiNotAvailableException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
-
-import dagger.Provides;
-
-import static com.ncnf.Utils.DEBUG_TAG;
 
 public class AuthenticationService implements AuthenticationServiceInterface {
 

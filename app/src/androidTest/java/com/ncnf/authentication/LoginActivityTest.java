@@ -1,10 +1,13 @@
 package com.ncnf.authentication;
 
+import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
+import com.ncnf.feed.FeedActivity;
+import com.ncnf.user.UserProfileActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -23,6 +26,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -105,6 +109,15 @@ public class LoginActivityTest {
         onView(withId(R.id.registerButton)).perform(click());
         onView(ViewMatchers.withId(R.id.signUpRegisterButton)).perform(click());
         onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(EMPTY_FIELD_STRING))));
+
+        onView(withId(R.id.signUpEmail)).perform(typeText(validEmail), closeSoftKeyboard());
+        onView(ViewMatchers.withId(R.id.signUpRegisterButton)).perform(click());
+        onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(EMPTY_FIELD_STRING))));
+
+        onView(withId(R.id.signUpEmail)).perform(typeText(validEmail), closeSoftKeyboard());
+        onView(withId(R.id.signUpPassword)).perform(typeText(validPassword), closeSoftKeyboard());
+        onView(ViewMatchers.withId(R.id.signUpRegisterButton)).perform(click());
+        onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(EMPTY_FIELD_STRING))));
     }
 
     @Test
@@ -141,11 +154,11 @@ public class LoginActivityTest {
     public void signUpOrganizerViewTest(){
         onView(withId(R.id.registerButton)).perform(click());
 
-        onView(withId(R.id.signUpOrganizerText)).perform(click());
+        onView(withId(R.id.organizerButton)).perform(click());
         onView(withId(R.id.signUpEmail)).check(matches(withHint(containsString("Business Email.."))));
         onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString("Organizer Registration"))));
 
-        onView(withId(R.id.signUpOrganizerText)).perform(click());
+        onView(withId(R.id.organizerButton)).perform(click());
         onView(withId(R.id.signUpEmail)).check(matches(withHint(containsString("Email.."))));
         onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString("Register"))));
     }

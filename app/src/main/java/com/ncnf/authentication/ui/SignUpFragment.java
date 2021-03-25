@@ -54,7 +54,7 @@ public class SignUpFragment extends Fragment {
     private EditText password;
     private EditText confirmPassword;
     private TextView exceptionText;
-    private TextView organizerText;
+    private Button organizerButton;
     private Button registerButton;
 
     @Nullable
@@ -74,7 +74,7 @@ public class SignUpFragment extends Fragment {
         showProgressBar(false);
 
         registerButton.setOnClickListener(v -> signUp());
-        organizerText.setOnClickListener(v -> {
+        organizerButton.setOnClickListener(v -> {
             if(isOrganizer){
                 setPrivateUserView();
             } else {
@@ -103,7 +103,7 @@ public class SignUpFragment extends Fragment {
             if(response.isSuccessful()){
                 Log.d(DEBUG_TAG, "Successful register for " + email);
                 FirebaseUser fb = response.getResult().getUser();
-                PrivateUser user = new PrivateUser(DatabaseService.getInstance(),USERS_COLLECTION_KEY + fb.getUid(), fb.getUid(), fb.getEmail());
+                PrivateUser user = new PrivateUser(new DatabaseService(),USERS_COLLECTION_KEY + fb.getUid(), fb.getUid(), fb.getEmail());
                 user.saveUserToDB().thenAccept(dbResponse -> {
                     if (dbResponse.isSuccessful()) {
                         Intent intent = new Intent(getActivity(), UserProfileActivity.class);
@@ -127,7 +127,7 @@ public class SignUpFragment extends Fragment {
         this.password = getView().findViewById(R.id.signUpPassword);
         this.confirmPassword = getView().findViewById(R.id.signUpConfirmPassword);
         this.exceptionText = getView().findViewById(R.id.exceptionSignUp);
-        this.organizerText = getView().findViewById(R.id.signUpOrganizerText);
+        this.organizerButton = getView().findViewById(R.id.organizerButton);
         this.registerButton = getView().findViewById(R.id.signUpRegisterButton);
     }
 
@@ -173,21 +173,21 @@ public class SignUpFragment extends Fragment {
 
     private void setException(String s){
         exceptionText.setText(s);
-//        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 
     private void setOrganizerView(){
         isOrganizer = true;
         setException("Organizer Registration");
         email.setHint("Business Email..");
-        organizerText.setText("I'm a regular user...");
+        organizerButton.setText("I'm a regular user...");
     }
 
     private void setPrivateUserView(){
         isOrganizer = false;
         setException("Register");
         email.setHint("Email..");
-        organizerText.setText("I'm an organizer...");
+        organizerButton.setText("I'm an organizer...");
     }
 
 

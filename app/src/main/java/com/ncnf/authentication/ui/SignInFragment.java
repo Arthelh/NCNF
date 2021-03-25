@@ -87,6 +87,7 @@ public class SignInFragment extends Fragment {
                 startActivity(intent);
             } else {
                 Log.d(DEBUG_TAG,"Unsuccessful login for " + email + " : " + response.getException().getMessage());
+
                 setException(response.getException().getMessage());
             }
             showProgressBar(false);

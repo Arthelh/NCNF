@@ -22,7 +22,7 @@ public class CurrentUserModule {
         if (currentUser == null) {
             FirebaseUser user = currentUser();
             if (user != null) {
-                currentUser = new PrivateUser(DatabaseService.getInstance(), USERS_COLLECTION_KEY + user.getUid(), user.getUid(), user.getEmail());
+                currentUser = new PrivateUser(new DatabaseService(), USERS_COLLECTION_KEY + user.getUid(), user.getUid(), user.getEmail());
             } else {
                 return null;
             }
@@ -32,7 +32,7 @@ public class CurrentUserModule {
 
     public static void signOut() {
         FirebaseAuth.getInstance().signOut();
-        currentUser().delete();
+//        currentUser().delete();
         currentUser = null;
     }
 
