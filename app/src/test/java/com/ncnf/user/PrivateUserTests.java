@@ -3,11 +3,13 @@ package com.ncnf.user;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventType;
+import com.ncnf.event.Location;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.organizer.PublicOrganizer;
 
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.Utils.BIRTH_YEAR_KEY;
@@ -124,7 +126,7 @@ public class PrivateUserTests {
     @Test
     public void saveEventCallsDatabase() {
         when(db.updateField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
-        Event event = new PublicEvent(new PublicOrganizer("EPFL"), EventType.Movie, "Conference", "");
+        Event event = new PublicEvent("Conference", new Date(), new Location(1, 1, "North Pole"), "", EventType.Movie, 18, 0, new PublicOrganizer("EPFL"));
         PrivateUser user = new PrivateUser(db, "/users", "42", "foo@bar.com");
         user.saveEvent(event);
         verify(db).updateField(eq("/users"), eq(SAVED_EVENTS_KEY), anyObject());
@@ -133,7 +135,7 @@ public class PrivateUserTests {
     @Test
     public void ownEventCallsDatabase() {
         when(db.updateField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
-        Event event = new PublicEvent(new PublicOrganizer("EPFL"), EventType.Movie, "Conference", "");
+        Event event = new PublicEvent("Conference", new Date(), new Location(1, 1, "North Pole"), "", EventType.Movie, 18, 0, new PublicOrganizer("EPFL"));
         PrivateUser user = new PrivateUser(db, "/users", "42", "foo@bar.com");
         user.ownEvent(event);
         verify(db).updateField(eq("/users"), eq(OWNED_EVENTS_KEY), anyObject());
