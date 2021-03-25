@@ -32,7 +32,7 @@ public class CurrentUserModule {
 
     public static void signOut() {
         FirebaseAuth.getInstance().signOut();
-        currentUser().delete();
+//        currentUser().delete();
         currentUser = null;
     }
 

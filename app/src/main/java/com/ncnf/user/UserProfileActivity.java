@@ -73,7 +73,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     String last_name = map.get(LAST_NAME_KEY).toString();
                     String birth_date = map.get(BIRTH_YEAR_KEY).toString();
                     // TODO: include email in the request
-                    String user_email = "foo@bar.com";
+                    String user_email = user.getEmail();
 
                     firstName.setText(first_name);
                     lastName.setText(last_name);

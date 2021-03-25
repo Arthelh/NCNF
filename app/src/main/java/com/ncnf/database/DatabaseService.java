@@ -11,13 +11,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import javax.inject.Inject;
+
 import static com.ncnf.Utils.DEBUG_TAG;
 
 
 public class DatabaseService implements DatabaseServiceInterface {
 
-    private final FirebaseFirestore db;
+    private FirebaseFirestore db;
 
+    @Inject
     public DatabaseService(){
         db = FirebaseFirestore.getInstance();
     }
