@@ -14,6 +14,7 @@ About my time estimates, this week I think they were fair.
 
 # Eloi
 
+This week, I manage to create the Database service in order to properly separate the back-end and the front-end. It took me the expected time as I went from the model of Authnetication Service Jrémie did last week and create mine the same way. What I didn't expect was that because of this service, I had modify the bookmark I've done last week which took me a lot of time.
 
 
 # Emmanuelle
