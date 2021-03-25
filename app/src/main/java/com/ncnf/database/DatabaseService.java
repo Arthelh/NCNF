@@ -29,7 +29,6 @@ public class DatabaseService implements DatabaseServiceInterface {
     @Override
     public CompletableFuture<DatabaseResponse> setDocument(String path, Map<String, Object> fields) {
         CompletableFuture<DatabaseResponse> futureResponse = new CompletableFuture<>();
-
         this.db.document(path).set(fields).addOnCompleteListener(task -> {
            try {
                futureResponse.complete(new DatabaseResponse(task.isSuccessful(), task.getResult(), task.getException()));
@@ -75,11 +74,10 @@ public class DatabaseService implements DatabaseServiceInterface {
     @Override
     public CompletableFuture<DatabaseResponse> getData(String path) {
         CompletableFuture<DatabaseResponse> futureResponse = new CompletableFuture<>();
-        Log.d(DEBUG_TAG, "Launching query");
 
         this.db.document(path).get().addOnCompleteListener(task -> {
             try {
-                if(task.getException() != null){
+                if(task.getException() != null) {
                 }
                 futureResponse.complete(new DatabaseResponse(task.isSuccessful(), task.getResult().getData(), task.getException()));
             } catch (Exception e){
@@ -87,7 +85,6 @@ public class DatabaseService implements DatabaseServiceInterface {
                 futureResponse.complete(new DatabaseResponse(false, null, e));
             }
         });
-        Log.d(DEBUG_TAG, "Query launched");
 
         return futureResponse;
     }
@@ -98,7 +95,7 @@ public class DatabaseService implements DatabaseServiceInterface {
 
         this.db.document(path).delete().addOnCompleteListener(task -> {
             try {
-                futureResponse.complete(new DatabaseResponse(false, task.getResult(), task.getException()));
+                futureResponse.complete(new DatabaseResponse(true, task.getResult(), task.getException()));
             } catch (Exception e){
                 Log.d(DEBUG_TAG, "Unable to load data from DB", task.getException());
                 futureResponse.complete(new DatabaseResponse(false, null, e));
