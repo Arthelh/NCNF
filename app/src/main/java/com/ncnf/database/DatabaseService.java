@@ -15,10 +15,14 @@ import static com.ncnf.Utils.DEBUG_TAG;
 
 public class DatabaseService implements DatabaseServiceInterface {
 
-    private FirebaseFirestore db;
-
+    private final FirebaseFirestore db;
+   
     public DatabaseService(){
-        db = FirebaseFirestore.getInstance();
+        this.db = FirebaseFirestore.getInstance();
+    }
+
+    public DatabaseService(FirebaseFirestore db)  {
+        this.db = db;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
