@@ -139,6 +139,4 @@ public class PrivateUserTests {
         verify(db).updateField(eq("/users"), eq(OWNED_EVENTS_KEY), anyObject());
     }
 
-
-
 }

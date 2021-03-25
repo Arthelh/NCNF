@@ -52,6 +52,8 @@ public class UserProfileActivity extends AppCompatActivity {
         firstName = findViewById(R.id.userProfileFirstName);
         lastName = findViewById(R.id.userProfileLastName);
         birthDate = findViewById(R.id.userProfileDateOfBirth);
+
+
         addTextWatcherFirstName();
         addTextWatcherLastName();
         addTextWatcherBirthDate();

@@ -1,17 +1,15 @@
 package com.ncnf.database;
 
 import android.os.Build;
-import android.util.DebugUtils;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-
-import javax.inject.Inject;
 
 import static com.ncnf.Utils.DEBUG_TAG;
 
@@ -19,7 +17,6 @@ public class DatabaseService implements DatabaseServiceInterface {
 
     private FirebaseFirestore db;
 
-    @Inject
     public DatabaseService(){
         db = FirebaseFirestore.getInstance();
     }
