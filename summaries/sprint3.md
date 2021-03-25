@@ -10,6 +10,7 @@ About my time estimates, this week I think they were fair.
 
 # David
 
+This week I started to look for a way to get a recommendation system for events. After some research I settled on google analytics with bigQuery and Tenserflow. I had to subdivide the initial spring task as it turned out being much more complex than expected. My estimates were well below the actual time this is going to take, at least another week probably.
 
 
 # Eloi
