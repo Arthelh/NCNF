@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventType;
+import com.ncnf.event.Location;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.mocks.MockTask;
 import com.ncnf.organizer.PublicOrganizer;
@@ -15,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -38,7 +40,7 @@ public class DatabaseServiceTest {
         db = Mockito.mock(FirebaseFirestore.class, Mockito.RETURNS_DEEP_STUBS);
         service = new DatabaseService(db);
 
-        event = new PublicEvent(new PublicOrganizer("testOrganizer"), EventType.Museum, "testName", "testData");
+        event = new PublicEvent("testName", new Date(), new Location(0, 0, "testLoc"), "testData", EventType.Museum, 0 , 0, new PublicOrganizer("testOrganizer"));
         task = new MockTask<Event>(event, null);
     }
 
