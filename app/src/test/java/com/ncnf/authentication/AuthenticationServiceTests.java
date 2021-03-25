@@ -201,55 +201,55 @@ public class AuthenticationServiceTests {
         };
     }
 
-//    @Test
-//    public void registerSuccessTest() throws ExecutionException, InterruptedException {
-//        when(mockedAuth.createUserWithEmailAndPassword(anyString(), anyString())).thenReturn(successTask);
-//
-//        AuthenticationResponse res = service.register(email, password).get();
-//
-//        verify(mockedAuth).createUserWithEmailAndPassword(anyString(), anyString());
-//
-//        assertTrue(res.isSuccessful());
-//        assertTrue(res.getResult()==null);
-//        assertTrue(res.getException()==null);
-//    }
-//
-//    @Test
-//    public void registerFailureTest() throws ExecutionException, InterruptedException {
-//        when(mockedAuth.createUserWithEmailAndPassword(anyString(), anyString())).thenReturn(failureTask);
-//
-//        AuthenticationResponse res = service.register(email, password).get();
-//
-//        verify(mockedAuth).createUserWithEmailAndPassword(anyString(), anyString());
-//
-//        assertFalse(res.isSuccessful());
-//        assertTrue(res.getResult()==null);
-//        assertTrue(res.getException()==null);
-//    }
-//
-//    @Test
-//    public void loginSuccessTest() throws ExecutionException, InterruptedException {
-//        when(mockedAuth.signInWithEmailAndPassword(anyString(), anyString())).thenReturn(successTask);
-//
-//        AuthenticationResponse res = service.logIn(email, password).get();
-//
-//        verify(mockedAuth).signInWithEmailAndPassword(anyString(), anyString());
-//
-//        assertTrue(res.isSuccessful());
-//        assertTrue(res.getResult()==null);
-//        assertTrue(res.getException()==null);
-//    }
-//
-//    @Test
-//    public void loginFailureTest() throws ExecutionException, InterruptedException {
-//        when(mockedAuth.signInWithEmailAndPassword(anyString(), anyString())).thenReturn(failureTask);
-//
-//        AuthenticationResponse res = service.logIn(email, password).get();
-//
-//        verify(mockedAuth).signInWithEmailAndPassword(anyString(), anyString());
-//
-//        assertFalse(res.isSuccessful());
-//        assertTrue(res.getResult()==null);
-//        assertTrue(res.getException()==null);
-//    }
+    @Test
+    public void registerSuccessTest() throws ExecutionException, InterruptedException {
+        when(mockedAuth.createUserWithEmailAndPassword(anyString(), anyString())).thenReturn(successTask);
+
+        AuthenticationResponse res = service.register(email, password).get();
+
+        verify(mockedAuth).createUserWithEmailAndPassword(anyString(), anyString());
+
+        assertTrue(res.isSuccessful());
+        assertTrue(res.getResult()==null);
+        assertTrue(res.getException()==null);
+    }
+
+    @Test
+    public void registerFailureTest() throws ExecutionException, InterruptedException {
+        when(mockedAuth.createUserWithEmailAndPassword(anyString(), anyString())).thenReturn(failureTask);
+
+        AuthenticationResponse res = service.register(email, password).get();
+
+        verify(mockedAuth).createUserWithEmailAndPassword(anyString(), anyString());
+
+        assertFalse(res.isSuccessful());
+        assertTrue(res.getResult()==null);
+        assertTrue(res.getException()==null);
+    }
+
+    @Test
+    public void loginSuccessTest() throws ExecutionException, InterruptedException {
+        when(mockedAuth.signInWithEmailAndPassword(anyString(), anyString())).thenReturn(successTask);
+
+        AuthenticationResponse res = service.logIn(email, password).get();
+
+        verify(mockedAuth).signInWithEmailAndPassword(anyString(), anyString());
+
+        assertTrue(res.isSuccessful());
+        assertTrue(res.getResult()==null);
+        assertTrue(res.getException()==null);
+    }
+
+    @Test
+    public void loginFailureTest() throws ExecutionException, InterruptedException {
+        when(mockedAuth.signInWithEmailAndPassword(anyString(), anyString())).thenReturn(failureTask);
+
+        AuthenticationResponse res = service.logIn(email, password).get();
+
+        verify(mockedAuth).signInWithEmailAndPassword(anyString(), anyString());
+
+        assertFalse(res.isSuccessful());
+        assertTrue(res.getResult()==null);
+        assertTrue(res.getException()==null);
+    }
 }

@@ -15,7 +15,6 @@ import javax.inject.Inject;
 
 import static com.ncnf.Utils.DEBUG_TAG;
 
-
 public class DatabaseService implements DatabaseServiceInterface {
 
     private FirebaseFirestore db;
