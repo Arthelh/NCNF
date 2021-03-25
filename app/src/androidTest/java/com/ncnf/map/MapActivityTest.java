@@ -1,5 +1,6 @@
 package com.ncnf.map;
 
+import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.uiautomator.By;
@@ -9,6 +10,7 @@ import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 
 import com.ncnf.R;
+import com.ncnf.settings.SettingsActivity;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,6 +27,7 @@ import dagger.hilt.android.testing.HiltAndroidTest;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -51,6 +54,16 @@ public final class MapActivityTest {
         Mockito.when(venueProvider.getAll()).thenReturn(TEST_VENUES);
 
         hiltRule.inject();
+    }
+
+    @Test
+    public void test_settings(){
+        Intents.init();
+
+        onView(withId(R.id.map_settings_button)).perform(click());
+        Intents.intended(hasComponent(SettingsActivity.class.getName()));
+
+        Intents.release();
     }
 
     @Test

@@ -1,54 +1,61 @@
 package com.ncnf.event;
 
-import java.util.UUID;
+import com.ncnf.organizer.PublicOrganizer;
 
-import com.ncnf.organizer.Organizer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Date;
 
-public class PublicEvent implements Event {
+public class PublicEvent extends Event {
 
-    private final Organizer organiser;
-    private final EventType eventType;
-    private final String name;
-    private final String uniqueID;
-    //temporary placeholder for event content
-    private String data;
+    private static final int MIN_AGE = 0;
+    private static final int MAX_AGE = 125;
 
-    public PublicEvent(Organizer organiser, EventType type, String name, String data){
-        this.organiser = organiser;
-        this.eventType = type;
-        this.name = name;
-        this.data = data;
-        uniqueID = UUID.randomUUID().toString();
+    private List<Tag> tags;
+
+    private int price;
+    private int minAge;
+
+    public PublicEvent(String name, Date date, Location location, String description, EventType type, int minAge, int price, PublicOrganizer owner) {
+        super(name, date, location, type, PubPriv.PUBLIC, description, owner);
+
+        if(!(minAge >= MIN_AGE && minAge <= MAX_AGE)) {
+            throw new IllegalArgumentException();
+        }
+
+        tags = new ArrayList<>();
+        this.minAge = minAge;
+        this.price = price;
     }
 
+    public int getMinAge() { return minAge; }
+    public int getPrice() { return price; }
+    public List<Tag> getTags() { return tags; }
 
-    @Override
-    public Organizer getOrganizer() {
-        return organiser;
+    public void setMinAge(int minAge) {
+        if(!(minAge >= MIN_AGE && minAge <= MAX_AGE)) {
+            throw new IllegalArgumentException();
+        }
+        this.minAge = minAge;
     }
 
-    @Override
-    public String getName() {
-        return name;
+    public void setPrice(int price) { this.price = price; }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = new ArrayList<Tag>();
+        for(int i = 0; i < tags.size(); ++i) {
+            this.tags.add(tags.get(i));
+        }
     }
 
-    @Override
-    public String getUID() {
-        return uniqueID;
-    }
+    public void addTag(Tag newTag) {
 
-    @Override
-    public EventType getType() {
-        return eventType;
-    }
-
-    @Override
-    public String getData(){
-        return data;
-    }
-
-    public void setData(String data){
-        this.data = data;
+        for(int i = 0; i < tags.size(); ++i) {
+            if(tags.get(i).equals(newTag)) {
+                throw new IllegalArgumentException();
+            }
+        }
+        tags.add(newTag);
     }
 
 

@@ -7,6 +7,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
+import com.ncnf.event.EventActivity;
 import com.ncnf.map.MapActivity;
 import com.ncnf.feed.FeedActivity;
 import com.ncnf.user.UserProfileActivity;
@@ -41,6 +42,26 @@ public final class MainActivityTest {
 
     @After
     public void cleanup(){
+        Intents.release();
+    }
+  
+    @Test
+    public void test_event1() {
+        Intents.init();
+
+        onView(withId(R.id.eventButton)).perform(click());
+
+        Intents.intended(hasComponent(EventActivity.class.getName()));
+        Intents.release();
+    }
+
+    @Test
+    public void test_event2() {
+        Intents.init();
+
+        onView(withId(R.id.event2Button)).perform(click());
+
+        Intents.intended(hasComponent(EventActivity.class.getName()));
         Intents.release();
     }
 

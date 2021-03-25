@@ -2,9 +2,13 @@ package com.ncnf;
 
 import org.junit.Test;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 import com.ncnf.event.EventType;
+import com.ncnf.event.Location;
+
 import com.ncnf.event.PublicEvent;
 import com.ncnf.organizer.PublicOrganizer;
 
@@ -13,8 +17,7 @@ import static org.junit.Assert.*;
 public class PublicEventTests {
 
     private PublicOrganizer po = new PublicOrganizer("publicOrganizer");
-    private PublicEvent pe = new PublicEvent(po, EventType.Museum, "museumEvent", "EventData");
-
+    private PublicEvent pe = new PublicEvent("museumEvent", new Date(), new Location(0, 0, "test"), "EventData", EventType.Museum, 0, 0, po);
 
     @Test
     public void getOrganizerNameWorks(){assertEquals(po.getName(), "publicOrganizer");}
@@ -27,18 +30,21 @@ public class PublicEventTests {
 
     // useless
     @Test
-    public void getUUIDWorks(){assertEquals(pe.getUID().length(), UUID.randomUUID().toString().length());}
+    public void getUUIDWorks(){assertEquals(pe.getUuid().toString().length(), UUID.randomUUID().toString().length());}
+
 
     @Test
     public void getTypeWorks(){assertEquals(pe.getType(), EventType.Museum);}
 
     @Test
-    public void getDataWorks(){assertEquals(pe.getData(), "EventData");}
+
+    public void getDataWorks(){assertEquals(pe.getDescription(), "EventData");}
 
     @Test
     public void setDataWorks(){
-        pe.setData("TestSetData");
-        assertEquals(pe.getData(), "TestSetData");
+        pe.setDescription("TestSetData");
+        assertEquals(pe.getDescription(), "TestSetData");
+
     }
 
 }
