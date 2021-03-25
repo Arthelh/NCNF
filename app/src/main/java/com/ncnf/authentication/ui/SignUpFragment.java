@@ -173,7 +173,7 @@ public class SignUpFragment extends Fragment {
 
     private void setException(String s){
         exceptionText.setText(s);
-        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 
     private void setOrganizerView(){

@@ -9,11 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
+import com.ncnf.event.Event;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import com.ncnf.event.Event;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
     private List<Event> items;
@@ -78,8 +77,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         Event event = items.get(position);
 
         viewHolder.event.setText(event.getName());
-        viewHolder.id.setText(event.getUID());
-        viewHolder.data.setText(event.getData());
+        viewHolder.id.setText(event.getUuid().toString());
+        viewHolder.data.setText(event.getDescription());
+
     }
 
 

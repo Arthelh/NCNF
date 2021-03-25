@@ -110,7 +110,7 @@ public class PrivateUser {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private CompletableFuture<DatabaseResponse> addEvent(Event event, String array){
-        return this.update(array, FieldValue.arrayUnion(event.getUID()));
+        return this.update(array, FieldValue.arrayUnion(event.getUuid()));
     }
 
     public void signOut() {
