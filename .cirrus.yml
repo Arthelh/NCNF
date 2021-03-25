@@ -20,7 +20,7 @@ check_android_task:
   build_script: |
     echo "MAPS_API_KEY=$MAPS_API_KEY" > local.properties
     echo "PLACES_API_KEY=$PLACES_API_KEY" >> local.properties
-    echo "$GOOGLE_SERVICE_FILE" > app/google-service.json
+    echo "$GOOGLE_SERVICE_FILE" > app/google-services.json
     chmod +x gradlew
     ./gradlew assembleDebugAndroidTest
   wait_for_emulator_script: |
