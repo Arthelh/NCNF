@@ -30,7 +30,7 @@ This was a big part of the project to merge and it took much more time than expe
 
 # Keran 
 
-
+I initially planned to work on a notification service, but we finally decided that merging the database/authentification branch was a priority. I was assigned to work on testing the user and database package, which heavily rely on Firebase. The task was challenging and took a lot of time and effort, but we achieved the necessary coverage at the end. The key point is to isolate the communication with Firebase to then inject and mock in Unit/Instrumented tests.
 
 # Overall team
 
