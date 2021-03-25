@@ -48,10 +48,10 @@
         android:id="@+id/signUpRegisterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
+        android:layout_marginEnd="76dp"
         android:text="Register"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="395dp" />
+        tools:layout_editor_absoluteY="369dp" />
 
     <TextView
         android:id="@+id/exceptionSignUp"
@@ -88,7 +88,8 @@
         android:layout_marginEnd="24dp"
         android:text="I'm an organizer"
         app:layout_constraintEnd_toStartOf="@+id/signUpRegisterButton"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="395dp" />
+        tools:layout_editor_absoluteY="369dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
