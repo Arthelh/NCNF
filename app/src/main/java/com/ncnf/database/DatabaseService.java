@@ -1,13 +1,13 @@
 package com.ncnf.database;
 
 import android.os.Build;
-import android.util.DebugUtils;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -16,12 +16,27 @@ import static com.ncnf.Utils.DEBUG_TAG;
 
 public class DatabaseService implements DatabaseServiceInterface {
 
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static final DatabaseService instance = new DatabaseService();
-
+    private final FirebaseFirestore db;
+    private static DatabaseService instance;
 
     public static DatabaseService getInstance(){
+        if (instance == null)
+            instance = new DatabaseService();
         return instance;
+    }
+
+    public static DatabaseService getInstance(FirebaseFirestore db){
+        if (instance == null)
+            instance = new DatabaseService(db);
+        return instance;
+    }
+
+    private DatabaseService() {
+        this.db = FirebaseFirestore.getInstance();
+    }
+
+    private DatabaseService(FirebaseFirestore db) {
+        this.db = db;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
