@@ -41,8 +41,7 @@ public class UserProfileActivity extends AppCompatActivity {
     EditText firstName;
     EditText lastName;
     EditText birthDate;
-    private Intent intent;
-    // private final Event event = new PublicEvent("name of event", new Date(), new GeoPoint(1.2, 2.1), "data", "1234", EventCategory.Conference, 0, 0, new ArrayList<>());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +56,6 @@ public class UserProfileActivity extends AppCompatActivity {
         addTextWatcherFirstName();
         addTextWatcherLastName();
         addTextWatcherBirthDate();
-        // this.intent = new Intent(this, UserBookmark.class);
-        // findViewById(R.id.userProfileProgresssBar).setVisibility(View.INVISIBLE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -87,9 +84,6 @@ public class UserProfileActivity extends AppCompatActivity {
                     Log.d(DEBUG_TAG, "Unable to load user from db : " + task.getException().getMessage());
                 }
             });
-
-            // this.event.setOwner(PrivateUser.getInstance().getID());
-            // event.storeEventInDB();
         }
 
     }
@@ -154,12 +148,6 @@ public class UserProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void setProgressBar(int visibility){
-        // if(!firstNameChanged && !lastNameChanged && !birthDateChanged){
-        //   findViewById(R.id.userProfileProgresssBar).setVisibility(View.INVISIBLE);
-        // }
-    }
-
     // TODO: find a way to refactor -> save multiple fields at the time but how ?
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void saveNewFields(View view){
@@ -187,7 +175,6 @@ public class UserProfileActivity extends AppCompatActivity {
             } else {
                 findViewById(R.id.userProfileSaveButton).setEnabled(true);
             }
-            setProgressBar(View.INVISIBLE);
         });
     }
 
@@ -200,7 +187,6 @@ public class UserProfileActivity extends AppCompatActivity {
             } else {
                 findViewById(R.id.userProfileSaveButton).setEnabled(true);
             }
-            setProgressBar(View.INVISIBLE);
         });
     }
 
@@ -213,39 +199,6 @@ public class UserProfileActivity extends AppCompatActivity {
             } else {
                 findViewById(R.id.userProfileSaveButton).setEnabled(true);
             }
-            setProgressBar(View.INVISIBLE);
         });
     }
-
-//    public void viewBookmark(View view){
-//        startActivity(intent);
-//    }
-
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-//    public void saveEvent(View view){
-//        setProgressBar(View.VISIBLE);
-//
-//        CompletableFuture<DatabaseResponse> response  = PrivateUser.getInstance().saveEvent(event);
-//        response.thenAccept(task -> {
-//            setProgressBar(View.INVISIBLE);
-//            String alertMessage;
-//           if(task.isSuccessful()){
-//                alertMessage = "Event has been successfully saved in your bookmark";
-//           } else {
-//               alertMessage = "Couldn't save this event : please retry";
-//           }
-//
-//            AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
-//           builder.setCancelable(false);
-//           builder.setTitle("Saving event");
-//           builder.setMessage(alertMessage);
-//           builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//               @Override
-//               public void onClick(DialogInterface dialog, int which) {
-//                   return;
-//               }
-//           });
-//           builder.show();
-//        });
-//    }
 }
