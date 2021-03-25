@@ -8,7 +8,7 @@ import static org.mockito.Matchers.anyBoolean;
 
 public class DatabaseResponseTest {
 
-    boolean isSuccessful = anyBoolean();
+    boolean isSuccessful = true;
     Object result = new Object();
     Exception exception = new Exception();
     DatabaseResponse res = new DatabaseResponse(isSuccessful, result, exception);
