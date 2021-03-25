@@ -7,6 +7,7 @@ check_android_task:
     CC_TEST_REPORTER_ID: ENCRYPTED[ad8b9c987ff0f1314535a4f5c05d4a67554dd3ff5935923460281fe213a9f881480b249d14419ad238b0c44eca833aa4]
     MAPS_API_KEY: ENCRYPTED[d3e2ab8592cba6f329799fb2b6da4930194ed33420d3c391d5693fbd3e77823c239709912fa45f9d575a736a143e9576]
     PLACES_API_KEY: ENCRYPTED[2c61e4dadf67149b858bfc949602805051564d34b73de14d272efbcc3f23e8b4ae1f290d0404d2128e2733eb8f2f1c26]
+    GOOGLE_SERVICE_FILE: ENCRYPTED[93a333915dae8b339bdbbeaed1b0923544b603380ae7660dd2b68300cd2641216179432c09efd94b99b360509248d282]
   container:
     image: reactivecircus/android-emulator-$API_LEVEL:latest
     kvm: true
@@ -19,6 +20,7 @@ check_android_task:
   build_script: |
     echo "MAPS_API_KEY=$MAPS_API_KEY" > local.properties
     echo "PLACES_API_KEY=$PLACES_API_KEY" >> local.properties
+    echo "$GOOGLE_SERVICE_FILE" > app/google-service.json
     chmod +x gradlew
     ./gradlew assembleDebugAndroidTest
   wait_for_emulator_script: |
