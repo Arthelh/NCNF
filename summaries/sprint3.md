@@ -22,7 +22,9 @@ About my time estimates, this week I think they were fair.
 
 # Jérémie (scrum master)
 
-I spent the whole week testing the Authentication module and refactoring the UI. The testing part was painful and cumbersome to debug but the required coverage is achieved. This was a big part of the project to merge and it took much more time than expected.
+I spent the whole week testing the Authentication module and refactoring the UI. The testing part was cumbersome to debug but the required coverage is achieved.
+
+This was a big part of the project to merge and it took much more time than expected.
 
 # Keran 
 
