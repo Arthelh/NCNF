@@ -47,22 +47,14 @@ public final class MainActivityTest {
   
     @Test
     public void test_event1() {
-        Intents.init();
-
         onView(withId(R.id.eventButton)).perform(click());
-
         Intents.intended(hasComponent(EventActivity.class.getName()));
-        Intents.release();
     }
 
     @Test
     public void test_event2() {
-        Intents.init();
-
         onView(withId(R.id.event2Button)).perform(click());
-
         Intents.intended(hasComponent(EventActivity.class.getName()));
-        Intents.release();
     }
 
     @Test
