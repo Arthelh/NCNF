@@ -185,6 +185,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         final AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
         //Initialize materialSearchBar
+        createSearchActionListener(materialSearchBar);
+
+        createTextWatcher(materialSearchBar, token);
+    }
+
+    private void update_markers(){
+        for (Marker m : event_markers)
+            m.remove();
+        for (Marker m : venue_markers)
+            m.remove();
+        user_marker.remove();
+        event_markers.clear();
+        venue_markers.clear();
+        show_markers();
+    }
+
+    private void createSearchActionListener(MaterialSearchBar materialSearchBar){
         materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
             public void onSearchStateChanged(boolean enabled) {
@@ -205,7 +222,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             }
         });
+    }
 
+    private void createTextWatcher(MaterialSearchBar materialSearchBar, AutocompleteSessionToken token){
         materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -253,7 +272,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         materialSearchBar.setText(suggestion);
 
                         //Because apparently just putting mSB.clearSuggestions() does not work
-                        new Handler().postDelayed(() -> materialSearchBar.clearSuggestions(), 1000);
+                        new Handler().postDelayed(materialSearchBar::clearSuggestions, 1000);
 
                         //Hides the keyboard
                         InputMethodManager input = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -298,16 +317,4 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
     }
-
-    private void update_markers(){
-        for (Marker m : event_markers)
-            m.remove();
-        for (Marker m : venue_markers)
-            m.remove();
-        user_marker.remove();
-        event_markers.clear();
-        venue_markers.clear();
-        show_markers();
-    }
-
 }
