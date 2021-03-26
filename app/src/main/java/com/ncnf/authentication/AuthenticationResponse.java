@@ -5,6 +5,7 @@ import com.google.firebase.auth.AuthResult;
 import javax.annotation.Nullable;
 
 public class AuthenticationResponse {
+    
 
     private final boolean isSuccessful;
     private final AuthResult result;
