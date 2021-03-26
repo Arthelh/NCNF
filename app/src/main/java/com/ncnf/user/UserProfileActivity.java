@@ -37,10 +37,10 @@ public class UserProfileActivity extends AppCompatActivity {
     private boolean firstNameChanged = false;
     private boolean lastNameChanged = false;
     private boolean birthDateChanged = false;
-    EditText email;
-    EditText firstName;
-    EditText lastName;
-    EditText birthDate;
+    private EditText email;
+    private EditText firstName;
+    private EditText lastName;
+    private EditText birthDate;
 
 
     @Override

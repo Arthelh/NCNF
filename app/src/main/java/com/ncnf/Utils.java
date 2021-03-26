@@ -49,17 +49,4 @@ public class Utils {
     public static final String EMPTY_STRING =  "";
     public static final String CONNECTED_KEYWORD = "Connected";
     public static final String DISCONNECTED_KEYWORD = "Disconnected";
-
-
-    public static boolean isValidEmail(String email){
-        return (!stringIsEmpty(email) && PatternsCompat.EMAIL_ADDRESS.matcher(email).matches());
-    }
-
-    public static boolean isValidPassword(String password){
-        return password.length() >= PASSWORD_MINIMUM_LENGTH;
-    }
-
-    public static boolean stringIsEmpty(String s){
-        return s == null || s.length() == 0;
-    }
 }

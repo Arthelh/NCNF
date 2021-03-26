@@ -17,7 +17,7 @@
         android:enabled="false"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:text="Welcome to your Profile"
+        android:text="@string/welcome_to_your_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="62dp"
         android:onClick="logOut"
-        android:text="Log Out"
+        android:text="@string/log_out"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
         android:clickable="false"
         android:ems="10"
         android:enabled="true"
-        android:hint="Email Address"
+        android:hint="@string/email_address"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcomeToProfileText" />
@@ -54,7 +54,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="168dp"
         android:ems="10"
-        android:hint="Firstname..."
+        android:hint="@string/firstname"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userProfileEmail" />
@@ -66,7 +66,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="167dp"
         android:ems="10"
-        android:hint="Lastname..."
+        android:hint="@string/lastname"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userProfileFirstName" />
@@ -78,7 +78,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="166dp"
         android:ems="10"
-        android:hint="Date of birth..."
+        android:hint="@string/date_of_birth"
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userProfileLastName" />
@@ -91,7 +91,7 @@
         android:layout_marginEnd="38dp"
         android:enabled="false"
         android:onClick="saveNewFields"
-        android:text="Save"
+        android:text="@string/save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcomeToProfileText" />
 

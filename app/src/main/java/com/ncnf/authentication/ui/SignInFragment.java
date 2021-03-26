@@ -3,12 +3,6 @@ package com.ncnf.authentication.ui;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
 import com.ncnf.authentication.AuthenticationResponse;
@@ -33,7 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import static com.ncnf.Utils.BADLY_FORMATTED_EMAIL_STRING;
 import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EMPTY_FIELD_STRING;
-import static com.ncnf.Utils.isValidEmail;
+import static com.ncnf.utilities.InputValidator.verifyEmailInput;
 
 @AndroidEntryPoint
 public class SignInFragment extends Fragment {
@@ -101,7 +99,7 @@ public class SignInFragment extends Fragment {
         if(emailString.isEmpty() || passwordString.isEmpty()) {
             setException(EMPTY_FIELD_STRING);
             return false;
-        } else if (!isValidEmail(emailString)){
+        } else if (!verifyEmailInput(emailString)){
             setException(BADLY_FORMATTED_EMAIL_STRING);
             email.setError(BADLY_FORMATTED_EMAIL_STRING);
             return false;

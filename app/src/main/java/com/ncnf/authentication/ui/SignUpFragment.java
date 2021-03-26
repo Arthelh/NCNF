@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,8 +38,8 @@ import static com.ncnf.Utils.EMPTY_STRING;
 import static com.ncnf.Utils.INVALID_PASSWORD_STRING;
 import static com.ncnf.Utils.PASSWORDS_DO_NOT_MATCH_STRING;
 import static com.ncnf.Utils.USERS_COLLECTION_KEY;
-import static com.ncnf.Utils.isValidEmail;
-import static com.ncnf.Utils.isValidPassword;
+import static com.ncnf.utilities.InputValidator.isValidPassword;
+import static com.ncnf.utilities.InputValidator.verifyEmailInput;
 
 @AndroidEntryPoint
 public class SignUpFragment extends Fragment {
@@ -147,7 +146,7 @@ public class SignUpFragment extends Fragment {
             password.setText(EMPTY_STRING);
             confirmPassword.setText(EMPTY_STRING);
             passed = false;
-        } else if (!isValidEmail(emailString)){
+        } else if (!verifyEmailInput(emailString)){
             setException(BADLY_FORMATTED_EMAIL_STRING);
             email.setError(BADLY_FORMATTED_EMAIL_STRING);
             passed = false;
@@ -189,8 +188,5 @@ public class SignUpFragment extends Fragment {
         email.setHint("Email..");
         organizerButton.setText("I'm an organizer...");
     }
-
-
-
 
 }

@@ -29,7 +29,7 @@ import static com.ncnf.Utils.SAVED_EVENTS_KEY;
 
 public class PrivateUser {
 
-    private DatabaseServiceInterface db;
+    private final DatabaseServiceInterface db;
 
     private String email;
     private String UUID;
