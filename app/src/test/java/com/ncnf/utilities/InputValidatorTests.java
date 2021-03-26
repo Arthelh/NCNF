@@ -2,10 +2,18 @@ package com.ncnf.utilities;
 
 import org.junit.Test;
 
+import static com.ncnf.utilities.InputValidator.isStringEmpty;
+import static com.ncnf.utilities.InputValidator.isValidPassword;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class InputValidatorTests {
+
+    String invalidEmail = "test";
+    String validEmail = "test@test.com";
+    String invalidPassword = "test";
+    String validPassword = "test12";
+
 
     @Test
     public void verifyEmailInputRejects() {
@@ -66,8 +74,28 @@ public class InputValidatorTests {
     }
 
     @Test
-    public void verifyPostalCodeAccetps() {
+    public void verifyPostalCodeAccepts() {
         assertTrue(InputValidator.verifyPostalCode("1000"));
+    }
+
+    @Test
+    public void emptyStringTest(){
+        assertTrue(isStringEmpty(""));
+    }
+
+    @Test
+    public void emptyPasswordTest(){
+        assertFalse(isValidPassword(""));
+    }
+
+    @Test
+    public void invalidPasswordTest(){
+        assertFalse(isValidPassword(invalidPassword));
+    }
+
+    @Test
+    public void validPasswordTest(){
+        assertTrue(isValidPassword(validPassword));
     }
 
 }

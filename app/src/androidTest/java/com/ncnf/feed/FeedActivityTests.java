@@ -30,7 +30,6 @@ public class FeedActivityTests {
         onView(withId(R.id.event)).perform(click());
         Intents.intended(hasComponent(EventActivity.class.getName()));
 
-
         Intents.release();
     }
 }

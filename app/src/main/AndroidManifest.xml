@@ -16,8 +16,20 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Bootcamp">
+        android:theme="@style/Theme.Bootcamp"
+        android:usesCleartextTraffic="true">
+
+        <activity
+            android:name="com.ncnf.user.UserProfileActivity"
+            android:parentActivityName="com.ncnf.main.MainActivity"
+            tools:ignore="MissingClass" />
+        <activity
+            android:name="com.ncnf.authentication.ui.LoginActivity"
+            android:parentActivityName="com.ncnf.main.MainActivity"
+            tools:ignore="MissingClass" />
+
         <activity android:name=".settings.SettingsActivity" />
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -62,7 +74,6 @@
             android:name="com.ncnf.feed.EventActivity"
             android:parentActivityName="com.ncnf.feed.FeedActivity">
         </activity>
-
 
         <activity android:name=".event.EventActivity"
             android:parentActivityName=".main.MainActivity"/>
