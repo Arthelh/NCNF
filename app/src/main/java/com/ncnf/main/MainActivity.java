@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         //RecyclerView r = (RecyclerView)findViewById(R.id.recycler_view);
 
-        Button launchFeed = (Button) findViewById(R.id.feedViewButton);
+        Button launchFeed = (Button) findViewById(R.id.feed_view_button);
         Button launchEventCreation = (Button) findViewById(R.id.create_event_button);
 
         launchFeed.setOnClickListener(new View.OnClickListener() {

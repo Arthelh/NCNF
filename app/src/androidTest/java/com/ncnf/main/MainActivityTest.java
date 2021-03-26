@@ -44,18 +44,6 @@ public final class MainActivityTest {
     public void cleanup(){
         Intents.release();
     }
-  
-    @Test
-    public void test_event1() {
-        onView(withId(R.id.eventButton)).perform(click());
-        Intents.intended(hasComponent(EventActivity.class.getName()));
-    }
-
-    @Test
-    public void test_event2() {
-        onView(withId(R.id.event2Button)).perform(click());
-        Intents.intended(hasComponent(EventActivity.class.getName()));
-    }
 
     @Test
     public void testMapButton(){
@@ -65,7 +53,7 @@ public final class MainActivityTest {
 
     @Test
     public void feedActivityButtonWorks(){
-        onView(withId(R.id.feedViewButton)).perform(click());
+        onView(withId(R.id.feed_view_button)).perform(click());
         Intents.intended(hasComponent(FeedActivity.class.getName()));
     }
 
