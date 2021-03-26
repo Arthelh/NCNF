@@ -52,8 +52,6 @@ public final class MapActivityTest {
     public void setup() {
         Mockito.when(eventProvider.getAll()).thenReturn(TEST_EVENTS);
         Mockito.when(venueProvider.getAll()).thenReturn(TEST_VENUES);
-
-        hiltRule.inject();
     }
 
     @Test

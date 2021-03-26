@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:text="@string/map_switch_button"
+        android:text="@string/switch_between_events_and_venues"
         android:textColor="#FFFFFF"
         android:elevation="5dp"
         android:outlineProvider="bounds" />
@@ -51,8 +51,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="90dp"
-        android:textColor="#FFFFFF"
-        android:text="@string/map_zoom_in_button"/>
+        android:text="@string/zoom_in"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/map_settings_button"
@@ -66,8 +65,7 @@
         android:layout_toEndOf="@id/map_zoomin_button"
         android:layout_centerHorizontal="true"
         android:onClick="start_settings"
-        android:textColor="#FFFFFF"
-        android:text="@string/map_settings_button" />
+        android:text="@string/settings" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/map_zoomout_button"
@@ -80,7 +78,6 @@
         android:layout_marginStart="306dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="90dp"
-        android:text="@string/map_zoom_out_button" />
-
+        android:text="@string/zoom_out" />
 
 </RelativeLayout>

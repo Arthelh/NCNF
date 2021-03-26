@@ -60,9 +60,9 @@ public class SettingsActivityTest {
     @Test
     public void test_slider(){
         int progress = 49;
-        int adjused_progress = progress + 1;
+        int adjusted_progress = progress + 1;
         onView(withId(R.id.distanceSeekBar)).perform(setProgress(progress));
-        onView(withId(R.id.distanceTextView)).check(matches(withText(containsString(Integer.toString(adjused_progress)))));
+        onView(withId(R.id.distanceTextView)).check(matches(withText(containsString(Integer.toString(adjusted_progress)))));
     }
 
     @Test
@@ -78,11 +78,11 @@ public class SettingsActivityTest {
     @Test
     public void test_accept(){
         int progress = 49;
-        int adjused_progress = progress + 1;
+        int adjusted_progress = progress + 1;
         onView(withId(R.id.distanceSeekBar)).perform(setProgress(progress));
         onView(withId(R.id.validateButton)).perform(click());
 
-        assertThat(Settings.getCurrent_max_distance(), is(adjused_progress));
+        assertThat(Settings.getCurrent_max_distance(), is(adjusted_progress));
     }
 
 

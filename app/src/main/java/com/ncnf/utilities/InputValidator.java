@@ -7,6 +7,8 @@ import android.widget.EditText;
 
 import androidx.core.util.PatternsCompat;
 
+import com.ncnf.Utils;
+
 public class InputValidator {
 
     static public boolean verifyEmailInput(String emailInputString) {
@@ -70,5 +72,13 @@ public class InputValidator {
         }
 
         return textField.getError() == null;
+    }
+
+    public static boolean isValidPassword(String password){
+        return password.length() >= Utils.PASSWORD_MINIMUM_LENGTH;
+    }
+
+    public static boolean isStringEmpty(String s){
+        return s == null || s.length() == 0;
     }
 }
