@@ -8,13 +8,16 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Switch;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ncnf.R;
 import com.ncnf.database.DatabaseResponse;
+import com.ncnf.database.DatabaseService;
 import com.ncnf.main.MainActivity;
+import com.ncnf.notification.Registration;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -41,6 +44,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private EditText firstName;
     private EditText lastName;
     private EditText birthDate;
+    private Switch notification_switch;
 
 
     @Override
@@ -52,6 +56,8 @@ public class UserProfileActivity extends AppCompatActivity {
         lastName = findViewById(R.id.userProfileLastName);
         birthDate = findViewById(R.id.userProfileDateOfBirth);
 
+        notification_switch = findViewById(R.id.profile_notification_switch);
+        setupNotificationSwitch(new Registration(new DatabaseService()), notification_switch);
 
         addTextWatcherFirstName();
         addTextWatcherLastName();
@@ -198,6 +204,19 @@ public class UserProfileActivity extends AppCompatActivity {
                 birthDateChanged = false;
             } else {
                 findViewById(R.id.userProfileSaveButton).setEnabled(true);
+            }
+        });
+    }
+
+    private void setupNotificationSwitch(Registration registration, Switch notification_switch) {
+        // TODO: fetch user settings
+        boolean isRegistered = true;
+        notification_switch.setChecked(isRegistered);
+        notification_switch.setOnCheckedChangeListener((view, isChecked) -> {
+            if (isChecked) {
+                registration.register();
+            } else {
+                registration.unregister();
             }
         });
     }
