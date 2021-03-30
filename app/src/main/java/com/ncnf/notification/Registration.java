@@ -1,39 +1,50 @@
 package com.ncnf.notification;
 
-import android.util.Log;
-
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.ncnf.database.DatabaseService;
-import com.ncnf.event.Tag;
+import com.ncnf.user.PrivateUser;
+
+import java.util.concurrent.CompletableFuture;
 
 public class Registration {
 
     private FirebaseMessaging service;
-    private DatabaseService db;
+    private PrivateUser user;
 
-    public Registration(DatabaseService db) {
+    public Registration(PrivateUser user) {
         this.service = FirebaseMessaging.getInstance();
-        this.db = db;
+        this.user = user;
     }
 
-    public void register() {
+    public CompletableFuture<Boolean> register() {
+        CompletableFuture<Boolean> res = new CompletableFuture<>();
+
         service.getToken().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String token = task.getResult();
-                Log.d("NOTIFICATION", "REGISTRATION WITH TOKEN " + token);
-                updateUserToken(token);
+
+                user.updateNotifications(true).thenAcceptBoth(user.updateNotificationsToken(token), (r1, r2) -> {
+                    res.complete(true);
+                });
+
             } else {
-                // return a failure
+                res.complete(false);
             }
         });
+        return res;
     }
 
-    public void unregister() {
-        Log.d("NOTIFICATION", "UNREGISTRATION");
-    }
+    public CompletableFuture<Boolean> unregister() {
+        CompletableFuture<Boolean> res = new CompletableFuture<>();
 
-    private void updateUserToken(String token) {
+        user.updateNotifications(false).whenComplete((r, e) -> {
+            if (e != null) {
+                res.complete(false);
+            } else {
+                res.complete(true);
+            }
+        });
 
+        return res;
     }
 
 }

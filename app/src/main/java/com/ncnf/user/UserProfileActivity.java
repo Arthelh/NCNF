@@ -13,6 +13,8 @@ import android.widget.Switch;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
@@ -26,6 +28,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
 import static com.ncnf.Utils.BIRTH_YEAR_KEY;
 import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
@@ -46,6 +49,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private EditText firstName;
     private EditText lastName;
     private EditText birthDate;
+    Switch notification_switch;
 
     private boolean hasNotifications = false;
 
@@ -58,9 +62,7 @@ public class UserProfileActivity extends AppCompatActivity {
         firstName = findViewById(R.id.userProfileFirstName);
         lastName = findViewById(R.id.userProfileLastName);
         birthDate = findViewById(R.id.userProfileDateOfBirth);
-
-        Switch notification_switch = findViewById(R.id.profile_notification_switch);
-        setupNotificationSwitch(new Registration(new DatabaseService()), notification_switch);
+        notification_switch = findViewById(R.id.profile_notification_switch);
 
         addTextWatcherFirstName();
         addTextWatcherLastName();
@@ -82,6 +84,8 @@ public class UserProfileActivity extends AppCompatActivity {
                     String birth_date = map.get(BIRTH_YEAR_KEY).toString();
                     String user_email = user.getEmail();
 
+
+                    setupNotificationSwitch(new Registration(user));
                     hasNotifications =  (boolean) map.get(NOTIFICATIONS_KEY);
 
                     firstName.setText(first_name);
@@ -212,13 +216,22 @@ public class UserProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void setupNotificationSwitch(Registration registration, Switch notification_switch) {
+    private void setupNotificationSwitch(Registration registration) {
+        Snackbar errorMsg = Snackbar.make(findViewById(R.id.userProfileRoot), "An error happened! Try again later", LENGTH_SHORT);
         notification_switch.setChecked(hasNotifications);
         notification_switch.setOnCheckedChangeListener((view, isChecked) -> {
             if (isChecked) {
-                registration.register();
+                registration.register().thenAccept(success -> {
+                    if (!success) {
+                        errorMsg.show();
+                    }
+                });
             } else {
-                registration.unregister();
+                registration.unregister().thenAccept(success -> {
+                    if ((!success)) {
+                        errorMsg.show();
+                    }
+                });
             }
         });
     }
