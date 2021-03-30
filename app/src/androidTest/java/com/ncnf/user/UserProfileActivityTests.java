@@ -52,9 +52,6 @@ public class UserProfileActivityTests {
     private static PrivateUser mockUser = Mockito.mock(PrivateUser.class);
     private static CompletableFuture<DatabaseResponse> future = new CompletableFuture();
 
-    @BindValue
-    Registration registration = Mockito.mock(Registration.class);
-
     // BeforeClass is required because the mocking must be done before the activity is launched
     @BeforeClass
     public static void setup() {
@@ -77,6 +74,9 @@ public class UserProfileActivityTests {
     @BindValue
     public PrivateUser user = mockUser;
 
+    @BindValue
+    Registration registration = Mockito.mock(Registration.class);
+
     @Test
     public void titleIsVisible() {
         onView(withId(R.id.welcomeToProfileText)).check(matches(withText("Welcome to your Profile")));
@@ -96,7 +96,7 @@ public class UserProfileActivityTests {
     @Test
     public void logOutReturnsToHome() {
         Intents.init();
-        onView(withId(R.id.logOutButton)).perform(click());
+        onView(withId(R.id.logOutButton)).perform(scrollTo(), click());
         Intents.intended(hasComponent(MainActivity.class.getName()));
         Intents.release();
     }
