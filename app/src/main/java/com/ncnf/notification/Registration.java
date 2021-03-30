@@ -20,7 +20,7 @@ public class Registration {
         service.getToken().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String token = task.getResult();
-                Log.d("NOTIFICATION", "REGISTRATION WITH TOKEN" + token);
+                Log.d("NOTIFICATION", "REGISTRATION WITH TOKEN " + token);
                 updateUserToken(token);
             } else {
                 // return a failure

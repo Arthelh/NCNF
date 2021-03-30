@@ -30,6 +30,7 @@ import static com.ncnf.Utils.BIRTH_YEAR_KEY;
 import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
+import static com.ncnf.Utils.NOTIFICATIONS_KEY;
 
 @AndroidEntryPoint
 public class UserProfileActivity extends AppCompatActivity {
@@ -40,11 +41,13 @@ public class UserProfileActivity extends AppCompatActivity {
     private boolean firstNameChanged = false;
     private boolean lastNameChanged = false;
     private boolean birthDateChanged = false;
+
     private EditText email;
     private EditText firstName;
     private EditText lastName;
     private EditText birthDate;
-    private Switch notification_switch;
+
+    private boolean hasNotifications = false;
 
 
     @Override
@@ -56,7 +59,7 @@ public class UserProfileActivity extends AppCompatActivity {
         lastName = findViewById(R.id.userProfileLastName);
         birthDate = findViewById(R.id.userProfileDateOfBirth);
 
-        notification_switch = findViewById(R.id.profile_notification_switch);
+        Switch notification_switch = findViewById(R.id.profile_notification_switch);
         setupNotificationSwitch(new Registration(new DatabaseService()), notification_switch);
 
         addTextWatcherFirstName();
@@ -77,8 +80,9 @@ public class UserProfileActivity extends AppCompatActivity {
                     String first_name = map.get(FIRST_NAME_KEY).toString();
                     String last_name = map.get(LAST_NAME_KEY).toString();
                     String birth_date = map.get(BIRTH_YEAR_KEY).toString();
-                    // TODO: include email in the request
                     String user_email = user.getEmail();
+
+                    hasNotifications =  (boolean) map.get(NOTIFICATIONS_KEY);
 
                     firstName.setText(first_name);
                     lastName.setText(last_name);
@@ -209,9 +213,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void setupNotificationSwitch(Registration registration, Switch notification_switch) {
-        // TODO: fetch user settings
-        boolean isRegistered = true;
-        notification_switch.setChecked(isRegistered);
+        notification_switch.setChecked(hasNotifications);
         notification_switch.setOnCheckedChangeListener((view, isChecked) -> {
             if (isChecked) {
                 registration.register();

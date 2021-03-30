@@ -19,6 +19,7 @@ public class Utils {
     public static final String FRIENDS_KEY = "/friends";
     public static final String OWNED_EVENTS_KEY ="/owned_events";
     public static final String SAVED_EVENTS_KEY ="/saved_events";
+    public static final String NOTIFICATIONS_KEY ="/notifications";
 
     /**
      * Keys related to events

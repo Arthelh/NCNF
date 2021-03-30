@@ -24,6 +24,7 @@ import static com.ncnf.Utils.EMPTY_STRING;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.FRIENDS_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
+import static com.ncnf.Utils.NOTIFICATIONS_KEY;
 import static com.ncnf.Utils.OWNED_EVENTS_KEY;
 import static com.ncnf.Utils.SAVED_EVENTS_KEY;
 
@@ -64,6 +65,7 @@ public class PrivateUser {
         initial_data.put(FRIENDS_KEY, new ArrayList<String>());
         initial_data.put(OWNED_EVENTS_KEY, new ArrayList<String>());
         initial_data.put(SAVED_EVENTS_KEY, new ArrayList<String>());
+        initial_data.put(NOTIFICATIONS_KEY, false);
 
         return this.db.setDocument(this.path, initial_data);
     }
