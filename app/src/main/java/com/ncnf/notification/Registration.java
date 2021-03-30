@@ -5,13 +5,21 @@ import com.ncnf.user.PrivateUser;
 
 import java.util.concurrent.CompletableFuture;
 
+import javax.inject.Inject;
+
 public class Registration {
 
     private FirebaseMessaging service;
     private PrivateUser user;
 
+    @Inject
     public Registration(PrivateUser user) {
         this.service = FirebaseMessaging.getInstance();
+        this.user = user;
+    }
+
+    public Registration(FirebaseMessaging messaging, PrivateUser user) {
+        this.service = messaging;
         this.user = user;
     }
 

@@ -41,6 +41,9 @@ public class UserProfileActivity extends AppCompatActivity {
     @Inject
     public PrivateUser user;
 
+    @Inject
+    public Registration registration;
+
     private boolean firstNameChanged = false;
     private boolean lastNameChanged = false;
     private boolean birthDateChanged = false;
@@ -84,9 +87,8 @@ public class UserProfileActivity extends AppCompatActivity {
                     String birth_date = map.get(BIRTH_YEAR_KEY).toString();
                     String user_email = user.getEmail();
 
-
-                    setupNotificationSwitch(new Registration(user));
                     hasNotifications =  (boolean) map.get(NOTIFICATIONS_KEY);
+                    setupNotificationSwitch();
 
                     firstName.setText(first_name);
                     lastName.setText(last_name);
@@ -216,7 +218,7 @@ public class UserProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void setupNotificationSwitch(Registration registration) {
+    private void setupNotificationSwitch() {
         Snackbar errorMsg = Snackbar.make(findViewById(R.id.userProfileRoot), "An error happened! Try again later", LENGTH_SHORT);
         notification_switch.setChecked(hasNotifications);
         notification_switch.setOnCheckedChangeListener((view, isChecked) -> {
