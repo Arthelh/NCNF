@@ -6,11 +6,13 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.main.MainActivity;
+import com.ncnf.notification.Registration;
 
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import dagger.hilt.android.testing.UninstallModules;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -33,10 +36,13 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.ncnf.Utils.BIRTH_YEAR_KEY;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
+import static com.ncnf.Utils.NOTIFICATIONS_KEY;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.not;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
@@ -49,10 +55,11 @@ public class UserProfileActivityTests {
     // BeforeClass is required because the mocking must be done before the activity is launched
     @BeforeClass
     public static void setup() {
-        HashMap<String, String> values = new HashMap<>();
+        HashMap<String, Object> values = new HashMap<>();
         values.put(FIRST_NAME_KEY, "John");
         values.put(LAST_NAME_KEY, "Doe");
         values.put(BIRTH_YEAR_KEY, "2012");
+        values.put(NOTIFICATIONS_KEY, false);
         future.complete(new DatabaseResponse(true, values, new Exception()));
 
         when(mockUser.loadUserFromDB()).thenReturn(future);
@@ -66,6 +73,9 @@ public class UserProfileActivityTests {
 
     @BindValue
     public PrivateUser user = mockUser;
+
+    @BindValue
+    Registration registration = Mockito.mock(Registration.class);
 
     @Test
     public void titleIsVisible() {
@@ -86,7 +96,7 @@ public class UserProfileActivityTests {
     @Test
     public void logOutReturnsToHome() {
         Intents.init();
-        onView(withId(R.id.logOutButton)).perform(click());
+        onView(withId(R.id.logOutButton)).perform(scrollTo(), click());
         Intents.intended(hasComponent(MainActivity.class.getName()));
         Intents.release();
     }
@@ -142,5 +152,36 @@ public class UserProfileActivityTests {
         onView(withId(R.id.userProfileSaveButton)).check(matches(isEnabled()));
     }
 
+    @Test
+    public void enableNotificationsIsSuccessful() {
+        CompletableFuture<Boolean> future = CompletableFuture.completedFuture(true);
+        when(registration.register()).thenReturn(future);
+        when(registration.unregister()).thenReturn(future);
+
+        onView(withId(R.id.profile_notification_switch)).perform(scrollTo(), click());
+
+        verify(registration).register();
+
+        onView(withId(R.id.profile_notification_switch)).perform(scrollTo(), click());
+
+        verify(registration).unregister();
+    }
+
+    @Test
+    public void enableNotificationsFails() {
+        CompletableFuture<Boolean> future = CompletableFuture.completedFuture(false);
+        when(registration.register()).thenReturn(future);
+        when(registration.unregister()).thenReturn(future);
+
+        onView(withId(R.id.profile_notification_switch)).perform(scrollTo(), click());
+
+        onView(withId(com.google.android.material.R.id.snackbar_text))
+                .check(matches(withText("An error happened! Try again later")));
+
+        onView(withId(R.id.profile_notification_switch)).perform(scrollTo(), click());
+
+        onView(withId(com.google.android.material.R.id.snackbar_text))
+                .check(matches(withText("An error happened! Try again later")));
+    }
 
 }

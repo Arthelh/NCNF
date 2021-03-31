@@ -16,10 +16,18 @@ public class MockTask<D> extends Task<D> {
 
     private D result;
     private Exception exception;
+    private boolean isSuccessful;
 
     public MockTask(D result, Exception exception) {
+        this.isSuccessful = true;
         this.result = result;
         this.exception = exception;
+    }
+
+    public MockTask(D result, Exception exception, boolean isSuccessful) {
+        this.result = result;
+        this.exception = exception;
+        this.isSuccessful = false;
     }
 
     @Override
@@ -29,7 +37,7 @@ public class MockTask<D> extends Task<D> {
 
     @Override
     public boolean isSuccessful() {
-        return true;
+        return isSuccessful;
     }
 
     @Override
