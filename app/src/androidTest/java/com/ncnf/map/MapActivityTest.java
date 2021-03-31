@@ -1,7 +1,6 @@
 package com.ncnf.map;
 
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.SeekBar;
 
@@ -18,8 +17,6 @@ import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
-
-import static org.hamcrest.core.StringContains.containsString;
 
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
@@ -46,6 +43,7 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -57,7 +55,7 @@ public final class MapActivityTest {
     List<Venue> TEST_VENUES = Arrays.asList(new Venue("EPFL", 46.5191f, 6.5668f),
             new Venue("UniL", 46.5211f, 6.5802f));
 
-    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(MapActivity.class));

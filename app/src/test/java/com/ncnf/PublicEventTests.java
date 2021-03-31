@@ -1,23 +1,21 @@
 package com.ncnf;
 
-import org.junit.Test;
-
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.UUID;
-
 import com.ncnf.event.EventType;
 import com.ncnf.event.Location;
-
 import com.ncnf.event.PublicEvent;
 import com.ncnf.organizer.PublicOrganizer;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+
+import java.util.Date;
+import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
 
 public class PublicEventTests {
 
-    private PublicOrganizer po = new PublicOrganizer("publicOrganizer");
-    private PublicEvent pe = new PublicEvent("museumEvent", new Date(), new Location(0, 0, "test"), "EventData", EventType.Museum, 0, 0, po);
+    private final PublicOrganizer po = new PublicOrganizer("publicOrganizer");
+    private final PublicEvent pe = new PublicEvent("museumEvent", new Date(), new Location(0, 0, "test"), "EventData", EventType.Museum, 0, 0, po);
 
     @Test
     public void getOrganizerNameWorks(){assertEquals(po.getName(), "publicOrganizer");}

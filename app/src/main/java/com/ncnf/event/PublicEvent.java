@@ -3,8 +3,8 @@ package com.ncnf.event;
 import com.ncnf.organizer.PublicOrganizer;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public class PublicEvent extends Event {
 

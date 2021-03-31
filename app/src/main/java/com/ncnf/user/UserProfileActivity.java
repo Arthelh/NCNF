@@ -13,11 +13,9 @@ import android.widget.Switch;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseResponse;
-import com.ncnf.database.DatabaseService;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
 

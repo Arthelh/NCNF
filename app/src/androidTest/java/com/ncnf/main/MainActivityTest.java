@@ -8,8 +8,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
 import com.ncnf.event.EventActivity;
-import com.ncnf.map.MapActivity;
 import com.ncnf.feed.FeedActivity;
+import com.ncnf.map.MapActivity;
 import com.ncnf.user.UserProfileActivity;
 
 import org.junit.After;
@@ -29,8 +29,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 @HiltAndroidTest
 public final class MainActivityTest {
 
-    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    private ActivityScenarioRule activityTestRule = new ActivityScenarioRule<>(MainActivity.class);
+    private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private final ActivityScenarioRule activityTestRule = new ActivityScenarioRule<>(MainActivity.class);
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(activityTestRule);

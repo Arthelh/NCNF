@@ -9,8 +9,6 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
-import com.ncnf.settings.Settings;
-import com.ncnf.settings.SettingsActivity;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
@@ -28,13 +26,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 @HiltAndroidTest
 public class SettingsActivityTest {
 
-    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    private ActivityScenarioRule activityTestRule = new ActivityScenarioRule<>(SettingsActivity.class);
+    private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private final ActivityScenarioRule activityTestRule = new ActivityScenarioRule<>(SettingsActivity.class);
 
     private static ViewAction setProgress(final int progress) { return new ViewAction() {
             @Override

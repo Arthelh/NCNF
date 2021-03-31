@@ -14,9 +14,9 @@ import java.util.concurrent.Executor;
 
 public class MockTask<D> extends Task<D> {
 
-    private D result;
-    private Exception exception;
-    private boolean isSuccessful;
+    private final D result;
+    private final Exception exception;
+    private final boolean isSuccessful;
 
     public MockTask(D result, Exception exception) {
         this.isSuccessful = true;

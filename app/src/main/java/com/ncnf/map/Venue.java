@@ -2,9 +2,9 @@ package com.ncnf.map;
 
 public class Venue {
 
-    private String name;
-    private float latitude;
-    private float longitude;
+    private final String name;
+    private final float latitude;
+    private final float longitude;
 
     public Venue(String name, float latitude, float longitude) {
         this.name = name;
