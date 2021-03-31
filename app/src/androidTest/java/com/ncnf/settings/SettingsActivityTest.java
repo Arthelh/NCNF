@@ -1,4 +1,4 @@
-package com.ncnf;
+package com.ncnf.settings;
 
 import android.view.View;
 import android.widget.SeekBar;
@@ -8,6 +8,7 @@ import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import com.ncnf.R;
 import com.ncnf.settings.Settings;
 import com.ncnf.settings.SettingsActivity;
 
@@ -61,7 +62,7 @@ public class SettingsActivityTest {
     public void test_slider(){
         int progress = 49;
         int adjusted_progress = progress + 1;
-        onView(withId(R.id.distanceSeekBar)).perform(setProgress(progress));
+        onView(ViewMatchers.withId(R.id.distanceSeekBar)).perform(setProgress(progress));
         onView(withId(R.id.distanceTextView)).check(matches(withText(containsString(Integer.toString(adjusted_progress)))));
     }
 
