@@ -7,7 +7,6 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
-import com.ncnf.event.EventActivity;
 import com.ncnf.map.MapActivity;
 import com.ncnf.feed.FeedActivity;
 import com.ncnf.user.UserProfileActivity;
@@ -53,7 +52,7 @@ public final class MainActivityTest {
 
     @Test
     public void feedActivityButtonWorks(){
-        onView(withId(R.id.feed_view_button)).perform(click());
+        onView(withId(R.id.feedViewButton)).perform(click());
         Intents.intended(hasComponent(FeedActivity.class.getName()));
     }
 
