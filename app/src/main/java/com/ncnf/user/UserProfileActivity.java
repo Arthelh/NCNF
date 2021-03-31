@@ -8,13 +8,18 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Switch;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseResponse;
+import com.ncnf.database.DatabaseService;
 import com.ncnf.main.MainActivity;
+import com.ncnf.notification.Registration;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -23,10 +28,12 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
 import static com.ncnf.Utils.BIRTH_YEAR_KEY;
 import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
+import static com.ncnf.Utils.NOTIFICATIONS_KEY;
 
 @AndroidEntryPoint
 public class UserProfileActivity extends AppCompatActivity {
@@ -34,13 +41,20 @@ public class UserProfileActivity extends AppCompatActivity {
     @Inject
     public PrivateUser user;
 
+    @Inject
+    public Registration registration;
+
     private boolean firstNameChanged = false;
     private boolean lastNameChanged = false;
     private boolean birthDateChanged = false;
+
     private EditText email;
     private EditText firstName;
     private EditText lastName;
     private EditText birthDate;
+    private Switch notification_switch;
+
+    private boolean hasNotifications = false;
 
 
     @Override
@@ -51,7 +65,7 @@ public class UserProfileActivity extends AppCompatActivity {
         firstName = findViewById(R.id.userProfileFirstName);
         lastName = findViewById(R.id.userProfileLastName);
         birthDate = findViewById(R.id.userProfileDateOfBirth);
-
+        notification_switch = findViewById(R.id.profile_notification_switch);
 
         addTextWatcherFirstName();
         addTextWatcherLastName();
@@ -71,8 +85,10 @@ public class UserProfileActivity extends AppCompatActivity {
                     String first_name = map.get(FIRST_NAME_KEY).toString();
                     String last_name = map.get(LAST_NAME_KEY).toString();
                     String birth_date = map.get(BIRTH_YEAR_KEY).toString();
-                    // TODO: include email in the request
                     String user_email = user.getEmail();
+
+                    hasNotifications =  (boolean) map.get(NOTIFICATIONS_KEY);
+                    setupNotificationSwitch();
 
                     firstName.setText(first_name);
                     lastName.setText(last_name);
@@ -198,6 +214,26 @@ public class UserProfileActivity extends AppCompatActivity {
                 birthDateChanged = false;
             } else {
                 findViewById(R.id.userProfileSaveButton).setEnabled(true);
+            }
+        });
+    }
+
+    private void setupNotificationSwitch() {
+        Snackbar errorMsg = Snackbar.make(findViewById(R.id.userProfileRoot), "An error happened! Try again later", LENGTH_SHORT);
+        notification_switch.setChecked(hasNotifications);
+        notification_switch.setOnCheckedChangeListener((view, isChecked) -> {
+            if (isChecked) {
+                registration.register().thenAccept(success -> {
+                    if (!success) {
+                        errorMsg.show();
+                    }
+                });
+            } else {
+                registration.unregister().thenAccept(success -> {
+                    if ((!success)) {
+                        errorMsg.show();
+                    }
+                });
             }
         });
     }

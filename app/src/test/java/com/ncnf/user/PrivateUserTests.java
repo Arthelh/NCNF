@@ -15,6 +15,8 @@ import java.util.concurrent.CompletableFuture;
 import static com.ncnf.Utils.BIRTH_YEAR_KEY;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
+import static com.ncnf.Utils.NOTIFICATIONS_KEY;
+import static com.ncnf.Utils.NOTIFICATIONS_TOKEN_KEY;
 import static com.ncnf.Utils.OWNED_EVENTS_KEY;
 import static com.ncnf.Utils.SAVED_EVENTS_KEY;
 import static org.junit.Assert.assertEquals;
@@ -34,11 +36,20 @@ public class PrivateUserTests {
     DatabaseService db = mock(DatabaseService.class);
 
     @Test
+    public void hashCodeMatches() {
+        PrivateUser u1 = new PrivateUser(db, "/users", "42", "foo@bar.com");
+        PrivateUser u2 = new PrivateUser(db, "/users", "42", "foo@bar.com");
+
+        assertEquals(u1.hashCode(), u2.hashCode());
+    }
+
+    @Test
     public void equalsMatches() {
         PrivateUser u1 = new PrivateUser(db, "/users", "42", "foo@bar.com");
         PrivateUser u2 = new PrivateUser(db, "/users", "42", "foo@bar.com");
 
         assertEquals(u1, u2);
+        assertEquals(u1, u1);
     }
 
     @Test
@@ -52,6 +63,8 @@ public class PrivateUserTests {
         u2 = new PrivateUser(db, "/events", "42", "foo@bar.com");
 
         assertNotEquals(u1, u2);
+
+        assertNotEquals(u1, new Object());
     }
 
     @Test
@@ -113,6 +126,22 @@ public class PrivateUserTests {
         PrivateUser user = new PrivateUser(db, "/users", "42", "foo@bar.com");
         user.updateBirth(2011);
         verify(db).updateField("/users", BIRTH_YEAR_KEY, 2011);
+    }
+
+    @Test
+    public void updateNotificationsCallsDatabase() {
+        when(db.updateField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
+        PrivateUser user = new PrivateUser(db, "/users", "42", "foo@bar.com");
+        user.updateNotifications(true);
+        verify(db).updateField("/users", NOTIFICATIONS_KEY, true);
+    }
+
+    @Test
+    public void updateNotificationsTokenCallsDatabase() {
+        when(db.updateField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
+        PrivateUser user = new PrivateUser(db, "/users", "42", "foo@bar.com");
+        user.updateNotificationsToken("My token");
+        verify(db).updateField("/users", NOTIFICATIONS_TOKEN_KEY, "My token");
     }
 
     @Test
