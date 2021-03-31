@@ -9,8 +9,8 @@ import javax.inject.Inject;
 
 public class Registration {
 
-    private FirebaseMessaging service;
-    private PrivateUser user;
+    private final FirebaseMessaging service;
+    private final PrivateUser user;
 
     @Inject
     public Registration(PrivateUser user) {

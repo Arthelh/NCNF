@@ -52,7 +52,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private EditText firstName;
     private EditText lastName;
     private EditText birthDate;
-    Switch notification_switch;
+    private Switch notification_switch;
 
     private boolean hasNotifications = false;
 
