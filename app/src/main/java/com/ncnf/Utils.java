@@ -17,8 +17,10 @@ public class Utils {
     public static final String BIRTH_YEAR_KEY = "year_of_birth";
     public static final String EMAIL_KEY = "email";
     public static final String FRIENDS_KEY = "/friends";
-    public static final String OWNED_EVENTS_KEY ="/owned_events";
-    public static final String SAVED_EVENTS_KEY ="/saved_events";
+    public static final String OWNED_EVENTS_KEY = "/owned_events";
+    public static final String SAVED_EVENTS_KEY = "/saved_events";
+    public static final String NOTIFICATIONS_KEY = "/notifications";
+    public static final String NOTIFICATIONS_TOKEN_KEY = "/notifications_token";
 
     /**
      * Keys related to events

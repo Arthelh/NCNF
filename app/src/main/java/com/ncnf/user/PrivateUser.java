@@ -1,13 +1,11 @@
 package com.ncnf.user;
 
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import com.google.firebase.firestore.FieldValue;
 import com.ncnf.database.DatabaseResponse;
-import com.ncnf.database.DatabaseService;
 import com.ncnf.database.DatabaseServiceInterface;
 import com.ncnf.event.Event;
 
@@ -18,12 +16,13 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.Utils.BIRTH_YEAR_KEY;
-import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EMAIL_KEY;
 import static com.ncnf.Utils.EMPTY_STRING;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.FRIENDS_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
+import static com.ncnf.Utils.NOTIFICATIONS_KEY;
+import static com.ncnf.Utils.NOTIFICATIONS_TOKEN_KEY;
 import static com.ncnf.Utils.OWNED_EVENTS_KEY;
 import static com.ncnf.Utils.SAVED_EVENTS_KEY;
 
@@ -64,6 +63,7 @@ public class PrivateUser {
         initial_data.put(FRIENDS_KEY, new ArrayList<String>());
         initial_data.put(OWNED_EVENTS_KEY, new ArrayList<String>());
         initial_data.put(SAVED_EVENTS_KEY, new ArrayList<String>());
+        initial_data.put(NOTIFICATIONS_KEY, false);
 
         return this.db.setDocument(this.path, initial_data);
     }
@@ -91,6 +91,16 @@ public class PrivateUser {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse>  updateBirth(int year){
         return this.update(BIRTH_YEAR_KEY, year);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public CompletableFuture<DatabaseResponse>  updateNotifications(boolean isEnabled) {
+        return this.update(NOTIFICATIONS_KEY, isEnabled);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public CompletableFuture<DatabaseResponse>  updateNotificationsToken(String token) {
+        return this.update(NOTIFICATIONS_TOKEN_KEY, token);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
