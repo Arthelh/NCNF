@@ -1,4 +1,4 @@
-package com.ncnf.feed;
+package com.ncnf.feed.ui;
 
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -17,7 +17,6 @@ public class EventActivity extends AppCompatActivity {
     int alphaImage;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_page);

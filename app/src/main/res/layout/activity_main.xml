@@ -5,91 +5,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_background_gradient"
     tools:context="com.ncnf.main.MainActivity">
 
-    <Button
-        android:id="@+id/mainProfileButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
-        android:onClick="gotToProfile"
-        android:text="@string/profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
+    <FrameLayout
+        android:id="@+id/mainFragmentContainerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:rippleColor="#FFFFFF" />
+        app:layout_constraintBottom_toTopOf="@+id/mainNavigationBar"
+        tools:layout_editor_absoluteX="0dp" />
 
-    <Switch
-        android:id="@+id/connected"
-        android:layout_width="145dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:clickable="false"
-        android:text="@string/disconnected"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/mainNavigationBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/navigation"
+        tools:layout_editor_absoluteX="0dp" />
 
-    <Button
-        android:id="@+id/to_map_link"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="284dp"
-        android:onClick="goToMap"
-        android:text="@string/map"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:rippleColor="#FFFFFF" />
-
-    <Button
-        android:id="@+id/feedViewButton"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/feedview"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/to_map_link" />
-
-    <Button
-        android:id="@+id/create_event_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/create_event_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/feedViewButton" />
-
-    <Button
-        android:id="@+id/eventButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="72dp"
-        android:onClick="seeEvent1"
-        android:text="Event 1"
-        app:layout_constraintEnd_toStartOf="@+id/event2Button"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_event_button" />
-
-    <Button
-        android:id="@+id/event2Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="64dp"
-        android:onClick="seeEvent2"
-        android:text="Event 2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_event_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
