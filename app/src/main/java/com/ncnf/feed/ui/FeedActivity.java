@@ -1,4 +1,4 @@
-package com.ncnf.feed;
+package com.ncnf.feed.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
