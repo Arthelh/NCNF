@@ -6,7 +6,6 @@ import com.ncnf.mocks.MockTask;
 import com.ncnf.user.PrivateUser;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -21,8 +20,8 @@ import static org.mockito.Mockito.when;
 
 public class RegistrationTests {
 
-    private FirebaseMessaging messaging = Mockito.mock(FirebaseMessaging.class);
-    private PrivateUser user = Mockito.mock(PrivateUser.class);
+    private final FirebaseMessaging messaging = Mockito.mock(FirebaseMessaging.class);
+    private final PrivateUser user = Mockito.mock(PrivateUser.class);
     Registration registration = new Registration(messaging, user);
 
     @Test

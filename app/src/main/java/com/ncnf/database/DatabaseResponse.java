@@ -1,10 +1,6 @@
 package com.ncnf.database;
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-
 import javax.annotation.Nullable;
-import javax.xml.transform.Result;
 
 public class DatabaseResponse {
     private final boolean isSuccessful;

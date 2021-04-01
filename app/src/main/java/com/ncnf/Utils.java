@@ -1,7 +1,5 @@
 package com.ncnf;
 
-import androidx.core.util.PatternsCompat;
-
 public class Utils {
     /**
      * Global variables
