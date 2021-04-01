@@ -15,14 +15,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/homeProfileButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
                 android:text="@string/home_profile_button" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/homeCreateEventButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
