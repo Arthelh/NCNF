@@ -10,8 +10,10 @@ import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 
 import com.ncnf.R;
+import com.ncnf.main.MainActivity;
 import com.ncnf.settings.SettingsActivity;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,7 +35,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @HiltAndroidTest
-public final class MapActivityTest {
+public final class MapFragmentTest {
 
     List<Event> TEST_EVENTS = Collections.singletonList(new Event("Math Conference, EPFL, 1pm March 3rd", 46.5191f, 6.5668f));
     List<Venue> TEST_VENUES = Collections.singletonList(new Venue("EPFL", 46.5191f, 6.5668f));
@@ -41,7 +43,7 @@ public final class MapActivityTest {
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
 
     @Rule
-    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(MapActivity.class));
+    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(MainActivity.class));
 
     @BindValue
     public EventProvider eventProvider = Mockito.mock(EventProvider.class);
@@ -50,18 +52,21 @@ public final class MapActivityTest {
 
     @Before
     public void setup() {
+        Intents.init();
         Mockito.when(eventProvider.getAll()).thenReturn(TEST_EVENTS);
         Mockito.when(venueProvider.getAll()).thenReturn(TEST_VENUES);
+        onView(withId(R.id.navigation_map)).perform(click());
+    }
+
+    @After
+    public void cleanup(){
+        Intents.release();
     }
 
     @Test
     public void test_settings(){
-        Intents.init();
-
         onView(withId(R.id.map_settings_button)).perform(click());
         Intents.intended(hasComponent(SettingsActivity.class.getName()));
-
-        Intents.release();
     }
 
     @Test
