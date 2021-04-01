@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/navigation_menu_home" />
+
+    <item
+        android:id="@+id/navigation_map"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="@string/navigation_menu_map" />
+
+
+    <item
+        android:id="@+id/navigation_feed"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="@string/navigation_menu_feed" />
+</menu>

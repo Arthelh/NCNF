@@ -1,4 +1,4 @@
-package com.ncnf.feed;
+package com.ncnf.feed.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;

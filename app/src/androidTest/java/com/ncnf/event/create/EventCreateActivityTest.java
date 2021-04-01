@@ -13,8 +13,14 @@ import com.ncnf.main.MainActivity;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.RuleChain;
+
+import dagger.hilt.android.testing.HiltAndroidRule;
+import dagger.hilt.android.testing.HiltAndroidTest;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -30,10 +36,23 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
+@HiltAndroidTest
 public class EventCreateActivityTest {
 
+    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+
     @Rule
-    public ActivityScenarioRule rule = new ActivityScenarioRule<>(EventCreateActivity.class);
+    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(EventCreateActivity.class));
+
+    @Before
+    public void setup(){
+        Intents.init();
+    }
+
+    @After
+    public void cleanup(){
+        Intents.release();
+    }
 
     @Test
     public void eventFormValidatesEmptyInput() {
@@ -56,8 +75,6 @@ public class EventCreateActivityTest {
 
     @Test
     public void eventFormValidatesCorrectInput() {
-        Intents.init();
-
         onView(withId(R.id.event_name)).perform(scrollTo(), replaceText("Conference"));
         onView(withId(R.id.event_description)).perform(scrollTo(), replaceText("Math are fun!"));
         onView(withId(R.id.event_address)).perform(scrollTo(), replaceText("INM201"));
@@ -80,8 +97,6 @@ public class EventCreateActivityTest {
         onView(withId(R.id.event_create_button)).perform(scrollTo(), click());
 
         Intents.intended(hasComponent(MainActivity.class.getName()));
-
-        Intents.release();
     }
 
 }

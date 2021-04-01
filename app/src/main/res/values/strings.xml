@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">NCNF</string>
 
+    <!-- Strings for Main Menu -->
+    <string name="main_map_button">Map</string>
+    <string name="main_feedview_button">Events Feed</string>
+    <string name="main_event_creation_button">Create Event</string>
+    <string name="main_placeholder_event_view">PH Event</string>
+
+    <!-- Strings used for Map Activity -->
+    <string name="map_switch_button">Switch between Events and Venues</string>
+    <string name="map_zoom_in_button">Zoom In</string>
+    <string name="map_zoom_out_button">Zoom Out</string>
+    <string name="map_settings_button">Settings</string>
+
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_feed">FeedActivity</string>
@@ -67,4 +79,9 @@
     <string name="registration">Registration</string>
     <string name="password_hint">Password...</string>
     <string name="i_m_an_organizer">I\'m an organizer</string>
+    <string name="home_profile_button">Profile</string>
+    <string name="home_create_event_button">Create event</string>
+    <string name="navigation_menu_feed">Feed</string>
+    <string name="navigation_menu_map">Map</string>
+    <string name="navigation_menu_home">Home</string>
 </resources>

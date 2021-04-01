@@ -1,4 +1,4 @@
-package com.ncnf.feed;
+package com.ncnf.feed.ui;
 
 import com.ncnf.event.Event;
 
