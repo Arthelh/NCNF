@@ -76,7 +76,7 @@ public class MapFragment extends Fragment {
             mapHandler = new MapHandler(getActivity(), mMap, eventProvider, venueProvider);
             searchBarHandler = new SearchBarHandler(getActivity(), materialSearchBar, mapHandler);
 
-            mapHandler.show_markers(mMap, eventProvider, venueProvider);
+            mapHandler.show_markers();
 
             mMap.setContentDescription("MAP_WITH_EVENTS");
 
