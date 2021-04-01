@@ -40,11 +40,11 @@ import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
 public class LoginActivityTest {
-    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    private ActivityScenarioRule activityTestRule = new ActivityScenarioRule(LoginActivity.class);
+    private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private final ActivityScenarioRule activityTestRule = new ActivityScenarioRule(LoginActivity.class);
 
     @BindValue
-    AuthenticationService mockedAuth = mock(AuthenticationService.class);;
+    AuthenticationService mockedAuth = mock(AuthenticationService.class);
 
     String invalidEmail = "test";
     String validEmail = "test@test.com";

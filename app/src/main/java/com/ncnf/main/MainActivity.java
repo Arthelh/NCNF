@@ -28,8 +28,6 @@ import com.ncnf.user.UserProfileActivity;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.ncnf.Utils.*;
-
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 

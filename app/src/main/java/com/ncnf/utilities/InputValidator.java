@@ -2,7 +2,6 @@ package com.ncnf.utilities;
 
 
 import android.text.InputType;
-import android.util.Patterns;
 import android.widget.EditText;
 
 import androidx.core.util.PatternsCompat;

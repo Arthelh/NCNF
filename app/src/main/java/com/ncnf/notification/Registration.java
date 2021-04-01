@@ -45,11 +45,7 @@ public class Registration {
         CompletableFuture<Boolean> res = new CompletableFuture<>();
 
         user.updateNotifications(false).whenComplete((r, e) -> {
-            if (e != null) {
-                res.complete(false);
-            } else {
-                res.complete(true);
-            }
+            res.complete(e == null);
         });
 
         return res;

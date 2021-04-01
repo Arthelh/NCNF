@@ -8,16 +8,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import com.ncnf.event.Event;
 import com.ncnf.event.EventType;
 import com.ncnf.event.Location;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.organizer.PublicOrganizer;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class FeedActivity extends AppCompatActivity implements EventAdapter.OnEventListener {
     private RecyclerView.LayoutManager lManager;

@@ -30,9 +30,9 @@ public class PrivateUser {
 
     private final DatabaseServiceInterface db;
 
-    private String email;
-    private String UUID;
-    private String path;
+    private final String email;
+    private final String UUID;
+    private final String path;
 
     public PrivateUser(DatabaseServiceInterface db, String path, String UUID, String email) {
         if(UUID == null || email == null || path == null) {

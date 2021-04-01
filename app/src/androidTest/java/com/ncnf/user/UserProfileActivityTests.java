@@ -12,7 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.HashMap;
@@ -37,9 +36,7 @@ import static com.ncnf.Utils.BIRTH_YEAR_KEY;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_KEY;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.not;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -49,8 +46,8 @@ import static org.mockito.Mockito.when;
 @UninstallModules(CurrentUserModule.class)
 public class UserProfileActivityTests {
 
-    private static PrivateUser mockUser = Mockito.mock(PrivateUser.class);
-    private static CompletableFuture<DatabaseResponse> future = new CompletableFuture();
+    private static final PrivateUser mockUser = Mockito.mock(PrivateUser.class);
+    private static final CompletableFuture<DatabaseResponse> future = new CompletableFuture();
 
     // BeforeClass is required because the mocking must be done before the activity is launched
     @BeforeClass
@@ -65,8 +62,8 @@ public class UserProfileActivityTests {
         when(mockUser.loadUserFromDB()).thenReturn(future);
     }
 
-    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    private ActivityScenarioRule scenario = new ActivityScenarioRule<>(UserProfileActivity.class);
+    private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(UserProfileActivity.class);
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);
