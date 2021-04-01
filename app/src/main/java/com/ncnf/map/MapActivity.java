@@ -174,6 +174,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         final AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
         //Initialize materialSearchBar
+        createOnSearchActionListener(materialSearchBar);
+
+        //Configure materialSearchBar behavior
+        createTextChangeListener(materialSearchBar, token);
+    }
+
+    //Sets the basics for the search bar like text input and button behavior
+    private void createOnSearchActionListener(MaterialSearchBar materialSearchBar){
         materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
             public void onSearchStateChanged(boolean enabled) {
@@ -194,8 +202,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             }
         });
+    }
 
-        //Configure materialSearchBar behavior
+    //Sets the behavior for when text is changed in the search bar
+    private void createTextChangeListener(MaterialSearchBar materialSearchBar, AutocompleteSessionToken token){
         materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -204,15 +214,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //Creates the prediction auto completer, accepts Cities, Addresses
                 FindAutocompletePredictionsRequest predictionsRequest = FindAutocompletePredictionsRequest.builder()
                         .setCountries(Utilities.supported_countries)
-                        .setTypeFilter(TypeFilter.ADDRESS)
                         .setSessionToken(token)
                         .setQuery(s.toString()).build();
                 placesClient.findAutocompletePredictions(predictionsRequest).addOnCompleteListener(task -> {
                     if (task.isSuccessful()){
                         FindAutocompletePredictionsResponse predictionsResponse = task.getResult();
                         if (predictionsResponse != null){
+                            //Retrieves the predictions and adds them to the list to be displayed below the search bar
                             predictionList = predictionsResponse.getAutocompletePredictions();
                             List<String> suggestions = new ArrayList<>();
                             for (AutocompletePrediction a : predictionList){
@@ -230,54 +241,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 });
 
                 //This decides what to do once the user clicked on one of the given suggestions
-                materialSearchBar.setSuggestionsClickListener(new SuggestionsAdapter.OnItemViewClickListener() {
-                    @Override
-                    public void OnItemClickListener(int position, View v) {
-                        if (position >= predictionList.size())
-                            return;
-                        AutocompletePrediction selection = predictionList.get(position);
-                        //Stores the address as a human-readable String in 'suggestion'
-                        String suggestion = materialSearchBar.getLastSuggestions().get(position).toString();
-                        materialSearchBar.setText(suggestion);
-
-                        //Because apparently just putting mSB.clearSuggestions() does not work
-                        new Handler().postDelayed(materialSearchBar::clearSuggestions, 1000);
-
-                        //Hides the keyboard
-                        InputMethodManager input = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                        if (input != null)
-                            input.hideSoftInputFromWindow(materialSearchBar.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-
-                        //Prepares the conversion from prediction to LatLng
-                        final String placeId = selection.getPlaceId();
-                        List<Place.Field> placeFields = Arrays.asList(Place.Field.LAT_LNG);
-
-                        //Converts prediction to LatLng and updates markers if successful, prints out errors if not
-                        FetchPlaceRequest fetchPlaceRequest = FetchPlaceRequest.builder(placeId, placeFields).build();
-                        placesClient.fetchPlace(fetchPlaceRequest).addOnSuccessListener(fetchPlaceResponse -> {
-                            Place place = fetchPlaceResponse.getPlace();
-                            Log.i("Place fetching", "Place found: " + place.getName());
-                            LatLng placeLatLng = place.getLatLng();
-                            if (placeLatLng != null) {
-                                user_position = placeLatLng;
-                                update_markers();
-                            }
-                        }).addOnFailureListener(e -> {
-                            if (e instanceof ApiException){
-                                ApiException apiException = (ApiException) e;
-                                apiException.printStackTrace();
-                                int statusCode = apiException.getStatusCode();
-                                Log.i("Place fetching", "Place not found: " + e.getMessage());
-                                Log.i("Place fetching", "Status code: " + statusCode);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void OnItemDeleteListener(int position, View v) {
-
-                    }
-                });
+                createSuggestionsClickListener(materialSearchBar);
             }
 
             @Override
@@ -287,6 +251,59 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
+    //Creates the behavior for when clicking on a suggestion
+    private void createSuggestionsClickListener(MaterialSearchBar materialSearchBar){
+        materialSearchBar.setSuggestionsClickListener(new SuggestionsAdapter.OnItemViewClickListener() {
+            @Override
+            public void OnItemClickListener(int position, View v) {
+                if (position >= predictionList.size())
+                    return;
+                AutocompletePrediction selection = predictionList.get(position);
+                //Stores the address as a human-readable String in 'suggestion'
+                String suggestion = materialSearchBar.getLastSuggestions().get(position).toString();
+                materialSearchBar.setText(suggestion);
+
+                //Because apparently just putting mSB.clearSuggestions() does not work
+                new Handler().postDelayed(materialSearchBar::clearSuggestions, 1000);
+
+                //Hides the keyboard
+                InputMethodManager input = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (input != null)
+                    input.hideSoftInputFromWindow(materialSearchBar.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+                //Prepares the conversion from prediction to LatLng
+                final String placeId = selection.getPlaceId();
+                List<Place.Field> placeFields = Arrays.asList(Place.Field.LAT_LNG);
+
+                //Converts prediction to LatLng and updates markers if successful, prints out errors if not
+                FetchPlaceRequest fetchPlaceRequest = FetchPlaceRequest.builder(placeId, placeFields).build();
+                placesClient.fetchPlace(fetchPlaceRequest).addOnSuccessListener(fetchPlaceResponse -> {
+                    Place place = fetchPlaceResponse.getPlace();
+                    Log.i("Place fetching", "Place found: " + place.getName());
+                    LatLng placeLatLng = place.getLatLng();
+                    if (placeLatLng != null) {
+                        user_position = placeLatLng;
+                        update_markers();
+                    }
+                }).addOnFailureListener(e -> {
+                    if (e instanceof ApiException){
+                        ApiException apiException = (ApiException) e;
+                        apiException.printStackTrace();
+                        int statusCode = apiException.getStatusCode();
+                        Log.i("Place fetching", "Place not found: " + e.getMessage());
+                        Log.i("Place fetching", "Status code: " + statusCode);
+                    }
+                });
+            }
+
+            @Override
+            public void OnItemDeleteListener(int position, View v) {
+
+            }
+        });
+    }
+
+    //Removes all markers from the map and recreates them according to current position
     private void update_markers(){
         for (Marker m : event_markers)
             m.remove();
