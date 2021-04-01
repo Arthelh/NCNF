@@ -13,10 +13,10 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="buttonStyle">@style/Theme.NCNF.BlueButton</item>
-        <item name="android:editTextColor">@color/light_cyan</item>
-        <item name="android:textColorHint">@color/light_cyan</item>
+        <item name="android:editTextColor">@color/black</item>
+        <item name="android:textColorHint">@color/black</item>
         <item name="android:windowBackground">@drawable/main_background_gradient</item>
-        <item name="android:textColor">#A7E7FE</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Theme.NCNF.NoActionBar">
