@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
+import com.ncnf.event.create.EventCreateActivity;
 import com.ncnf.user.UserProfileActivity;
 
 
@@ -28,12 +29,12 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getView().findViewById(R.id.homeProfileButton).setOnClickListener(v -> {
-          gotToProfile();
-        });
+        getView().findViewById(R.id.homeProfileButton).setOnClickListener(this::gotToProfile);
+
+        getView().findViewById(R.id.homeCreateEventButton).setOnClickListener(this::goToEventCreation);
     }
 
-    public void gotToProfile(){
+    public void gotToProfile(View view){
         Intent intent;
 
         if(!isConnected()){
@@ -45,7 +46,14 @@ public class HomeFragment extends Fragment {
         startActivity(intent);
     }
 
+    public void goToEventCreation(View view){
+        Intent intent = new Intent(getContext(), EventCreateActivity.class);
+        startActivity(intent);
+    }
+
     private boolean isConnected(){
         return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
+
+
 }
