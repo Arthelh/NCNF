@@ -2,11 +2,9 @@ package com.ncnf.feed;
 
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.ncnf.R;
 import com.ncnf.feed.ui.EventActivity;
-import com.ncnf.feed.ui.FeedActivity;
 import com.ncnf.main.MainActivity;
 
 import org.junit.After;
@@ -14,7 +12,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
-import org.junit.runner.RunWith;
 
 import dagger.hilt.android.testing.HiltAndroidRule;
 import dagger.hilt.android.testing.HiltAndroidTest;
