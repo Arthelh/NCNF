@@ -1,59 +1,53 @@
 package com.ncnf.main;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ncnf.R;
+import com.ncnf.feed.ui.FeedFragment;
+import com.ncnf.home.ui.HomeFragment;
+import com.ncnf.map.ui.MapFragment;
 
-import com.ncnf.event.EventActivity;
-import com.ncnf.feed.FeedActivity;
-import com.ncnf.map.MapActivity;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
+
+    private BottomNavigationView navigationBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
-        RecyclerView r = (RecyclerView)findViewById(R.id.recycler_view);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.mainFragmentContainerView, new HomeFragment())
+                    .commit();
+        }
 
-        Button launchFeed = (Button) findViewById(R.id.feed_view_button);
+        navigationBar = findViewById(R.id.mainNavigationBar);
 
-        launchFeed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        navigationBar.setOnNavigationItemSelectedListener(item -> {
+            if(item.getItemId() == R.id.navigation_feed){
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.mainFragmentContainerView, new FeedFragment())
+                        .commit();
 
-                feedView();
-            }
+            } else if(item.getItemId() == R.id.navigation_map) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.mainFragmentContainerView, new MapFragment())
+                        .commit();
+
+            } else if(item.getItemId() == R.id.navigation_home){
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.mainFragmentContainerView, new HomeFragment())
+                        .commit();                }
+
+            return true;
         });
-    }
-
-    /*Called when the user clicks the button*/
-    public void goToMap(View view){
-        Intent intent = new Intent(this, MapActivity.class);
-        startActivity(intent);
-    }
-
-    public void feedView() {
-        Intent intent = new Intent(this, FeedActivity.class);
-        startActivity(intent);
-    }
-
-    public void seeEvent1(View view) {
-        Intent intent = new Intent(this, EventActivity.class);
-        intent.putExtra("EVENT_NUM", 0);
-        startActivity(intent);
-    }
-
-    public void seeEvent2(View view) {
-        Intent intent = new Intent(this, EventActivity.class);
-        intent.putExtra("EVENT_NUM", 1);
-        startActivity(intent);
     }
 }

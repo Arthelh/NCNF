@@ -1,7 +1,10 @@
 package com.ncnf.event;
+
+import com.ncnf.utilities.Location;
+
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class LocationTest {
 

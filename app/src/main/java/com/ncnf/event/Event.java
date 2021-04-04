@@ -1,19 +1,30 @@
 package com.ncnf.event;
 
-import com.ncnf.organizer.Organizer;
+import android.content.Context;
+import android.widget.ImageView;
 
+import com.ncnf.organizer.Organizer;
+import com.ncnf.utilities.Location;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.Date;
 
-public abstract class Event {
+public abstract class Event implements Comparable {
 
     public enum PubPriv {
         PUBLIC, PRIVATE;
     }
 
     private UUID uuid;
+
+    String imageName;
 
     private String name;
     private Date date;
@@ -25,7 +36,8 @@ public abstract class Event {
     private String description;
     private Organizer organizer;
 
-    public Event(String name, Date date, Location location, EventType type, PubPriv pubPriv, String description, Organizer organizer) {
+    public Event(String name, Date date, Location location, EventType type, PubPriv pubPriv, String description, Organizer organizer, String imageName) {
+        this.imageName = imageName;
         this.name = name;
         this.date = date;
         this.location = location;
@@ -39,6 +51,7 @@ public abstract class Event {
     }
 
     public String getName() { return name; }
+    public String getImageName() { return imageName; }
     public Date getDate() { return date; }
     public Location getLocation() { return location; }
     public EventType getType() { return type; }
@@ -59,8 +72,34 @@ public abstract class Event {
         }
         numOfAttendees = attendees.size();
     }
+    public void setUuid(UUID uuid) {this.uuid = uuid; }
     public void setDescription(String description)  { this.description = description; }
 
     public void setNewOrganizer(Organizer newOwner) { this.organizer = newOwner; }
+
+    public static Event toEvent(String f) {
+
+        String[] s = f.split("@");
+
+        if(s[0].equals("PUBLIC")) {
+            return PublicEvent.toEvent(s);
+        }
+        else if(s[0].equals("PRIVATE")) {
+            return PrivateEvent.toEvent(s);
+        }
+
+        return null;
+    }
+
+    /**
+     public void cache(Context context) throws IOException {
+
+     File newFile = File.createTempFile(uuid.toString(), null, context.getCacheDir());
+     FileOutputStream fos = new FileOutputStream(newFile);
+     fos.write(toString().getBytes());
+     fos.close();
+     }
+     **/
+
 
 }

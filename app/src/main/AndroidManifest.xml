@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.ncnf" >
-
+    package="com.ncnf">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the "MyLocation" functionality.
     -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -17,8 +18,17 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Bootcamp">
-
+        android:theme="@style/Theme.NCNF"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".user.UserProfileActivity"
+            android:parentActivityName=".main.MainActivity"
+            tools:ignore="MissingClass" />
+        <activity
+            android:name=".authentication.ui.LoginActivity"
+            android:parentActivityName=".main.MainActivity"
+            tools:ignore="MissingClass" />
+        <activity android:name=".settings.SettingsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -29,41 +39,34 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
+            android:value="${mapsApiKey}" /> <!-- MAP -->
         <activity
-            android:name="com.ncnf.map.MapActivity"
+            android:name=".map.MapActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName="com.ncnf.main.MainActivity" />
+            android:parentActivityName=".main.MainActivity" />
 
         <uses-library
             android:name="com.google.android.wearable"
             android:required="false" />
-
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.
         -->
         <meta-data
             android:name="com.google.android.wearable.standalone"
-            android:value="true" />
-
+            android:value="true" /> <!-- FEED -->
         <activity
-            android:name="com.ncnf.feed.FeedActivity"
+            android:name=".feed.ui.FeedActivity"
             android:label="@string/title_activity_feed"
-            android:parentActivityName="com.ncnf.main.MainActivity" >
-        </activity>
-
+            android:parentActivityName=".main.MainActivity" />
         <activity
-            android:name="com.ncnf.event.EventActivity"
-            android:parentActivityName="com.ncnf.main.MainActivity"></activity>
-
+            android:name=".event.create.EventCreateActivity"
+            android:label="@string/title_event_creation"
+            android:parentActivityName=".main.MainActivity" /> 
         <activity
-            android:name="com.ncnf.feed.EventActivity"
-            android:parentActivityName="com.ncnf.feed.FeedActivity">
-        </activity>
-
-        <activity android:name="com.ncnf.main.MainActivity" >
+            android:name=".event.EventActivity"
+            android:parentActivityName=".feed.ui.FeedActivity" /> <!-- LANDING PAGE -->
+        <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

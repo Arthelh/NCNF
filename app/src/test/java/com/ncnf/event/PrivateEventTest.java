@@ -1,5 +1,7 @@
 package com.ncnf.event;
 import com.ncnf.organizer.PublicOrganizer;
+import com.ncnf.utilities.DateAdapter;
+import com.ncnf.utilities.Location;
 
 import org.junit.Test;
 
@@ -21,7 +23,7 @@ public class PrivateEventTest {
 
     @Test
     public void privateEventGeneratesCorrectly() {
-        PrivateEvent event = new PrivateEvent(name, date, loc, description, EventType.Conference, owner);
+        PrivateEvent event = new PrivateEvent(name, date, loc, description, EventType.Conference, owner, "swan_lake");
         assertEquals(event.getDate(), date);
         assertEquals(event.getName(), name);
         assertEquals(event.getLocation(), loc);
@@ -35,10 +37,32 @@ public class PrivateEventTest {
     }
 
     @Test
+    public void serializationWorksPrivateEvent() {
+
+        PrivateEvent event = new PrivateEvent(name, date, loc, description, EventType.Conference, owner, "swan_lake");
+        DateAdapter adapter = new DateAdapter(date);
+
+        String serialized = "PRIVATE@" + event.getUuid().toString() + "@" + name + "@" + adapter.toString() + "@" + loc.getLongitude() + " " + loc.getLatitude() + " " + loc.getAddress() + "@" + description + "@" + EventType.Conference.toString() + "@" + owner.getName() + "@" + "swan_lake";
+        assertEquals(event.toString(), serialized);
+        assertEquals(Event.toEvent(serialized), event);
+
+    }
+
+    @Test
     public void inviteWorks() {
-        PrivateEvent event = new PrivateEvent(name, date, loc, description, EventType.Conference, owner);
+        PrivateEvent event = new PrivateEvent(name, date, loc, description, EventType.Conference, owner, "swan_lake");
         event.invite("Sarah");
         assertEquals(event.getInvited().size(), 1);
         assertEquals(event.getInvited().get(0), "Sarah");
+    }
+
+    @Test
+    public void compareToWorks() {
+        PrivateEvent event = new PrivateEvent(name, date, loc, description, EventType.Conference, owner, "swan_lake");
+        Date date2 = new Date(2021, 03, 30);
+        PrivateEvent event2 = new PrivateEvent(name, date2, loc, description, EventType.Conference, owner, "swan_lake");
+
+        assertEquals(event.compareTo(event2), -1);
+
     }
 }
