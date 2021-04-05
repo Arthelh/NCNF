@@ -70,7 +70,7 @@ public class FeedFragmentTest {
 
     @Test
     public void eventActivityOpens(){
-        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(3, click()));
+        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.eventName)).check(matches(withText("EPFL event")));
     }
 

@@ -1,9 +1,10 @@
-package com.ncnf;
+package com.ncnf.event;
 
 import android.content.Intent;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.ncnf.event.Event;
@@ -17,6 +18,7 @@ import com.ncnf.event.PublicEvent;
 import com.ncnf.organizer.PublicOrganizer;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.Visibility.VISIBLE;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
@@ -25,6 +27,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 
+import com.ncnf.R;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,6 +41,11 @@ public class EventActivityTest {
 
     private EventDB db = new EventDB();
     private Event event1 = db.getEvent(EventDB.uuid1.toString());
+
+    @Before
+    public void setup(){
+        Intents.init();
+    }
 
     @Test
     public void test_name(){
@@ -80,5 +91,10 @@ public class EventActivityTest {
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
             onView(withId(R.id.eventOwner)).check(matches(withText(containsString(event1.getOrganizer().getName()))));
         }
+    }
+
+    @After
+    public void cleanup(){
+        Intents.release();
     }
 }
