@@ -5,18 +5,17 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <androidx.fragment.app.FragmentContainerView
+    <com.google.android.gms.maps.MapView
         android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
-    </androidx.fragment.app.FragmentContainerView>
+    </com.google.android.gms.maps.MapView>
 
     <com.mancj.materialsearchbar.MaterialSearchBar
         android:id="@+id/searchBarMap"
         style="@style/MaterialSearchBarLight"
-        android:layout_width="388dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -30,54 +29,51 @@
         app:mt_navIconEnabled="true"
         app:mt_placeholder="Set the location" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/map_switch_button"
         android:onClick="switchMarkers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:text="Switch between Events and Venues"
+        android:text="@string/switch_between_events_and_venues"
         android:textColor="#FFFFFF"
-        android:background="@color/cardview_dark_background"
         android:elevation="5dp"
         android:outlineProvider="bounds" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/map_zoomin_button"
-        android:onClick="zoomIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="13dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="90dp"
-        android:text="Zoom in"/>
+        android:text="@string/zoom_in"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/map_settings_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="150dp"
+        android:layout_marginStart="160dp"
         android:layout_marginEnd="150dp"
         android:layout_marginBottom="90dp"
-        android:onClick="start_settings"
-        android:text="Settings" />
+        android:layout_toEndOf="@id/map_zoomin_button"
+        android:layout_centerHorizontal="true"
+        android:text="@string/settings" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/map_zoomout_button"
-        android:onClick="zoomOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="283dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="13dp"
+        android:layout_toEndOf="@id/map_settings_button"
+        android:layout_marginStart="306dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="90dp"
-        android:text="Zoom Out" />
-
+        android:text="@string/zoom_out" />
 
 </RelativeLayout>

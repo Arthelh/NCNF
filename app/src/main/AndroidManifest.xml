@@ -7,6 +7,8 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the "MyLocation" functionality.
     -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -16,7 +18,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Bootcamp">
+        android:theme="@style/Theme.NCNF"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".user.UserProfileActivity"
+            android:parentActivityName=".main.MainActivity"
+            tools:ignore="MissingClass" />
+        <activity
+            android:name=".authentication.ui.LoginActivity"
+            android:parentActivityName=".main.MainActivity"
+            tools:ignore="MissingClass" />
         <activity android:name=".settings.SettingsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -28,9 +39,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${mapsApiKey}" />
-
-        <!-- MAP -->
+            android:value="${mapsApiKey}" /> <!-- MAP -->
         <activity
             android:name=".map.MapActivity"
             android:label="@string/title_activity_maps"
@@ -45,31 +54,22 @@
         -->
         <meta-data
             android:name="com.google.android.wearable.standalone"
-            android:value="true" />
-<!-- FEED -->
+            android:value="true" /> <!-- FEED -->
         <activity
-            android:name=".feed.FeedActivity"
+            android:name=".feed.ui.FeedActivity"
             android:label="@string/title_activity_feed"
             android:parentActivityName=".main.MainActivity" />
-
         <activity
             android:name=".event.create.EventCreateActivity"
             android:label="@string/title_event_creation"
-            android:parentActivityName="com.ncnf.main.MainActivity" >
-        </activity>
-<!-- TODO: merge these two event activity -->
+            android:parentActivityName=".main.MainActivity" /> <!-- TODO: merge these two event activity -->
         <activity
-            android:name="com.ncnf.feed.EventActivity"
-            android:parentActivityName="com.ncnf.feed.FeedActivity">
-        </activity>
-
-
-        <activity android:name=".event.EventActivity"
-            android:parentActivityName=".main.MainActivity"/>
-
-
-        <!-- LANDING PAGE -->
-        <activity android:name="com.ncnf.main.MainActivity" >
+            android:name=".feed.ui.EventActivity"
+            android:parentActivityName=".feed.ui.FeedActivity" />
+        <activity
+            android:name=".event.EventActivity"
+            android:parentActivityName=".main.MainActivity" /> <!-- LANDING PAGE -->
+        <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

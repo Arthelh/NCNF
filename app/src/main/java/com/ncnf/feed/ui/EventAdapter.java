@@ -1,4 +1,4 @@
-package com.ncnf.feed;
+package com.ncnf.feed.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
-    private List<Event> items;
+    private final List<Event> items;
     private final OnEventListener onEventListener;
 
     public EventAdapter(List<Event> items, OnEventListener onEventListener) {
@@ -38,10 +38,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     public static class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // Card fields
-        private TextView event;
-        private TextView id;
-        private TextView data;
-        private OnEventListener onEventListener;
+        private final TextView event;
+        private final TextView id;
+        private final TextView data;
+        private final OnEventListener onEventListener;
 
         public EventViewHolder(View v, OnEventListener e) {
             super(v);

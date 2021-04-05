@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.ncnf.R;
 import com.ncnf.settings.Settings;

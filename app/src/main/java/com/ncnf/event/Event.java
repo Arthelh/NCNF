@@ -3,23 +3,23 @@ package com.ncnf.event;
 import com.ncnf.organizer.Organizer;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.Date;
 
 public abstract class Event {
 
     public enum PubPriv {
-        PUBLIC, PRIVATE;
+        PUBLIC, PRIVATE
     }
 
-    private UUID uuid;
+    private final UUID uuid;
 
     private String name;
     private Date date;
     private Location location;
-    private EventType type;
-    private PubPriv pubPriv;
+    private final EventType type;
+    private final PubPriv pubPriv;
     private List<String> attendees;
     private int numOfAttendees;
     private String description;

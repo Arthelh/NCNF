@@ -1,9 +1,9 @@
 package com.ncnf.event;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.ncnf.R;
 import com.ncnf.organizer.PublicOrganizer;
@@ -12,9 +12,9 @@ import java.util.Date;
 
 public class EventActivity extends AppCompatActivity {
 
-    private Event event1 = new PublicEvent("EPFL event", new Date(2021, 03, 11), new Location(46.518689, 6.568067, "Rolex Learning Center, 1015 Ecublens"), "Event description goes here", EventType.Conference, 0, 0, new PublicOrganizer("EPFL"));
-    private Event event2 = new PublicEvent("Carmen", new Date(2021, 04, 24), new Location(46.517789, 6.636917, "Avenue du Théâtre 12, 1002 Lausanne"), "Carmen opera function", EventType.Opera, 0, 0, new PublicOrganizer("Opéra de Lausanne"));
-    private Event[] events = {event1, event2};
+    private final Event event1 = new PublicEvent("EPFL event", new Date(2021, 03, 11), new Location(46.518689, 6.568067, "Rolex Learning Center, 1015 Ecublens"), "Event description goes here", EventType.Conference, 0, 0, new PublicOrganizer("EPFL"));
+    private final Event event2 = new PublicEvent("Carmen", new Date(2021, 04, 24), new Location(46.517789, 6.636917, "Avenue du Théâtre 12, 1002 Lausanne"), "Carmen opera function", EventType.Opera, 0, 0, new PublicOrganizer("Opéra de Lausanne"));
+    private final Event[] events = {event1, event2};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

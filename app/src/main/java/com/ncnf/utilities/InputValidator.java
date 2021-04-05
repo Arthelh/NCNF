@@ -2,10 +2,11 @@ package com.ncnf.utilities;
 
 
 import android.text.InputType;
-import android.util.Patterns;
 import android.widget.EditText;
 
 import androidx.core.util.PatternsCompat;
+
+import com.ncnf.Utils;
 
 public class InputValidator {
 
@@ -70,5 +71,13 @@ public class InputValidator {
         }
 
         return textField.getError() == null;
+    }
+
+    public static boolean isValidPassword(String password){
+        return password.length() >= Utils.PASSWORD_MINIMUM_LENGTH;
+    }
+
+    public static boolean isStringEmpty(String s){
+        return s == null || s.length() == 0;
     }
 }
