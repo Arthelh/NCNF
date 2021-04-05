@@ -70,6 +70,17 @@ public class LoginActivityTest {
     }
 
     @Test
+    public void testLoginRegisterButtons(){
+        onView(withId(R.id.registerButton)).perform(click());
+        onView(withId(R.id.loginButton));
+    }
+
+    @Test
+    public void testSuccessfulLogin(){
+        //TODO Test a successful login, need registered credentials
+    }
+
+    @Test
     public void signInFragmentEmptyInputTest(){
         onView(ViewMatchers.withId(R.id.signInLoginButton)).perform(click());
         onView(withId(R.id.exceptionSignIn)).check(matches(withText(containsString(EMPTY_FIELD_STRING))));

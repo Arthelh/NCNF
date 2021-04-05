@@ -34,7 +34,9 @@ public class PublicEventTest {
         assertEquals(event.getPrice(), 0);
         assertEquals(event.getOrganizer(), owner);
         assertEquals(event.getNumOfAttendees(), 0);
-        assertTrue(event.getAttendees().size() == 0);
+        assertEquals(event.getAttendees().size(), 0);
+
+        assertEquals(event.getPubPriv(), Event.PubPriv.PUBLIC);
 
     }
 
