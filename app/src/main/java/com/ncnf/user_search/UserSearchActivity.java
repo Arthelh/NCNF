@@ -10,18 +10,43 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
+import com.ncnf.user.Profile.Profile;
+import com.ncnf.user.Profile.ProfileAdapter;
+
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class UserSearchActivity extends AppCompatActivity {
+
+    private final List<Profile> profilesList = new LinkedList<>();;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_user);
+
+
+        //Handle recyclerView
+        RecyclerView recycler = (RecyclerView)findViewById(R.id.user_search_recycler_view);
+
+        ProfileAdapter adapter = new ProfileAdapter(profilesList, new ProfileAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Profile item) {
+                //TODO
+            }
+        });
+        recycler.setAdapter(adapter);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+
+        //Handle searches
         handleIntent(getIntent());
     }
+
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -33,10 +58,11 @@ public class UserSearchActivity extends AppCompatActivity {
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-           doMySearch(query);
+           searchUserWithName(query);
         }
     }
 
+    //Handle search bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -51,7 +77,7 @@ public class UserSearchActivity extends AppCompatActivity {
     }
 
     //TODO
-    void doMySearch(String query){
+    void searchUserWithName(String query){
         Toast.makeText(UserSearchActivity.this, "HELLO",Toast.LENGTH_LONG).show();
     }
 
