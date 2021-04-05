@@ -84,4 +84,7 @@
     <string name="navigation_menu_feed">Feed</string>
     <string name="navigation_menu_map">Map</string>
     <string name="navigation_menu_home">Home</string>
+    <string name="search_user_button">Search User</string>
+    <string name="search_user_hint">Search User</string>
+    <string name="user_search_title">Search User</string>
 </resources>
