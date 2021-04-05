@@ -146,11 +146,13 @@
             app:layout_constraintTop_toBottomOf="@+id/event_create_display_time" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/event_picture"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_marginBottom="11dp"
             android:src="@drawable/blobfish"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintBottom_toTopOf="@+id/event_create_display_time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
