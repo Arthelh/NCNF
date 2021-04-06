@@ -51,6 +51,7 @@ public class LoginActivityTest {
     String invalidPassword = "test";
     String validPassword = "test12";
     String unsuccessfulLogin = "Unsuccessful login.";
+    String successfulLogin = "Successful login.";
     String unsuccessfulRegister = "Unsuccessful register.";
 
     @Rule
@@ -70,18 +71,9 @@ public class LoginActivityTest {
     }
 
     @Test
-    public void testLoginRegisterButtons(){
-        onView(withId(R.id.registerButton)).perform(click());
-        onView(withId(R.id.loginButton));
-    }
-
-    @Test
-    public void testSuccessfulLogin(){
-        //TODO Test a successful login, need registered credentials
-    }
-
-    @Test
     public void signInFragmentEmptyInputTest(){
+        onView(withId(R.id.registerButton)).perform(click());
+        onView(withId(R.id.loginButton)).perform(click());
         onView(ViewMatchers.withId(R.id.signInLoginButton)).perform(click());
         onView(withId(R.id.exceptionSignIn)).check(matches(withText(containsString(EMPTY_FIELD_STRING))));
     }
@@ -110,6 +102,27 @@ public class LoginActivityTest {
 
         onView(withId(R.id.exceptionSignIn)).check(matches(withText(containsString(unsuccessfulLogin))));
     }
+
+//    @Test HARDCORE TO TEST WITH DAGGER
+//    public void signInFragmentSuccessfulLoginTest(){
+//        Exception exception = new Exception(successfulLogin);
+//        CompletableFuture<AuthenticationResponse> future = new CompletableFuture<>();
+//        future.complete(new AuthenticationResponse(true, null, exception));
+//
+//        when(mockedAuth.logIn(anyString(), anyString())).thenReturn(future);
+//
+//        Intents.init();
+//
+//        onView(withId(R.id.signInEmail)).perform(typeText(validEmail), closeSoftKeyboard());
+//        onView(withId(R.id.signInPassword)).perform(typeText(validPassword), closeSoftKeyboard());
+//        onView(withId(R.id.signInLoginButton)).perform(click());
+//
+//        verify(mockedAuth).logIn(anyString(), anyString());
+//
+//        Intents.intended(hasComponent(UserProfileActivity.class.getName()));
+//
+//        Intents.release();
+//    }
     
     @Test
     public void signUpFragmentEmptyInputTest(){
@@ -207,7 +220,6 @@ public class LoginActivityTest {
         onView(withId(R.id.signUpRegisterButton)).perform(click());
 
         verify(mockedAuth).register(anyString(), anyString());
-
     }
 
 }
