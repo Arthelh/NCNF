@@ -1,21 +1,31 @@
 package com.ncnf.user;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
+import com.ncnf.R;
 import com.ncnf.database.DatabaseResponse;
+import com.ncnf.database.DatabaseService;
 import com.ncnf.database.DatabaseServiceInterface;
 import com.ncnf.event.Event;
+import com.ncnf.event.EventBuilder;
+import com.ncnf.feed.ui.EventAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import static com.ncnf.Utils.BIRTH_YEAR_KEY;
+import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EMAIL_KEY;
 import static com.ncnf.Utils.EMPTY_STRING;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
@@ -25,6 +35,7 @@ import static com.ncnf.Utils.NOTIFICATIONS_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_TOKEN_KEY;
 import static com.ncnf.Utils.OWNED_EVENTS_KEY;
 import static com.ncnf.Utils.SAVED_EVENTS_KEY;
+import static com.ncnf.Utils.USERS_COLLECTION_KEY;
 
 public class PrivateUser {
 
@@ -34,13 +45,13 @@ public class PrivateUser {
     private final String UUID;
     private final String path;
 
-    public PrivateUser(DatabaseServiceInterface db, String path, String UUID, String email) {
-        if(UUID == null || email == null || path == null) {
+    public PrivateUser(String UUID, String email) {
+        if(UUID == null || email == null) {
             throw new IllegalStateException("User doesn't have the right credentials to perform current operation");
         }
 
-        this.db = db;
-        this.path = path;
+        this.db = new DatabaseService();
+        this.path = USERS_COLLECTION_KEY + UUID;
         this.UUID = UUID;
         this.email = email;
     }
@@ -122,6 +133,38 @@ public class PrivateUser {
     private CompletableFuture<DatabaseResponse> addEvent(Event event, String array){
         return this.update(array, FieldValue.arrayUnion(event.getUuid()));
     }
+
+
+    public CompletableFuture<CompletableFuture<List<Event>>> getAllEvents(String eventCollection){
+        return this.getField(eventCollection).thenApply(task -> {
+            Log.d(DEBUG_TAG, "constructing " + eventCollection);
+
+            if(task.isSuccessful()){
+
+                List<String> eventIds = (List<String>) task.getResult();
+                List<CompletableFuture<Event>> eventsFuture = new ArrayList<>();
+                EventBuilder builder = new EventBuilder();
+                Log.d(DEBUG_TAG, "building " + eventCollection);
+                for(String s : eventIds){
+                    Log.d(DEBUG_TAG, s);
+                    eventsFuture.add(builder.build(s));
+                }
+                Log.d(DEBUG_TAG, "each has been build " + eventCollection);
+
+
+                //Create a future of list from a list of future
+                CompletableFuture<List<Event>> listEvent = CompletableFuture.allOf(eventsFuture.toArray(new CompletableFuture<?>[0]))
+                        .thenApply(v -> eventsFuture.stream()
+                                .map(CompletableFuture::join)
+                                .collect(Collectors.toList())
+                        );
+                return listEvent;
+            } else {
+                return CompletableFuture.completedFuture(null);
+            }
+        });
+    }
+
 
     public void signOut() {
         CurrentUserModule.signOut();

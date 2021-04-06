@@ -3,6 +3,7 @@ package com.ncnf.user;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,11 +15,18 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
+import com.ncnf.bookmark.BookMark;
 import com.ncnf.database.DatabaseResponse;
+import com.ncnf.database.DatabaseService;
+import com.ncnf.event.Event;
+import com.ncnf.event.PrivateEvent;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -29,6 +37,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
 import static com.ncnf.Utils.BIRTH_YEAR_KEY;
 import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.Utils.EVENTs_COLLECTION_KEY;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_KEY;
@@ -80,7 +89,9 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 if(task.isSuccessful()) {
                     Map<String, Object> map = (Map<String, Object>) task.getResult();
+                    Log.d(DEBUG_TAG, Integer.toString(map.size()));
                     String first_name = map.get(FIRST_NAME_KEY).toString();
+                    Log.d(DEBUG_TAG, first_name);
                     String last_name = map.get(LAST_NAME_KEY).toString();
                     String birth_date = map.get(BIRTH_YEAR_KEY).toString();
                     String user_email = user.getEmail();
@@ -234,5 +245,24 @@ public class UserProfileActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    public void openBookmark(View view){
+        startActivity(new Intent(this, BookMark.class));
+    }
+
+    public void saveEvent(View view){
+        PrivateEvent event = new PrivateEvent(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                "EPFL", new Date(), new GeoPoint(0.5f, 0.5f), "Lausanne", "l'école", Event.Type.NOTHING);
+        event.store().thenAccept(task1 -> {
+            task1.thenAccept(task2 -> {
+                if(task2.isSuccessful()){
+                    Log.d(DEBUG_TAG, "Event successfully stored");
+                } else {
+                    Log.d(DEBUG_TAG, "Failed to store event : must try again");
+                }
+            });
+        });
+
     }
 }

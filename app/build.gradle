@@ -40,6 +40,11 @@ android {
             testCoverageEnabled true
         }
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
     compileOptions {
         // Flag to enable support for the new language APIs
         coreLibraryDesugaringEnabled true
@@ -62,6 +67,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     // Map Dependencies
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
@@ -73,6 +79,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.wear:wear:1.1.0'
     implementation 'com.google.android.libraries.places:places:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 
     // tests
     testImplementation 'junit:junit:4.13.2'

@@ -14,9 +14,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.event.Event;
-import com.ncnf.event.EventType;
+import com.ncnf.event.Event.Type;
 import com.ncnf.event.Location;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.organizer.PublicOrganizer;
@@ -52,7 +53,7 @@ public class FeedFragment extends Fragment {
 
         // Set the custom adapter
         eventList = new ArrayList<>();
-        eventList.add(new PublicEvent("testName", new Date(), new Location(0, 0, "testLoc"), "testData", EventType.Museum, 0 , 0, new PublicOrganizer("testOrganizer")));
+        eventList.add(new PublicEvent("testOrganizer", "testName", new Date(), new GeoPoint(0, 0), "testLoc", "testData", Type.Museum, 0 , 0));
         adapter = new EventAdapter(eventList, this::onEventClick);
         recycler.setAdapter(adapter);
 
