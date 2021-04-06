@@ -2,6 +2,11 @@
 
 # Beltan
 
+This week I implemented some tests on the Map ToolBar and did some more tests for the rest of the project to increase the coverage
+to allow for more room for untestable/hard to test features. For both part we worked together with Jeremie to increase the coverage and 
+figure out how to do it. I still have the implementation of the gps into the map to do next week.
+
+Surprisingly it took less time to do my tasks than what was expected
 
 # David
 
