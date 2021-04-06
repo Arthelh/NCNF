@@ -182,11 +182,10 @@ public final class MapFragmentTest {
     public final void testSearchBar(){
         onView(withId(R.id.searchBarMap)).perform(click());
         onView(withClassName(containsString(EditText.class.getSimpleName()))).perform(typeText("Boulevard"));
-        onView(withId(R.id.searchBarMap)).check(new ViewAssertion() {
-            @Override
-            public void check(View view, NoMatchingViewException noViewFoundException) {
-                assertTrue(((MaterialSearchBar) view).isSuggestionsVisible());
-            }
+        onView(withId(R.id.searchBarMap)).check((view, noViewFoundException) -> {
+            assertTrue(((MaterialSearchBar) view).isSuggestionsEnabled());
+            assertTrue(((MaterialSearchBar) view).isSearchOpened());
         });
     }
+
 }
