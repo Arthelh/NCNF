@@ -2,6 +2,7 @@ package com.ncnf.main;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,11 +21,11 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView navigationBar;
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
-    private final Fragment homeFragment = new HomeFragment();
-    private final Fragment mapFragment = new MapFragment();
-    private final Fragment feedFragment = new FeedFragment();
+    private Fragment homeFragment;
+    private Fragment mapFragment;
+    private Fragment feedFragment;
 
-    private Fragment activeFragment = homeFragment;
+    private Fragment activeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +33,23 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, feedFragment, "feed").hide(feedFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, mapFragment, "map").hide(mapFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, homeFragment, "home").commit();
+        if(savedInstanceState == null){
+            this.homeFragment = new HomeFragment();
+            this.mapFragment = new MapFragment();
+            this.feedFragment = new FeedFragment();
+            this.activeFragment = this.homeFragment;
+        } else {
+            this.homeFragment = fragmentManager.getFragment(savedInstanceState, "home_fragment");
+            this.mapFragment = fragmentManager.getFragment(savedInstanceState, "map_fragment");
+            this.feedFragment = fragmentManager.getFragment(savedInstanceState, "feed_fragment");
+            this.activeFragment = fragmentManager.getFragment(savedInstanceState, "active_fragment");
+        }
+
+        fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, feedFragment).hide(feedFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, mapFragment).hide(mapFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, homeFragment).hide(homeFragment).commit();
+
+        fragmentManager.beginTransaction().show(activeFragment).commit();
 
         navigationBar = findViewById(R.id.mainNavigationBar);
 
@@ -61,4 +76,14 @@ public class MainActivity extends AppCompatActivity {
 
         return false;
     };
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        fragmentManager.putFragment(outState, "home_fragment", homeFragment);
+        fragmentManager.putFragment(outState, "map_fragment", mapFragment);
+        fragmentManager.putFragment(outState, "feed_fragment", feedFragment);
+        fragmentManager.putFragment(outState, "active_fragment", activeFragment);
+    }
 }
