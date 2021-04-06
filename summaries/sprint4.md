@@ -4,9 +4,10 @@
 
 This week I implemented some tests on the Map ToolBar and did some more tests for the rest of the project to increase the coverage
 to allow for more room for untestable/hard to test features. For both part we worked together with Jeremie to increase the coverage and 
-figure out how to do it. I still have the implementation of the gps into the map to do next week.
+figure out how to do it. I also implemented the gps into the map by adding a button that when clicked requests for permission if not yet granted and/or moves the map back
+to the location of the user.
 
-Surprisingly it took less time to do my tasks than what was expected
+Surprisingly it took less time to do my tasks than what was expected for the testing tasks, but the gps took a bit longer than expected.
 
 # David
 
