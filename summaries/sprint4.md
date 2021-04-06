@@ -10,7 +10,9 @@ Surprisingly it took less time to do my tasks than what was expected
 
 # David
 
+This week I implemented the ability to chose an event picture from the library. I also cleaned up the EventAdapter for the event's feed. I've also started working on the feature to search other users in the database.
 
+The first two tasks only took a couple of hourse, but the third one has already taken much more time than expected
 
 # Eloi (scrum master)
 
