@@ -27,7 +27,7 @@ import com.ncnf.user.Profile.PublicProfile;
 import java.util.LinkedList;
 import java.util.List;
 
-//Useful Links
+//Useful Links: https://github.com/firebase/FirebaseUI-Android/tree/master/firestore
 
 public class UserSearchActivity extends AppCompatActivity {
 
@@ -107,7 +107,7 @@ public class UserSearchActivity extends AppCompatActivity {
             }
 
         });
-        //adapter.startListening();
+        adapter.startListening();
         recycler.setAdapter(adapter);
 
     }
@@ -116,7 +116,7 @@ public class UserSearchActivity extends AppCompatActivity {
         Toast.makeText(this, "TEST_PROFILE_DISPLAY", Toast.LENGTH_LONG).show();
     }
 
-    @Override protected void onStart()
+   /* @Override protected void onStart()
     {
         super.onStart();
         adapter.startListening();
@@ -126,6 +126,6 @@ public class UserSearchActivity extends AppCompatActivity {
     {
         super.onStop();
         adapter.stopListening();
-    }
+    }*/
 
 }
