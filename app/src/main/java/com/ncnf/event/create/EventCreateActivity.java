@@ -153,7 +153,8 @@ public class EventCreateActivity extends AppCompatActivity {
 
     //Helpers
     private void openGallery(){
-        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        Intent gallery = new Intent(Intent.ACTION_PICK);
+        gallery.setDataAndType( MediaStore.Images.Media.INTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
