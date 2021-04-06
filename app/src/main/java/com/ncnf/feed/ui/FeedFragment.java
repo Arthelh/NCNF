@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -70,7 +69,6 @@ public class FeedFragment extends Fragment {
     }
 
     private void onEventClick(Event e) {
-        Toast.makeText(FeedFragment.this.getContext(),"HELLO", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(getActivity(), EventActivity.class);
         intent.putExtra("event_uid", eventList.get(eventList.indexOf(e)).getUuid().toString());
         startActivity(intent);
