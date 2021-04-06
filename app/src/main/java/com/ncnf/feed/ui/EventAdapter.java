@@ -18,6 +18,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     private final List<Event> items;
     private final OnEventListener onEventListener;
 
+    public interface OnEventListener {
+        void onEventClick(Event event);
+    }
+
     public EventAdapter(List<Event> items, OnEventListener onEventListener) {
         //ensure proper copy of the List
         this.items = new LinkedList<>(items);
@@ -36,32 +40,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         return items.size();
     }
 
-    public static class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        // Card fields
-        private final TextView event;
-        private final TextView id;
-        private final TextView data;
-        private final OnEventListener onEventListener;
-
-        public EventViewHolder(View v, OnEventListener e) {
-            super(v);
-            onEventListener = e;
-            event = (TextView) v.findViewById(R.id.event);
-            id = (TextView) v.findViewById(R.id.id);
-            data = (TextView) v.findViewById(R.id.data);
-            //add timestamp
-            v.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            onEventListener.onEventClick(getAdapterPosition());
-        }
-    }
-
-    public interface OnEventListener {
-        void onEventClick(int position);
-    }
 
     @NonNull
     @Override
@@ -73,14 +51,35 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EventViewHolder viewHolder, int position) {
-        Event event = items.get(position);
-
-        viewHolder.event.setText(event.getName());
-        viewHolder.id.setText(event.getUuid().toString());
-        viewHolder.data.setText(event.getDescription());
-
+    public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
+        holder.bind(items.get(position), onEventListener);
     }
 
+    public static class EventViewHolder extends RecyclerView.ViewHolder {
+        // Card fields
+        private final TextView event;
+        private final TextView id;
+        private final TextView data;
 
+        public EventViewHolder(View v, OnEventListener e) {
+            super(v);
+            event = (TextView) v.findViewById(R.id.event);
+            id = (TextView) v.findViewById(R.id.id);
+            data = (TextView) v.findViewById(R.id.data);
+            //add timestamp
+        }
+
+        public void bind(final Event e, final OnEventListener listener) {
+            event.setText(e.getName());
+            id.setText(e.getUuid().toString());
+            data.setText(e.getDescription());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onEventClick(e);
+                }
+            });
+        }
+
+    }
 }
