@@ -178,7 +178,7 @@ public final class MapFragmentTest {
         onView(withId(R.id.searchBarMap)).check(new ViewAssertion() {
             @Override
             public void check(View view, NoMatchingViewException noViewFoundException) {
-                assertTrue(((MaterialSearchBar) view).isSuggestionsVisible());
+                assertTrue(((MaterialSearchBar) view).isSuggestionsEnabled());
             }
         });
     }
