@@ -39,7 +39,7 @@ public class PublicEventTest {
         assertEquals(event.getNumOfAttendees(), 0);
         assertEquals(event.getAttendees().size(), 0);
 
-        assertEquals(event.getPubPriv(), Event.PubPriv.PUBLIC);
+        assertEquals(event.getVisibility(), Event.Visibility.PUBLIC);
 
     }
 
