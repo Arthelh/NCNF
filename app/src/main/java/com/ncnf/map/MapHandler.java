@@ -29,7 +29,8 @@ public class MapHandler {
     public MapHandler(Activity context, GoogleMap mMap, EventProvider eventProvider, VenueProvider venueProvider){
         this.context = context;
         this.mMap = mMap;
-        this.mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL));
+        if (mMap != null) //This is just for MapHandler Unit test
+            this.mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL));
         this.eventProvider = eventProvider;
         this.venueProvider = venueProvider;
 
