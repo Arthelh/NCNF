@@ -28,7 +28,6 @@ public class AuthenticationService implements AuthenticationServiceInterface {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public CompletableFuture<AuthenticationResponse> register(String email, String password){
         CompletableFuture<AuthenticationResponse> futureResponse = new CompletableFuture<>();
@@ -38,7 +37,6 @@ public class AuthenticationService implements AuthenticationServiceInterface {
         return futureResponse;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public CompletableFuture<AuthenticationResponse> logIn(String email, String password) {
         CompletableFuture<AuthenticationResponse> futureResponse = new CompletableFuture<>();
@@ -53,7 +51,6 @@ public class AuthenticationService implements AuthenticationServiceInterface {
         return null;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     protected void onTaskComplete(Task<AuthResult> task, CompletableFuture<AuthenticationResponse> futureResponse){
         try {
             futureResponse.complete(new AuthenticationResponse(task.isSuccessful(), task.getResult(), task.getException()));
