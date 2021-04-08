@@ -29,7 +29,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.event.Event;
-import com.ncnf.event.Event.Type;
 import com.ncnf.event.PrivateEvent;
 import com.ncnf.main.MainActivity;
 import com.ncnf.utilities.InputValidator;
@@ -51,7 +50,7 @@ import static com.ncnf.Utils.*;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class EventCreateActivity extends AppCompatActivity {
 
-    private Type eventype;
+    private Event.Type eventype;
     private LocalDate eventDate = LocalDate.now();
     private LocalTime eventTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
     private int selYear, selMonth, selDay, selHour, selMin;
@@ -66,12 +65,12 @@ public class EventCreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_creation);
 
         Spinner eventTypeSelSpinner = findViewById(R.id.event_creation_spinner);
-        eventTypeSelSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Type.values()));
-        eventTypeSelSpinner.setSelection(Type.values().length-1);
+        eventTypeSelSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Event.Type.values()));
+        eventTypeSelSpinner.setSelection(Event.Type.values().length-1);
         eventTypeSelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                eventype = Type.values()[position];
+                eventype = Event.Type.values()[position];
             }
 
             @Override
@@ -215,7 +214,7 @@ public class EventCreateActivity extends AppCompatActivity {
     }
 
     private boolean checkAllFieldsAreFilledAndCorrect() {
-        return allFields.stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventype != Type.NOTHING;
+        return allFields.stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventype != Event.Type.NOTHING;
     }
 
     private Date dateConversion(LocalDate date, LocalTime time){

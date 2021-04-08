@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
-import com.ncnf.organizer.PublicOrganizer;
 
 import java.util.Date;
 

@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.ncnf.Utils.*;
 

@@ -4,8 +4,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.event.Event;
-import com.ncnf.event.EventType;
 import com.ncnf.event.Location;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.mocks.MockTask;
@@ -40,7 +40,7 @@ public class DatabaseServiceTest {
         db = Mockito.mock(FirebaseFirestore.class, Mockito.RETURNS_DEEP_STUBS);
         service = new DatabaseService(db);
 
-        event = new PublicEvent("testName", new Date(), new Location(0, 0, "testLoc"), "testData", EventType.Museum, 0 , 0, new PublicOrganizer("testOrganizer"));
+        event = new PublicEvent("00","testName", new Date(), new GeoPoint(0., 0.),"north pole","testData", Event.Type.Museum, 0 , 0);
         task = new MockTask<Event>(event, null);
     }
 

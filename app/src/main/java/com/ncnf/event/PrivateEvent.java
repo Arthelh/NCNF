@@ -4,9 +4,7 @@ import android.util.Log;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
-import com.ncnf.organizer.Organizer;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +17,7 @@ public class PrivateEvent extends Event {
 
     private final List<String> invited;
 
-    public PrivateEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Event.Type type) {
+    public PrivateEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type) {
         super(ownerId, name, date, location, address, type, Event.Visibility.PRIVATE, description);
         invited = new ArrayList<>();
     }

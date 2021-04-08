@@ -1,7 +1,6 @@
 package com.ncnf.feed.ui;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,10 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.event.Event;
-import com.ncnf.event.Event.Type;
-import com.ncnf.event.Location;
 import com.ncnf.event.PublicEvent;
-import com.ncnf.organizer.PublicOrganizer;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,7 +49,7 @@ public class FeedFragment extends Fragment {
 
         // Set the custom adapter
         //TODO Connect DB events here
-        eventList.add(new PublicEvent("testOrganizer", "testName", new Date(), new GeoPoint(0, 0), "testLoc", "testData", Type.Museum, 0 , 0));
+        eventList.add(new PublicEvent("testOrganizer", "testName", new Date(), new GeoPoint(0, 0), "testLoc", "testData", Event.Type.Museum, 0 , 0));
         adapter = new EventAdapter(eventList, this::onEventClick);
         recycler.setAdapter(adapter);
     }

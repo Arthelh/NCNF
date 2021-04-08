@@ -76,7 +76,6 @@ public class DatabaseService implements DatabaseServiceInterface {
     public CompletableFuture<DatabaseResponse> getData(String path) {
         CompletableFuture<DatabaseResponse> futureResponse = new CompletableFuture<>();
 
-        Log.d(DEBUG_TAG, path);
         this.db.document(path).get().addOnCompleteListener(task -> {
             try {
                 futureResponse.complete(new DatabaseResponse(task.isSuccessful(), task.getResult().getData(), task.getException()));

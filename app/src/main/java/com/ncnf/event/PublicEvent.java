@@ -2,7 +2,6 @@ package com.ncnf.event;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
-import com.ncnf.organizer.PublicOrganizer;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +32,7 @@ public class PublicEvent extends Event {
         this.price = price;
     }
 
-    public PublicEvent(String ownerId, UUID uuid, String name, Date date, GeoPoint location, String address, String description, Event.Type type, List<String> attendees, int minAge, int price, List<Tag> tags) {
+    public PublicEvent(String ownerId, UUID uuid, String name, Date date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, int price, List<Tag> tags) {
         super(ownerId, uuid, name, date, location, address, type, Visibility.PUBLIC, attendees, description);
 
         if(!(minAge >= MIN_AGE && minAge <= MAX_AGE) || price <= 0) {

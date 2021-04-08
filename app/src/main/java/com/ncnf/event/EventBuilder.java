@@ -3,11 +3,9 @@ package com.ncnf.event;
 import android.util.Log;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.encoders.ObjectEncoder;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.organizer.Organizer;
 
 import java.util.ArrayList;
 import java.util.Date;
