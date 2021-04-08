@@ -68,9 +68,9 @@ public class MainActivity extends AppCompatActivity {
                 fragmentManager.beginTransaction().hide(activeFragment).show(feedFragment).commit();
                 activeFragment = feedFragment;
                 return true;
+            default:
+                return false;
         }
-
-        return false;
     };
 
     @Override
