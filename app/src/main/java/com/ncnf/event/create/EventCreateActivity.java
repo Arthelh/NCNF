@@ -50,7 +50,7 @@ import static com.ncnf.Utils.*;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class EventCreateActivity extends AppCompatActivity {
 
-    private EventType eventType;
+    private Type eventype;
     private LocalDate eventDate = LocalDate.now();
     private LocalTime eventTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
     private int selYear, selMonth, selDay, selHour, selMin;
@@ -65,17 +65,17 @@ public class EventCreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_creation);
 
         Spinner eventTypeSelSpinner = findViewById(R.id.event_creation_spinner);
-        eventTypeSelSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, EventType.values()));
-        eventTypeSelSpinner.setSelection(EventType.values().length-1);
-
+        eventTypeSelSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Type.values()));
+        eventTypeSelSpinner.setSelection(Type.values().length-1);
+        eventTypeSelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                eventType = Type.values()[position];
+                eventype = Type.values()[position];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                eventType = Type.NOTHING;
+                return;
             }
         });
 
@@ -170,7 +170,7 @@ public class EventCreateActivity extends AppCompatActivity {
                             getLocationFromAddress(eventAddress.getText().toString()),
                             eventAddress.getText().toString(),
                             eventDescription.getText().toString(),
-                            eventType);
+                            eventype);
 
                     event.store().thenAccept(task1->{
                         task1.thenAccept(task2 ->{
@@ -209,7 +209,7 @@ public class EventCreateActivity extends AppCompatActivity {
     }
 
     private boolean checkAllFieldsAreFilledAndCorrect() {
-        return allFields.stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != Type.NOTHING;
+        return allFields.stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventype != Type.NOTHING;
     }
 
     private Date dateConversion(LocalDate date, LocalTime time){
@@ -234,8 +234,10 @@ public class EventCreateActivity extends AppCompatActivity {
 
             Log.d(DEBUG_TAG, coordinates.toString());
 
-            GeoPoint location = new GeoPoint((double) (coordinates.getLatitude() * 1E6),
-                    (double) (coordinates.getLongitude() * 1E6));
+            GeoPoint location = new GeoPoint((double) (coordinates.getLatitude()),
+                    (double) (coordinates.getLongitude()));
+
+            Log.d(DEBUG_TAG, location.toString());
 
             return location;
         } catch (Exception e){

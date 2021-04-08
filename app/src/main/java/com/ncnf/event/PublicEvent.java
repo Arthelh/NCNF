@@ -21,10 +21,10 @@ public class PublicEvent extends Event {
     private int price;
     private int minAge;
 
-    public PublicEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Event.Type type, int minAge, int price) {
+    public PublicEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type, int minAge, int price) {
         super(ownerId, name, date, location, address, type, Event.Visibility.PUBLIC, description);
 
-        if(!(minAge >= MIN_AGE && minAge <= MAX_AGE) || price <= 0) {
+        if(!(minAge >= MIN_AGE && minAge <= MAX_AGE) || price < 0) {
             throw new IllegalArgumentException();
         }
 

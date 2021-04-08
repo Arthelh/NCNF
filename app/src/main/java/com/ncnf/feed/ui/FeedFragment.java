@@ -54,19 +54,9 @@ public class FeedFragment extends Fragment {
 
         // Set the custom adapter
         //TODO Connect DB events here
-        eventList.add(new PublicEvent("testName", new Date(), new Location(0, 0, "testLoc"), "testData", EventType.Museum, 0 , 0, new PublicOrganizer("testOrganizer")));
+        eventList.add(new PublicEvent("testOrganizer", "testName", new Date(), new GeoPoint(0, 0), "testLoc", "testData", Type.Museum, 0 , 0));
         adapter = new EventAdapter(eventList, this::onEventClick);
         recycler.setAdapter(adapter);
-
-//        EventListener eventListener = event -> runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                System.out.println("Received event with data: " + event.getDescription());
-//
-//                adapter.addEvent(event);
-//                ((LinearLayoutManager)lManager).scrollToPositionWithOffset(0, 0);
-//            }
-//        });
     }
 
     private void onEventClick(Event e) {

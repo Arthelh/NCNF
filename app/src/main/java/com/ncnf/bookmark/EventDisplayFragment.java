@@ -76,7 +76,6 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void getEventList(View view){
-        //view.findViewById(R.id.refre).setEnabled(false);
         PrivateUser user = new PrivateUser(FirebaseAuth.getInstance().getCurrentUser().getUid(), FirebaseAuth.getInstance().getCurrentUser().getEmail());
         Log.d(DEBUG_TAG, "getting " + eventCollection);
         CompletableFuture<CompletableFuture<List<Event>>> listEvent = user.getAllEvents(eventCollection);
@@ -98,9 +97,9 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
     }
 
     @Override
-    public void onEventClick(int position) {
+    public void onEventClick(Event event) {
         Intent intent = new Intent(getActivity(), EventActivity.class);
-        intent.putExtra("event_uid", eventsToDisplay.get(position).getUID());
+        intent.putExtra("event_uid", event.getUID());
         startActivity(intent);
     }
 }

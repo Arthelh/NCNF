@@ -60,7 +60,6 @@ public abstract class Event {
     public Event(String ownerId, UUID id, String name, Date date, GeoPoint location, String address, Type type, Visibility visibility, List<String> attendees, String description){
         this.uuid = id;
         this.ownerId = ownerId;
-
         this.name = name;
         this.date = date;
         this.location = location;

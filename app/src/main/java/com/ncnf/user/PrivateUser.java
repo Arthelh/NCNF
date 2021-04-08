@@ -64,7 +64,6 @@ public class PrivateUser {
         return email;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse> saveUserToDB(){
         Map<String, Object> initial_data = new HashMap<>();
         initial_data.put(EMAIL_KEY, this.email);
@@ -79,57 +78,46 @@ public class PrivateUser {
         return this.db.setDocument(this.path, initial_data);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private CompletableFuture<DatabaseResponse> update(String key, Object value){
         return this.db.updateField(path, key, value);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse> getField(String field){
         return this.db.getField(path, field);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse>  updateLastName(String name){
         return this.update(LAST_NAME_KEY, name);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse>  updateFirstName(String name){
         return this.update(FIRST_NAME_KEY, name);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse>  updateBirth(int year){
         return this.update(BIRTH_YEAR_KEY, year);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse>  updateNotifications(boolean isEnabled) {
         return this.update(NOTIFICATIONS_KEY, isEnabled);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse>  updateNotificationsToken(String token) {
         return this.update(NOTIFICATIONS_TOKEN_KEY, token);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse> loadUserFromDB(){
         return this.db.getData(this.path);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse> saveEvent(Event event){
         return this.addEvent(event, SAVED_EVENTS_KEY);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<DatabaseResponse> ownEvent(Event event){
         return this.addEvent(event, OWNED_EVENTS_KEY);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private CompletableFuture<DatabaseResponse> addEvent(Event event, String array){
         return this.update(array, FieldValue.arrayUnion(event.getUuid()));
     }
@@ -137,20 +125,15 @@ public class PrivateUser {
 
     public CompletableFuture<CompletableFuture<List<Event>>> getAllEvents(String eventCollection){
         return this.getField(eventCollection).thenApply(task -> {
-            Log.d(DEBUG_TAG, "constructing " + eventCollection);
-
             if(task.isSuccessful()){
 
                 List<String> eventIds = (List<String>) task.getResult();
                 List<CompletableFuture<Event>> eventsFuture = new ArrayList<>();
                 EventBuilder builder = new EventBuilder();
-                Log.d(DEBUG_TAG, "building " + eventCollection);
                 for(String s : eventIds){
                     Log.d(DEBUG_TAG, s);
                     eventsFuture.add(builder.build(s));
                 }
-                Log.d(DEBUG_TAG, "each has been build " + eventCollection);
-
 
                 //Create a future of list from a list of future
                 CompletableFuture<List<Event>> listEvent = CompletableFuture.allOf(eventsFuture.toArray(new CompletableFuture<?>[0]))
