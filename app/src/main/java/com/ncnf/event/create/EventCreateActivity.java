@@ -50,7 +50,7 @@ import static com.ncnf.Utils.*;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class EventCreateActivity extends AppCompatActivity {
 
-    private Event.Type eventype;
+    private Event.Type eventType;
     private LocalDate eventDate = LocalDate.now();
     private LocalTime eventTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
     private int selYear, selMonth, selDay, selHour, selMin;
@@ -70,7 +70,7 @@ public class EventCreateActivity extends AppCompatActivity {
         eventTypeSelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                eventype = Event.Type.values()[position];
+                eventType = Event.Type.values()[position];
             }
 
             @Override
@@ -172,7 +172,7 @@ public class EventCreateActivity extends AppCompatActivity {
                                 getLocationFromAddress(eventAddress.getText().toString()),
                                 eventAddress.getText().toString(),
                                 eventDescription.getText().toString(),
-                                eventype);
+                                eventType);
 
                         event.store().thenAccept(task1 -> {
                             task1.thenAccept(task2 -> {
@@ -214,7 +214,7 @@ public class EventCreateActivity extends AppCompatActivity {
     }
 
     private boolean checkAllFieldsAreFilledAndCorrect() {
-        return allFields.stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventype != Event.Type.NOTHING;
+        return allFields.stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != Event.Type.NOTHING;
     }
 
     private Date dateConversion(LocalDate date, LocalTime time){
