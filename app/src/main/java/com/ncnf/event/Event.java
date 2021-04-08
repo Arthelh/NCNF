@@ -3,10 +3,12 @@ package com.ncnf.event;
 import android.util.Log;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
+import com.ncnf.user.PrivateUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -129,8 +131,13 @@ public abstract class Event {
         DatabaseService db = new DatabaseService();
         return db.setDocument(EVENTs_COLLECTION_KEY + uuid, map).thenApply(task -> {
                 if(task.isSuccessful()){
-                    Log.d(DEBUG_TAG, uuid.toString());
-                    return db.updateArrayField(USERS_COLLECTION_KEY + ownerId, OWNED_EVENTS_KEY, uuid.toString());
+                    PrivateUser user = new PrivateUser(this.ownerId, FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    if(!user.getID().equals(this.ownerId)){
+                        db.delete(EVENTs_COLLECTION_KEY + uuid);
+                        return CompletableFuture.completedFuture(new DatabaseResponse(false, null, task.getException()));
+                    }
+
+                    return user.ownEvent(this);
                 }
                 return CompletableFuture.completedFuture(new DatabaseResponse(false, null, task.getException()));
         });

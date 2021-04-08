@@ -40,7 +40,6 @@ import static com.ncnf.Utils.USERS_COLLECTION_KEY;
 public class PrivateUser {
 
     private final DatabaseServiceInterface db;
-
     private final String email;
     private final String UUID;
     private final String path;
