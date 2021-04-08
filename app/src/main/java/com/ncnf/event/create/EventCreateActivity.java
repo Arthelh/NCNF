@@ -177,7 +177,7 @@ public class EventCreateActivity extends AppCompatActivity {
                             if(task2.isSuccessful()){
                                 nextStep();
                             } else {
-                                Log.d(DEBUG_TAG, "couldn't store event");
+                                Log.d(DEBUG_TAG, "Fail to store new event");
                             }
                         });
                     });
@@ -232,12 +232,8 @@ public class EventCreateActivity extends AppCompatActivity {
             coordinates.getLatitude();
             coordinates.getLongitude();
 
-            Log.d(DEBUG_TAG, coordinates.toString());
-
             GeoPoint location = new GeoPoint((double) (coordinates.getLatitude()),
                     (double) (coordinates.getLongitude()));
-
-            Log.d(DEBUG_TAG, location.toString());
 
             return location;
         } catch (Exception e){

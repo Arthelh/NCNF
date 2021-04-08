@@ -30,12 +30,13 @@ public abstract class Event {
     }
 
     private final UUID uuid;
-    private final String ownerId;
+    private String ownerId;
+    private final Visibility visibility;
+
 
     private String name;
     private Date date;
-    private final Type type;
-    private final Visibility visibility;
+    private Type type;
     private List<String> attendees;
     private int numOfAttendees;
     private String description;
@@ -88,6 +89,12 @@ public abstract class Event {
     public UUID getUuid() { return uuid; }
     public String getOwnerId() { return ownerId; }
 
+    public void setOwnerId(String ownerId){
+        this.ownerId = ownerId;
+    }
+    public void seType(Type type){
+        this.type = type;
+    }
     public void setName(String name) { this.name = name; }
     public void setDate(Date date) { this.date = date; }
     public void setLocation(GeoPoint location) { this.location = location; }

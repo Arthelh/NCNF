@@ -39,7 +39,6 @@ public class PrivateEvent extends Event {
     }
 
     public CompletableFuture<CompletableFuture<DatabaseResponse>> store(){
-        Log.d(DEBUG_TAG, "storing private");
         String[] fields = {INVITED_KEY};
         Object[] objects = {this.invited};
         return super.store(fields, objects);

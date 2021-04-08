@@ -79,9 +79,6 @@ public class DatabaseService implements DatabaseServiceInterface {
         Log.d(DEBUG_TAG, path);
         this.db.document(path).get().addOnCompleteListener(task -> {
             try {
-                if(path.contains("event")){
-                    Log.d(DEBUG_TAG, task.getResult().toString());
-                }
                 futureResponse.complete(new DatabaseResponse(task.isSuccessful(), task.getResult().getData(), task.getException()));
             } catch (Exception e){
                 Log.d(DEBUG_TAG, "Unable to load data from DB", task.getException());
@@ -108,8 +105,6 @@ public class DatabaseService implements DatabaseServiceInterface {
     }
 
     public CompletableFuture<DatabaseResponse> updateArrayField(String path, String arrayField, Object value){
-        CompletableFuture<DatabaseResponse> futureResponse = new CompletableFuture<>();
-        Log.d(DEBUG_TAG, "okok + " + path + " " + arrayField);
         return this.updateField(path, arrayField, FieldValue.arrayUnion(value));
     }
 }

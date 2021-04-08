@@ -56,7 +56,6 @@ public class EventBuilder {
 
                    } else if(visibility.equals(Event.Visibility.PRIVATE)){
                         List<String> invited = (ArrayList) data.get(INVITED_KEY);
-                       Log.d(DEBUG_TAG, "done building event : " + eventId);
                        return new PrivateEvent(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
                    }
                }
