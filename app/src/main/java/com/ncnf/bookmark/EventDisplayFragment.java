@@ -99,7 +99,7 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
     @Override
     public void onEventClick(Event event) {
         Intent intent = new Intent(getActivity(), EventActivity.class);
-        intent.putExtra("event_uid", event.getUID());
+        intent.putExtra("event_uid", event.getUuid());
         startActivity(intent);
     }
 }

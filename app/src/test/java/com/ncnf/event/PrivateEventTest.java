@@ -108,7 +108,7 @@ public class PrivateEventTest {
         invited.add("Invited1");
 
         PrivateEvent event = new PrivateEvent(ownerId, uuid, name, date, geoPoint, address, type, attendees, description, invited);
-        assertEquals(event.getUID(), uuid);
+        assertEquals(event.getUuid(), uuid);
         assertEquals(event.getOwnerId(), ownerId);
         assertEquals(event.getDate(), date);
         assertEquals(event.getName(), name);

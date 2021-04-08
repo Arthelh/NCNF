@@ -18,18 +18,23 @@ import static com.ncnf.Utils.*;
 
 public class EventBuilder {
 
-    public CompletableFuture<Event> build(String eventId){
-        DatabaseService dbService = new DatabaseService();
-        Log.d(DEBUG_TAG, "start building event : " + eventId);
+    private DatabaseService db;
 
-        CompletableFuture<DatabaseResponse> event = dbService.getData(EVENTs_COLLECTION_KEY + eventId);
+    public EventBuilder(){
+        this.db = new DatabaseService();
+    }
+
+    public EventBuilder(DatabaseService db){
+        this.db = db;
+    }
+
+    public CompletableFuture<Event> build(String eventId){
+
+        CompletableFuture<DatabaseResponse> event = db.getData(EVENTs_COLLECTION_KEY + eventId);
         return event.thenApply(task -> {
-            Log.d(DEBUG_TAG, "start building event2 : " + eventId);
 
             try {
                if(task.isSuccessful()) {
-
-                   Log.d(DEBUG_TAG, "start building event3 : " + eventId);
 
                    Map<String, Object> data = (HashMap) task.getResult();
                    String ownerId = data.get(OWNER_KEY).toString();
@@ -52,16 +57,16 @@ public class EventBuilder {
                        List<Tag> tags = (ArrayList) data.get(TAGS_LIST_KEY);
                        return new PublicEvent(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags);
 
-                   } else if(visibility.equals(Event.Visibility.PRIVATE)){
+                   } else {
                         List<String> invited = (ArrayList) data.get(INVITED_KEY);
                        return new PrivateEvent(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
                    }
                }
+               return null;
 
             } catch (Exception e){
-                Log.d(DEBUG_TAG, e.getMessage());
+                return null;
             }
-           return null;
         });
 
 
