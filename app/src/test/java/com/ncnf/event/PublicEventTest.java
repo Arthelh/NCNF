@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -23,6 +24,12 @@ public class PublicEventTest {
     Event.Type type = Event.Type.Conference;
     String description = "Event description goes here";
     String ownerID = "00";
+    UUID uuid = UUID.randomUUID();
+    List<String> attendees = new ArrayList<>();
+    int minAge = 0;
+    int price = 0;
+    List<Tag> tags = new ArrayList<>();
+
 
     @Test
     public void publicEventGeneratesCorrectly() {
@@ -40,7 +47,31 @@ public class PublicEventTest {
         assertEquals(event.getAttendees().size(), 0);
 
         assertEquals(event.getVisibility(), Event.Visibility.PUBLIC);
+    }
 
+    @Test
+    public void secondaryConstructorTest(){
+        attendees.add("Attendee1");
+        Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
+        tags.add(tag);
+
+
+        PublicEvent event = new PublicEvent(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, tags);
+        assertEquals(event.getOwnerId(), ownerID);
+        assertEquals(event.getDate(), date);
+        assertEquals(event.getName(), name);
+        assertEquals(event.getLocation(), geoPoint);
+        assertEquals(event.getType(), type);
+        assertEquals(event.getDescription(), description);
+
+        assertEquals(event.getNumOfAttendees(), 1);
+        assertEquals(event.getAttendees().get(0), "Attendee1");
+        assertEquals(event.getAttendees().size(), 1);
+
+        assertEquals(event.getTags().size(), 1);
+        assertEquals(event.getTags().get(0), tag);
+
+        assertEquals(event.getVisibility(), Event.Visibility.PUBLIC);
     }
 
     @Test

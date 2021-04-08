@@ -23,9 +23,7 @@ public class PublicEvent extends Event {
     public PublicEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type, int minAge, int price) {
         super(ownerId, name, date, location, address, type, Event.Visibility.PUBLIC, description);
 
-        if(!(minAge >= MIN_AGE && minAge <= MAX_AGE) || price < 0) {
-            throw new IllegalArgumentException();
-        }
+        checkConstraints(minAge, price);
 
         tags = new ArrayList<>();
         this.minAge = minAge;
@@ -35,25 +33,25 @@ public class PublicEvent extends Event {
     public PublicEvent(String ownerId, UUID uuid, String name, Date date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, int price, List<Tag> tags) {
         super(ownerId, uuid, name, date, location, address, type, Visibility.PUBLIC, attendees, description);
 
-        if(!(minAge >= MIN_AGE && minAge <= MAX_AGE) || price <= 0) {
-            throw new IllegalArgumentException();
-        }
+        checkConstraints(minAge, price);
 
-        this.tags = tags;
+        setTags(tags);
         this.minAge = minAge;
         this.price = price;
     }
 
-
+    private void checkConstraints(int minAge, int price){
+        if(!(minAge >= MIN_AGE && minAge <= MAX_AGE) || price < 0) {
+            throw new IllegalArgumentException();
+        }
+    }
 
     public int getMinAge() { return minAge; }
     public int getPrice() { return price; }
     public List<Tag> getTags() { return tags; }
 
     public void setMinAge(int minAge) {
-        if(!(minAge >= MIN_AGE && minAge <= MAX_AGE)) {
-            throw new IllegalArgumentException();
-        }
+        checkConstraints(minAge, this.price);
         this.minAge = minAge;
     }
 
