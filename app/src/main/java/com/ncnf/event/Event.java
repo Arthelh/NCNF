@@ -60,6 +60,7 @@ public abstract class Event {
     }
 
     public Event(String ownerId, UUID id, String name, Date date, GeoPoint location, String address, Type type, Visibility visibility, List<String> attendees, String description){
+
         this.uuid = id;
         this.ownerId = ownerId;
         this.name = name;
@@ -108,7 +109,7 @@ public abstract class Event {
     }
     public void setDescription(String description)  { this.description = description; }
 
-    public CompletableFuture<CompletableFuture<DatabaseResponse>> store(String[] fields, Object[] objects){
+    public CompletableFuture<CompletableFuture<DatabaseResponse>> store(PrivateUser user, DatabaseService db, String[] fields, Object[] objects){
         if(fields.length != objects.length){
             return CompletableFuture.completedFuture(CompletableFuture.completedFuture(new DatabaseResponse(false, null, new Exception("Invalid numbers of fields/objects"))));
         }
@@ -127,10 +128,10 @@ public abstract class Event {
         for(int i = 0; i < fields.length; ++i){
             map.put(fields[i], objects[i]);
         }
-        DatabaseService db = new DatabaseService();
-        return db.setDocument(EVENTs_COLLECTION_KEY + uuid, map).thenApply(task -> {
+        CompletableFuture<DatabaseResponse> response = db.setDocument(EVENTs_COLLECTION_KEY + uuid, map);
+
+        return response.thenApply(task -> {
                 if(task.isSuccessful()){
-                    PrivateUser user = new PrivateUser(this.ownerId, FirebaseAuth.getInstance().getCurrentUser().getEmail());
                     if(!user.getID().equals(this.ownerId)){
                         db.delete(EVENTs_COLLECTION_KEY + uuid);
                         return CompletableFuture.completedFuture(new DatabaseResponse(false, null, task.getException()));

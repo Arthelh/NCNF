@@ -2,6 +2,8 @@ package com.ncnf.event;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
+import com.ncnf.database.DatabaseService;
+import com.ncnf.user.PrivateUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +13,9 @@ import java.util.concurrent.CompletableFuture;
 import static com.ncnf.Utils.*;
 
 public class PublicEvent extends Event {
+
+    private DatabaseService db;
+    private PrivateUser user;
 
     private static final int MIN_AGE = 0;
     private static final int MAX_AGE = 125;
@@ -64,6 +69,14 @@ public class PublicEvent extends Event {
         }
     }
 
+    public void setDB(DatabaseService db){
+        this.db = db;
+    }
+
+    public void setUser(PrivateUser user){
+        this.user = user;
+    }
+
     public void addTag(Tag newTag) {
 
         for(int i = 0; i < tags.size(); ++i) {
@@ -77,6 +90,6 @@ public class PublicEvent extends Event {
     public CompletableFuture<CompletableFuture<DatabaseResponse>> store(){
         String[] fields = {MIN_AGE_KEY, PRICE_KEY, TAGS_LIST_KEY};
         Object[] objects = {this.minAge, this.price, this.tags};
-        return super.store(fields, objects);
+        return super.store(user, db, fields, objects);
     }
 }

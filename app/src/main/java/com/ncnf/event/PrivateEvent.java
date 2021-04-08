@@ -2,8 +2,11 @@ package com.ncnf.event;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
+import com.ncnf.database.DatabaseService;
+import com.ncnf.user.PrivateUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +19,8 @@ import static com.ncnf.Utils.*;
 public class PrivateEvent extends Event {
 
     private final List<String> invited;
+    private DatabaseService db;
+    private PrivateUser user;
 
     public PrivateEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type) {
         super(ownerId, name, date, location, address, type, Event.Visibility.PRIVATE, description);
@@ -27,6 +32,13 @@ public class PrivateEvent extends Event {
         this.invited = invited;
     }
 
+    public void setDB(DatabaseService db){
+        this.db = db;
+    }
+
+    public void setUser(PrivateUser user){
+        this.user = user;
+    }
 
     public void invite(String user) {
         invited.add(user);
@@ -39,7 +51,7 @@ public class PrivateEvent extends Event {
     public CompletableFuture<CompletableFuture<DatabaseResponse>> store(){
         String[] fields = {INVITED_KEY};
         Object[] objects = {this.invited};
-        return super.store(fields, objects);
+        return super.store(user, db, fields, objects);
     }
 
 }

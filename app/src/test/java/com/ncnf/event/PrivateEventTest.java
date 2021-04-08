@@ -1,18 +1,38 @@
 package com.ncnf.event;
 
-import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.organizer.PublicOrganizer;
+import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.database.DatabaseResponse;
+import com.ncnf.database.DatabaseService;
+import com.ncnf.organizer.PublicOrganizer;
+import com.ncnf.user.PrivateUser;
+
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
+import static com.ncnf.Utils.DEBUG_TAG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 
 public class PrivateEventTest {
 
@@ -26,6 +46,44 @@ public class PrivateEventTest {
     UUID uuid = UUID.randomUUID();
     List<String> attendees = new ArrayList<>();
     List<String> invited = new ArrayList<>();
+
+    DatabaseService db;
+    FirebaseAuth auth;
+    PrivateUser user;
+    PrivateEvent mainEvent;
+    CompletableFuture<DatabaseResponse> response;
+    CompletableFuture<DatabaseResponse> response2;
+
+    @Before
+    public void setup(){
+        db = Mockito.mock(DatabaseService.class);
+        auth = Mockito.mock(FirebaseAuth.class);
+        user = Mockito.mock(PrivateUser.class);
+        mainEvent = new PrivateEvent(ownerId,name, date, geoPoint,address,description, type);
+        mainEvent.setDB(db);
+        mainEvent.setUser(user);
+        response = CompletableFuture.completedFuture(new DatabaseResponse(true, false, null));
+        response2 = CompletableFuture.completedFuture(new DatabaseResponse(true, true, null));
+
+
+    }
+
+    @Test
+    public void storeEventWorks(){
+        when(db.setDocument(anyString(), anyMap())).thenReturn(response);
+        when(user.ownEvent(anyObject())).thenReturn(response2);
+        when(user.getID()).thenReturn(ownerId);
+        when(db.delete(anyString())).thenReturn(response);
+
+
+        CompletableFuture<CompletableFuture<DatabaseResponse>> storeTest = mainEvent.store();
+
+        try {
+            assertEquals(storeTest.get().get().getResult(), true);
+        } catch (ExecutionException | InterruptedException e){
+            Assert.fail("The future did not complete correctly ! " + e.getMessage());
+        }
+    }
 
 
     @Test

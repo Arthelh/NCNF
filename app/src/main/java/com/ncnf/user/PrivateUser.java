@@ -39,8 +39,8 @@ import static com.ncnf.Utils.USERS_COLLECTION_KEY;
 
 public class PrivateUser {
 
-    private final DatabaseServiceInterface db;
-    private final String email;
+    private DatabaseServiceInterface db;
+    private String email;
     private final String UUID;
     private final String path;
 
@@ -53,6 +53,12 @@ public class PrivateUser {
         this.path = USERS_COLLECTION_KEY + UUID;
         this.UUID = UUID;
         this.email = email;
+    }
+
+    public PrivateUser(DatabaseService db, String UUID){
+        this.path = USERS_COLLECTION_KEY + UUID;
+        this.UUID = UUID;
+        this.db = db;
     }
 
     protected PrivateUser(DatabaseService db, String UUID, String email) {
@@ -74,7 +80,15 @@ public class PrivateUser {
         return email;
     }
 
+    public void setEmail(String email){
+        this.email = email;
+    }
+
     public CompletableFuture<DatabaseResponse> saveUserToDB(){
+        if(this.email == null || this.email.isEmpty()){
+            throw new IllegalStateException("User's email can't be null or empty");
+        }
+
         Map<String, Object> initial_data = new HashMap<>();
         initial_data.put(EMAIL_KEY, this.email);
         initial_data.put(LAST_NAME_KEY, EMPTY_STRING);
