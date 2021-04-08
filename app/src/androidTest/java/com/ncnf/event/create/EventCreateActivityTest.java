@@ -63,7 +63,7 @@ public class EventCreateActivityTest {
 
         onView(withId(R.id.event_create_button)).perform(scrollTo(), click());
 
-        onView(emailField).check(matches(hasErrorText("This field cannot be empty")));
+        onView(emailField).perform(click(), closeSoftKeyboard()).check(matches(hasErrorText("This field cannot be empty")));
     }
 
     @Test

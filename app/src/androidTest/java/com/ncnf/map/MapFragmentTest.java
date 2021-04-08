@@ -95,7 +95,7 @@ public final class MapFragmentTest {
         );
         // Events are shown
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Math"));
-        assertTrue("Events markers exist", marker.waitForExists(10000));
+        assertTrue("Events markers exist", marker.waitForExists(1000));
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
@@ -105,6 +105,12 @@ public final class MapFragmentTest {
         // Venues are shown
         marker = device.findObject(new UiSelector().descriptionContains("EPFL"));
         assertTrue("Venue markers exist", marker.waitForExists(10000));
+
+        onView(withId(R.id.map_switch_button)).perform(click());
+
+        assertNotNull("Map with venues is loaded",
+                device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 10000)
+        );
 
         Mockito.verify(eventProvider).getAll();
         Mockito.verify(venueProvider).getAll();
@@ -169,17 +175,17 @@ public final class MapFragmentTest {
             }
         });
         onView(withId(R.id.validateButton)).perform(click());
+
     }
 
     @Test
     public final void testSearchBar(){
         onView(withId(R.id.searchBarMap)).perform(click());
         onView(withClassName(containsString(EditText.class.getSimpleName()))).perform(typeText("Boulevard"));
-        onView(withId(R.id.searchBarMap)).check(new ViewAssertion() {
-            @Override
-            public void check(View view, NoMatchingViewException noViewFoundException) {
-                assertTrue(((MaterialSearchBar) view).isSuggestionsEnabled());
-            }
+        onView(withId(R.id.searchBarMap)).check((view, noViewFoundException) -> {
+            assertTrue(((MaterialSearchBar) view).isSuggestionsEnabled());
+            assertTrue(((MaterialSearchBar) view).isSearchOpened());
         });
     }
+
 }

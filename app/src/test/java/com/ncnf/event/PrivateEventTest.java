@@ -35,6 +35,7 @@ public class PrivateEventTest {
         assertEquals(event.getAttendees().size(), 0);
         assertEquals(event.getInvited().size(), 0);
 
+        assertEquals(event.getPubPriv(), Event.PubPriv.PRIVATE);
     }
 
     @Test
