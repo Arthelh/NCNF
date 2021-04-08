@@ -38,11 +38,6 @@ public class MainActivity extends AppCompatActivity {
             this.mapFragment = new MapFragment();
             this.feedFragment = new FeedFragment();
             this.activeFragment = this.homeFragment;
-        } else {
-            this.homeFragment = fragmentManager.getFragment(savedInstanceState, "home_fragment");
-            this.mapFragment = fragmentManager.getFragment(savedInstanceState, "map_fragment");
-            this.feedFragment = fragmentManager.getFragment(savedInstanceState, "feed_fragment");
-            this.activeFragment = fragmentManager.getFragment(savedInstanceState, "active_fragment");
         }
 
         fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, feedFragment).hide(feedFragment).commit();
@@ -55,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         navigationBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
+
 
     public final  BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
         switch (item.getItemId()){
@@ -85,5 +81,15 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.putFragment(outState, "map_fragment", mapFragment);
         fragmentManager.putFragment(outState, "feed_fragment", feedFragment);
         fragmentManager.putFragment(outState, "active_fragment", activeFragment);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        this.homeFragment = fragmentManager.getFragment(savedInstanceState, "home_fragment");
+        this.mapFragment = fragmentManager.getFragment(savedInstanceState, "map_fragment");
+        this.feedFragment = fragmentManager.getFragment(savedInstanceState, "feed_fragment");
+        this.activeFragment = fragmentManager.getFragment(savedInstanceState, "active_fragment");
     }
 }
