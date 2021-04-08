@@ -46,7 +46,7 @@ public class PrivateUser {
     private final String path;
 
     public PrivateUser(String UUID, String email) {
-        if(UUID == null || email == null) {
+        if(UUID == null || email == null || UUID.isEmpty() || email.isEmpty()) {
             throw new IllegalStateException("User doesn't have the right credentials to perform current operation");
         }
 
