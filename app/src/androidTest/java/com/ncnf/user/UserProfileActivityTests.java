@@ -4,6 +4,7 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
+import com.ncnf.bookmark.BookMark;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
@@ -60,6 +61,7 @@ public class UserProfileActivityTests {
         future.complete(new DatabaseResponse(true, values, new Exception()));
 
         when(mockUser.loadUserFromDB()).thenReturn(future);
+        Intents.init();
     }
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
@@ -179,6 +181,12 @@ public class UserProfileActivityTests {
 
         onView(withId(com.google.android.material.R.id.snackbar_text))
                 .check(matches(withText("An error happened! Try again later")));
+    }
+
+    @Test
+    public void goToBookMark(){
+        onView(withId(R.id.goToBookmarkButton)).perform(click());
+        Intents.intended(hasComponent(BookMark.class.getName()));
     }
 
 }

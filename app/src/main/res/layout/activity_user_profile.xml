@@ -140,7 +140,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/welcomeToProfileText" />
 
             <Button
-                android:id="@+id/GoToBookmarkButton"
+                android:id="@+id/goToBookmarkButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="openBookmark"
@@ -150,17 +150,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/userProfileSaveButton"
                 app:layout_constraintTop_toBottomOf="@+id/userProfileDateOfBirth" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="28dp"
-                android:onClick="saveEvent"
-                android:text="Button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/GoToBookmarkButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

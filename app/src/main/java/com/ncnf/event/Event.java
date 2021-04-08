@@ -93,7 +93,7 @@ public abstract class Event {
     public void setOwnerId(String ownerId){
         this.ownerId = ownerId;
     }
-    public void seType(Type type){
+    public void setType(Type type){
         this.type = type;
     }
     public void setName(String name) { this.name = name; }
