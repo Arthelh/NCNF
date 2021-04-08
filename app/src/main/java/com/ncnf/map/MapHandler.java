@@ -97,4 +97,8 @@ public class MapHandler {
     public void setUserPosition(LatLng userPosition) {
         this.userPosition = userPosition;
     }
+
+    public LatLng getUserPosition(){
+        return this.userPosition;
+    }
 }

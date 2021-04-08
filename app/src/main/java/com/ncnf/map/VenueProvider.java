@@ -8,9 +8,7 @@ import javax.inject.Inject;
 public class VenueProvider {
 
     @Inject
-    public VenueProvider() {
-
-    }
+    public VenueProvider() {}
 
     public List<Venue> getAll() {
         ArrayList<Venue> list = new ArrayList<>();
