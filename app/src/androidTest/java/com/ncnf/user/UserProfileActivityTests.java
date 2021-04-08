@@ -182,11 +182,4 @@ public class UserProfileActivityTests {
         onView(withId(com.google.android.material.R.id.snackbar_text))
                 .check(matches(withText("An error happened! Try again later")));
     }
-
-    @Test
-    public void goToBookMark(){
-        onView(withId(R.id.goToBookmarkButton)).perform(click());
-        Intents.intended(hasComponent(BookMark.class.getName()));
-    }
-
 }

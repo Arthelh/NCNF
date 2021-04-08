@@ -6,10 +6,8 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.event.Event;
-import com.ncnf.event.Location;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.mocks.MockTask;
-import com.ncnf.organizer.PublicOrganizer;
 
 import org.junit.Assert;
 import org.junit.Before;

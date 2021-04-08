@@ -136,7 +136,6 @@ public abstract class Event {
                         db.delete(EVENTs_COLLECTION_KEY + uuid);
                         return CompletableFuture.completedFuture(new DatabaseResponse(false, null, task.getException()));
                     }
-
                     return user.ownEvent(this);
                 }
                 return CompletableFuture.completedFuture(new DatabaseResponse(false, null, task.getException()));
