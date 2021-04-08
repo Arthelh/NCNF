@@ -57,6 +57,7 @@ public class PublicEventTest {
 
 
         PublicEvent event = new PublicEvent(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, tags);
+        assertEquals(event.getUID(), uuid);
         assertEquals(event.getOwnerId(), ownerID);
         assertEquals(event.getDate(), date);
         assertEquals(event.getName(), name);

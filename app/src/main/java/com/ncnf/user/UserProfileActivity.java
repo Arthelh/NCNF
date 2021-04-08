@@ -247,19 +247,4 @@ public class UserProfileActivity extends AppCompatActivity {
     public void openBookmark(View view){
         startActivity(new Intent(this, BookMark.class));
     }
-
-    public void saveEvent(View view){
-        PrivateEvent event = new PrivateEvent(FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                "EPFL", new Date(), new GeoPoint(0.5f, 0.5f), "Lausanne", "l'école", Event.Type.NOTHING);
-        event.store().thenAccept(task1 -> {
-            task1.thenAccept(task2 -> {
-                if(task2.isSuccessful()){
-                    Log.d(DEBUG_TAG, "Event successfully stored");
-                } else {
-                    Log.d(DEBUG_TAG, "Failed to store event : must try again");
-                }
-            });
-        });
-
-    }
 }

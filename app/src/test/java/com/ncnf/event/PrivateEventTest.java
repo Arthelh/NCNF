@@ -50,6 +50,7 @@ public class PrivateEventTest {
         invited.add("Invited1");
 
         PrivateEvent event = new PrivateEvent(ownerId, uuid, name, date, geoPoint, address, type, attendees, description, invited);
+        assertEquals(event.getUID(), uuid);
         assertEquals(event.getOwnerId(), ownerId);
         assertEquals(event.getDate(), date);
         assertEquals(event.getName(), name);
@@ -73,5 +74,21 @@ public class PrivateEventTest {
         event.invite("Sarah");
         assertEquals(event.getInvited().size(), 1);
         assertEquals(event.getInvited().get(0), "Sarah");
+    }
+
+    @Test
+    public void setType(){
+        PrivateEvent event = new PrivateEvent("00",name, date, geoPoint,address,description, type);
+        assertEquals(type, event.getType());
+        event.setType(Event.Type.Movie);
+        assertEquals(Event.Type.Movie, event.getType());
+    }
+
+    @Test
+    public void setAddress(){
+        PrivateEvent event = new PrivateEvent("00",name, date, geoPoint,address,description, type);
+        assertEquals(address, event.getAddress());
+        event.setAddress("this is the new address");
+        assertEquals("this is the new address", event.getAddress());
     }
 }
