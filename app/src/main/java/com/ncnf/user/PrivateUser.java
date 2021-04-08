@@ -55,6 +55,17 @@ public class PrivateUser {
         this.email = email;
     }
 
+    protected PrivateUser(DatabaseService db, String UUID, String email) {
+        if(UUID == null || email == null || UUID.isEmpty() || email.isEmpty()) {
+            throw new IllegalStateException("User doesn't have the right credentials to perform current operation");
+        }
+
+        this.db = db;
+        this.path = USERS_COLLECTION_KEY + UUID;
+        this.UUID = UUID;
+        this.email = email;
+    }
+
     public String getID(){
         return UUID;
     }
@@ -157,7 +168,7 @@ public class PrivateUser {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PrivateUser that = (PrivateUser) o;
-        return this.UUID.equals(that.UUID) && this.path.equals(that.path);
+        return this.UUID.equals(that.UUID) && this.path.equals(that.path) && this.email.equals(that.email);
     }
 
     @Override
