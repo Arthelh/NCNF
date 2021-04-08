@@ -27,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Fragment activeFragment;
 
+    private final String HOME_FRAGMENT = "home_fragment";
+    private final String MAP_FRAGMENT = "map_fragment";
+    private final String FEED_FRAGMENT = "feed_fragment";
+    private final String ACTIVE_FRAGMENT = "active_fragment";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,19 +82,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        fragmentManager.putFragment(outState, "home_fragment", homeFragment);
-        fragmentManager.putFragment(outState, "map_fragment", mapFragment);
-        fragmentManager.putFragment(outState, "feed_fragment", feedFragment);
-        fragmentManager.putFragment(outState, "active_fragment", activeFragment);
+        fragmentManager.putFragment(outState, HOME_FRAGMENT, homeFragment);
+        fragmentManager.putFragment(outState, MAP_FRAGMENT, mapFragment);
+        fragmentManager.putFragment(outState, FEED_FRAGMENT, feedFragment);
+        fragmentManager.putFragment(outState, ACTIVE_FRAGMENT, activeFragment);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        this.homeFragment = fragmentManager.getFragment(savedInstanceState, "home_fragment");
-        this.mapFragment = fragmentManager.getFragment(savedInstanceState, "map_fragment");
-        this.feedFragment = fragmentManager.getFragment(savedInstanceState, "feed_fragment");
-        this.activeFragment = fragmentManager.getFragment(savedInstanceState, "active_fragment");
+        this.homeFragment = fragmentManager.getFragment(savedInstanceState, HOME_FRAGMENT);
+        this.mapFragment = fragmentManager.getFragment(savedInstanceState, MAP_FRAGMENT);
+        this.feedFragment = fragmentManager.getFragment(savedInstanceState, FEED_FRAGMENT);
+        this.activeFragment = fragmentManager.getFragment(savedInstanceState, ACTIVE_FRAGMENT);
     }
 }
