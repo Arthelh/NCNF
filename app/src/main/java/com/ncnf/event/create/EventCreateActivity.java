@@ -25,6 +25,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.event.Event;
@@ -161,26 +162,31 @@ public class EventCreateActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (checkAllFieldsAreFilledAndCorrect()) {
 
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                    //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
-                    PrivateEvent event = new PrivateEvent(
-                            FirebaseAuth.getInstance().getCurrentUser().getUid().toString(),
-                            eventName.getText().toString(),
-                            dateConversion(eventDate, eventTime),
-                            getLocationFromAddress(eventAddress.getText().toString()),
-                            eventAddress.getText().toString(),
-                            eventDescription.getText().toString(),
-                            eventype);
+                    if(user != null) {
+                        //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
+                        PrivateEvent event = new PrivateEvent(
+                                user.getUid(),
+                                eventName.getText().toString(),
+                                dateConversion(eventDate, eventTime),
+                                getLocationFromAddress(eventAddress.getText().toString()),
+                                eventAddress.getText().toString(),
+                                eventDescription.getText().toString(),
+                                eventype);
 
-                    event.store().thenAccept(task1->{
-                        task1.thenAccept(task2 ->{
-                            if(task2.isSuccessful()){
-                                nextStep();
-                            } else {
-                                Log.d(DEBUG_TAG, "Fail to store new event");
-                            }
+                        event.store().thenAccept(task1 -> {
+                            task1.thenAccept(task2 -> {
+                                if (task2.isSuccessful()) {
+                                    nextStep();
+                                } else {
+                                    Log.d(DEBUG_TAG, "Fail to store new event");
+                                }
+                            });
                         });
-                    });
+                    } else {
+                        Log.d(DEBUG_TAG, "Can't create new event if not logged in");
+                    }
                 }
             }
         });
