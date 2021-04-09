@@ -77,15 +77,11 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void getEventList(View view){
         PrivateUser user = new PrivateUser(FirebaseAuth.getInstance().getCurrentUser().getUid(), FirebaseAuth.getInstance().getCurrentUser().getEmail());
-        Log.d(DEBUG_TAG, "getting " + eventCollection);
         CompletableFuture<CompletableFuture<List<Event>>> listEvent = user.getAllEvents(eventCollection);
-        Log.d(DEBUG_TAG, "done getting " + eventCollection);
 
         listEvent.thenAccept(task1 -> {
             task1.thenAccept(events -> {
                 if(events != null){
-                    Log.d(DEBUG_TAG, "updating " + eventCollection);
-                    Log.d(DEBUG_TAG, String.valueOf(events.size()));
                     eventsToDisplay = events;
                     adapter = new EventAdapter(eventsToDisplay, this);
                     ((RecyclerView) view.findViewById(R.id.SavedEventsRecyclerView)).setAdapter(adapter);

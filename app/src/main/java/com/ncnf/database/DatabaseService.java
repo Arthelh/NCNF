@@ -58,7 +58,7 @@ public class DatabaseService implements DatabaseServiceInterface {
                 Object obj = ((Map<String, Object>) task.getResult()).get(field);
                 return new DatabaseResponse(true, obj, task.getException());
             } else {
-                Log.d(DEBUG_TAG, "Unable to load field from DB", task.getException());
+                //Log.d(DEBUG_TAG, "Unable to load field from DB", task.getException());
                 return task;
             }
         });
