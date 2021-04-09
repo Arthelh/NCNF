@@ -109,11 +109,7 @@ public abstract class Event {
     }
     public void setDescription(String description)  { this.description = description; }
 
-    public CompletableFuture<CompletableFuture<DatabaseResponse>> store(PrivateUser user, DatabaseService db, String[] fields, Object[] objects){
-        if(fields.length != objects.length){
-            return CompletableFuture.completedFuture(CompletableFuture.completedFuture(new DatabaseResponse(false, null, new Exception("Invalid numbers of fields/objects"))));
-        }
-
+    protected CompletableFuture<CompletableFuture<DatabaseResponse>> store(PrivateUser user, DatabaseService db, String[] fields, Object[] objects){
         Map<String, Object> map = new HashMap<>();
         map.put(UUID_KEY, this.uuid.toString());
         map.put(NAME_KEY, this.name);
@@ -134,7 +130,7 @@ public abstract class Event {
                 if(task.isSuccessful()){
                     if(!user.getID().equals(this.ownerId)){
                         db.delete(EVENTs_COLLECTION_KEY + uuid);
-                        return CompletableFuture.completedFuture(new DatabaseResponse(false, null, task.getException()));
+                        return CompletableFuture.completedFuture(new DatabaseResponse(false, null, new IllegalStateException()));
                     }
                     return user.ownEvent(this);
                 }
