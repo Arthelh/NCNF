@@ -230,6 +230,7 @@ public class PrivateUserTests {
         } catch(Exception e){
             Assert.fail("Something went wrong with the future");
         }
+        assertTrue(emailIsEmpty && nonEmail);
 
     }
 
