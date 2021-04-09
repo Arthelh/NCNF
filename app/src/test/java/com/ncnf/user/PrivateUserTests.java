@@ -1,26 +1,48 @@
 package com.ncnf.user;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
+import com.ncnf.event.PrivateEvent;
 import com.ncnf.event.PublicEvent;
 
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import static com.ncnf.Utils.ADDRESS_KEY;
+import static com.ncnf.Utils.ATTENDEES_KEY;
 import static com.ncnf.Utils.BIRTH_YEAR_KEY;
+import static com.ncnf.Utils.DATE_KEY;
+import static com.ncnf.Utils.DESCRIPTION_KEY;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
+import static com.ncnf.Utils.INVITED_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
+import static com.ncnf.Utils.LOCATION_KEY;
+import static com.ncnf.Utils.NAME_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_TOKEN_KEY;
 import static com.ncnf.Utils.OWNED_EVENTS_KEY;
+import static com.ncnf.Utils.OWNER_KEY;
 import static com.ncnf.Utils.SAVED_EVENTS_KEY;
+import static com.ncnf.Utils.TYPE_KEY;
 import static com.ncnf.Utils.USERS_COLLECTION_KEY;
+import static com.ncnf.Utils.UUID_KEY;
+import static com.ncnf.Utils.VISIBILITY_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
@@ -167,6 +189,108 @@ public class PrivateUserTests {
         PrivateUser user = new PrivateUser(db, "1234567890","foo@bar.com");
         user.ownEvent(event);
         verify(db).updateField(eq(USERS_COLLECTION_KEY + "1234567890"), eq(OWNED_EVENTS_KEY), anyObject());
+    }
+
+    @Test
+    public void secondConstructorAndSetTest(){
+        UUID uuid = UUID.randomUUID();
+        String email = "i@i.com";
+        PrivateUser user = new PrivateUser(db, uuid.toString());
+        assertEquals(user.getID(), uuid.toString());
+        user.setEmail(email);
+        assertEquals(user.getEmail(), email);
+    }
+
+    @Test
+    public void throwsException(){
+        UUID uuid = UUID.randomUUID();
+        PrivateUser user = new PrivateUser(db, uuid.toString());
+        boolean nonEmail = false;
+        boolean emailIsEmpty = false;
+        boolean worked;
+
+        try {
+            user.saveUserToDB();
+        }catch(IllegalStateException e){
+            nonEmail = true;
+        }
+
+        user.setEmail("");
+        try {
+            user.saveUserToDB();
+        }catch(IllegalStateException e){
+            emailIsEmpty = true;
+        }
+
+        user.setEmail("i@i.com");
+        when(db.setDocument(anyString(), anyMap())).thenReturn(CompletableFuture.completedFuture(new DatabaseResponse(true, null, null)));
+        CompletableFuture<DatabaseResponse> query = user.saveUserToDB();
+        try {
+            assertEquals(query.get().isSuccessful(), true);
+        } catch(Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
+
+    }
+
+    @Test
+    public void allEventsAreRetrieved(){
+        String ownerId = "ownerId";
+        Map<String, Object> event = new HashMap<>();
+        String uuid = UUID.randomUUID().toString();
+        String name = "name";
+        Date date = new Date();
+        GeoPoint location = new GeoPoint(0,0);
+        String address = "address";
+        String type = "Conference";
+        List<String> attendees = new ArrayList<>(Collections.singleton("attendee1"));
+        String description = "description";
+        List<String> invited = new ArrayList<>(Collections.singleton("invited"));
+
+
+        event.put(OWNER_KEY, ownerId);
+        event.put(UUID_KEY, uuid);
+        event.put(NAME_KEY, name);
+        event.put(DATE_KEY, new Timestamp(date));
+        event.put(LOCATION_KEY, location);
+        event.put(ADDRESS_KEY, address);
+        event.put(VISIBILITY_KEY, "PRIVATE");
+        event.put(TYPE_KEY, type);
+        event.put(ATTENDEES_KEY, attendees);
+        event.put(DESCRIPTION_KEY, description);
+        event.put(OWNER_KEY, ownerId);
+        event.put(INVITED_KEY, invited);
+        List<String> events = new ArrayList<>();
+        events.add("hello");
+        events.add("Hello2");
+
+        PrivateUser user = new PrivateUser(this.db, UUID.randomUUID().toString(), "i@i.com");
+        when(db.getData(anyString())).thenReturn(CompletableFuture.completedFuture(new DatabaseResponse(true, event, null)));
+        when(db.getField(anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(new DatabaseResponse(true, events, null)));
+        CompletableFuture<CompletableFuture<List<Event>>> eventList = user.getAllEvents(SAVED_EVENTS_KEY);
+        try{
+            List<Event> list = eventList.get().get();
+            assertTrue(list.size() != 0);
+            PrivateEvent eventInstance = (PrivateEvent) list.get(0);
+            assertEquals(eventInstance.getUuid().toString(), uuid);
+            eventInstance = (PrivateEvent) list.get(1);
+            assertEquals(eventInstance.getDate(), date);
+        } catch(Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
+    }
+
+    @Test
+    public void getAllEventsFailure(){
+        PrivateUser user = new PrivateUser(this.db, UUID.randomUUID().toString(), "i@i.com");
+        when(db.getField(anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(new DatabaseResponse(false, null, null)));
+        CompletableFuture<CompletableFuture<List<Event>>> eventList = user.getAllEvents(SAVED_EVENTS_KEY);
+        try{
+            List<Event> list = eventList.get().get();
+            assertEquals(list, null);
+        } catch(Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
     }
 
 }

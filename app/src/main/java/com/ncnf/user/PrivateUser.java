@@ -39,7 +39,7 @@ import static com.ncnf.Utils.USERS_COLLECTION_KEY;
 
 public class PrivateUser {
 
-    private DatabaseServiceInterface db;
+    private DatabaseService db;
     private String email;
     private final String UUID;
     private final String path;
@@ -153,9 +153,8 @@ public class PrivateUser {
 
                 List<String> eventIds = (List<String>) task.getResult();
                 List<CompletableFuture<Event>> eventsFuture = new ArrayList<>();
-                EventBuilder builder = new EventBuilder();
+                EventBuilder builder = new EventBuilder(this.db);
                 for(String s : eventIds){
-                    Log.d(DEBUG_TAG, s);
                     eventsFuture.add(builder.build(s));
                 }
 

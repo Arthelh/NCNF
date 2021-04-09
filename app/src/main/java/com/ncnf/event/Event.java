@@ -74,9 +74,7 @@ public abstract class Event {
         this.description = description;
     }
 
-    public UUID getUID(){
-        return this.uuid;
-    }
+    public UUID getUuid() { return uuid; }
     public String getName() { return name; }
     public Date getDate() { return date; }
     public GeoPoint getLocation() { return location; }
@@ -88,7 +86,6 @@ public abstract class Event {
     public List<String> getAttendees() { return attendees; }
     public int getNumOfAttendees() { return numOfAttendees; }
     public String getDescription() { return description; }
-    public UUID getUuid() { return uuid; }
     public String getOwnerId() { return ownerId; }
 
     public void setOwnerId(String ownerId){
