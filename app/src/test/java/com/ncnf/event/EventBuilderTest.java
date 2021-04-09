@@ -130,6 +130,31 @@ public class EventBuilderTest {
     }
 
     @Test
+    public void nonSuccessfulTaskTest(){
+        when(db.getData(anyString())).thenReturn(CompletableFuture.completedFuture(new DatabaseResponse(false, null, null)));
+
+        CompletableFuture<Event> eventQuery = eventBuilder.build(uuid);
+        try {
+            PublicEvent event = (PublicEvent) eventQuery.get();
+            assertEquals(event, null);
+        } catch(Exception e){
+            Assert.fail("Something went wrong with the Future");
+        }
+    }
+
+    @Test
+    public void ExceptionCatchTest(){
+        when(db.getData(anyString())).thenReturn(CompletableFuture.completedFuture(new DatabaseResponse(true, new HashMap<>(), null)));
+        CompletableFuture<Event> eventQuery = eventBuilder.build(uuid);
+        try {
+            PublicEvent event = (PublicEvent) eventQuery.get();
+            assertEquals(event, null);
+        } catch(Exception e){
+            Assert.fail("Something went wrong with the Future");
+        }
+    }
+
+    @Test
     public void loadPrivate(){
         privateEvent.put(OWNER_KEY, ownerId);
         privateEvent.put(UUID_KEY, this.uuid);

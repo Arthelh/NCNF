@@ -85,6 +85,44 @@ public class PrivateEventTest {
         }
     }
 
+    @Test
+    public void wrongUserIdTest() {
+        UUID fakeId = UUID.randomUUID();
+        when(db.setDocument(anyString(), anyMap())).thenReturn(response);
+        when(user.ownEvent(anyObject())).thenReturn(response2);
+        when(user.getID()).thenReturn(fakeId.toString());
+        when(db.delete(anyString())).thenReturn(response);
+
+
+        CompletableFuture<CompletableFuture<DatabaseResponse>> storeTest = mainEvent.store();
+
+        try {
+            DatabaseResponse res = storeTest.get().get();
+            assertEquals(res.isSuccessful(), false);
+            assertTrue(res.getException() instanceof IllegalStateException);
+            assertEquals(res.getResult(), null);
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly ! " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void IfFailsThenDeleteTest(){
+        CompletableFuture<DatabaseResponse> response = CompletableFuture.completedFuture(new DatabaseResponse(false, null, new IllegalStateException()));
+        when(db.setDocument(anyString(), anyMap())).thenReturn(response);
+
+        CompletableFuture<CompletableFuture<DatabaseResponse>> storeTest = mainEvent.store();
+
+        try {
+            DatabaseResponse res = storeTest.get().get();
+            assertEquals(res.isSuccessful(), false);
+            assertTrue(res.getException() != null);
+            assertEquals(res.getResult(), null);
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly ! " + e.getMessage());
+        }
+    }
+
 
     @Test
     public void privateEventGeneratesCorrectly() {
