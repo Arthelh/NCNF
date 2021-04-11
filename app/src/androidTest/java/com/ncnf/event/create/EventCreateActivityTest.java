@@ -25,6 +25,7 @@ import dagger.hilt.android.testing.HiltAndroidTest;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -60,7 +61,7 @@ public class EventCreateActivityTest {
 
         onView(withId(R.id.event_create_button)).perform(scrollTo(), click());
 
-        onView(emailField).check(matches(hasErrorText("This field cannot be empty")));
+        onView(emailField).perform(click(), closeSoftKeyboard()).check(matches(hasErrorText("This field cannot be empty")));
     }
 
     @Test

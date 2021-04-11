@@ -1,5 +1,7 @@
 package com.ncnf.map;
 
+import java.util.Objects;
+
 public class Venue {
 
     private final String name;
@@ -24,4 +26,13 @@ public class Venue {
         return longitude;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Venue venue = (Venue) o;
+        return Float.compare(venue.latitude, latitude) == 0 &&
+                Float.compare(venue.longitude, longitude) == 0 &&
+                Objects.equals(name, venue.name);
+    }
 }
