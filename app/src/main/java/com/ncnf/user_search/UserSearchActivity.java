@@ -39,10 +39,8 @@ public class UserSearchActivity extends AppCompatActivity {
     private final List<Profile> profilesList = new LinkedList<>();
     private RecyclerView recycler;
     private ProfileAdapter adapter;
-    @Inject
-    public FirebaseFirestore databaseReference;
-    @Inject
-    public CollectionReference usersRef;
+    private FirebaseFirestore databaseReference;
+    private CollectionReference usersRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
