@@ -38,11 +38,11 @@ public class UserSearchActivity extends AppCompatActivity {
 
     private final List<Profile> profilesList = new LinkedList<>();
     private RecyclerView recycler;
-    @Inject
-    private FirebaseFirestore databaseReference;
     private ProfileAdapter adapter;
     @Inject
-    private CollectionReference usersRef;
+    public FirebaseFirestore databaseReference;
+    @Inject
+    public CollectionReference usersRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,7 +94,7 @@ public class UserSearchActivity extends AppCompatActivity {
 
     //Search the database for a user with the given name
     private void searchUserWithName(String name){
-        
+
         //The query responsible for the results
         Query firestoreSearchQuery = usersRef
                 .orderBy("first_name") //TODO change to "username" when available
