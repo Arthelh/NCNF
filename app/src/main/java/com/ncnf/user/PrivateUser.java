@@ -1,20 +1,12 @@
 package com.ncnf.user;
 
-import android.os.Build;
-import android.util.Log;
-
-import androidx.annotation.RequiresApi;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FieldValue;
-import com.ncnf.R;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.database.DatabaseServiceInterface;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventBuilder;
-import com.ncnf.feed.ui.EventAdapter;
+import com.ncnf.event.PrivateEvent;
+import com.ncnf.event.PublicEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +17,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import static com.ncnf.Utils.BIRTH_YEAR_KEY;
-import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EMAIL_KEY;
 import static com.ncnf.Utils.EMPTY_STRING;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
@@ -44,6 +35,14 @@ public class PrivateUser {
     private final String UUID;
     private final String path;
 
+    public PrivateUser(){
+        this.db = new DatabaseService();
+        this.UUID = FirebaseAuth.getInstance().getUid();
+        this.email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        this.path = USERS_COLLECTION_KEY + UUID;
+
+    }
+
     public PrivateUser(String UUID, String email) {
         if(UUID == null || email == null || UUID.isEmpty() || email.isEmpty()) {
             throw new IllegalStateException("User doesn't have the right credentials to perform current operation");
@@ -55,7 +54,7 @@ public class PrivateUser {
         this.email = email;
     }
 
-    public PrivateUser(DatabaseService db, String UUID){
+    public PrivateUser(String UUID, DatabaseService db){
         this.path = USERS_COLLECTION_KEY + UUID;
         this.UUID = UUID;
         this.db = db;
@@ -86,7 +85,7 @@ public class PrivateUser {
 
     public CompletableFuture<DatabaseResponse> saveUserToDB(){
         if(this.email == null || this.email.isEmpty()){
-            throw new IllegalStateException("User's email can't be null or empty");
+            return CompletableFuture.completedFuture(new DatabaseResponse(false, null, new IllegalStateException("User's email can't be null or empty")));
         }
 
         Map<String, Object> initial_data = new HashMap<>();
@@ -138,12 +137,8 @@ public class PrivateUser {
         return this.addEvent(event, SAVED_EVENTS_KEY);
     }
 
-    public CompletableFuture<DatabaseResponse> ownEvent(Event event){
-        return this.addEvent(event, OWNED_EVENTS_KEY);
-    }
-
     private CompletableFuture<DatabaseResponse> addEvent(Event event, String array){
-        return this.update(array, FieldValue.arrayUnion(event.getUuid()));
+        return db.updateArrayField(path, array, event.getUuid().toString());
     }
 
 
@@ -168,6 +163,30 @@ public class PrivateUser {
             } else {
                 return CompletableFuture.completedFuture(null);
             }
+        });
+    }
+
+    //TODO : for now it can store both type of events but won't be the case in the future
+    public CompletableFuture<CompletableFuture<DatabaseResponse>> createEvent(Event event){
+        if(event.getOwnerId() != this.UUID){
+            return CompletableFuture.completedFuture(CompletableFuture.completedFuture(new DatabaseResponse(false, null, new IllegalStateException("Current user isn't the user associated with this event"))));
+        }
+
+        CompletableFuture<DatabaseResponse> storing;
+
+       if(event instanceof PublicEvent){
+           PublicEvent publicEvent = (PublicEvent) event;
+           storing = publicEvent.store(this.db);
+       } else {
+           PrivateEvent privateEvent = (PrivateEvent) event;
+           storing = privateEvent.store(this.db);
+       }
+
+        return storing.thenApply(task -> {
+            if(task.isSuccessful()){
+                return this.addEvent(event, OWNED_EVENTS_KEY);
+            }
+            return CompletableFuture.completedFuture(new DatabaseResponse(false, null, task.getException()));
         });
     }
 

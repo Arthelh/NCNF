@@ -25,12 +25,14 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
+import com.ncnf.authentication.AuthenticationService;
+import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.event.PrivateEvent;
 import com.ncnf.main.MainActivity;
+import com.ncnf.user.PrivateUser;
 import com.ncnf.utilities.InputValidator;
 
 import java.time.LocalDate;
@@ -45,10 +47,21 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 import static com.ncnf.Utils.*;
 
+@AndroidEntryPoint
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class EventCreateActivity extends AppCompatActivity {
+
+    @Inject
+    DatabaseService db;
+
+    @Inject
+    AuthenticationService auth;
 
     private Event.Type eventType;
     private LocalDate eventDate = LocalDate.now();
@@ -160,13 +173,14 @@ public class EventCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkAllFieldsAreFilledAndCorrect()) {
+                    String uid = FirebaseAuth.getInstance().getUid();
 
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if(uid != null && !uid.isEmpty()) {
+                        PrivateUser user = new PrivateUser(uid, db);
 
-                    if(user != null) {
                         //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
                         PrivateEvent event = new PrivateEvent(
-                                user.getUid(),
+                                user.getID(),
                                 eventName.getText().toString(),
                                 dateConversion(eventDate, eventTime),
                                 getLocationFromAddress(eventAddress.getText().toString()),
@@ -174,7 +188,7 @@ public class EventCreateActivity extends AppCompatActivity {
                                 eventDescription.getText().toString(),
                                 eventType);
 
-                        event.store().thenAccept(task1 -> {
+                        user.createEvent(event).thenAccept(task1 -> {
                             task1.thenAccept(task2 -> {
                                 if (task2.isSuccessful()) {
                                     nextStep();
@@ -220,7 +234,6 @@ public class EventCreateActivity extends AppCompatActivity {
     private Date dateConversion(LocalDate date, LocalTime time){
         LocalDateTime datetime = LocalDateTime.of(date, time);
         return Date.from(datetime.atZone(ZoneId.systemDefault()).toInstant());
-
     }
 
     public GeoPoint getLocationFromAddress(String strAddress){

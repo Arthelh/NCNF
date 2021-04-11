@@ -40,7 +40,6 @@ public class DatabaseServiceTest {
     public void setup() {
         db = Mockito.mock(FirebaseFirestore.class, Mockito.RETURNS_DEEP_STUBS);
         service = new DatabaseService(db);
-
         event = new PublicEvent("00","testName", new Date(), new GeoPoint(0., 0.),"north pole","testData", Event.Type.Museum, 0 , 0);
         task = new MockTask<Event>(event, null);
     }

@@ -17,9 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
+import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
-import com.ncnf.event.EventActivity;
+import com.ncnf.feed.ui.EventActivity;
 import com.ncnf.event.EventBuilder;
 import com.ncnf.feed.ui.EventAdapter;
 import com.ncnf.feed.ui.EventListener;
@@ -29,14 +31,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static com.ncnf.Utils.DEBUG_TAG;
+import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+import static com.ncnf.Utils.DEBUG_TAG;
 public class EventDisplayFragment extends Fragment implements EventAdapter.OnEventListener{
 
     private List<Event> eventsToDisplay;
     private EventAdapter adapter;
     private RecyclerView.LayoutManager lManager;
     private final String eventCollection;
+
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
 
     public EventDisplayFragment(String eventCollection){
         this.eventCollection = eventCollection;
@@ -52,7 +60,6 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getEventList(view.findViewById(R.id.SavedEventsRecyclerView));
-
 
         eventsToDisplay = new ArrayList<>();
         RecyclerView recycler = (RecyclerView) view.findViewById(R.id.SavedEventsRecyclerView);
@@ -76,26 +83,27 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void getEventList(View view){
-        PrivateUser user = new PrivateUser(FirebaseAuth.getInstance().getCurrentUser().getUid(), FirebaseAuth.getInstance().getCurrentUser().getEmail());
-        CompletableFuture<CompletableFuture<List<Event>>> listEvent = user.getAllEvents(eventCollection);
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if(firebaseUser != null){
+            PrivateUser user = new PrivateUser(firebaseUser.getUid(), new DatabaseService());
+            CompletableFuture<CompletableFuture<List<Event>>> listEvent = user.getAllEvents(eventCollection);
 
-        listEvent.thenAccept(task1 -> {
-            task1.thenAccept(events -> {
-                if(events != null){
-                    eventsToDisplay = events;
-                    adapter = new EventAdapter(eventsToDisplay, this);
-                    ((RecyclerView) view.findViewById(R.id.SavedEventsRecyclerView)).setAdapter(adapter);
-                }
+            listEvent.thenAccept(task -> {
+                task.thenAccept(events -> {
+                    if(events != null){
+                        eventsToDisplay = events;
+                        adapter = new EventAdapter(eventsToDisplay, this);
+                        ((RecyclerView) view.findViewById(R.id.SavedEventsRecyclerView)).setAdapter(adapter);
+                    }
+                });
             });
-
-
-        });
+        }
     }
 
     @Override
     public void onEventClick(Event event) {
         Intent intent = new Intent(getActivity(), EventActivity.class);
-        intent.putExtra("event_uid", event.getUuid());
+        intent.putExtra("event_uid", event.getUuid().toString());
         startActivity(intent);
     }
 }

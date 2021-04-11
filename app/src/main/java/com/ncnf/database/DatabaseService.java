@@ -19,12 +19,15 @@ package com.ncnf.database;
         import java.util.concurrent.CompletableFuture;
         import java.util.concurrent.FutureTask;
 
+        import javax.inject.Inject;
+
         import static com.ncnf.Utils.*;
 
 public class DatabaseService implements DatabaseServiceInterface {
 
     private final FirebaseFirestore db;
 
+    @Inject
     public DatabaseService(){
         this.db = FirebaseFirestore.getInstance();
     }
@@ -47,7 +50,6 @@ public class DatabaseService implements DatabaseServiceInterface {
         CompletableFuture<DatabaseResponse> futureResponse = new CompletableFuture<>();
 
         this.db.document(path).update(FieldPath.of(field), value).addOnCompleteListener(task -> onTaskComplete(task, futureResponse));
-
         return futureResponse;
     }
 
@@ -58,7 +60,6 @@ public class DatabaseService implements DatabaseServiceInterface {
                 Object obj = ((Map<String, Object>) task.getResult()).get(field);
                 return new DatabaseResponse(true, obj, task.getException());
             } else {
-                //Log.d(DEBUG_TAG, "Unable to load field from DB", task.getException());
                 return task;
             }
         });

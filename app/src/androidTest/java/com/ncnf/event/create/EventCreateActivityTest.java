@@ -1,5 +1,6 @@
 package com.ncnf.event.create;
 
+import android.content.Intent;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -8,6 +9,8 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
+import com.ncnf.database.DatabaseResponse;
+import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.main.MainActivity;
 
@@ -19,6 +22,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 
+import java.util.concurrent.CompletableFuture;
+
+import dagger.hilt.android.testing.BindValue;
 import dagger.hilt.android.testing.HiltAndroidRule;
 import dagger.hilt.android.testing.HiltAndroidTest;
 
@@ -36,19 +42,35 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
 public class EventCreateActivityTest {
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
 
+    @BindValue
+    DatabaseService mockedDB = mock(DatabaseService.class);
+
+    CompletableFuture response = CompletableFuture.completedFuture(new DatabaseResponse(true, false, null));
+    CompletableFuture wrongResponse = CompletableFuture.completedFuture(new DatabaseResponse(false, false, null));
+
+
+
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(EventCreateActivity.class));
 
     @Before
     public void setup(){
+        hiltRule.inject();
         Intents.init();
     }
 
@@ -78,6 +100,9 @@ public class EventCreateActivityTest {
 
     @Test
     public void eventFormValidatesCorrectInput() {
+        when(mockedDB.setDocument(anyString(), anyMap())).thenReturn(response);
+        when(mockedDB.updateArrayField(anyString(), anyString(), anyObject())).thenReturn(response);
+
         onView(withId(R.id.event_name)).perform(scrollTo(), replaceText("Conference"));
         onView(withId(R.id.event_description)).perform(scrollTo(), replaceText("Math are fun!"));
         onView(withId(R.id.event_address)).perform(scrollTo(), replaceText("INM201"));
@@ -98,8 +123,10 @@ public class EventCreateActivityTest {
         onView(withId(android.R.id.button1)).perform(click()); // click OK
 
         onView(withId(R.id.event_create_button)).perform(scrollTo());
-
         onView(withId(R.id.event_create_button)).perform(click());
+
+        verify(mockedDB).setDocument(anyString(), anyMap());
+        verify(mockedDB).updateArrayField(anyString(), anyString(), anyString());
     }
 
 }

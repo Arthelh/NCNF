@@ -55,11 +55,12 @@ public class EventBuilder {
                        int minAge = (int) data.get(MIN_AGE_KEY);
                        int price = (int) data.get(PRICE_KEY);
                        List<Tag> tags = (ArrayList) data.get(TAGS_LIST_KEY);
+                       //TODO : should serialize / deserialize tags before adding them
                        return new PublicEvent(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags);
 
                    } else {
                         List<String> invited = (ArrayList) data.get(INVITED_KEY);
-                       return new PrivateEvent(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
+                        return new PrivateEvent(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
                    }
                }
                return null;

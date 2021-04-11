@@ -14,9 +14,6 @@ import static com.ncnf.Utils.*;
 
 public class PublicEvent extends Event {
 
-    private DatabaseService db;
-    private PrivateUser user;
-
     private static final int MIN_AGE = 0;
     private static final int MAX_AGE = 125;
 
@@ -69,14 +66,6 @@ public class PublicEvent extends Event {
         }
     }
 
-    public void setDB(DatabaseService db){
-        this.db = db;
-    }
-
-    public void setUser(PrivateUser user){
-        this.user = user;
-    }
-
     public void addTag(Tag newTag) {
 
         for(int i = 0; i < tags.size(); ++i) {
@@ -87,9 +76,9 @@ public class PublicEvent extends Event {
         tags.add(newTag);
     }
 
-    public CompletableFuture<CompletableFuture<DatabaseResponse>> store(){
+    public CompletableFuture<DatabaseResponse> store(DatabaseService db){
         String[] fields = {MIN_AGE_KEY, PRICE_KEY, TAGS_LIST_KEY};
         Object[] objects = {this.minAge, this.price, this.tags};
-        return super.store(user, db, fields, objects);
+        return super.store(db, fields, objects);
     }
 }

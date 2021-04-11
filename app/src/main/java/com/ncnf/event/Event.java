@@ -106,7 +106,7 @@ public abstract class Event {
     }
     public void setDescription(String description)  { this.description = description; }
 
-    protected CompletableFuture<CompletableFuture<DatabaseResponse>> store(PrivateUser user, DatabaseService db, String[] fields, Object[] objects){
+    protected CompletableFuture<DatabaseResponse> store(DatabaseService db, String[] fields, Object[] objects){
         Map<String, Object> map = new HashMap<>();
         map.put(UUID_KEY, this.uuid.toString());
         map.put(NAME_KEY, this.name);
@@ -121,17 +121,6 @@ public abstract class Event {
         for(int i = 0; i < fields.length; ++i){
             map.put(fields[i], objects[i]);
         }
-        CompletableFuture<DatabaseResponse> response = db.setDocument(EVENTs_COLLECTION_KEY + uuid, map);
-
-        return response.thenApply(task -> {
-                if(task.isSuccessful()){
-                    if(!user.getID().equals(this.ownerId)){
-                        db.delete(EVENTs_COLLECTION_KEY + uuid);
-                        return CompletableFuture.completedFuture(new DatabaseResponse(false, null, new IllegalStateException()));
-                    }
-                    return user.ownEvent(this);
-                }
-                return CompletableFuture.completedFuture(new DatabaseResponse(false, null, task.getException()));
-        });
+        return db.setDocument(EVENTs_COLLECTION_KEY + uuid, map);
     }
 }

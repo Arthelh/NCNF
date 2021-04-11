@@ -32,7 +32,6 @@ import static com.ncnf.Utils.LOCATION_KEY;
 import static com.ncnf.Utils.NAME_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_TOKEN_KEY;
-import static com.ncnf.Utils.OWNED_EVENTS_KEY;
 import static com.ncnf.Utils.OWNER_KEY;
 import static com.ncnf.Utils.SAVED_EVENTS_KEY;
 import static com.ncnf.Utils.TYPE_KEY;
@@ -40,6 +39,7 @@ import static com.ncnf.Utils.USERS_COLLECTION_KEY;
 import static com.ncnf.Utils.UUID_KEY;
 import static com.ncnf.Utils.VISIBILITY_KEY;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -55,6 +55,77 @@ import static org.mockito.Mockito.when;
 public class PrivateUserTests {
 
     DatabaseService db = mock(DatabaseService.class);
+    String ownerID = "ownerId";
+    String name = "name";
+    Date date = new Date();
+    GeoPoint geoPoint = new GeoPoint(0,0);
+    String address = "address";
+    String description = "description";
+    Event.Type type = Event.Type.Movie;
+    PublicEvent publicEvent = new PublicEvent(ownerID, name, date, geoPoint, address, description, type, 0 , 0);
+    PrivateEvent privateEvent = new PrivateEvent(ownerID, name, date, geoPoint, address, description, type);
+    CompletableFuture<DatabaseResponse> response = CompletableFuture.completedFuture(new DatabaseResponse(true, null, null));
+
+
+    @Test
+    public void createPublicEventWorks(){
+        when(db.setDocument(anyString(), anyMap())).thenReturn(response);
+        when(db.updateArrayField(anyString(), anyString(), anyString())).thenReturn(response);
+
+        PrivateUser user = new PrivateUser(ownerID, db);
+        CompletableFuture<CompletableFuture<DatabaseResponse>> response = user.createEvent(publicEvent);
+        try {
+            assertTrue(response.get().get().isSuccessful());
+        } catch(Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
+    }
+
+    @Test
+    public void createPrivateEventWorks(){
+        when(db.setDocument(anyString(), anyMap())).thenReturn(response);
+        when(db.updateArrayField(anyString(), anyString(), anyString())).thenReturn(response);
+
+        PrivateUser user = new PrivateUser(ownerID, db);
+        CompletableFuture<CompletableFuture<DatabaseResponse>> response = user.createEvent(privateEvent);
+        try {
+            assertTrue(response.get().get().isSuccessful());
+        } catch(Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
+    }
+
+    @Test
+    public void crashesWhenWrongId(){
+        when(db.setDocument(anyString(), anyMap())).thenReturn(response);
+        when(db.updateArrayField(anyString(), anyString(), anyString())).thenReturn(response);
+
+        PrivateUser user = new PrivateUser("owner", db);
+        CompletableFuture<CompletableFuture<DatabaseResponse>> response = user.createEvent(privateEvent);
+        try {
+            DatabaseResponse done = response.get().get();
+            assertFalse(done.isSuccessful());
+            assertTrue(done.getException() instanceof IllegalStateException);
+        } catch(Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
+    }
+
+    @Test
+    public void crashesWhenSetDocumentCrashes(){
+        CompletableFuture<DatabaseResponse> wrongResponse = CompletableFuture.completedFuture(new DatabaseResponse(false, null, null));
+        when(db.setDocument(anyString(), anyMap())).thenReturn(wrongResponse);
+
+        PrivateUser user = new PrivateUser("owner", db);
+        CompletableFuture<CompletableFuture<DatabaseResponse>> response = user.createEvent(privateEvent);
+        try {
+            DatabaseResponse done = response.get().get();
+            assertFalse(done.isSuccessful());
+            assertTrue(done.getException() instanceof Exception);
+        } catch(Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
+    }
 
     @Test
     public void hashCodeMatches() {
@@ -175,27 +246,18 @@ public class PrivateUserTests {
 
     @Test
     public void saveEventCallsDatabase() {
-        when(db.updateField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
+        when(db.updateArrayField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
         Event event = new PublicEvent("00","Conference", new Date(), new GeoPoint(0., 0.) ,"North Pole", "Description goes here", Event.Type.Movie, 0 , 0);
         PrivateUser user = new PrivateUser(db, "1234567890","foo@bar.com");
         user.saveEvent(event);
-        verify(db).updateField(eq(USERS_COLLECTION_KEY  + "1234567890"), eq(SAVED_EVENTS_KEY), anyObject());
-    }
-
-    @Test
-    public void ownEventCallsDatabase() {
-        when(db.updateField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
-        Event event = new PublicEvent("00","Conference", new Date(), new GeoPoint(0., 0.) ,"North Pole", "Description goes here", Event.Type.Movie, 0 , 0);
-        PrivateUser user = new PrivateUser(db, "1234567890","foo@bar.com");
-        user.ownEvent(event);
-        verify(db).updateField(eq(USERS_COLLECTION_KEY + "1234567890"), eq(OWNED_EVENTS_KEY), anyObject());
+        verify(db).updateArrayField(eq(USERS_COLLECTION_KEY  + "1234567890"), eq(SAVED_EVENTS_KEY), anyObject());
     }
 
     @Test
     public void secondConstructorAndSetTest(){
         UUID uuid = UUID.randomUUID();
         String email = "i@i.com";
-        PrivateUser user = new PrivateUser(db, uuid.toString());
+        PrivateUser user = new PrivateUser(uuid.toString(), db);
         assertEquals(user.getID(), uuid.toString());
         user.setEmail(email);
         assertEquals(user.getEmail(), email);
@@ -204,34 +266,34 @@ public class PrivateUserTests {
     @Test
     public void throwsException(){
         UUID uuid = UUID.randomUUID();
-        PrivateUser user = new PrivateUser(db, uuid.toString());
-        boolean nonEmail = false;
-        boolean emailIsEmpty = false;
-        boolean worked;
+        PrivateUser user = new PrivateUser(uuid.toString(), db);
 
+        CompletableFuture<DatabaseResponse> query = user.saveUserToDB();
+        query = user.saveUserToDB();
         try {
-            user.saveUserToDB();
-        }catch(IllegalStateException e){
-            nonEmail = true;
+            assertEquals(query.get().isSuccessful(), false);
+            assertTrue(query.get().getException() instanceof IllegalStateException);
+        } catch(Exception e){
+            Assert.fail("Something went wrong with the future");
         }
 
         user.setEmail("");
+        query = user.saveUserToDB();
         try {
-            user.saveUserToDB();
-        }catch(IllegalStateException e){
-            emailIsEmpty = true;
+            assertEquals(query.get().isSuccessful(), false);
+            assertTrue(query.get().getException() instanceof IllegalStateException);
+        } catch(Exception e){
+            Assert.fail("Something went wrong with the future");
         }
 
         user.setEmail("i@i.com");
         when(db.setDocument(anyString(), anyMap())).thenReturn(CompletableFuture.completedFuture(new DatabaseResponse(true, null, null)));
-        CompletableFuture<DatabaseResponse> query = user.saveUserToDB();
+        query = user.saveUserToDB();
         try {
             assertEquals(query.get().isSuccessful(), true);
         } catch(Exception e){
             Assert.fail("Something went wrong with the future");
         }
-        assertTrue(emailIsEmpty && nonEmail);
-
     }
 
     @Test

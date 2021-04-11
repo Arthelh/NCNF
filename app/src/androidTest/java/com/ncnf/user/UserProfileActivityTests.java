@@ -4,7 +4,6 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
-import com.ncnf.bookmark.BookMark;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;

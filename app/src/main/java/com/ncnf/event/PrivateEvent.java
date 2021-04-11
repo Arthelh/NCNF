@@ -19,8 +19,6 @@ import static com.ncnf.Utils.*;
 public class PrivateEvent extends Event {
 
     private final List<String> invited;
-    private DatabaseService db;
-    private PrivateUser user;
 
     public PrivateEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type) {
         super(ownerId, name, date, location, address, type, Event.Visibility.PRIVATE, description);
@@ -32,14 +30,6 @@ public class PrivateEvent extends Event {
         this.invited = invited;
     }
 
-    public void setDB(DatabaseService db){
-        this.db = db;
-    }
-
-    public void setUser(PrivateUser user){
-        this.user = user;
-    }
-
     public void invite(String user) {
         invited.add(user);
     }
@@ -48,10 +38,10 @@ public class PrivateEvent extends Event {
         return invited;
     }
 
-    public CompletableFuture<CompletableFuture<DatabaseResponse>> store(){
+    public CompletableFuture<DatabaseResponse> store(DatabaseService db){
         String[] fields = {INVITED_KEY};
         Object[] objects = {this.invited};
-        return super.store(user, db, fields, objects);
+        return super.store(db, fields, objects);
     }
 
 }

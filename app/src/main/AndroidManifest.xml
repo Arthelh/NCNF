@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
@@ -23,9 +23,9 @@
         android:theme="@style/Theme.NCNF"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".bookmark.BookMark"
-            android:label="@string/title_activity_bookmark"
-            android:theme="@style/Theme.NCNF.NoActionBar"></activity>
+            android:name=".bookmark.BookMarkActivity"
+            android:parentActivityName=".user.UserProfileActivity"
+            android:label="@string/title_activity_bookmark"/>
         <activity
             android:name=".user.UserProfileActivity"
             android:parentActivityName=".main.MainActivity"
