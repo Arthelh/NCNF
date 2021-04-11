@@ -56,6 +56,8 @@ public class UserSearchActivity extends AppCompatActivity {
         handleIntent(getIntent());
     }
 
+
+    //Needed for whenever a new search is made
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -63,10 +65,11 @@ public class UserSearchActivity extends AppCompatActivity {
         handleIntent(intent);
     }
 
+    //Handles the search
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String name = intent.getStringExtra(SearchManager.QUERY);
-            searchUserWithName(name);
+            String searchWord = intent.getStringExtra(SearchManager.QUERY);
+            searchUserWithName(searchWord);
         }
     }
 
@@ -84,29 +87,30 @@ public class UserSearchActivity extends AppCompatActivity {
         return true;
     }
 
-    //TODO
+    //Search the database for a user with the given name
     private void searchUserWithName(String name){
         Toast.makeText(UserSearchActivity.this, "HELLO",Toast.LENGTH_LONG).show();
 
+        //The query responsible for the results
         Query firestoreSearchQuery = usersRef
-                .orderBy("first_name")
+                .orderBy("first_name") //TODO change to "username" when available
                 .startAt(name)
                 .endAt(name+ "\uf8ff");
 
         FirestoreRecyclerOptions<Profile> options
                 = new FirestoreRecyclerOptions.Builder<Profile>()
-                //.setQuery(firestoreSearchQuery, Profile.class)
                 .setQuery(firestoreSearchQuery, new SnapshotParser<Profile>() {
+                    //Create a new Profile to show from the retrieved information from the db
                     @NonNull
                     @Override
                     public Profile parseSnapshot(@NonNull DocumentSnapshot snapshot) {
-                        //Log.d("TEST", snapshot.getData().toString());
                         return new PublicProfile((String)snapshot.get("first_name"), (String)snapshot.get("email"));
                     }
                 })
                 .build();
 
         adapter = new ProfileAdapter(options, new ProfileAdapter.OnItemClickListener() {
+            //Custom method to display profile when clicking on it
             @Override
             public void onItemClick(Profile profile) {
                 displayProfile(profile);
@@ -114,12 +118,12 @@ public class UserSearchActivity extends AppCompatActivity {
         });
 
         recycler.setLayoutManager(new LinearLayoutManager(this));
+        //TODO find better way to listen to optimize resources
         adapter.startListening();
         recycler.setAdapter(adapter);
-
     }
 
-    //TODO
+    //TODO decide how and what to display
     private void displayProfile(Profile profile) {
         Toast.makeText(this, "TEST_PROFILE_DISPLAY", Toast.LENGTH_LONG).show();
     }

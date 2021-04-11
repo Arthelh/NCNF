@@ -4,11 +4,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
@@ -52,6 +50,7 @@ public class ProfileAdapter extends FirestoreRecyclerAdapter<Profile, ProfileAda
 
 
         public void bind(final Profile item, final OnItemClickListener listener) {
+            //TODO probably unnecessary
             username.setText((item != null) ? item.getUsername() : "No User with that name found");
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
