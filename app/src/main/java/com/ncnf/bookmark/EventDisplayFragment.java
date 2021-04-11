@@ -61,7 +61,6 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getEventList(view.findViewById(R.id.SavedEventsRecyclerView));
 
         eventsToDisplay = new ArrayList<>();
         RecyclerView recycler = (RecyclerView) view.findViewById(R.id.SavedEventsRecyclerView);
@@ -73,6 +72,7 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
         adapter = new EventAdapter(eventsToDisplay, this);
         recycler.setAdapter(adapter);
 
+        //TODO: is this really useful or should it be deleted ?
         EventListener eventListener = event -> getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -81,6 +81,8 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
                 ((LinearLayoutManager)lManager).scrollToPositionWithOffset(0, 0);
             }
         });
+        getEventList(view.findViewById(R.id.SavedEventsRecyclerView));
+
     }
 
     private void getEventList(View view){
@@ -91,7 +93,8 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
                 if(events != null){
                     for(Event e : events){
                         if (e != null) {
-                            adapter.addEvent(e);
+                            this.adapter.addEvent(e);
+
                         }
                     }
                 }

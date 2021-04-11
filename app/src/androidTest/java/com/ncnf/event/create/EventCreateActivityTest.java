@@ -108,7 +108,7 @@ public class EventCreateActivityTest {
 
         onView(withId(R.id.event_name)).perform(scrollTo(), replaceText("Conference"));
         onView(withId(R.id.event_description)).perform(scrollTo(), replaceText("Math are fun!"));
-        onView(withId(R.id.event_address)).perform(scrollTo(), replaceText("INM201"));
+        onView(withId(R.id.event_address)).perform(scrollTo(), replaceText("EPFL Lausanne Suisse"));
         onView(withId(R.id.event_price)).perform(scrollTo(), replaceText("10"));
         onView(withId(R.id.event_website)).perform(scrollTo(), replaceText("bar.com"));
         onView(withId(R.id.event_phone_contact)).perform(scrollTo(), replaceText("0771112233"));

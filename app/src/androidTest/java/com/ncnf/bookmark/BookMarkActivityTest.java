@@ -1,6 +1,7 @@
 package com.ncnf.bookmark;
 
 import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.intent.matcher.IntentMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.rule.ActivityTestRule;
 import androidx.viewpager2.widget.ViewPager2;
@@ -8,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.event.Event;
+import com.ncnf.feed.ui.EventActivity;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.event.create.EventCreateActivity;
 import com.ncnf.user.CurrentUserModule;
@@ -31,9 +33,12 @@ import dagger.hilt.android.testing.HiltAndroidTest;
 import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeRight;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -49,22 +54,34 @@ public class BookMarkActivityTest {
     @BindValue
     public PrivateUser user = mockUser;
 
-    private BookMarkActivity bookMarkActivity = new ActivityTestRule<>(BookMarkActivity.class).getActivity();
-
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(BookMarkActivity.class));
 
     @Before
     public void setup(){
-        list.add(event);
+        for(int i = 0; i < 8; ++i){
+            list.add(event);
+        }
         events =  CompletableFuture.completedFuture(CompletableFuture.completedFuture(list));
         when(user.getAllEvents(anyString())).thenReturn(events);
+        Intents.init();
+    }
+
+    @After
+    public void cleanup(){
+        Intents.release();
     }
 
     @Test
-    public void eventFormValidatesEmptyInput() {
+    public void eventFormValidatesEmptyInput() throws InterruptedException {
         onView(withId(R.id.view_pager)).perform(swipeLeft());
         onView(withId(R.id.view_pager)).perform(swipeRight());
+
+        //Wait to be sure that events have been loaded
+        Thread.sleep(5000);
+
+        onView(withId(R.id.view_pager)).perform(click());
+        Intents.intended(hasComponent(EventActivity.class.getName()));
     }
 }
