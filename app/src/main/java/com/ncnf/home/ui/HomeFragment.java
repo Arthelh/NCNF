@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
 import com.ncnf.event.create.EventCreateActivity;
+import com.ncnf.event.update.EventNewsActivity;
 import com.ncnf.user.UserProfileActivity;
 
 
@@ -32,6 +33,8 @@ public class HomeFragment extends Fragment {
         getView().findViewById(R.id.homeProfileButton).setOnClickListener(this::gotToProfile);
 
         getView().findViewById(R.id.homeCreateEventButton).setOnClickListener(this::goToEventCreation);
+
+        getView().findViewById(R.id.homeEventNews).setOnClickListener(this::goToEventNews);
     }
 
     public void gotToProfile(View view){
@@ -48,6 +51,12 @@ public class HomeFragment extends Fragment {
 
     public void goToEventCreation(View view){
         Intent intent = new Intent(getContext(), EventCreateActivity.class);
+        startActivity(intent);
+    }
+
+    // Temporary
+    public void goToEventNews(View view){
+        Intent intent = new Intent(getContext(), EventNewsActivity.class);
         startActivity(intent);
     }
 

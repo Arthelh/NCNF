@@ -84,4 +84,7 @@
     <string name="navigation_menu_feed">Feed</string>
     <string name="navigation_menu_map">Map</string>
     <string name="navigation_menu_home">Home</string>
+    <string name="event_news_title">Let your attendees know</string>
+    <string name="event_news_label">Your update</string>
+    <string name="event_news_publish_button">Publish</string>
 </resources>
