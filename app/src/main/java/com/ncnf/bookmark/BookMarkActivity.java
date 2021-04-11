@@ -11,7 +11,13 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.ncnf.R;
 import com.ncnf.bookmark.ui.FragmentSelector;
+import com.ncnf.user.PrivateUser;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class BookMarkActivity extends AppCompatActivity {
 
     @Override

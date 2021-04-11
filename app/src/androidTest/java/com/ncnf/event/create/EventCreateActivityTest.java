@@ -63,13 +63,10 @@ public class EventCreateActivityTest {
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private static final PrivateUser mockUser = Mockito.mock(PrivateUser.class);
 
-
     @BindValue
     public PrivateUser user = mockUser;
 
     CompletableFuture response = CompletableFuture.completedFuture(CompletableFuture.completedFuture(new DatabaseResponse(true, false, null)));
-
-
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(EventCreateActivity.class));

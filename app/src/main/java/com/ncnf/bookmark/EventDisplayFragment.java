@@ -36,6 +36,8 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.ncnf.Utils.DEBUG_TAG;
+
+@AndroidEntryPoint
 public class EventDisplayFragment extends Fragment implements EventAdapter.OnEventListener{
 
     private List<Event> eventsToDisplay;
@@ -43,8 +45,8 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
     private RecyclerView.LayoutManager lManager;
     private final String eventCollection;
 
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
+    @Inject
+    public PrivateUser user;
 
     public EventDisplayFragment(String eventCollection){
         this.eventCollection = eventCollection;
@@ -81,22 +83,19 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void getEventList(View view){
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if(firebaseUser != null){
-            PrivateUser user = new PrivateUser(firebaseUser.getUid(), new DatabaseService());
+    private void getEventList(View view){
+        if(user != null){
             CompletableFuture<CompletableFuture<List<Event>>> listEvent = user.getAllEvents(eventCollection);
 
-            listEvent.thenAccept(task -> {
-                task.thenAccept(events -> {
-                    if(events != null){
-                        eventsToDisplay = events;
-                        adapter = new EventAdapter(eventsToDisplay, this);
-                        ((RecyclerView) view.findViewById(R.id.SavedEventsRecyclerView)).setAdapter(adapter);
+            listEvent.thenAccept(task -> task.thenAccept(events -> {
+                if(events != null){
+                    Log.d(DEBUG_TAG, Integer.toString(events.size()));
+                    for(Event e : events){
+                        Log.d(DEBUG_TAG, e.toString());
+                        adapter.addEvent(e);
                     }
-                });
-            });
+                }
+            }));
         }
     }
 

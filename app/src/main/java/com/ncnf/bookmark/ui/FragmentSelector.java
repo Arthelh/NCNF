@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.ncnf.bookmark.EventDisplayFragment;
+import com.ncnf.user.PrivateUser;
 
 import static com.ncnf.Utils.*;
 
