@@ -125,8 +125,7 @@ public class EventCreateActivityTest {
         onView(withId(R.id.event_create_button)).perform(scrollTo());
         onView(withId(R.id.event_create_button)).perform(click());
 
-        verify(mockedDB).setDocument(anyString(), anyMap());
-        verify(mockedDB).updateArrayField(anyString(), anyString(), anyString());
+        Intents.intended(hasComponent(MainActivity.class.getName()));
     }
 
 }
