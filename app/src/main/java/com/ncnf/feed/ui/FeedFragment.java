@@ -28,8 +28,9 @@ public class FeedFragment extends Fragment {
 
     private RecyclerView.LayoutManager lManager;
     private EventAdapter adapter;
-    private List<Event> eventList;
+    private final List<Event> eventList = new ArrayList<>();
     private static final String CHANNEL_NAME = "events_to_be_shown";
+
 
     @Nullable
     @Override
@@ -49,7 +50,7 @@ public class FeedFragment extends Fragment {
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter
-        eventList = new ArrayList<>();
+        //TODO Connect DB events here
         eventList.add(new PublicEvent("testName", new Date(), new Location(0, 0, "testLoc"), "testData", EventType.Museum, 0 , 0, new PublicOrganizer("testOrganizer")));
         adapter = new EventAdapter(eventList, this::onEventClick);
         recycler.setAdapter(adapter);
@@ -65,9 +66,9 @@ public class FeedFragment extends Fragment {
 //        });
     }
 
-    private void onEventClick(int position) {
+    private void onEventClick(Event e) {
         Intent intent = new Intent(getActivity(), EventActivity.class);
-        intent.putExtra("event_uid", eventList.get(position).getUuid().toString());
+        intent.putExtra("event_uid", eventList.get(eventList.indexOf(e)).getUuid().toString());
         startActivity(intent);
     }
 }

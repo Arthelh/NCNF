@@ -3,13 +3,16 @@ package com.ncnf.event.create;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -40,6 +43,8 @@ public class EventCreateActivity extends AppCompatActivity {
     private LocalTime eventTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
     private LocalDateTime dbEventEntry;
     private int selYear, selMonth, selDay, selHour, selMin;
+    private static final int PICK_IMAGE = 100;
+    private ImageView pictureView;
 
     private final List<EditText> allFields = new LinkedList<>();
 
@@ -61,6 +66,7 @@ public class EventCreateActivity extends AppCompatActivity {
         EditText eventPhoneNumber = findViewById(R.id.event_phone_contact);
         EditText eventPrice = findViewById(R.id.event_price);
         EditText eventWebsite = findViewById(R.id.event_website);
+
 
         allFields.addAll(Arrays.asList(eventName, eventDescription, eventAddress, eventEmailContact, eventPhoneNumber, eventPrice, eventWebsite));
 
@@ -117,6 +123,16 @@ public class EventCreateActivity extends AppCompatActivity {
             }
         });
 
+        //Select image
+        pictureView =  findViewById(R.id.event_picture);
+
+        pictureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
+
         //Validate
         validateCreation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +151,21 @@ public class EventCreateActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //Helpers
+    private void openGallery(){
+        Intent gallery = new Intent(Intent.ACTION_PICK);
+        gallery.setDataAndType( MediaStore.Images.Media.INTERNAL_CONTENT_URI, "image/*");
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            Uri imageUri = data.getData();
+            pictureView.setImageURI(imageUri);
+        }
+    }
 
     private boolean checkAllFieldsAreFilledAndCorrect() {
         return allFields.stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != EventType.NOTHING;
