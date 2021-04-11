@@ -41,7 +41,6 @@ public class ProfileAdapter extends FirestoreRecyclerAdapter<Profile, ProfileAda
         holder.bind(model, listener);
     }
 
-
     public static class ProfileViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView username;
@@ -50,6 +49,7 @@ public class ProfileAdapter extends FirestoreRecyclerAdapter<Profile, ProfileAda
             super(itemView);
             username = (TextView) itemView.findViewById(R.id.user_name);
         }
+
 
         public void bind(final Profile item, final OnItemClickListener listener) {
             username.setText((item != null) ? item.getUsername() : "No User with that name found");

@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.firestore.SnapshotParser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -35,6 +37,7 @@ public class UserSearchActivity extends AppCompatActivity {
     private RecyclerView recycler;
     private FirebaseFirestore databaseReference;
     private ProfileAdapter adapter;
+    private CollectionReference usersRef;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,12 +46,12 @@ public class UserSearchActivity extends AppCompatActivity {
 
         //Init DB Reference
         databaseReference = FirebaseFirestore.getInstance();
+        usersRef = databaseReference.collection("users");
 
 
         //Handle recyclerView
         recycler = (RecyclerView)findViewById(R.id.user_search_recycler_view);
-        recycler.setLayoutManager(new LinearLayoutManager(this));
-
+        recycler.hasFixedSize();
         //Handle searches
         handleIntent(getIntent());
     }
@@ -85,17 +88,20 @@ public class UserSearchActivity extends AppCompatActivity {
     private void searchUserWithName(String name){
         Toast.makeText(UserSearchActivity.this, "HELLO",Toast.LENGTH_LONG).show();
 
-        Query firestoreSearchQuery = databaseReference
-                .collection("chats");
-               //.startAt(name).endAt(name+ "\uf8ff");
+        Query firestoreSearchQuery = usersRef
+                .orderBy("first_name")
+                .startAt(name)
+                .endAt(name+ "\uf8ff");
 
         FirestoreRecyclerOptions<Profile> options
                 = new FirestoreRecyclerOptions.Builder<Profile>()
+                //.setQuery(firestoreSearchQuery, Profile.class)
                 .setQuery(firestoreSearchQuery, new SnapshotParser<Profile>() {
                     @NonNull
                     @Override
                     public Profile parseSnapshot(@NonNull DocumentSnapshot snapshot) {
-                        return new PublicProfile("TestName", "testEmail@email");
+                        //Log.d("TEST", snapshot.getData().toString());
+                        return new PublicProfile((String)snapshot.get("first_name"), (String)snapshot.get("email"));
                     }
                 })
                 .build();
@@ -105,13 +111,15 @@ public class UserSearchActivity extends AppCompatActivity {
             public void onItemClick(Profile profile) {
                 displayProfile(profile);
             }
-
         });
+
+        recycler.setLayoutManager(new LinearLayoutManager(this));
         adapter.startListening();
         recycler.setAdapter(adapter);
 
     }
 
+    //TODO
     private void displayProfile(Profile profile) {
         Toast.makeText(this, "TEST_PROFILE_DISPLAY", Toast.LENGTH_LONG).show();
     }
