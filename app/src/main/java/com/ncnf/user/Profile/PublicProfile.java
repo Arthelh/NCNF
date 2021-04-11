@@ -17,11 +17,6 @@ public class PublicProfile implements Profile{
         this.username = username;
     }
 
-    public PublicProfile(PrivateUser user) throws ExecutionException, InterruptedException {
-        this.email = user.getEmail();
-        this.username = (String) user.getField(NAME_KEY).get().getResult();
-        }
-
     public String getUsername() {
         return username;
     }

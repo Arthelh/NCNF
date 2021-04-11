@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.Toast;
@@ -29,14 +28,20 @@ import com.ncnf.user.Profile.PublicProfile;
 import java.util.LinkedList;
 import java.util.List;
 
-//Useful Links: https://github.com/firebase/FirebaseUI-Android/tree/master/firestore
+import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+//Useful Links: https://github.com/firebase/FirebaseUI-Android/tree/master/firestore
+@AndroidEntryPoint
 public class UserSearchActivity extends AppCompatActivity {
 
     private final List<Profile> profilesList = new LinkedList<>();
     private RecyclerView recycler;
+    @Inject
     private FirebaseFirestore databaseReference;
     private ProfileAdapter adapter;
+    @Inject
     private CollectionReference usersRef;
 
     @Override
@@ -89,8 +94,7 @@ public class UserSearchActivity extends AppCompatActivity {
 
     //Search the database for a user with the given name
     private void searchUserWithName(String name){
-        Toast.makeText(UserSearchActivity.this, "HELLO",Toast.LENGTH_LONG).show();
-
+        
         //The query responsible for the results
         Query firestoreSearchQuery = usersRef
                 .orderBy("first_name") //TODO change to "username" when available
