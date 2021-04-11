@@ -32,6 +32,7 @@ import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.event.PrivateEvent;
 import com.ncnf.main.MainActivity;
+import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.PrivateUser;
 import com.ncnf.utilities.InputValidator;
 
@@ -54,14 +55,10 @@ import dagger.hilt.android.AndroidEntryPoint;
 import static com.ncnf.Utils.*;
 
 @AndroidEntryPoint
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class EventCreateActivity extends AppCompatActivity {
 
     @Inject
-    DatabaseService db;
-
-    @Inject
-    AuthenticationService auth;
+    public PrivateUser user;
 
     private Event.Type eventType;
     private LocalDate eventDate = LocalDate.now();
@@ -173,10 +170,8 @@ public class EventCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkAllFieldsAreFilledAndCorrect()) {
-                    String uid = FirebaseAuth.getInstance().getUid();
 
-                    if(uid != null && !uid.isEmpty()) {
-                        PrivateUser user = new PrivateUser(uid, db);
+                    if (user != null) {
 
                         //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
                         PrivateEvent event = new PrivateEvent(

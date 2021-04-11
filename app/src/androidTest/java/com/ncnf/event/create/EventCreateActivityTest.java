@@ -13,6 +13,8 @@ import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.main.MainActivity;
+import com.ncnf.user.CurrentUserModule;
+import com.ncnf.user.PrivateUser;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -21,12 +23,14 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
+import org.mockito.Mockito;
 
 import java.util.concurrent.CompletableFuture;
 
 import dagger.hilt.android.testing.BindValue;
 import dagger.hilt.android.testing.HiltAndroidRule;
 import dagger.hilt.android.testing.HiltAndroidTest;
+import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -53,15 +57,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
+@UninstallModules(CurrentUserModule.class)
 public class EventCreateActivityTest {
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private static final PrivateUser mockUser = Mockito.mock(PrivateUser.class);
+
 
     @BindValue
-    DatabaseService mockedDB = mock(DatabaseService.class);
+    public PrivateUser user = mockUser;
 
-    CompletableFuture response = CompletableFuture.completedFuture(new DatabaseResponse(true, false, null));
-    CompletableFuture wrongResponse = CompletableFuture.completedFuture(new DatabaseResponse(false, false, null));
+    CompletableFuture response = CompletableFuture.completedFuture(CompletableFuture.completedFuture(new DatabaseResponse(true, false, null)));
 
 
 
@@ -100,8 +106,8 @@ public class EventCreateActivityTest {
 
     @Test
     public void eventFormValidatesCorrectInput() {
-        when(mockedDB.setDocument(anyString(), anyMap())).thenReturn(response);
-        when(mockedDB.updateArrayField(anyString(), anyString(), anyObject())).thenReturn(response);
+        when(user.getID()).thenReturn("ownerId");
+        when(user.createEvent(anyObject())).thenReturn(response);
 
         onView(withId(R.id.event_name)).perform(scrollTo(), replaceText("Conference"));
         onView(withId(R.id.event_description)).perform(scrollTo(), replaceText("Math are fun!"));
@@ -125,7 +131,10 @@ public class EventCreateActivityTest {
         onView(withId(R.id.event_create_button)).perform(scrollTo());
         onView(withId(R.id.event_create_button)).perform(click());
 
+        verify(user).getID();
+        verify(user).createEvent(anyObject());
         Intents.intended(hasComponent(MainActivity.class.getName()));
+
     }
 
 }
