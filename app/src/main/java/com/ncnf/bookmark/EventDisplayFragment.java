@@ -89,10 +89,10 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
 
             listEvent.thenAccept(task -> task.thenAccept(events -> {
                 if(events != null){
-                    Log.d(DEBUG_TAG, Integer.toString(events.size()));
                     for(Event e : events){
-                        Log.d(DEBUG_TAG, e.toString());
-                        adapter.addEvent(e);
+                        if (e != null) {
+                            adapter.addEvent(e);
+                        }
                     }
                 }
             }));

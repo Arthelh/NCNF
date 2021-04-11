@@ -60,12 +60,10 @@ public class BookMarkActivityTest {
         list.add(event);
         events =  CompletableFuture.completedFuture(CompletableFuture.completedFuture(list));
         when(user.getAllEvents(anyString())).thenReturn(events);
-
     }
 
     @Test
-    public void eventFormValidatesEmptyInput() throws InterruptedException {
-
+    public void eventFormValidatesEmptyInput() {
         onView(withId(R.id.view_pager)).perform(swipeLeft());
         onView(withId(R.id.view_pager)).perform(swipeRight());
     }
