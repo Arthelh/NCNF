@@ -1,7 +1,7 @@
 package com.ncnf;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.ncnf.map.Utilities;
+import com.ncnf.map.MapUtilities;
 import com.ncnf.settings.Settings;
 
 import org.junit.Test;
@@ -18,19 +18,19 @@ public class UtilitiesTest {
         LatLng vevey_position = new LatLng(46.4628f, 6.8419f); //22.05km from EPFL
 
         Settings.setCurrent_max_distance(5);
-        assertThat(Utilities.position_in_range(epfl_position, chuv_position), is(false));
-        assertThat(Utilities.position_in_range(epfl_position, vevey_position), is(false));
+        assertThat(MapUtilities.position_in_range(epfl_position, chuv_position), is(false));
+        assertThat(MapUtilities.position_in_range(epfl_position, vevey_position), is(false));
 
         Settings.setCurrent_max_distance(6);
-        assertThat(Utilities.position_in_range(epfl_position, chuv_position), is(true));
-        assertThat(Utilities.position_in_range(epfl_position, vevey_position), is(false));
+        assertThat(MapUtilities.position_in_range(epfl_position, chuv_position), is(true));
+        assertThat(MapUtilities.position_in_range(epfl_position, vevey_position), is(false));
 
         Settings.setCurrent_max_distance(22);
-        assertThat(Utilities.position_in_range(epfl_position, chuv_position), is(true));
-        assertThat(Utilities.position_in_range(epfl_position, vevey_position), is(false));
+        assertThat(MapUtilities.position_in_range(epfl_position, chuv_position), is(true));
+        assertThat(MapUtilities.position_in_range(epfl_position, vevey_position), is(false));
 
         Settings.setCurrent_max_distance(23);
-        assertThat(Utilities.position_in_range(epfl_position, chuv_position), is(true));
-        assertThat(Utilities.position_in_range(epfl_position, vevey_position), is(true));
+        assertThat(MapUtilities.position_in_range(epfl_position, chuv_position), is(true));
+        assertThat(MapUtilities.position_in_range(epfl_position, vevey_position), is(true));
     }
 }
