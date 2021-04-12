@@ -34,6 +34,8 @@ public class PrivateUser {
     private String email;
     private final String UUID;
     private final String path;
+    
+    private final IllegalStateException wrongCredentials = new IllegalStateException("User doesn't have the right credentials to perform current operation");
 
     public PrivateUser(){
         this.db = new DatabaseService();
@@ -44,8 +46,8 @@ public class PrivateUser {
     }
 
     public PrivateUser(String UUID, String email) {
-        if(UUID == null || email == null || UUID.isEmpty() || email.isEmpty()) {
-            throw new IllegalStateException("User doesn't have the right credentials to perform current operation");
+        if(checkArgument(UUID) && checkArgument(email)) {
+            throw wrongCredentials;
         }
 
         this.db = new DatabaseService();
@@ -55,20 +57,28 @@ public class PrivateUser {
     }
 
     public PrivateUser(String UUID, DatabaseService db){
+        if(checkArgument(UUID)) {
+            throw wrongCredentials;
+        }
+        
         this.path = USERS_COLLECTION_KEY + UUID;
         this.UUID = UUID;
         this.db = db;
     }
 
     protected PrivateUser(DatabaseService db, String UUID, String email) {
-        if(UUID == null || email == null || UUID.isEmpty() || email.isEmpty()) {
-            throw new IllegalStateException("User doesn't have the right credentials to perform current operation");
+        if(checkArgument(UUID) && checkArgument(email)) {
+            throw wrongCredentials;
         }
 
         this.db = db;
         this.path = USERS_COLLECTION_KEY + UUID;
         this.UUID = UUID;
         this.email = email;
+    }
+    
+    private boolean checkArgument(String s){
+        return s != null && !s.isEmpty();
     }
 
     public String getID(){
@@ -84,7 +94,7 @@ public class PrivateUser {
     }
 
     public CompletableFuture<DatabaseResponse> saveUserToDB(){
-        if(this.email == null || this.email.isEmpty()){
+        if(checkArgument(this.email)){
             return CompletableFuture.completedFuture(new DatabaseResponse(false, null, new IllegalStateException("User's email can't be null or empty")));
         }
 

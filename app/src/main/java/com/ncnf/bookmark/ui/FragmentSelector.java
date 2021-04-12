@@ -22,29 +22,32 @@ import static com.ncnf.Utils.*;
 public class FragmentSelector extends FragmentStateAdapter {
 
     private static final String[] TAB_TITLES = new String[]{"Saved Events", "Organized Events"};
+    private static final int itemCount = 2;
 
     public FragmentSelector(FragmentActivity activity) {
         super(activity);
     }
+    
+    //By default, we will return saved events if an error occurs
 
     public CharSequence getPageTitle(int position) {
-        return TAB_TITLES[position];
+        if(position == 1){
+            return TAB_TITLES[position];
+        }
+        return TAB_TITLES[0];
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch(position){
-            case 1:
-                return new EventDisplayFragment(OWNED_EVENTS_KEY);
-
-            default:
-                return new EventDisplayFragment(SAVED_EVENTS_KEY);
+        if(position == 1){
+            return new EventDisplayFragment(OWNED_EVENTS_KEY);
         }
+        return new EventDisplayFragment(SAVED_EVENTS_KEY);
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return itemCount;
     }
 }
