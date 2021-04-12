@@ -5,15 +5,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
-import com.ncnf.organizer.PublicOrganizer;
 
 import java.util.Date;
 
 public class EventActivity extends AppCompatActivity {
 
-    private final Event event1 = new PublicEvent("EPFL event", new Date(2021, 03, 11), new Location(46.518689, 6.568067, "Rolex Learning Center, 1015 Ecublens"), "Event description goes here", EventType.Conference, 0, 0, new PublicOrganizer("EPFL"));
-    private final Event event2 = new PublicEvent("Carmen", new Date(2021, 04, 24), new Location(46.517789, 6.636917, "Avenue du Théâtre 12, 1002 Lausanne"), "Carmen opera function", EventType.Opera, 0, 0, new PublicOrganizer("Opéra de Lausanne"));
+    private final Event event1 = new PublicEvent("EPFL", "EPFL event", new Date(2021, 03, 11), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0);
+    private final Event event2 = new PublicEvent("Opéra de Lausanne", "Carmen", new Date(2021, 04, 24), new GeoPoint(46.517789, 6.636917), "Avenue du Théâtre 12, 1002 Lausanne", "Carmen opera function", Event.Type.Opera, 0, 0);
     private final Event[] events = {event1, event2};
 
     @Override
@@ -30,12 +30,12 @@ public class EventActivity extends AppCompatActivity {
         date.setText("Event takes place on : " + event.getDate().toString());
 
         TextView loc = findViewById(R.id.eventLocation);
-        loc.setText("Event held at : " + event.getLocation().getAddress());
+        loc.setText("Event held at : " + event.getAddress());
 
         TextView desc = findViewById(R.id.eventDescription);
         desc.setText(event.getDescription());
 
         TextView owner = findViewById(R.id.eventOwner);
-        owner.setText("Event hosted by " + event.getOrganizer().getName());
+        owner.setText("Event hosted by " + event.getOwnerId());
     }
 }
