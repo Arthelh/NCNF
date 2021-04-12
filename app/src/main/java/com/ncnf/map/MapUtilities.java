@@ -1,10 +1,13 @@
 package com.ncnf.map;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -13,7 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.ncnf.R;
 import com.ncnf.settings.Settings;
 
-public class Utilities {
+public class MapUtilities {
 
     public static final double LAT_TO_KM = 110.574;
     public static final double LONG_TO_KM = 111.320; //MUST BE ADJUSTED BY cos(lat)!!
