@@ -46,7 +46,7 @@ public class PrivateUser {
     }
 
     public PrivateUser(String UUID, String email) {
-        if(checkArgument(UUID) && checkArgument(email)) {
+        if(!checkArgument(UUID) || !checkArgument(email)) {
             throw wrongCredentials;
         }
 
@@ -57,7 +57,7 @@ public class PrivateUser {
     }
 
     public PrivateUser(String UUID, DatabaseService db){
-        if(checkArgument(UUID)) {
+        if(!checkArgument(UUID)) {
             throw wrongCredentials;
         }
         
@@ -67,7 +67,7 @@ public class PrivateUser {
     }
 
     protected PrivateUser(DatabaseService db, String UUID, String email) {
-        if(checkArgument(UUID) && checkArgument(email)) {
+        if(!checkArgument(UUID) || !checkArgument(email)) {
             throw wrongCredentials;
         }
 
@@ -94,7 +94,7 @@ public class PrivateUser {
     }
 
     public CompletableFuture<DatabaseResponse> saveUserToDB(){
-        if(checkArgument(this.email)){
+        if(!checkArgument(this.email)){
             return CompletableFuture.completedFuture(new DatabaseResponse(false, null, new IllegalStateException("User's email can't be null or empty")));
         }
 

@@ -24,7 +24,6 @@ import com.ncnf.event.Event;
 import com.ncnf.feed.ui.EventActivity;
 import com.ncnf.event.EventBuilder;
 import com.ncnf.feed.ui.EventAdapter;
-import com.ncnf.feed.ui.EventListener;
 import com.ncnf.user.PrivateUser;
 
 import java.util.ArrayList;
