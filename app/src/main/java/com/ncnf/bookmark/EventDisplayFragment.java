@@ -71,18 +71,7 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
         // Set the custom adapter
         adapter = new EventAdapter(eventsToDisplay, this);
         recycler.setAdapter(adapter);
-
-        //TODO: is this really useful or should it be deleted ?
-        EventListener eventListener = event -> getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("Received event with data");
-                adapter.addEvent(event);
-                ((LinearLayoutManager)lManager).scrollToPositionWithOffset(0, 0);
-            }
-        });
         getEventList(view.findViewById(R.id.SavedEventsRecyclerView));
-
     }
 
     private void getEventList(View view){
