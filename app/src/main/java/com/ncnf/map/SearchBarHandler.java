@@ -76,7 +76,7 @@ public class SearchBarHandler {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //Creates the prediction auto completer, accepts Cities, Addresses
                 FindAutocompletePredictionsRequest predictionsRequest = FindAutocompletePredictionsRequest.builder()
-                        .setCountries(Utilities.supported_countries)
+                        .setCountries(MapUtilities.supported_countries)
                         .setSessionToken(token)
                         .setQuery(s.toString()).build();
                 placesClient.findAutocompletePredictions(predictionsRequest).addOnCompleteListener(task -> {
