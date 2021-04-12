@@ -16,6 +16,7 @@ import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
 import com.ncnf.event.create.EventCreateActivity;
 import com.ncnf.user.UserProfileActivity;
+import com.ncnf.user_search.UserSearchActivity;
 
 
 public class HomeFragment extends Fragment {
@@ -32,6 +33,8 @@ public class HomeFragment extends Fragment {
         getView().findViewById(R.id.homeProfileButton).setOnClickListener(this::gotToProfile);
 
         getView().findViewById(R.id.homeCreateEventButton).setOnClickListener(this::goToEventCreation);
+
+        getView().findViewById(R.id.homeSearchUserButton).setOnClickListener(this::goToUserSearch);
     }
 
     public void gotToProfile(View view){
@@ -48,6 +51,11 @@ public class HomeFragment extends Fragment {
 
     public void goToEventCreation(View view){
         Intent intent = new Intent(getContext(), EventCreateActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToUserSearch(View view){
+        Intent intent = new Intent(getContext(), UserSearchActivity.class);
         startActivity(intent);
     }
 

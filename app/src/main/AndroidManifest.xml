@@ -21,6 +21,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NCNF"
         android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".user_search.UserSearchActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
+
         <activity
             android:name=".user.UserProfileActivity"
             android:parentActivityName=".main.MainActivity"
@@ -41,11 +53,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${mapsApiKey}" /> <!-- MAP -->
-        <activity
-            android:name=".map.MapActivity"
-            android:label="@string/title_activity_maps"
-            android:parentActivityName=".main.MainActivity" />
-
         <uses-library
             android:name="com.google.android.wearable"
             android:required="false" />
@@ -57,16 +64,11 @@
             android:name="com.google.android.wearable.standalone"
             android:value="true" /> <!-- FEED -->
         <activity
-            android:name=".feed.ui.FeedActivity"
-            android:label="@string/title_activity_feed"
-            android:parentActivityName=".main.MainActivity" />
-        <activity
             android:name=".event.create.EventCreateActivity"
             android:label="@string/title_event_creation"
             android:parentActivityName=".main.MainActivity" /> <!-- TODO: merge these two event activity -->
         <activity
-            android:name=".feed.ui.EventActivity"
-            android:parentActivityName=".feed.ui.FeedActivity" />
+            android:name=".feed.ui.EventActivity"/>
         <activity
             android:name=".event.EventActivity"
             android:parentActivityName=".main.MainActivity" /> <!-- LANDING PAGE -->
