@@ -22,7 +22,7 @@ import static com.ncnf.Utils.*;
 public class FragmentSelector extends FragmentStateAdapter {
 
     private static final String[] TAB_TITLES = new String[]{"Saved Events", "Organized Events"};
-    private static final itemCount = 2;
+    private static final int itemCount = 2;
 
     public FragmentSelector(FragmentActivity activity) {
         super(activity);
