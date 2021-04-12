@@ -102,7 +102,7 @@ public class SignUpFragment extends Fragment {
             if(response.isSuccessful()){
                 Log.d(DEBUG_TAG, "Successful register for " + email);
                 FirebaseUser fb = response.getResult().getUser();
-                PrivateUser user = new PrivateUser(new DatabaseService(),USERS_COLLECTION_KEY + fb.getUid(), fb.getUid(), fb.getEmail());
+                PrivateUser user = new PrivateUser(fb.getUid(), fb.getEmail());
                 user.saveUserToDB().thenAccept(dbResponse -> {
                     if (dbResponse.isSuccessful()) {
                         Intent intent = new Intent(getActivity(), UserProfileActivity.class);

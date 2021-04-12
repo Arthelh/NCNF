@@ -8,6 +8,8 @@ import com.ncnf.database.DatabaseResponse;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -51,7 +53,7 @@ public class UserProfileActivityTests {
 
     // BeforeClass is required because the mocking must be done before the activity is launched
     @BeforeClass
-    public static void setup() {
+    public static void setupClass() {
         HashMap<String, Object> values = new HashMap<>();
         values.put(FIRST_NAME_KEY, "John");
         values.put(LAST_NAME_KEY, "Doe");
@@ -74,6 +76,16 @@ public class UserProfileActivityTests {
     @BindValue
     Registration registration = Mockito.mock(Registration.class);
 
+    @Before
+    public void setup(){
+        Intents.init();
+    }
+
+    @After
+    public void cleanup(){
+        Intents.release();
+    }
+
     @Test
     public void titleIsVisible() {
         onView(withId(R.id.welcomeToProfileText)).check(matches(withText("Welcome to your Profile")));
@@ -92,10 +104,8 @@ public class UserProfileActivityTests {
 
     @Test
     public void logOutReturnsToHome() {
-        Intents.init();
         onView(withId(R.id.logOutButton)).perform(scrollTo(), click());
         Intents.intended(hasComponent(MainActivity.class.getName()));
-        Intents.release();
     }
 
     @Test
@@ -180,5 +190,4 @@ public class UserProfileActivityTests {
         onView(withId(com.google.android.material.R.id.snackbar_text))
                 .check(matches(withText("An error happened! Try again later")));
     }
-
 }

@@ -1,19 +1,33 @@
 package com.ncnf.event;
 
-import com.ncnf.organizer.Organizer;
+import android.util.Log;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.database.DatabaseResponse;
+import com.ncnf.database.DatabaseService;
+import com.ncnf.user.PrivateUser;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import static com.ncnf.Utils.*;
 
 
 public class PrivateEvent extends Event {
 
     private final List<String> invited;
 
-    public PrivateEvent(String name, Date date, Location location, String description, EventType type, Organizer owner) {
-        super(name, date, location, type, PubPriv.PRIVATE, description, owner);
+    public PrivateEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type) {
+        super(ownerId, name, date, location, address, type, Event.Visibility.PRIVATE, description);
         invited = new ArrayList<>();
+    }
+
+    public PrivateEvent(String ownerId, UUID id, String name, Date date, GeoPoint location, String address, Type type, List<String> attendees, String description, List<String> invited) {
+        super(ownerId, id, name, date, location, address, type, Event.Visibility.PRIVATE,attendees, description);
+        this.invited = invited;
     }
 
     public void invite(String user) {
@@ -22,6 +36,12 @@ public class PrivateEvent extends Event {
 
     public List<String> getInvited() {
         return invited;
+    }
+
+    public CompletableFuture<DatabaseResponse> store(DatabaseService db){
+        String[] fields = {INVITED_KEY};
+        Object[] objects = {this.invited};
+        return super.store(db, fields, objects);
     }
 
 }
