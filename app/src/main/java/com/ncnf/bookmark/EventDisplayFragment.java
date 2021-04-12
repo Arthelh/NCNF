@@ -83,7 +83,6 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
                     for(Event e : events){
                         if (e != null) {
                             this.adapter.addEvent(e);
-
                         }
                     }
                 }
