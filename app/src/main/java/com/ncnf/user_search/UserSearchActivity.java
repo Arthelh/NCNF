@@ -33,7 +33,6 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 //Useful Links: https://github.com/firebase/FirebaseUI-Android/tree/master/firestore
-@AndroidEntryPoint
 public class UserSearchActivity extends AppCompatActivity {
 
     private final List<Profile> profilesList = new LinkedList<>();
