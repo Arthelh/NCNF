@@ -47,7 +47,7 @@ public class PrivateUser {
 
     public PrivateUser(String UUID, String email) {
         if(checkArgument(UUID) && checkArgument(email)) {
-            throw new wrongCredentials;
+            throw wrongCredentials;
         }
 
         this.db = new DatabaseService();
@@ -58,7 +58,7 @@ public class PrivateUser {
 
     public PrivateUser(String UUID, DatabaseService db){
         if(checkArgument(UUID)) {
-            throw new wrongCredentials;
+            throw wrongCredentials;
         }
         
         this.path = USERS_COLLECTION_KEY + UUID;
@@ -68,7 +68,7 @@ public class PrivateUser {
 
     protected PrivateUser(DatabaseService db, String UUID, String email) {
         if(checkArgument(UUID) && checkArgument(email)) {
-            throw new wrongCredentials;
+            throw wrongCredentials;
         }
 
         this.db = db;
