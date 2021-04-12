@@ -90,4 +90,8 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="search_user_button">Search User</string>
+    <string name="search_user_hint">Search User</string>
+    <string name="user_search_title">Search User</string>
+
 </resources>
