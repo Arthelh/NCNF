@@ -4,21 +4,36 @@ import com.ncnf.organizer.Organizer;
 import com.ncnf.organizer.PublicOrganizer;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.Location;
+import android.util.Log;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.database.DatabaseResponse;
+import com.ncnf.database.DatabaseService;
+import com.ncnf.user.PrivateUser;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import java.util.UUID;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import static com.ncnf.Utils.*;
 
 
 public class PrivateEvent extends Event {
 
     private List<String> invited;
 
-    public PrivateEvent(String name, Date date, Location location, String description, EventType type, Organizer owner, String image) {
-        super(name, date, location, type, PubPriv.PRIVATE, description, owner, image);
+    public PrivateEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type) {
+        super(ownerId, name, date, location, address, type, Event.PubPriv.PRIVATE, description);
         invited = new ArrayList<>();
+    }
+
+    public PrivateEvent(String ownerId, UUID id, String name, Date date, GeoPoint location, String address, Type type, List<String> attendees, String description, List<String> invited) {
+        super(ownerId, id, name, date, location, address, type, Event.PubPriv.PRIVATE,attendees, description);
+        this.invited = invited;
     }
 
     public void invite(String user) {
@@ -74,4 +89,10 @@ public class PrivateEvent extends Event {
         PrivateEvent otherEvent = (PrivateEvent) o;
         return getDate().compareTo(otherEvent.getDate());
     }
+    public CompletableFuture<DatabaseResponse> store(DatabaseService db){
+        String[] fields = {INVITED_KEY};
+        Object[] objects = {this.invited};
+        return super.store(db, fields, objects);
+    }
+
 }

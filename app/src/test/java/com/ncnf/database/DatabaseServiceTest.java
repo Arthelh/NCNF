@@ -4,12 +4,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventType;
 import com.ncnf.utilities.Location;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.mocks.MockTask;
-import com.ncnf.organizer.PublicOrganizer;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,12 +18,15 @@ import org.mockito.Mockito;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import static com.ncnf.Utils.EVENTs_COLLECTION_KEY;
 import static com.ncnf.Utils.NAME_KEY;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -83,6 +86,58 @@ public class DatabaseServiceTest {
 
         try {
             assertEquals(data, future.get().getResult());
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly !");
+        }
+    }
+
+    @Test
+    public void getFieldWorks(){
+        DocumentSnapshot document = Mockito.mock(DocumentSnapshot.class);
+        Map<String, Object> map = new HashMap<>();
+        String name = "name";
+        map.put(NAME_KEY, name);
+        when(document.getData()).thenReturn(map);
+        task = new MockTask(document, null);
+        when(db.document(anyString()).get()).thenReturn(task);
+        CompletableFuture<DatabaseResponse> future = service.getField(EVENTs_COLLECTION_KEY, NAME_KEY);
+
+        try {
+            assertEquals(name, future.get().getResult());
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly !");
+        }
+    }
+
+    @Test
+    public void getFieldFails(){
+        DocumentSnapshot document = Mockito.mock(DocumentSnapshot.class);
+        Map<String, Object> map = new HashMap<>();
+        String name = "name";
+        map.put(NAME_KEY, name);
+        when(document.getData()).thenReturn(map);
+        task = new MockTask(null, new IllegalArgumentException(), false);
+        when(db.document(anyString()).get()).thenReturn(task);
+        CompletableFuture<DatabaseResponse> future = service.getField(EVENTs_COLLECTION_KEY, NAME_KEY);
+
+        try {
+            DatabaseResponse response = future.get();
+            assertTrue(!response.isSuccessful());
+            assertTrue(response.getException() instanceof IllegalArgumentException);
+            assertTrue(response.getResult() == null);
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly !");
+        }
+    }
+
+    @Test
+    public void updatingArrayFieldWorks(){
+        when(db.document(anyString()).update((FieldPath) anyObject(), anyObject())).thenReturn(task);
+
+        CompletableFuture<DatabaseResponse> future = service.updateArrayField("/events", NAME_KEY, "Conference");
+
+        try {
+            assertEquals(event, future.get().getResult());
         } catch (ExecutionException | InterruptedException e) {
             Assert.fail("The future did not complete correctly !");
         }

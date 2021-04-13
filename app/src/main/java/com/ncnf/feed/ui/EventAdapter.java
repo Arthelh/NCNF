@@ -27,6 +27,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     private final OnEventListener onEventListener;
     private String sortingMethod;
 
+    public interface OnEventListener {
+        void onEventClick(Event event);
+    }
+
     public EventAdapter(List<Event> items, OnEventListener onEventListener, String sortingMethod) {
         //ensure proper copy of the List
 
@@ -88,6 +92,21 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     }
 
+    @NonNull
+    @Override
+    public EventViewHolder onCreateViewHolder(ViewGroup viewGroup, int i){
+        View v = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.event_row, viewGroup, false);
+
+        return new EventViewHolder(v, onEventListener);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
+        holder.bind(events.get(position), onEventListener);
+    }
+
+
     @Override
     public int getItemCount() {
         return events.size();
@@ -99,6 +118,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     }
 
     private Filter eventFilter = new Filter() {
+
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -133,51 +153,32 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         }
     };
 
-    public static class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class EventViewHolder extends RecyclerView.ViewHolder {
         // Card fields
-        private TextView event;
-        private TextView date;
-        private TextView description;
-        private OnEventListener onEventListener;
+        private final TextView event;
+        private final TextView id;
+        private final TextView data;
 
         public EventViewHolder(View v, OnEventListener e) {
             super(v);
-            onEventListener = e;
-            event = (TextView) v.findViewById(R.id.event_name);
-            date = (TextView) v.findViewById(R.id.event_date);
-            description = (TextView) v.findViewById(R.id.event_descr);
+            event = (TextView) v.findViewById(R.id.eventName);
+            id = (TextView) v.findViewById(R.id.eventDate);
+            data = (TextView) v.findViewById(R.id.eventDescription);
             //add timestamp
-            v.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
-            onEventListener.onEventClick(getAdapterPosition());
+        public void bind(final Event e, final OnEventListener listener) {
+            event.setText(e.getName());
+            id.setText(e.getUuid().toString());
+            data.setText(e.getDescription());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onEventClick(e);
+                }
+            });
         }
-    }
-
-    public interface OnEventListener {
-        void onEventClick(int position);
-    }
-
-    @NonNull
-    @Override
-    public EventViewHolder onCreateViewHolder(ViewGroup viewGroup, int i){
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.event_row, viewGroup, false);
-
-        return new EventViewHolder(v, onEventListener);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull EventViewHolder viewHolder, int position) {
-        Event event = events.get(position);
-
-        viewHolder.event.setText(event.getName());
-        viewHolder.date.setText(new DateAdapter(event.getDate()).toString());
-        viewHolder.description.setText(event.getDescription());
 
     }
-
 
 }

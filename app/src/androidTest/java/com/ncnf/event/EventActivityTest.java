@@ -15,6 +15,8 @@ import com.ncnf.feed.ui.FeedFragment;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.Location;
 import com.ncnf.event.PublicEvent;
+import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.R;
 import com.ncnf.organizer.PublicOrganizer;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -61,7 +63,7 @@ public class EventActivityTest {
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
         intent.putExtra("event_uid", EventDB.uuid1.toString());
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.eventLocation)).check(matches(withText(containsString(event1.getLocation().getAddress()))));
+            onView(withId(R.id.eventLocation)).check(matches(withText(containsString(event1.getAddress()))));
         }
     }
 
@@ -89,7 +91,7 @@ public class EventActivityTest {
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
         intent.putExtra("event_uid", EventDB.uuid1.toString());
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.eventOwner)).check(matches(withText(containsString(event1.getOrganizer().getName()))));
+            onView(withId(R.id.eventOwner)).check(matches(withText(containsString(event1.getOwnerId()))));
         }
     }
 

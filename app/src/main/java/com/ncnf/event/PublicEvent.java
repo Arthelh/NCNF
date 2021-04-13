@@ -1,13 +1,16 @@
 package com.ncnf.event;
 
-import com.ncnf.organizer.PublicOrganizer;
-import com.ncnf.utilities.DateAdapter;
-import com.ncnf.utilities.Location;
+import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.database.DatabaseResponse;
+import com.ncnf.database.DatabaseService;
+import com.ncnf.utilities.*;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import static com.ncnf.Utils.*;
 
 public class PublicEvent extends Event {
 
@@ -19,16 +22,30 @@ public class PublicEvent extends Event {
     private int price;
     private int minAge;
 
-    public PublicEvent(String name, Date date, Location location, String description, EventType type, int minAge, int price, PublicOrganizer owner, String image) {
-        super(name, date, location, type, PubPriv.PUBLIC, description, owner, image);
+    public PublicEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, EventType type, int minAge, int price) {
+        super(ownerId, name, date, location, address, type, Event.PubPriv.PUBLIC, description);
 
-        if(!(minAge >= MIN_AGE && minAge <= MAX_AGE)) {
-            throw new IllegalArgumentException();
-        }
+        checkConstraints(minAge, price);
 
         tags = new ArrayList<>();
         this.minAge = minAge;
         this.price = price;
+    }
+
+    public PublicEvent(String ownerId, UUID uuid, String name, Date date, GeoPoint location, String address, String description, EventType type, List<String> attendees, int minAge, int price, List<Tag> tags) {
+        super(ownerId, uuid, name, date, location, address, type, Event.PubPriv.PUBLIC, attendees, description);
+
+        checkConstraints(minAge, price);
+
+        setTags(tags);
+        this.minAge = minAge;
+        this.price = price;
+    }
+
+    private void checkConstraints(int minAge, int price){
+        if(!(minAge >= MIN_AGE && minAge <= MAX_AGE) || price < 0) {
+            throw new IllegalArgumentException();
+        }
     }
 
     public int getMinAge() { return minAge; }
@@ -36,9 +53,7 @@ public class PublicEvent extends Event {
     public List<Tag> getTags() { return new ArrayList<Tag>(tags); }
 
     public void setMinAge(int minAge) {
-        if(!(minAge >= MIN_AGE && minAge <= MAX_AGE)) {
-            throw new IllegalArgumentException();
-        }
+        checkConstraints(minAge, this.price);
         this.minAge = minAge;
     }
 
@@ -70,42 +85,6 @@ public class PublicEvent extends Event {
     }
 
     @Override
-    public String toString() {
-        String separator = "@";
-
-        StringBuilder builder = new StringBuilder();
-        builder.append(getPubPriv().toString() + separator + getUuid().toString() + separator + getName() + separator);
-
-        DateAdapter adapter = new DateAdapter(getDate());
-        builder.append(adapter.toString() + separator);
-
-        builder.append(getLocation().getLongitude() + " " + getLocation().getLatitude() + " " + getLocation().getAddress() + separator);
-        builder.append(getDescription() + separator);
-        builder.append(getType().toString() + separator + getMinAge() + separator + getPrice() + separator + getOrganizer().getName() + separator + getImageName());
-
-        return builder.toString();
-    }
-
-    public static PublicEvent toEvent(String[] arr) {
-
-        String name = arr[2];
-        Date date = DateAdapter.toDate(arr[3]);
-
-        String[] loc = arr[4].split(" ");
-        Location newLoc = new Location(Double.parseDouble(loc[0]), Double.parseDouble(loc[1]), loc[2]);
-        String descr = arr[5];
-        EventType e = EventType.valueOf(arr[6]);
-        int age = Integer.parseInt(arr[7]);
-        int price = Integer.parseInt(arr[8]);
-        PublicOrganizer org = new PublicOrganizer(arr[8]);
-        String str = arr[10];
-
-        PublicEvent event = new PublicEvent(name, date, newLoc, descr, e, age, price, org, str);
-        event.setUuid(UUID.fromString(arr[1]));
-        return event;
-    }
-
-    @Override
     public int compareTo(Object o) {
         PublicEvent otherEvent = (PublicEvent) o;
         return getDate().compareTo(otherEvent.getDate());
@@ -117,4 +96,9 @@ public class PublicEvent extends Event {
         return p.getUuid().equals(getUuid());
     }
 
+    public CompletableFuture<DatabaseResponse> store(DatabaseService db){
+        String[] fields = {MIN_AGE_KEY, PRICE_KEY, TAGS_LIST_KEY};
+        Object[] objects = {this.minAge, this.price, this.tags};
+        return super.store(db, fields, objects);
+    }
 }

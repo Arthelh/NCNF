@@ -22,7 +22,7 @@ public class CurrentUserModule {
         if (currentUser == null) {
             FirebaseUser user = currentUser();
             if (user != null) {
-                currentUser = new PrivateUser(new DatabaseService(), USERS_COLLECTION_KEY + user.getUid(), user.getUid(), user.getEmail());
+                currentUser = new PrivateUser(user.getUid(), user.getEmail());
             } else {
                 return null;
             }

@@ -27,7 +27,7 @@
     <style name="Theme.NCNF.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.NCNF.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    
+
     <style name="Theme.NCNF.BlueButton" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/button_selector</item>
         <item name="android:textColor">@color/light_cyan</item>

@@ -3,13 +3,20 @@ package com.ncnf.event.create;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -17,30 +24,48 @@ import android.widget.TimePicker;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
-import com.ncnf.event.EventType;
+import com.ncnf.authentication.AuthenticationService;
+import com.ncnf.database.DatabaseService;
+import com.ncnf.event.Event;
+import com.ncnf.event.PrivateEvent;
 import com.ncnf.main.MainActivity;
+import com.ncnf.user.CurrentUserModule;
+import com.ncnf.user.PrivateUser;
 import com.ncnf.utilities.InputValidator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+import static com.ncnf.Utils.*;
+
+@AndroidEntryPoint
 public class EventCreateActivity extends AppCompatActivity {
 
-    private Spinner eventTypeSelSpinner;
-    private EventType eventType;
+    @Inject
+    public PrivateUser user;
+
+    private Event.Type eventType;
     private LocalDate eventDate = LocalDate.now();
     private LocalTime eventTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
-    private LocalDateTime dbEventEntry;
     private int selYear, selMonth, selDay, selHour, selMin;
+    private static final int PICK_IMAGE = 100;
+    private ImageView pictureView;
 
     private final List<EditText> allFields = new LinkedList<>();
 
@@ -49,9 +74,20 @@ public class EventCreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_creation);
 
-        eventTypeSelSpinner = findViewById(R.id.event_creation_spinner);
-        eventTypeSelSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, EventType.values()));
-        eventTypeSelSpinner.setSelection(EventType.values().length-1);
+        Spinner eventTypeSelSpinner = findViewById(R.id.event_creation_spinner);
+        eventTypeSelSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Event.Type.values()));
+        eventTypeSelSpinner.setSelection(Event.Type.values().length-1);
+        eventTypeSelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                eventType = Event.Type.values()[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         Button validateCreation = findViewById(R.id.event_create_button);
 
@@ -62,6 +98,7 @@ public class EventCreateActivity extends AppCompatActivity {
         EditText eventPhoneNumber = findViewById(R.id.event_phone_contact);
         EditText eventPrice = findViewById(R.id.event_price);
         EditText eventWebsite = findViewById(R.id.event_website);
+
 
         allFields.addAll(Arrays.asList(eventName, eventDescription, eventAddress, eventEmailContact, eventPhoneNumber, eventPrice, eventWebsite));
 
@@ -118,13 +155,46 @@ public class EventCreateActivity extends AppCompatActivity {
             }
         });
 
+        //Select image
+        pictureView =  findViewById(R.id.event_picture);
+
+        pictureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
+
         //Validate
         validateCreation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkAllFieldsAreFilledAndCorrect()) {
-                    // TODO
-                    nextStep();
+
+                    if (user != null) {
+
+                        //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
+                        PrivateEvent event = new PrivateEvent(
+                                user.getID(),
+                                eventName.getText().toString(),
+                                dateConversion(eventDate, eventTime),
+                                getLocationFromAddress(eventAddress.getText().toString()),
+                                eventAddress.getText().toString(),
+                                eventDescription.getText().toString(),
+                                eventType);
+
+                        user.createEvent(event).thenAccept(task1 -> {
+                            task1.thenAccept(task2 -> {
+                                if (task2.isSuccessful()) {
+                                    nextStep();
+                                } else {
+                                    Log.d(DEBUG_TAG, "Fail to store new event");
+                                }
+                            });
+                        });
+                    } else {
+                        Log.d(DEBUG_TAG, "Can't create new event if not logged in");
+                    }
                 }
             }
         });
@@ -136,9 +206,52 @@ public class EventCreateActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //Helpers
+    private void openGallery(){
+        Intent gallery = new Intent(Intent.ACTION_PICK);
+        gallery.setDataAndType( MediaStore.Images.Media.INTERNAL_CONTENT_URI, "image/*");
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            Uri imageUri = data.getData();
+            pictureView.setImageURI(imageUri);
+        }
+    }
 
     private boolean checkAllFieldsAreFilledAndCorrect() {
-        return allFields.stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != EventType.NOTHING;
+        return allFields.stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != Event.Type.NOTHING;
+    }
+
+    private Date dateConversion(LocalDate date, LocalTime time){
+        LocalDateTime datetime = LocalDateTime.of(date, time);
+        return Date.from(datetime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public GeoPoint getLocationFromAddress(String strAddress){
+
+        Geocoder coder = new Geocoder(this);
+        List<Address> address;
+
+        try {
+            address = coder.getFromLocationName(strAddress,5);
+            if (address==null) {
+                return null;
+            }
+            Address coordinates = address.get(0);
+            coordinates.getLatitude();
+            coordinates.getLongitude();
+
+            GeoPoint location = new GeoPoint((double) (coordinates.getLatitude()),
+                    (double) (coordinates.getLongitude()));
+
+            return location;
+        } catch (Exception e){
+            return null;
+        }
     }
 
 }

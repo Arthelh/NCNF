@@ -18,6 +18,7 @@ import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventActivity;
@@ -25,7 +26,6 @@ import com.ncnf.event.EventDB;
 import com.ncnf.event.EventType;
 import com.ncnf.utilities.Location;
 import com.ncnf.event.PublicEvent;
-import com.ncnf.organizer.PublicOrganizer;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,6 +39,7 @@ public class FeedFragment extends Fragment {
     private List<Event> eventList;
     private EventDB eventDB = new EventDB();
     private static final String CHANNEL_NAME = "events_to_be_shown";
+
 
     @Nullable
     @Override
@@ -64,21 +65,11 @@ public class FeedFragment extends Fragment {
         // Set the custom adapter
         adapter = new EventAdapter(eventDB.toList(), this::onEventClick, "DATE");
         recycler.setAdapter(adapter);
-
-//        EventListener eventListener = event -> runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                System.out.println("Received event with data: " + event.getDescription());
-//
-//                adapter.addEvent(event);
-//                ((LinearLayoutManager)lManager).scrollToPositionWithOffset(0, 0);
-//            }
-//        });
     }
 
-    private void onEventClick(int position) {
-        Intent intent = new Intent(getActivity(), com.ncnf.event.EventActivity.class);
-        intent.putExtra("event_uid", adapter.getEvents().get(position).getUuid().toString());
+    private void onEventClick(Event e) {
+        Intent intent = new Intent(getActivity(), EventActivity.class);
+        intent.putExtra("event_uid", eventList.get(eventList.indexOf(e)).getUuid().toString());
         startActivity(intent);
     }
 
