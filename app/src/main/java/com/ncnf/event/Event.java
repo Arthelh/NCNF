@@ -30,10 +30,6 @@ public abstract class Event implements Comparable {
 
     private UUID uuid;
     private String ownerId;
-    private final Visibility visibility;
-
-
-    private String ownerId;
     private Visibility visibility;
     private String name;
     private Date date;
