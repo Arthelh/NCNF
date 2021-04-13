@@ -36,8 +36,13 @@ I also worked with Beltan to increase the test coverage.
 My time estimates were pretty close to the actual time spent on this tasks.
 
 
-# Keran 
+# Keran
 
+I worked on implementing a notification system in our app. The first step was to let the user subscribe/unsubscribe to notifications by using a setting in the profile. We store the preference and a token in the database. Thanks to Firebase, the work was straightforward. The whole feature could be tested at a high coverage, thanks to dependency injection.
+
+The second part was to let an organizer publish an update and notify the user. Publishing is done, but notifying the users requires a backend, which is not free in Firebase. 
+
+I also reviewed 2 pull requests.
 
 # Overall team
 
