@@ -1,17 +1,13 @@
 package com.ncnf.bookmark;
 
 import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.intent.matcher.IntentMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.rule.ActivityTestRule;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.event.Event;
-import com.ncnf.feed.ui.EventActivity;
 import com.ncnf.event.PublicEvent;
-import com.ncnf.event.create.EventCreateActivity;
+import com.ncnf.event.EventActivity;
 import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.PrivateUser;
 
@@ -38,7 +34,6 @@ import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 

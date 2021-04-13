@@ -49,6 +49,12 @@ public final class HomeFragmentTest {
     }
 
     @Test
+    public void searchUserOpensTest(){
+        onView(withId(R.id.homeSearchUserButton)).perform(click());
+        Intents.intended(hasComponent(UserSearchActivity.class.getName()));
+    }
+
+    @Test
     public void createEventActivityOpensTest(){
         onView(withId(R.id.homeCreateEventButton)).perform(click());
         Intents.intended(hasComponent(LoginActivity.class.getName()));
