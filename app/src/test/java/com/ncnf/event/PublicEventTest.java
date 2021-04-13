@@ -1,11 +1,8 @@
 package com.ncnf.event;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.organizer.PublicOrganizer;
-import com.ncnf.user.PrivateUser;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,7 +21,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -140,14 +136,6 @@ public class PublicEventTest {
     }
 
     @Test
-    public void addTagRejectsOnDuplicateTag() {
-        PublicEvent event = new PublicEvent(ownerID,name, date, geoPoint,address,description, type, 0 , 0);
-        Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
-        event.addTag(tag);
-        assertThrows(IllegalArgumentException.class, () -> event.addTag(tag));
-    }
-
-    @Test
     public void setTagWorks() {
         List<Tag> list = new ArrayList<Tag>();
         Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
@@ -193,8 +181,32 @@ public class PublicEventTest {
         }
     }
 
+    @Test
+    public void gettersWork() {
 
+        PublicEvent event = new PublicEvent("ownerId", name, date, geoPoint,address,description, type, 0, 0);
+//        assertEquals(event.getImageName(), "swan_lake");
+        assertEquals(event.getVisibility(), Event.Visibility.valueOf("PUBLIC"));
+    }
 
+    @Test
+    public void filterTagsWorks() {
+        PublicEvent event = new PublicEvent("ownerId", name, date, geoPoint,address,description, type, 0, 0);
+        Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
+        Tag tag2 = new Tag("\uD83C\uDFB8", "Folk Music");
+        event.addTag(tag);
+        event.addTag(tag2);
 
+        assertTrue(event.filterTags(tag2.getName()));
+        assertFalse(event.filterTags("example"));
+    }
 
+    @Test
+    public void compareToWorks() {
+        PublicEvent event = new PublicEvent("ownerId", name, date, geoPoint,address,description, type, 0, 0);
+        Date date2 = new Date(2021, 03, 30);
+        PublicEvent event2 = new PublicEvent("ownerId", name, date2, geoPoint,address,description, type, 0, 0);
+
+        assertEquals(event.compareTo(event2), -1);
+    }
 }

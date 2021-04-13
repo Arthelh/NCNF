@@ -7,6 +7,7 @@ import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
 import com.ncnf.event.create.EventCreateActivity;
 import com.ncnf.main.MainActivity;
+import com.ncnf.user_search.UserSearchActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -45,6 +46,12 @@ public final class HomeFragmentTest {
     public void loginActivityOpensTest(){
         onView(withId(R.id.homeProfileButton)).perform(click());
         Intents.intended(hasComponent(LoginActivity.class.getName()));
+    }
+
+    @Test
+    public void searchUserOpensTest(){
+        onView(withId(R.id.homeSearchUserButton)).perform(click());
+        Intents.intended(hasComponent(UserSearchActivity.class.getName()));
     }
 
     @Test

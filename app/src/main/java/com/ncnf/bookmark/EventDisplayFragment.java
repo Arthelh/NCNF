@@ -21,8 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
-import com.ncnf.feed.ui.EventActivity;
-import com.ncnf.event.EventBuilder;
+import com.ncnf.event.EventActivity;
 import com.ncnf.feed.ui.EventAdapter;
 import com.ncnf.user.PrivateUser;
 
@@ -68,7 +67,7 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter
-        adapter = new EventAdapter(eventsToDisplay, this);
+        adapter = new EventAdapter(eventsToDisplay, this, EventAdapter.SortingMethod.DATE);
         recycler.setAdapter(adapter);
         getEventList(view.findViewById(R.id.SavedEventsRecyclerView));
     }

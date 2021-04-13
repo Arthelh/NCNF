@@ -1,5 +1,9 @@
 package com.ncnf.event;
 
+import com.ncnf.organizer.Organizer;
+import com.ncnf.organizer.PublicOrganizer;
+import com.ncnf.utilities.DateAdapter;
+import com.ncnf.utilities.Location;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -8,9 +12,11 @@ import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.user.PrivateUser;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Date;
+import java.util.UUID;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import static com.ncnf.Utils.*;
@@ -38,6 +44,17 @@ public class PrivateEvent extends Event {
         return invited;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        PrivateEvent p = (PrivateEvent) o;
+        return p.getUuid().equals(getUuid());
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        PrivateEvent otherEvent = (PrivateEvent) o;
+        return getDate().compareTo(otherEvent.getDate());
+    }
     public CompletableFuture<DatabaseResponse> store(DatabaseService db){
         String[] fields = {INVITED_KEY};
         Object[] objects = {this.invited};
