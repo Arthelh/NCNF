@@ -31,10 +31,10 @@ public abstract class Event {
     }
 
     private final UUID uuid;
+    private final String path;
+
     private String ownerId;
-    private final Visibility visibility;
-
-
+    private Visibility visibility;
     private String name;
     private Date date;
     private Type type;
@@ -46,6 +46,7 @@ public abstract class Event {
 
     public Event(String ownerId, String name, Date date, GeoPoint location, String address, Type type, Visibility visibility, String description) {
         this.uuid = UUID.randomUUID();
+        this.path = EVENTs_COLLECTION_KEY + uuid;
         this.ownerId = ownerId;
 
         this.name = name;
@@ -60,8 +61,8 @@ public abstract class Event {
     }
 
     public Event(String ownerId, UUID id, String name, Date date, GeoPoint location, String address, Type type, Visibility visibility, List<String> attendees, String description){
-
         this.uuid = id;
+        this.path = EVENTs_COLLECTION_KEY + uuid;
         this.ownerId = ownerId;
         this.name = name;
         this.date = date;
@@ -121,6 +122,10 @@ public abstract class Event {
         for(int i = 0; i < fields.length; ++i){
             map.put(fields[i], objects[i]);
         }
-        return db.setDocument(EVENTs_COLLECTION_KEY + uuid, map);
+        return db.setDocument(path, map);
+    }
+
+    public static CompletableFuture<DatabaseResponse> addNews(DatabaseService db, String uuid, String value) {
+       return db.updateArrayField(EVENTs_COLLECTION_KEY + uuid, NEWS_KEY, value);
     }
 }

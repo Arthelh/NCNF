@@ -71,6 +71,7 @@ public class HomeFragment extends Fragment {
     // Temporary
     public void goToEventNews(View view){
         Intent intent = new Intent(getContext(), EventNewsActivity.class);
+        intent.putExtra("uuid", "361f8d6f-ccf0-4ee3-a596-d62a910874f6");
         startActivity(intent);
     }
 
