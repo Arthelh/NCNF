@@ -52,14 +52,8 @@ public class FeedFragmentTest {
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(MainActivity.class));
 
     @Before
-    public void setup(){
-        Intents.init();
+    public void setup() {
         onView(withId(R.id.navigation_feed)).perform(click());
-    }
-
-    @After
-    public void cleanup(){
-        Intents.release();
     }
 
     @Test
