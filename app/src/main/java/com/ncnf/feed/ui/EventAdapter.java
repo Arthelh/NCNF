@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -80,21 +81,20 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         return eventFilter;
     }
 
-    private Filter eventFilter = new Filter() {
+    private final Filter eventFilter = new Filter() {
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Event> filteredList = new ArrayList<>();
 
-            if(constraint == null || constraint.length() == 0) {
+            if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(eventsFull);
-            }
-            else {
+            } else {
                 String input = constraint.toString().toLowerCase().trim();
-                for(Event e : eventsFull) {
-                    if(e.getVisibility().equals(Event.Visibility.valueOf("PUBLIC"))) {
+                for (Event e : eventsFull) {
+                    if (e.getVisibility().equals(Event.Visibility.valueOf("PUBLIC"))) {
                         PublicEvent event = (PublicEvent) e;
-                        if(event.filterTags(input)) {
+                        if (event.filterTags(input)) {
                             filteredList.add(e);
                         }
                     }
@@ -117,14 +117,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     public static class EventViewHolder extends RecyclerView.ViewHolder {
         // Card fields
-        private TextView event;
-        private TextView date;
-        private TextView description;
-        private OnEventListener onEventListener;
+        private final TextView event;
+        private final TextView date;
+        private final TextView description;
 
         public EventViewHolder(View v, OnEventListener e) {
             super(v);
-            onEventListener = e;
             event = (TextView) v.findViewById(R.id.event_name);
             date = (TextView) v.findViewById(R.id.event_date);
             description = (TextView) v.findViewById(R.id.event_descr);
@@ -139,7 +137,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     @NonNull
     @Override
-    public EventViewHolder onCreateViewHolder(ViewGroup viewGroup, int i){
+    public EventViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.event_row, viewGroup, false);
 
@@ -158,7 +156,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     }
 
 
-    public void orderBy(SortingMethod sortingMethod){
+    public void orderBy(SortingMethod sortingMethod) {
         // RELEVANCE & DEFAULT CASE
         if (sortingMethod == SortingMethod.DATE) {
             Collections.sort(events);

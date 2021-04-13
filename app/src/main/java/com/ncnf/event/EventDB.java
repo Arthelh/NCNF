@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class EventDB {
 
-    private Map<String, Event> events = new HashMap<>();
+    private final Map<String, Event> events = new HashMap<>();
 
     public static final UUID uuid1 = UUID.randomUUID();
     public static final UUID uuid2 = UUID.randomUUID();
@@ -26,23 +26,23 @@ public class EventDB {
 
     public static final UUID ownerID = UUID.randomUUID();
 
-    private static final PublicEvent event1 = new PublicEvent(ownerID.toString(), "EPFL event", (new DateAdapter(2021, 03, 30)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens",  "Event description goes here", Event.Type.Conference, 0, 0);
-    private static final PublicEvent event2 = new PublicEvent(ownerID.toString(), "Carmen", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens",  "Event description goes here", Event.Type.Conference, 0, 0);
-    private static final PublicEvent event3 = new PublicEvent(ownerID.toString(), "Carmen", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens",  "Event description goes here", Event.Type.Conference, 0, 0);
-    private static final PublicEvent event4 = new PublicEvent(ownerID.toString(), "Carmen", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens",  "Event description goes here", Event.Type.Conference, 0, 0);
-    private static final PublicEvent event5 = new PublicEvent(ownerID.toString(), "Carmen", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens",  "Event description goes here", Event.Type.Conference, 0, 0);
-    private static final PublicEvent event6 = new PublicEvent(ownerID.toString(), "Carmen", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens",  "Event description goes here", Event.Type.Conference, 0, 0);
-    private static final PublicEvent event7 = new PublicEvent(ownerID.toString(), "Carmen", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens",  "Event description goes here", Event.Type.Conference, 0, 0);
-    private static final PublicEvent event8 = new PublicEvent(ownerID.toString(), "Carmen", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens",  "Event description goes here", Event.Type.Conference, 0, 0);
-    private static final PublicEvent event9 = new PublicEvent(ownerID.toString(), "Carmen", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens",  "Event description goes here", Event.Type.Conference, 0, 0);
-    private static final PublicEvent event10 = new PublicEvent(ownerID.toString(), "La flute enchantée", new DateAdapter(2021, 04, 01).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens",  "Event description goes here", Event.Type.Conference, 0, 0);
+    private static final PublicEvent event1 = new PublicEvent(ownerID.toString(), "EPFL event", (new DateAdapter(2021, 03, 30)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0);
+    private static final PublicEvent event2 = new PublicEvent(ownerID.toString(), "Carmen", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0);
+    private static final PublicEvent event3 = new PublicEvent(ownerID.toString(), "Concert", (new DateAdapter(2021, 04, 10)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0);
+    private static final PublicEvent event4 = new PublicEvent(ownerID.toString(), "UNIL event", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0);
+    private static final PublicEvent event5 = new PublicEvent(ownerID.toString(), "Exposition", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0);
+    private static final PublicEvent event6 = new PublicEvent(ownerID.toString(), "EPFL event", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0);
+    private static final PublicEvent event7 = new PublicEvent(ownerID.toString(), "Romeo & Juliet", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0);
+    private static final PublicEvent event8 = new PublicEvent(ownerID.toString(), "Swan Lake", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0);
+    private static final PublicEvent event9 = new PublicEvent(ownerID.toString(), "Carmen", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0);
+    private static final PublicEvent event10 = new PublicEvent(ownerID.toString(), "La flute enchantée", new DateAdapter(2021, 04, 01).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0);
 //    private static final PublicEvent event2 = new PublicEvent(, ownerID, (new DateAdapter(2021, 04, 24)).getDate().toString(), new Location(46.517789, 6.636917, "Avenue du Théâtre 12, 1002 Lausanne"), "Carmen opera function", Event.Type.Opera, 0, 0, new PublicOrganizer("Opéra de Lausanne"), "swan_lake");
-//    private static final PublicEvent event3 = new PublicEvent("Concert", (new DateAdapter(2021, 04, 24)).getDate().toString(), new Location(46.52210876137052, 6.628016637001172, "Rue de Genève 12, 1003 Lausanne"), "Event description goes here", Event.Type.Concert, 0, 0, new PublicOrganizer("Salle Métropole"), "swan_lake");
-//    private static final PublicEvent event4 = new PublicEvent("UNIL event", new DateAdapter(2021, 04, 10).getDate().toString(), new Location(46.52132870748288, 6.57909276639799, "1015 Lausanne"), "Event description goes here", Event.Type.Conference, 0, 0, new PublicOrganizer("UNIL"), "swan_lake");
-//    private static final PublicEvent event5 = new PublicEvent("Exposition", new DateAdapter(2021, 04, 12).getDate().toString(), new Location(46.51794768231773, 6.625629946258326, "Place de la Gare 16, 1003 Lausanne"), "Event description goes here", Event.Type.Museum, 0, 0, new PublicOrganizer("Musée Cantonal des Beaux-Arts"), "art");
-//    private static final PublicEvent event6 = new PublicEvent("EPFL event", new DateAdapter(2021, 04, 10).getDate().toString(), new Location(46.518689, 6.568067, "Rolex Learning Center, 1015 Ecublens"), "Event description goes here", Event.Type.Conference, 0, 0, new PublicOrganizer("EPFL"), "rolex");
-//    private static final PublicEvent event7 = new PublicEvent("Romeo & Juliet", new DateAdapter(2021, 04, 11).getDate().toString(), new Location(46.51263429446572, 6.612488611335794, "Avenue Gustave Doret, 1007 Lausanne"), "Event description goes here", Event.Type.Theatre, 0, 0, new PublicOrganizer("Théâtre Vidy-Lausanne"), "swan_lake");
-//    private static final PublicEvent event8 = new PublicEvent("Swan Lake", new DateAdapter(2021, 04, 25).getDate().toString(), new Location(46.517789, 6.636917, "Avenue du Théâtre 12, 1002 Lausanne"), "Event description goes here", Event.Type.Ballet, 0, 0, new PublicOrganizer("Opéra de Lausanne"), "swan_lake");
+//    private static final PublicEvent event3 = new PublicEvent("", (new DateAdapter(2021, 04, 24)).getDate().toString(), new Location(46.52210876137052, 6.628016637001172, "Rue de Genève 12, 1003 Lausanne"), "Event description goes here", Event.Type.Concert, 0, 0, new PublicOrganizer("Salle Métropole"), "swan_lake");
+//    private static final PublicEvent event4 = new PublicEvent("", new DateAdapter().getDate().toString(), new Location(46.52132870748288, 6.57909276639799, "1015 Lausanne"), "Event description goes here", Event.Type.Conference, 0, 0, new PublicOrganizer("UNIL"), "swan_lake");
+//    private static final PublicEvent event5 = new PublicEvent("", new DateAdapter(2021, 04, 12).getDate().toString(), new Location(46.51794768231773, 6.625629946258326, "Place de la Gare 16, 1003 Lausanne"), "Event description goes here", Event.Type.Museum, 0, 0, new PublicOrganizer("Musée Cantonal des Beaux-Arts"), "art");
+//    private static final PublicEvent event6 = new PublicEvent("", new DateAdapter(2021, 04, 10).getDate().toString(), new Location(46.518689, 6.568067, "Rolex Learning Center, 1015 Ecublens"), "Event description goes here", Event.Type.Conference, 0, 0, new PublicOrganizer("EPFL"), "rolex");
+//    private static final PublicEvent event7 = new PublicEvent("", new DateAdapter(2021, 04, 11).getDate().toString(), new Location(46.51263429446572, 6.612488611335794, "Avenue Gustave Doret, 1007 Lausanne"), "Event description goes here", Event.Type.Theatre, 0, 0, new PublicOrganizer("Théâtre Vidy-Lausanne"), "swan_lake");
+//    private static final PublicEvent event8 = new PublicEvent(", new DateAdapter(2021, 04, 25).getDate().toString(), new Location(46.517789, 6.636917, "Avenue du Théâtre 12, 1002 Lausanne"), "Event description goes here", Event.Type.Ballet, 0, 0, new PublicOrganizer("Opéra de Lausanne"), "swan_lake");
 //    private static final PublicEvent event9 = new PublicEvent("Concert", new DateAdapter(2021, 04, 16).getDate().toString(), new Location(46.52210876137052, 6.628016637001172, "Rue de Genève 12, 1003 Lausanne"), "Event description goes here", Event.Type.Concert, 0, 0, new PublicOrganizer("Salle Métropole"), "swan_lake");
 //    private static final PublicEvent event10 = new PublicEvent("La flute enchantée", new DateAdapter(2021, 04, 01).getDate().toString(), new Location(46.517789, 6.636917, "Avenue du Théâtre 12, 1002 Lausanne"), "Event description goes here", Event.Type.Opera, 0, 0, new PublicOrganizer("Opéra de Lausanne"), "swan_lake");
 
@@ -114,10 +114,10 @@ public class EventDB {
 
     public List<Event> toList() {
         List<Event> ret = new ArrayList<>();
-        for(Event e : events.values()) {
+        for (Event e : events.values()) {
             ret.add(e);
         }
         return ret;
     }
 
- }
+}

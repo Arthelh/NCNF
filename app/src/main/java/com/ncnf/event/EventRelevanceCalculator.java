@@ -17,55 +17,50 @@ public class EventRelevanceCalculator {
 
     public EventRelevanceCalculator(List<Event> l) {
 
-        for(Event e : l) {
-            if(e != null)
+        for (Event e : l) {
+            if (e != null)
                 this.events.add((PublicEvent) e);
         }
         sortedList = new ArrayList<>(sortedList());
     }
 
     private List<Event> sortedList() {
-
         List<Event> l = new ArrayList<>();
         Map<Tag, Integer> m = new HashMap<>();
 
-        for(PublicEvent e : events) {
+        for (PublicEvent e : events) {
             List<Tag> tags = e.getTags();
 
-            if(!tags.isEmpty()) {
-
+            if (!tags.isEmpty()) {
                 Tag maxTag = tags.get(0);
-                int maxOccurences = 0;
+                int maxOccurrences = 0;
 
-                for(int i = 0; i < tags.size(); ++i) {
-
+                for (int i = 0; i < tags.size(); ++i) {
                     int thisTagOcc = 0;
                     Tag thisTag = tags.get(i);
-                    for(PublicEvent e2 : events) {
-
-                        if(!e2.equals(e) && e2.getTags().contains(thisTag)) {
+                    for (PublicEvent e2 : events) {
+                        if (!e2.equals(e) && e2.getTags().contains(thisTag)) {
                             thisTagOcc += 1;
                         }
                     }
 
-                    if(thisTagOcc > maxOccurences) {
+                    if (thisTagOcc > maxOccurrences) {
                         maxTag = thisTag;
-                        maxOccurences = thisTagOcc;
+                        maxOccurrences = thisTagOcc;
                     }
                 }
 
-                m.put(maxTag, maxOccurences);
+                m.put(maxTag, maxOccurrences);
             }
         }
 
-        List<Integer> occurences = new ArrayList<>(new HashSet<>(m.values()));
-        Collections.sort(occurences, Collections.reverseOrder());
-
-        for(Integer i : occurences) {
-            for(Tag t : m.keySet()) {
-                if(m.get(t) == i) {
-                    for(PublicEvent e : events) {
-                        if(e.getTags().contains(t) && !l.contains(e)) {
+        List<Integer> occurrences = new ArrayList<>(new HashSet<>(m.values()));
+        Collections.sort(occurrences, Collections.reverseOrder());
+        for (Integer i : occurrences) {
+            for (Tag t : m.keySet()) {
+                if (m.get(t).equals(i)) {
+                    for (PublicEvent e : events) {
+                        if (e.getTags().contains(t) && !l.contains(e)) {
                             l.add(e);
                         }
                     }
@@ -79,6 +74,5 @@ public class EventRelevanceCalculator {
     public List<Event> getSortedList() {
         return sortedList;
     }
-
 
 }
