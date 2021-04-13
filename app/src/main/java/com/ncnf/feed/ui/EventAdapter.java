@@ -256,28 +256,32 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     private List<Event> events;
     private List<Event> eventsFull;
     private final OnEventListener onEventListener;
-    private String sortingMethod;
+    private SortingMethod sortingMethod;
+
+    public enum SortingMethod {
+        DATE, RELEVANCE
+    }
 
     public interface OnEventListener {
         void onEventClick(Event event);
     }
 
-    public EventAdapter(List<Event> items, OnEventListener onEventListener, String sortingMethod) {
+    public EventAdapter(List<Event> items, OnEventListener onEventListener, SortingMethod sortingMethod) {
         //ensure proper copy of the List
 
         this.sortingMethod = sortingMethod;
 
-        if(sortingMethod.equals("DATE")) {
-            events = new LinkedList<>(items);
-            Collections.sort(events);
-            eventsFull = new LinkedList<>(items);
-            Collections.sort(eventsFull);
-        } else {
-            EventRelevanceCalculator e = new EventRelevanceCalculator(items);
-            events = e.getSortedList();
-            this.eventsFull = new LinkedList<>(events);
+        switch (sortingMethod){
+            case DATE:
+                events = new LinkedList<>(items);
+                Collections.sort(events);
+                eventsFull = new LinkedList<>(items);
+                Collections.sort(eventsFull);
+            default:
+                EventRelevanceCalculator e = new EventRelevanceCalculator(items);
+                events = e.getSortedList();
+                this.eventsFull = new LinkedList<>(events);
         }
-
 
         this.onEventListener = onEventListener;
     }
@@ -291,35 +295,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         events.add(0, event);
         eventsFull.add(0, event);
 
-        if(sortingMethod == "DATE") {
-            Collections.sort(events);
-            Collections.sort(eventsFull);
-        }
-        else {
-            EventRelevanceCalculator e = new EventRelevanceCalculator(events);
-            events = e.getSortedList();
-            this.eventsFull = new LinkedList<>(events);
-        }
+        orderBy(sortingMethod);
 
         // Notify the insertion so the view can be refreshed
         notifyItemInserted(events.indexOf(event));
     }
 
-    public void changeOrder(String method) {
-        if(method == "DATE") {
-            Collections.sort(events);
-            Collections.sort(eventsFull);
-        }
-        else {
-            EventRelevanceCalculator e = new EventRelevanceCalculator(events);
-            events = e.getSortedList();
-            this.eventsFull = new LinkedList<>(events);
-        }
-
-        // Notify the insertion so the view can be refreshed
-        notifyDataSetChanged();
-
-    }
 
     @Override
     public int getItemCount() {
@@ -408,5 +389,20 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         viewHolder.bind(event, onEventListener);
     }
 
+
+    public void orderBy(SortingMethod sortingMethod){
+        switch (sortingMethod){
+            case DATE:
+                Collections.sort(events);
+                Collections.sort(eventsFull);
+            default: // RELEVANCE & DEFAULT CASE
+                EventRelevanceCalculator e = new EventRelevanceCalculator(events);
+                events = e.getSortedList();
+                this.eventsFull = new LinkedList<>(events);
+        }
+
+        // Notify the insertion so the view can be refreshed
+        notifyDataSetChanged();
+    }
 
 }

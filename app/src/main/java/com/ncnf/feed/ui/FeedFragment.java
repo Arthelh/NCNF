@@ -12,23 +12,16 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventActivity;
 import com.ncnf.event.EventDB;
-import com.ncnf.event.EventType;
-import com.ncnf.utilities.Location;
-import com.ncnf.event.PublicEvent;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -61,7 +54,7 @@ public class FeedFragment extends Fragment {
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter
-        adapter = new EventAdapter(eventDB.toList(), this::onEventClick, "DATE");
+        adapter = new EventAdapter(eventDB.toList(), this::onEventClick, EventAdapter.SortingMethod.DATE);
         recycler.setAdapter(adapter);
     }
 
@@ -98,10 +91,10 @@ public class FeedFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.dateOrder :
-                adapter.changeOrder("DATE");
+                adapter.orderBy(EventAdapter.SortingMethod.DATE);
                 break;
             case R.id.relevanceOrder :
-                adapter.changeOrder("RELEVANCE");
+                adapter.orderBy(EventAdapter.SortingMethod.RELEVANCE);
                 break;
         }
         return true;

@@ -67,7 +67,7 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter
-        adapter = new EventAdapter(eventsToDisplay, this, "DATE");
+        adapter = new EventAdapter(eventsToDisplay, this, EventAdapter.SortingMethod.DATE);
         recycler.setAdapter(adapter);
         getEventList(view.findViewById(R.id.SavedEventsRecyclerView));
     }
