@@ -24,15 +24,15 @@ import static com.ncnf.Utils.*;
 
 public class PrivateEvent extends Event {
 
-    private List<String> invited;
+    private final List<String> invited;
 
     public PrivateEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type) {
-        super(ownerId, name, date, location, address, type, Event.PubPriv.PRIVATE, description);
+        super(ownerId, name, date, location, address, type, Event.Visibility.PRIVATE, description);
         invited = new ArrayList<>();
     }
 
     public PrivateEvent(String ownerId, UUID id, String name, Date date, GeoPoint location, String address, Type type, List<String> attendees, String description, List<String> invited) {
-        super(ownerId, id, name, date, location, address, type, Event.PubPriv.PRIVATE,attendees, description);
+        super(ownerId, id, name, date, location, address, type, Event.Visibility.PRIVATE,attendees, description);
         this.invited = invited;
     }
 
@@ -49,34 +49,34 @@ public class PrivateEvent extends Event {
         String separator = "@";
 
         StringBuilder builder = new StringBuilder();
-        builder.append(getPubPriv() + separator + getUuid().toString() + separator + getName() + separator);
+        builder.append(getVisibility() + separator + getUuid().toString() + separator + getName() + separator);
 
         DateAdapter adapter = new DateAdapter(getDate());
         builder.append(adapter.toString() + separator);
 
-        builder.append(getLocation().getLongitude() + " " + getLocation().getLatitude() + " " + getLocation().getAddress() + separator);
+        builder.append(getLocation().getLongitude() + " " + getLocation().getLatitude() + " " + getAddress() + separator);
         builder.append(getDescription() + separator);
-        builder.append(getType() + separator + getOrganizer().getName() + separator + getImageName());
+        builder.append(getType() + separator + getOwnerId());
 
         return builder.toString();
     }
 
-    public static PrivateEvent toEvent(String[] arr) {
-
-        String name = arr[2];
-        Date date = DateAdapter.toDate(arr[3]);
-
-        String[] loc = arr[4].split(" ");
-        Location newLoc = new Location(Double.parseDouble(loc[0]), Double.parseDouble(loc[1]), loc[2]);
-        String descr = arr[5];
-        EventType e = EventType.valueOf(arr[6]);
-        PublicOrganizer org = new PublicOrganizer(arr[7]);
-        String str = arr[8];
-
-        PrivateEvent event = new PrivateEvent(name, date, newLoc, descr, e, org, str);
-        event.setUuid(UUID.fromString(arr[1]));
-        return event;
-    }
+//    public static PrivateEvent toEvent(String[] arr) {
+//
+//        String name = arr[2];
+//        Date date = DateAdapter.toDate(arr[3]);
+//
+//        String[] loc = arr[4].split(" ");
+//        Location newLoc = new Location(Double.parseDouble(loc[0]), Double.parseDouble(loc[1]), loc[2]);
+//        String descr = arr[5];
+//        EventType e = EventType.valueOf(arr[6]);
+//        PublicOrganizer org = new PublicOrganizer(arr[7]);
+//        String str = arr[8];
+//
+//        PrivateEvent event = new PrivateEvent(name, date, newLoc, descr, e, org, str);
+//        event.setUuid(UUID.fromString(arr[1]));
+//        return event;
+//    }
 
     @Override
     public boolean equals(Object o) {

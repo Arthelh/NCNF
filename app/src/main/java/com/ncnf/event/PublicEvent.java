@@ -22,8 +22,8 @@ public class PublicEvent extends Event {
     private int price;
     private int minAge;
 
-    public PublicEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, EventType type, int minAge, int price) {
-        super(ownerId, name, date, location, address, type, Event.PubPriv.PUBLIC, description);
+    public PublicEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type, int minAge, int price) {
+        super(ownerId, name, date, location, address, type, Event.Visibility.PUBLIC, description);
 
         checkConstraints(minAge, price);
 
@@ -32,8 +32,8 @@ public class PublicEvent extends Event {
         this.price = price;
     }
 
-    public PublicEvent(String ownerId, UUID uuid, String name, Date date, GeoPoint location, String address, String description, EventType type, List<String> attendees, int minAge, int price, List<Tag> tags) {
-        super(ownerId, uuid, name, date, location, address, type, Event.PubPriv.PUBLIC, attendees, description);
+    public PublicEvent(String ownerId, UUID uuid, String name, Date date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, int price, List<Tag> tags) {
+        super(ownerId, uuid, name, date, location, address, type, Visibility.PUBLIC, attendees, description);
 
         checkConstraints(minAge, price);
 

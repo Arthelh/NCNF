@@ -36,7 +36,7 @@ public class FeedFragment extends Fragment {
 
     private RecyclerView.LayoutManager lManager;
     private EventAdapter adapter;
-    private List<Event> eventList;
+    private List<Event> eventList = new ArrayList<>();
     private EventDB eventDB = new EventDB();
     private static final String CHANNEL_NAME = "events_to_be_shown";
 
@@ -60,8 +60,6 @@ public class FeedFragment extends Fragment {
         lManager = new LinearLayoutManager(getActivity());
         recycler.setLayoutManager(lManager);
 
-
-
         // Set the custom adapter
         adapter = new EventAdapter(eventDB.toList(), this::onEventClick, "DATE");
         recycler.setAdapter(adapter);
@@ -69,7 +67,7 @@ public class FeedFragment extends Fragment {
 
     private void onEventClick(Event e) {
         Intent intent = new Intent(getActivity(), EventActivity.class);
-        intent.putExtra("event_uid", eventList.get(eventList.indexOf(e)).getUuid().toString());
+        intent.putExtra("event_uid", e.getUuid().toString());
         startActivity(intent);
     }
 

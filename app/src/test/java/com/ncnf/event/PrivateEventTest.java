@@ -1,41 +1,23 @@
 package com.ncnf.event;
-import com.ncnf.organizer.PublicOrganizer;
-import com.ncnf.utilities.DateAdapter;
-import com.ncnf.utilities.Location;
 
-import android.util.Log;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FieldPath;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.organizer.PublicOrganizer;
-import com.ncnf.user.PrivateUser;
 
-import org.junit.Assert;q
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static org.junit.Assert.*;
-import static com.ncnf.Utils.DEBUG_TAG;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -118,17 +100,15 @@ public class PrivateEventTest {
         assertEquals(event.getVisibility(), Event.Visibility.PRIVATE);
     }
 
-    @Test
-    public void serializationWorksPrivateEvent() {
-
-        PrivateEvent event = new PrivateEvent(name, date, loc, description, EventType.Conference, owner, "swan_lake");
-        DateAdapter adapter = new DateAdapter(date);
-
-        String serialized = "PRIVATE@" + event.getUuid().toString() + "@" + name + "@" + adapter.toString() + "@" + loc.getLongitude() + " " + loc.getLatitude() + " " + loc.getAddress() + "@" + description + "@" + EventType.Conference.toString() + "@" + owner.getName() + "@" + "swan_lake";
-        assertEquals(event.toString(), serialized);
-        assertEquals(Event.toEvent(serialized), event);
-
-    }
+//    @Test
+//    public void serializationWorksPrivateEvent() {
+//        PrivateEvent event = new PrivateEvent("00",name, date, geoPoint,address,description, type);
+//        DateAdapter adapter = new DateAdapter(date);
+//
+//        String serialized = "PRIVATE@" + event.getUuid().toString() + "@" + name + "@" + adapter.toString() + "@" + loc.getLongitude() + " " + loc.getLatitude() + " " + loc.getAddress() + "@" + description + "@" + EventType.Conference.toString() + "@" + owner.getName() + "@" + "swan_lake";
+//        assertEquals(event.toString(), serialized);
+//        assertEquals(Event.toEvent(serialized), event);
+//    }
 
     @Test
     public void inviteWorks() {
@@ -140,12 +120,14 @@ public class PrivateEventTest {
 
     @Test
     public void compareToWorks() {
-        PrivateEvent event = new PrivateEvent(name, date, loc, description, EventType.Conference, owner, "swan_lake");
+        PrivateEvent event = new PrivateEvent("00",name, date, geoPoint,address,description, type);
         Date date2 = new Date(2021, 03, 30);
-        PrivateEvent event2 = new PrivateEvent(name, date2, loc, description, EventType.Conference, owner, "swan_lake");
+        PrivateEvent event2 = new PrivateEvent("00",name, date2, geoPoint,address,description, type);
 
         assertEquals(event.compareTo(event2), -1);
+    }
 
+    @Test
     public void setType(){
         PrivateEvent event = new PrivateEvent("00",name, date, geoPoint,address,description, type);
         assertEquals(type, event.getType());

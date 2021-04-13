@@ -74,7 +74,7 @@
             android:parentActivityName=".main.MainActivity" /> 
         <activity
             android:name=".event.EventActivity"
-            android:parentActivityName=".feed.ui.FeedFragment" /> <!-- LANDING PAGE -->
+            android:parentActivityName=".main.MainActivity" /> <!-- LANDING PAGE -->
         <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
