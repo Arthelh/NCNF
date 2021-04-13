@@ -81,7 +81,7 @@ public final class MapFragmentTest {
     }
 
     @Test
-    public void test_settings(){
+    public void test_settings() {
         onView(withId(R.id.map_settings_button)).perform(click());
         Intents.intended(hasComponent(SettingsActivity.class.getName()));
     }

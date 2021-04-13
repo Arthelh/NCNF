@@ -40,6 +40,11 @@ android {
             testCoverageEnabled true
         }
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
     compileOptions {
         // Flag to enable support for the new language APIs
         coreLibraryDesugaringEnabled true
@@ -59,9 +64,12 @@ android {
 
 dependencies {
 
+    //User search
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'com.firebaseui:firebase-ui-firestore:6.1.0'
 
     // Map Dependencies
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
@@ -73,6 +81,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.wear:wear:1.1.0'
     implementation 'com.google.android.libraries.places:places:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation 'com.google.firebase:firebase-database:19.7.0'
 
     // tests
     testImplementation 'junit:junit:4.13.2'
@@ -110,7 +121,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    
+
+
+
     // enable new API features
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'
 
@@ -134,6 +147,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
             '**/Manifest*.*',
             '**/*Test*.*',
             'android/**/*.*',
+            '**/*databinding/**/*.*',
             // Exclude Hilt generated classes
             '**/*Hilt*.*',
             'hilt_aggregated_deps/**',
