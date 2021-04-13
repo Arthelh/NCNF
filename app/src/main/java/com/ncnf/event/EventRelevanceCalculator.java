@@ -12,8 +12,8 @@ import java.util.TreeMap;
 
 public class EventRelevanceCalculator {
 
-    private List<PublicEvent> events = new ArrayList<>();
-    private List<Event> sortedList;
+    private final List<PublicEvent> events = new ArrayList<>();
+    private final List<Event> sortedList;
 
     public EventRelevanceCalculator(List<Event> l) {
 
