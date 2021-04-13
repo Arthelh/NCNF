@@ -189,18 +189,6 @@ public class PublicEventTest {
         assertEquals(event.getVisibility(), Event.Visibility.valueOf("PUBLIC"));
     }
 
-//    @Test
-//    public void serializationWorksPublicEvent() {
-//
-//        PublicEvent event = new PublicEvent(name, date, loc, description, EventType.Conference,0, 0, owner, "swan_lake");
-//        DateAdapter adapter = new DateAdapter(date);
-//
-//        String serialized = "PUBLIC@" + event.getUuid().toString() + "@" + "Jane Doe@" + adapter.toString() + "@" + loc.getLongitude() + " " + loc.getLatitude() + " " + loc.getAddress() + "@" + description + "@" + EventType.Conference.toString() + "@" + "0" + "@" + "0" + "@" + owner.getName() + "@" + "swan_lake";
-//        assertEquals(event.toString(), serialized);
-//        assertEquals(Event.toEvent(serialized), event);
-//
-//    }
-
     @Test
     public void filterTagsWorks() {
         PublicEvent event = new PublicEvent("ownerId", name, date, geoPoint,address,description, type, 0, 0);

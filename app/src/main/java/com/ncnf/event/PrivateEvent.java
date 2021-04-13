@@ -45,40 +45,6 @@ public class PrivateEvent extends Event {
     }
 
     @Override
-    public String toString() {
-        String separator = "@";
-
-        StringBuilder builder = new StringBuilder();
-        builder.append(getVisibility() + separator + getUuid().toString() + separator + getName() + separator);
-
-        DateAdapter adapter = new DateAdapter(getDate());
-        builder.append(adapter.toString() + separator);
-
-        builder.append(getLocation().getLongitude() + " " + getLocation().getLatitude() + " " + getAddress() + separator);
-        builder.append(getDescription() + separator);
-        builder.append(getType() + separator + getOwnerId());
-
-        return builder.toString();
-    }
-
-//    public static PrivateEvent toEvent(String[] arr) {
-//
-//        String name = arr[2];
-//        Date date = DateAdapter.toDate(arr[3]);
-//
-//        String[] loc = arr[4].split(" ");
-//        Location newLoc = new Location(Double.parseDouble(loc[0]), Double.parseDouble(loc[1]), loc[2]);
-//        String descr = arr[5];
-//        EventType e = EventType.valueOf(arr[6]);
-//        PublicOrganizer org = new PublicOrganizer(arr[7]);
-//        String str = arr[8];
-//
-//        PrivateEvent event = new PrivateEvent(name, date, newLoc, descr, e, org, str);
-//        event.setUuid(UUID.fromString(arr[1]));
-//        return event;
-//    }
-
-    @Override
     public boolean equals(Object o) {
         PrivateEvent p = (PrivateEvent) o;
         return p.getUuid().equals(getUuid());

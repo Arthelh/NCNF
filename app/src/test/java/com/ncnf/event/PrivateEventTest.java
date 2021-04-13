@@ -100,16 +100,6 @@ public class PrivateEventTest {
         assertEquals(event.getVisibility(), Event.Visibility.PRIVATE);
     }
 
-//    @Test
-//    public void serializationWorksPrivateEvent() {
-//        PrivateEvent event = new PrivateEvent("00",name, date, geoPoint,address,description, type);
-//        DateAdapter adapter = new DateAdapter(date);
-//
-//        String serialized = "PRIVATE@" + event.getUuid().toString() + "@" + name + "@" + adapter.toString() + "@" + loc.getLongitude() + " " + loc.getLatitude() + " " + loc.getAddress() + "@" + description + "@" + EventType.Conference.toString() + "@" + owner.getName() + "@" + "swan_lake";
-//        assertEquals(event.toString(), serialized);
-//        assertEquals(Event.toEvent(serialized), event);
-//    }
-
     @Test
     public void inviteWorks() {
         PrivateEvent event = new PrivateEvent("00",name, date, geoPoint,address,description, type);
