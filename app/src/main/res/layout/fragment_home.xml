@@ -30,7 +30,7 @@
                 android:text="@string/home_create_event_button" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/homeEventNews"
+                android:id="@+id/homeEventNewsButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"

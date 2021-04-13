@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
 
         getView().findViewById(R.id.homeCreateEventButton).setOnClickListener(this::goToEventCreation);
 
-        getView().findViewById(R.id.homeEventNews).setOnClickListener(this::goToEventNews);
+        getView().findViewById(R.id.homeEventNewsButton).setOnClickListener(this::goToEventNews);
         getView().findViewById(R.id.homeSearchUserButton).setOnClickListener(this::goToUserSearch);
     }
 

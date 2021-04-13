@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
@@ -17,6 +19,9 @@ import com.ncnf.utilities.InputValidator;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG;
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
 
 @AndroidEntryPoint
 public class EventNewsActivity extends AppCompatActivity {
@@ -39,14 +44,14 @@ public class EventNewsActivity extends AppCompatActivity {
             if (InputValidator.verifyGenericInput(textField)) {
                 textField.setEnabled(false);
                 Event.addNews(db, uuid, textField.getText().toString()).thenAccept(res -> {
-                    Toast toast;
+                    Snackbar bar;
                     if (res.isSuccessful()) {
-                        toast = Toast.makeText(this, "News published !", Toast.LENGTH_LONG);
+                        bar = Snackbar.make(findViewById(R.id.eventNewsRoot), "News published !", LENGTH_LONG);
                         textField.setText("");
                     } else {
-                        toast = Toast.makeText(this, "Could not publish the news ! Try again later.", Toast.LENGTH_LONG);
+                        bar = Snackbar.make(findViewById(R.id.eventNewsRoot), "Could not publish the news ! Try again later.", LENGTH_LONG);
                     }
-                    toast.show();
+                    bar.show();
                     textField.setEnabled(true);
                 });
             }
