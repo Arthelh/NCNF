@@ -50,7 +50,14 @@ public class HomeFragment extends Fragment {
     }
 
     public void goToEventCreation(View view){
-        Intent intent = new Intent(getContext(), EventCreateActivity.class);
+        Intent intent;
+
+        if(!isConnected()){
+            intent = new Intent(getContext(), LoginActivity.class);
+        } else {
+            intent = new Intent(getContext(), EventCreateActivity.class);
+        }
+
         startActivity(intent);
     }
 
