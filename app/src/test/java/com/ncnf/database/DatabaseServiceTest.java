@@ -6,8 +6,6 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.event.Event;
-import com.ncnf.event.EventType;
-import com.ncnf.utilities.Location;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.mocks.MockTask;
 
@@ -18,7 +16,6 @@ import org.mockito.Mockito;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;

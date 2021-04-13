@@ -5,8 +5,6 @@ import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
-import com.ncnf.event.EventType;
-import com.ncnf.utilities.Location;
 import com.ncnf.event.PrivateEvent;
 import com.ncnf.event.PublicEvent;
 

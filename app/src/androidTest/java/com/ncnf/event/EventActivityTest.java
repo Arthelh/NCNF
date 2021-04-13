@@ -7,36 +7,21 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.ncnf.event.Event;
-import com.ncnf.event.EventActivity;
-import com.ncnf.event.EventDB;
-import com.ncnf.event.EventType;
-import com.ncnf.feed.ui.FeedFragment;
 import com.ncnf.utilities.DateAdapter;
-import com.ncnf.utilities.Location;
-import com.ncnf.event.PublicEvent;
-import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
-import com.ncnf.organizer.PublicOrganizer;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.Visibility.VISIBLE;
-import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 
-import com.ncnf.R;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.Date;
 
 @RunWith(AndroidJUnit4.class)
 public class EventActivityTest {
