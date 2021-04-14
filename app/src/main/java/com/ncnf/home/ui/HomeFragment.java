@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
 import com.ncnf.event.create.EventCreateActivity;
+import com.ncnf.event.update.EventNewsActivity;
 import com.ncnf.user.UserProfileActivity;
 import com.ncnf.user_search.UserSearchActivity;
 
@@ -34,6 +35,7 @@ public class HomeFragment extends Fragment {
 
         getView().findViewById(R.id.homeCreateEventButton).setOnClickListener(this::goToEventCreation);
 
+        getView().findViewById(R.id.homeEventNewsButton).setOnClickListener(this::goToEventNews);
         getView().findViewById(R.id.homeSearchUserButton).setOnClickListener(this::goToUserSearch);
     }
 
@@ -63,6 +65,13 @@ public class HomeFragment extends Fragment {
 
     public void goToUserSearch(View view){
         Intent intent = new Intent(getContext(), UserSearchActivity.class);
+        startActivity(intent);
+    }
+
+    // Temporary
+    public void goToEventNews(View view){
+        Intent intent = new Intent(getContext(), EventNewsActivity.class);
+        intent.putExtra("uuid", "361f8d6f-ccf0-4ee3-a596-d62a910874f6");
         startActivity(intent);
     }
 
