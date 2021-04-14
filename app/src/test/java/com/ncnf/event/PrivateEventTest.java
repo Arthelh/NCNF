@@ -1,21 +1,12 @@
 package com.ncnf.event;
 
-import android.util.Log;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FieldPath;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.organizer.PublicOrganizer;
-import com.ncnf.user.PrivateUser;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -25,12 +16,8 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static com.ncnf.Utils.DEBUG_TAG;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -119,6 +106,15 @@ public class PrivateEventTest {
         event.invite("Sarah");
         assertEquals(event.getInvited().size(), 1);
         assertEquals(event.getInvited().get(0), "Sarah");
+    }
+
+    @Test
+    public void compareToWorks() {
+        PrivateEvent event = new PrivateEvent("00",name, date, geoPoint,address,description, type);
+        Date date2 = new Date(2021, 03, 30);
+        PrivateEvent event2 = new PrivateEvent("00",name, date2, geoPoint,address,description, type);
+
+        assertEquals(event.compareTo(event2), -1);
     }
 
     @Test

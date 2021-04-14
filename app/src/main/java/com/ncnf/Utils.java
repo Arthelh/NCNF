@@ -38,6 +38,7 @@ public class Utils {
     public static final String INVITED_KEY = "invited";
     public static final String TAGS_LIST_KEY = "tags";
     public static final String ADDRESS_KEY = "address";
+    public static final String NEWS_KEY = "news";
 
     /**
      * Keys related to tests

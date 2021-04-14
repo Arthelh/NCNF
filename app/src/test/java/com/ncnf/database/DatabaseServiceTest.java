@@ -16,7 +16,6 @@ import org.mockito.Mockito;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -36,11 +35,20 @@ public class DatabaseServiceTest {
     private static Event event;
     private static Task task;
 
+    String name = "Jane Doe";
+    Date date = new Date(2021, 03, 11);
+    GeoPoint geoPoint = new GeoPoint(0., 0.);
+    String address = "north pole";
+    Event.Type type = Event.Type.Conference;
+    String description = "Event description goes here";
+    String ownerID = "00";
+
     @Before
     public void setup() {
         db = Mockito.mock(FirebaseFirestore.class, Mockito.RETURNS_DEEP_STUBS);
         service = new DatabaseService(db);
-        event = new PublicEvent("00","testName", new Date(), new GeoPoint(0., 0.),"north pole","testData", Event.Type.Museum, 0 , 0);
+
+        event = new PublicEvent(ownerID, name, date, geoPoint,address,description, type, 0, 0);
         task = new MockTask<Event>(event, null);
     }
 
