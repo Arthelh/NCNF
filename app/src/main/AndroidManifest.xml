@@ -71,9 +71,11 @@
         <activity
             android:name=".event.create.EventCreateActivity"
             android:label="@string/title_event_creation"
-            android:parentActivityName=".main.MainActivity" /> <!-- TODO: merge these two event activity -->
+            android:parentActivityName=".main.MainActivity" /> 
         <activity
-            android:name=".feed.ui.EventActivity"/>
+            android:name=".event.update.EventNewsActivity"
+            android:label="Publish a news"
+            android:parentActivityName=".main.MainActivity" />
         <activity
             android:name=".event.EventActivity"
             android:parentActivityName=".main.MainActivity" /> <!-- LANDING PAGE -->

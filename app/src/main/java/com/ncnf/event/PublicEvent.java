@@ -3,7 +3,7 @@ package com.ncnf.event;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.user.PrivateUser;
+import com.ncnf.utilities.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,7 +50,7 @@ public class PublicEvent extends Event {
 
     public int getMinAge() { return minAge; }
     public int getPrice() { return price; }
-    public List<Tag> getTags() { return tags; }
+    public List<Tag> getTags() { return new ArrayList<Tag>(tags); }
 
     public void setMinAge(int minAge) {
         checkConstraints(minAge, this.price);
@@ -60,20 +60,40 @@ public class PublicEvent extends Event {
     public void setPrice(int price) { this.price = price; }
 
     public void setTags(List<Tag> tags) {
-        this.tags = new ArrayList<>();
-        for(int i = 0; i < tags.size(); ++i) {
-            this.tags.add(tags.get(i));
-        }
+        this.tags = new ArrayList<Tag>(tags);
     }
 
     public void addTag(Tag newTag) {
 
         for(int i = 0; i < tags.size(); ++i) {
             if(tags.get(i).equals(newTag)) {
-                throw new IllegalArgumentException();
+                return;
             }
         }
         tags.add(newTag);
+    }
+
+    public boolean filterTags(String s) {
+
+        for(Tag tag : tags) {
+            if (tag.getName().equals(s) || tag.getName().toLowerCase().contains(s)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        PublicEvent otherEvent = (PublicEvent) o;
+        return getDate().compareTo(otherEvent.getDate());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        PublicEvent p = (PublicEvent) o;
+        return p.getUuid().equals(getUuid());
     }
 
     public CompletableFuture<DatabaseResponse> store(DatabaseService db){
