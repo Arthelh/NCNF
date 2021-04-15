@@ -89,6 +89,10 @@ public class DatabaseService implements DatabaseServiceInterface {
         return this.updateField(path, arrayField, FieldValue.arrayUnion(value));
     }
 
+    public CompletableFuture<DatabaseResponse> removeArrayField(String path, String arrayField, Object value){
+        return this.updateField(path, arrayField, FieldValue.arrayRemove(value));
+    }
+
     public <U> CompletableFuture<DatabaseResponse> whereEqualTo(String path, String field, List<U> values) {
         if(values.size() > 0) throw new IllegalArgumentException("You must pass at least one value.");
 

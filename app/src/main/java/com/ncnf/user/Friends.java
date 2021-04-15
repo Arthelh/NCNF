@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.Utils.AWAITING_REQUESTS_KEY;
+import static com.ncnf.Utils.FRIENDS_KEY;
 import static com.ncnf.Utils.PENDING_REQUESTS_KEY;
 import static com.ncnf.Utils.USERS_COLLECTION_KEY;
 
@@ -24,11 +25,68 @@ public class Friends {
         this.path = USERS_COLLECTION_KEY + uuid;
     }
 
+    /*
+        Friend request to another user (identified by its ID)
+     */
     public CompletableFuture<DatabaseResponse> request(String other_uuid) {
         // Add a pending request to the user
         CompletableFuture<DatabaseResponse> u1 = db.updateArrayField(this.path, PENDING_REQUESTS_KEY, other_uuid);
         // Add a awaiting request to the other user
         CompletableFuture<DatabaseResponse> u2 = db.updateArrayField(USERS_COLLECTION_KEY + other_uuid, AWAITING_REQUESTS_KEY, this.uuid);
+        return combine(u1, u2);
+    }
+
+    /*
+        Friend requests that are waiting for approval from the user
+     */
+    public CompletableFuture<DatabaseResponse> awaitingRequests() {
+        return requests(AWAITING_REQUESTS_KEY);
+    }
+    /*
+        Friend requests sent by the user and still pending
+     */
+    public CompletableFuture<DatabaseResponse> pendingRequests() {
+        return requests(PENDING_REQUESTS_KEY);
+    }
+
+    /*
+        Fetch a list of users from a list of uuid in the given user field (key)
+     */
+    private CompletableFuture<DatabaseResponse> requests(String field) {
+        CompletableFuture<DatabaseResponse> futureResponse = new CompletableFuture<>();
+
+        db.getField(this.path, field).thenAccept(res -> {
+            if (res.isSuccessful()) {
+                List<String> ids = (List<String>) res.getResult();
+                db.whereEqualTo(USERS_COLLECTION_KEY, "uuid", ids).thenAccept(futureResponse::complete);
+            } else {
+                futureResponse.complete(new DatabaseResponse(false, null, null));
+            }
+        });
+
+        return futureResponse;
+    }
+
+    /*
+        Accept or decline a friend request
+     */
+    public CompletableFuture<DatabaseResponse> updateRequest(boolean accept, String other_uuid) {
+        // remove the awaiting request of the user
+        CompletableFuture<DatabaseResponse> u1 = db.removeArrayField(this.path, AWAITING_REQUESTS_KEY, other_uuid);
+        // remove the pending request of the other user
+        CompletableFuture<DatabaseResponse> u2 = db.removeArrayField(USERS_COLLECTION_KEY + other_uuid, PENDING_REQUESTS_KEY, this.uuid);
+
+        return combine(u1, u2);
+    }
+
+    /*
+        Get the friends of the user
+     */
+    public CompletableFuture<DatabaseResponse>  getFriends() {
+        return requests(FRIENDS_KEY);
+    }
+
+    private CompletableFuture<DatabaseResponse> combine(CompletableFuture<DatabaseResponse> u1, CompletableFuture<DatabaseResponse> u2) {
         return u1.thenCombine(u2, (v1, v2) -> {
             Exception exception = v1.getException();
             if (v2.getException() != null) exception = v2.getException();
@@ -40,19 +98,4 @@ public class Friends {
         });
     }
 
-    public CompletableFuture<DatabaseResponse> awaiting_requests() {
-        CompletableFuture<DatabaseResponse> futureResponse = new CompletableFuture<>();
-
-        db.getField(this.path, AWAITING_REQUESTS_KEY).thenAccept(res -> {
-           if (res.isSuccessful()) {
-               List<String> ids = (List<String>) res.getResult();
-               db.whereEqualTo(USERS_COLLECTION_KEY, "uuid", ids).thenAccept(futureResponse::complete);
-           } else {
-               futureResponse.complete(new DatabaseResponse(false, null, null));
-           }
-        });
-
-        return futureResponse;
-    }
-    
 }
