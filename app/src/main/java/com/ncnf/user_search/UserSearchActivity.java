@@ -44,7 +44,7 @@ public class UserSearchActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_user);
+        setContentView(R.layout.fragment_add_friend);
 
         //Init DB Reference
         databaseReference = FirebaseFirestore.getInstance();
