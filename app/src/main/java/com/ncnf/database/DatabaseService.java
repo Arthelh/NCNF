@@ -8,13 +8,16 @@ package com.ncnf.database;
         import com.google.android.gms.tasks.SuccessContinuation;
         import com.google.android.gms.tasks.Task;
         import com.google.firebase.auth.AuthResult;
+        import com.google.firebase.firestore.CollectionReference;
         import com.google.firebase.firestore.DocumentSnapshot;
         import com.google.firebase.firestore.FieldPath;
         import com.google.firebase.firestore.FieldValue;
         import com.google.firebase.firestore.FirebaseFirestore;
+        import com.google.firebase.firestore.Query;
         import com.ncnf.authentication.AuthenticationResponse;
 
         import java.util.ArrayList;
+        import java.util.List;
         import java.util.Map;
         import java.util.concurrent.CompletableFuture;
         import java.util.concurrent.FutureTask;
@@ -84,6 +87,24 @@ public class DatabaseService implements DatabaseServiceInterface {
 
     public CompletableFuture<DatabaseResponse> updateArrayField(String path, String arrayField, Object value){
         return this.updateField(path, arrayField, FieldValue.arrayUnion(value));
+    }
+
+    public CompletableFuture<DatabaseResponse> removeArrayField(String path, String arrayField, Object value){
+        return this.updateField(path, arrayField, FieldValue.arrayRemove(value));
+    }
+
+    public <U> CompletableFuture<DatabaseResponse> whereEqualTo(String path, String field, List<U> values) {
+        if(values.size() == 0) throw new IllegalArgumentException("You must pass at least one value.");
+
+        CompletableFuture<DatabaseResponse> futureResponse = new CompletableFuture<>();
+        CollectionReference ref = this.db.collection(path);
+        Query query = ref.whereEqualTo(field, values.get(0));
+        for (int i = 1; i < values.size(); ++i) {
+            query = query.whereEqualTo(field, values.get(i));
+        }
+        query.get().addOnCompleteListener(task -> onTaskComplete(task, futureResponse));
+
+        return futureResponse;
     }
 
     protected void onTaskComplete(Task task, CompletableFuture<DatabaseResponse> futureResponse){
