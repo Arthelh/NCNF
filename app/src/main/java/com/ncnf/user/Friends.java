@@ -13,7 +13,20 @@ import static com.ncnf.Utils.FRIENDS_KEY;
 import static com.ncnf.Utils.PENDING_REQUESTS_KEY;
 import static com.ncnf.Utils.USERS_COLLECTION_KEY;
 
+/*
+    Interactions with the database to handle friends
+
+    collection: /users
+    fields:
+    - friends => Array<String> uuid: array of friends uuid
+    - pending_requests => Array<String> uuid: array of users uuid to which the user sent a request
+    - awaiting_requests => Array<String> uuid: array of users uuid requesting the user
+ */
 public class Friends {
+
+    /*
+        TODO: Some requests needs to be written with a transaction in case of failure.
+     */
 
     private final DatabaseService db;
     private final String uuid;
@@ -75,8 +88,11 @@ public class Friends {
         CompletableFuture<DatabaseResponse> u1 = db.removeArrayField(this.path, AWAITING_REQUESTS_KEY, other_uuid);
         // remove the pending request of the other user
         CompletableFuture<DatabaseResponse> u2 = db.removeArrayField(USERS_COLLECTION_KEY + other_uuid, PENDING_REQUESTS_KEY, this.uuid);
+        // add the new friend to both users
+        CompletableFuture<DatabaseResponse> u3 = db.updateArrayField(this.path, FRIENDS_KEY, other_uuid);
+        CompletableFuture<DatabaseResponse> u4 = db.updateArrayField(USERS_COLLECTION_KEY + other_uuid, FRIENDS_KEY, uuid);
 
-        return combine(u1, u2);
+        return combine(combine(combine(u1, u2), u3), u4);
     }
 
     /*

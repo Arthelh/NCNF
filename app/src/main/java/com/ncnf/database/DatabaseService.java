@@ -94,7 +94,7 @@ public class DatabaseService implements DatabaseServiceInterface {
     }
 
     public <U> CompletableFuture<DatabaseResponse> whereEqualTo(String path, String field, List<U> values) {
-        if(values.size() > 0) throw new IllegalArgumentException("You must pass at least one value.");
+        if(values.size() == 0) throw new IllegalArgumentException("You must pass at least one value.");
 
         CompletableFuture<DatabaseResponse> futureResponse = new CompletableFuture<>();
         CollectionReference ref = this.db.collection(path);
