@@ -1,5 +1,6 @@
 package com.ncnf.feed.ui;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import com.ncnf.event.Event;
 import com.ncnf.event.EventRelevanceCalculator;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.utilities.DateAdapter;
+
+import static com.ncnf.Utils.DEBUG_TAG;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> implements Filterable {
     private List<Event> events;
@@ -147,6 +150,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder viewHolder, int position) {
         Event event = events.get(position);
+        Log.d(DEBUG_TAG, "Entering here");
 
         viewHolder.event.setText(event.getName());
         viewHolder.date.setText(new DateAdapter(event.getDate()).toString());

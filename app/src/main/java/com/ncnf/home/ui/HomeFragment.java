@@ -1,10 +1,13 @@
 package com.ncnf.home.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,10 +17,15 @@ import android.view.ViewGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
+import com.ncnf.event.Event;
 import com.ncnf.event.create.EventCreateActivity;
 import com.ncnf.event.update.EventNewsActivity;
+import com.ncnf.main.MainActivity;
 import com.ncnf.user.UserProfileActivity;
 import com.ncnf.user_search.UserSearchActivity;
+
+import static com.ncnf.Utils.NEXT_ACTIVITY_EXTRA_KEY;
+import static com.ncnf.Utils.UUID_KEY;
 
 
 public class HomeFragment extends Fragment {
@@ -40,27 +48,20 @@ public class HomeFragment extends Fragment {
     }
 
     public void gotToProfile(View view){
-        Intent intent;
-
-        if(!isConnected()){
-            intent = new Intent(getContext(), LoginActivity.class);
-        } else {
-            intent = new Intent(getContext(), UserProfileActivity.class);
-        }
-
-        startActivity(intent);
+        GoTo(UserProfileActivity.class);
     }
 
     public void goToEventCreation(View view){
-        Intent intent;
+        GoTo(EventCreateActivity.class);
+    }
 
+    private void GoTo(Class<?> activity){
         if(!isConnected()){
-            intent = new Intent(getContext(), LoginActivity.class);
+            createLoginPop(activity);
         } else {
-            intent = new Intent(getContext(), EventCreateActivity.class);
+            Intent intent = new Intent(getContext(), activity);
+            startActivity(intent);
         }
-
-        startActivity(intent);
     }
 
     public void goToUserSearch(View view){
@@ -71,7 +72,7 @@ public class HomeFragment extends Fragment {
     // Temporary
     public void goToEventNews(View view){
         Intent intent = new Intent(getContext(), EventNewsActivity.class);
-        intent.putExtra("uuid", "361f8d6f-ccf0-4ee3-a596-d62a910874f6");
+        intent.putExtra(UUID_KEY, "361f8d6f-ccf0-4ee3-a596-d62a910874f6");
         startActivity(intent);
     }
 
@@ -79,5 +80,26 @@ public class HomeFragment extends Fragment {
         return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
 
+    private final static String POPUP_TITLE = "Connection Alert";
+    private final static String POPUP_MESSAGE = "To do so, a user account is required. Please connect";
+    private final static String POPUP_POSITIVE_BUTTON = "Log in / Register";
+    private final static String POPUP_NEGATIVE_BUTTON = "Cancel";
+
+
+    private void createLoginPop(Class<?> activity){
+        AlertDialog.Builder popup = new AlertDialog.Builder(getActivity());
+        popup.setCancelable(true);
+        popup.setTitle(POPUP_TITLE);
+        popup.setMessage(POPUP_MESSAGE);
+        popup.setPositiveButton(POPUP_POSITIVE_BUTTON, (dialog, which) -> {
+            dialog.cancel();
+            Intent intent = new Intent(getContext(), LoginActivity.class);
+            intent.putExtra(NEXT_ACTIVITY_EXTRA_KEY, activity);
+            startActivity(intent);
+        });
+        popup.setNegativeButton(POPUP_NEGATIVE_BUTTON, (dialog, which) -> dialog.cancel());
+        popup.show();
+
+    }
 
 }

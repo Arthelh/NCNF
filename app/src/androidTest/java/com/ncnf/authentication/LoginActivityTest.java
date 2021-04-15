@@ -1,11 +1,19 @@
 package com.ncnf.authentication;
 
+import android.view.View;
+import android.widget.EditText;
+
+import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.Description.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,6 +31,9 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
+import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -74,8 +85,12 @@ public class LoginActivityTest {
     public void signInFragmentEmptyInputTest(){
         onView(withId(R.id.registerButton)).perform(click());
         onView(withId(R.id.loginButton)).perform(click());
-        onView(ViewMatchers.withId(R.id.signInLoginButton)).perform(click());
-        onView(withId(R.id.exceptionSignIn)).check(matches(withText(containsString(EMPTY_FIELD_STRING))));
+        onView(withId(R.id.signInLoginButton)).perform(click());
+        onView(withId(R.id.signInEmail)).check(matches(hasErrorText(EMPTY_FIELD_STRING)));
+
+        onView(withId(R.id.signInEmail)).perform(typeText(validEmail), closeSoftKeyboard());
+        onView(withId(R.id.signInLoginButton)).perform(click());
+        onView(withId(R.id.signInPassword)).check(matches(hasErrorText(EMPTY_FIELD_STRING)));
     }
 
     @Test
@@ -83,7 +98,7 @@ public class LoginActivityTest {
         onView(withId(R.id.signInEmail)).perform(typeText(invalidEmail), closeSoftKeyboard());
         onView(withId(R.id.signInPassword)).perform(typeText(validPassword), closeSoftKeyboard());
         onView(withId(R.id.signInLoginButton)).perform(click());
-        onView(withId(R.id.exceptionSignIn)).check(matches(withText(containsString(BADLY_FORMATTED_EMAIL_STRING))));
+        onView(withId(R.id.signInEmail)).check(matches(hasErrorText(BADLY_FORMATTED_EMAIL_STRING)));
     }
 
     @Test
@@ -100,7 +115,7 @@ public class LoginActivityTest {
 
         verify(mockedAuth).logIn(anyString(), anyString());
 
-        onView(withId(R.id.exceptionSignIn)).check(matches(withText(containsString(unsuccessfulLogin))));
+        onView(withId(android.R.id.button1)).check(matches(isClickable()));
     }
 
 //    @Test HARDCORE TO TEST WITH DAGGER
@@ -128,16 +143,15 @@ public class LoginActivityTest {
     public void signUpFragmentEmptyInputTest(){
         onView(withId(R.id.registerButton)).perform(click());
         onView(ViewMatchers.withId(R.id.signUpRegisterButton)).perform(click());
-        onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(EMPTY_FIELD_STRING))));
+        onView(withId(R.id.signUpEmail)).check(matches(hasErrorText(EMPTY_FIELD_STRING)));
 
         onView(withId(R.id.signUpEmail)).perform(typeText(validEmail), closeSoftKeyboard());
         onView(ViewMatchers.withId(R.id.signUpRegisterButton)).perform(click());
-        onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(EMPTY_FIELD_STRING))));
+        onView(withId(R.id.signUpPassword)).check(matches(hasErrorText(EMPTY_FIELD_STRING)));
 
-        onView(withId(R.id.signUpEmail)).perform(typeText(validEmail), closeSoftKeyboard());
         onView(withId(R.id.signUpPassword)).perform(typeText(validPassword), closeSoftKeyboard());
         onView(ViewMatchers.withId(R.id.signUpRegisterButton)).perform(click());
-        onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(EMPTY_FIELD_STRING))));
+        onView(withId(R.id.signUpConfirmPassword)).check(matches(hasErrorText(EMPTY_FIELD_STRING)));
     }
 
     @Test
@@ -147,7 +161,7 @@ public class LoginActivityTest {
         onView(withId(R.id.signUpPassword)).perform(typeText(validPassword), closeSoftKeyboard());
         onView(withId(R.id.signUpConfirmPassword)).perform(typeText(validPassword), closeSoftKeyboard());
         onView(withId(R.id.signUpRegisterButton)).perform(click());
-        onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(BADLY_FORMATTED_EMAIL_STRING))));
+        onView(withId(R.id.signUpEmail)).check(matches(hasErrorText(BADLY_FORMATTED_EMAIL_STRING)));
     }
 
     @Test
@@ -157,7 +171,7 @@ public class LoginActivityTest {
         onView(withId(R.id.signUpPassword)).perform(typeText(invalidPassword), closeSoftKeyboard());
         onView(withId(R.id.signUpConfirmPassword)).perform(typeText(validPassword), closeSoftKeyboard());
         onView(withId(R.id.signUpRegisterButton)).perform(click());
-        onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(PASSWORDS_DO_NOT_MATCH_STRING))));
+        onView(withId(R.id.signUpConfirmPassword)).check(matches(hasErrorText(PASSWORDS_DO_NOT_MATCH_STRING)));
     }
 
     @Test
@@ -167,7 +181,7 @@ public class LoginActivityTest {
         onView(withId(R.id.signUpPassword)).perform(typeText(invalidPassword), closeSoftKeyboard());
         onView(withId(R.id.signUpConfirmPassword)).perform(typeText(invalidPassword), closeSoftKeyboard());
         onView(withId(R.id.signUpRegisterButton)).perform(click());
-        onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(INVALID_PASSWORD_STRING))));
+        onView(withId(R.id.signUpPassword)).check(matches(hasErrorText(INVALID_PASSWORD_STRING)));
     }
 
     @Test
@@ -176,11 +190,11 @@ public class LoginActivityTest {
 
         onView(withId(R.id.organizerButton)).perform(click());
         onView(withId(R.id.signUpEmail)).check(matches(withHint(containsString("Business Email.."))));
-        onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString("Organizer Registration"))));
+        onView(withId(R.id.InformationSignUp)).check(matches(withText(containsString("Organizer Registration"))));
 
         onView(withId(R.id.organizerButton)).perform(click());
         onView(withId(R.id.signUpEmail)).check(matches(withHint(containsString("Email.."))));
-        onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString("Register"))));
+        onView(withId(R.id.InformationSignUp)).check(matches(withText(containsString("Register"))));
     }
 
     @Test
@@ -201,11 +215,11 @@ public class LoginActivityTest {
 
         verify(mockedAuth).register(anyString(), anyString());
 
-        onView(withId(R.id.exceptionSignUp)).check(matches(withText(containsString(unsuccessfulRegister))));
+        onView(withId(android.R.id.button1)).check(matches(isClickable()));
     }
 
     @Test
-    public void signUpFragmentUnsuccessfulRegisterTest2(){
+    public void signUpFragmentSuccessfulRegisterTest(){
         CompletableFuture<AuthenticationResponse> future = new CompletableFuture<>();
         future.complete(new AuthenticationResponse(true, null, null));
 
@@ -219,7 +233,26 @@ public class LoginActivityTest {
         onView(withId(R.id.signUpConfirmPassword)).perform(typeText(validPassword), closeSoftKeyboard());
         onView(withId(R.id.signUpRegisterButton)).perform(click());
 
+        onView(withId(R.id.signUpEmail)).check(matches(hasNoErrorText()));
+        onView(withId(R.id.signUpPassword)).check(matches(hasNoErrorText()));
+        onView(withId(R.id.signUpConfirmPassword)).check(matches(hasNoErrorText()));
+
         verify(mockedAuth).register(anyString(), anyString());
+    }
+
+    private static Matcher<View> hasNoErrorText() {
+        return new BoundedMatcher<View, EditText>(EditText.class) {
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("has no error text: ");
+            }
+
+            @Override
+            protected boolean matchesSafely(EditText view) {
+                return view.getError() == null;
+            }
+        };
     }
 
 }

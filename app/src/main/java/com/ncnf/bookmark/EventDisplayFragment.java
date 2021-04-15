@@ -34,6 +34,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.Utils.UUID_KEY;
 
 @AndroidEntryPoint
 public class EventDisplayFragment extends Fragment implements EventAdapter.OnEventListener{
@@ -91,7 +92,8 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
     @Override
     public void onEventClick(Event event) {
         Intent intent = new Intent(getActivity(), EventActivity.class);
-        intent.putExtra("event_uid", event.getUuid().toString());
+        intent.putExtra(UUID_KEY, event.getUuid().toString());
+        Log.d(DEBUG_TAG, "Going on event activity");
         startActivity(intent);
     }
 }
