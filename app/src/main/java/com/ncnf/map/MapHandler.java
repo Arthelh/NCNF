@@ -7,6 +7,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.ncnf.event.PublicEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class MapHandler {
 
     private final Activity context;
     private final GoogleMap mMap;
-    private final EventProvider eventProvider;
+    private final PublicEventProvider publicEventProvider;
     private final VenueProvider venueProvider;
 
     private LatLng userPosition;
@@ -26,12 +27,12 @@ public class MapHandler {
     private boolean eventsShown = true;
     private final float ZOOM_LEVEL = 11;
 
-    public MapHandler(Activity context, GoogleMap mMap, EventProvider eventProvider, VenueProvider venueProvider){
+    public MapHandler(Activity context, GoogleMap mMap, PublicEventProvider publicEventProvider, VenueProvider venueProvider){
         this.context = context;
         this.mMap = mMap;
         if (mMap != null) //This is just for MapHandler Unit test
             this.mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL));
-        this.eventProvider = eventProvider;
+        this.publicEventProvider = publicEventProvider;
         this.venueProvider = venueProvider;
 
         userPosition = new LatLng(46.526120f, 6.576330f);
@@ -62,10 +63,10 @@ public class MapHandler {
         //mMap.moveCamera(CameraUpdateFactory.zoomTo(zoomLevel));
 
         // Add a marker for each event
-        List<Event> events = eventProvider.getAll();
+        List<PublicEvent> events = publicEventProvider.getAll();
         eventMarkers = new ArrayList<>();
-        for (Event p : events) {
-            LatLng event_position = new LatLng(p.getLatitude(), p.getLongitude());
+        for (PublicEvent p : events) {
+            LatLng event_position = new LatLng(p.getLocation().getLatitude(), p.getLocation().getLongitude());
             if (MapUtilities.position_in_range(event_position, userPosition)){
                 eventMarkers.add(mMap.addMarker(new MarkerOptions().position(event_position).title(p.getName())));
             }
