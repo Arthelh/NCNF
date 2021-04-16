@@ -70,13 +70,13 @@ public class BookMarkActivityTest {
 
     @Test
     public void eventFormValidatesEmptyInput() throws InterruptedException {
-        onView(withId(R.id.view_pager)).perform(swipeLeft());
-        onView(withId(R.id.view_pager)).perform(swipeRight());
+        onView(withId(R.id.bookmark_view_pager)).perform(swipeLeft());
+        onView(withId(R.id.bookmark_view_pager)).perform(swipeRight());
 
         //Wait to be sure that events have been loaded
         Thread.sleep(5000);
 
-        onView(withId(R.id.view_pager)).perform(click());
+        onView(withId(R.id.bookmark_view_pager)).perform(click());
         Intents.intended(hasComponent(EventActivity.class.getName()));
     }
 }
