@@ -24,6 +24,6 @@ I then turned to the feed view and refactored the fetching, filtering and displa
 
 # Overall team
 
-This week was difficult, as a long time pending PR had to be merged. Unclear tasks, free cloud service limitations and impossible-to-test features greatly hindered progress. Many classes and features lacked insight and worked with lists of events instead of using db queries. The goal is now to refactor, clean and update all the previous code that's become "legacy", then define clear and focused goals for the upcoming weeks. This will require a complete rebuild of the Sprint Backlog and task
+This week was difficult, as a long time pending PR had to be merged. Unclear tasks, free cloud service limitations and impossible-to-test features greatly hindered progress. Many classes and features lacked insight and worked with lists of events instead of using db queries. The goal is now to refactor, clean and update all the previous code that's become "legacy", then define clear and focused goals for the upcoming weeks. This will require a complete rebuild of the Sprint Backlog and tasks
 
 
