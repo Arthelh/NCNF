@@ -18,6 +18,9 @@ I then turned to the feed view and refactored the fetching, filtering and displa
 This week, I started working on the user profile when we search for them. I did not have time to do a lot this week, so I will catch up next week by doing more work then. 
 
 # Jérémie
+This week, I helped Emmanuelle with the merge of her PR which was particularly cumbersome. This took me a lot of time but it was an important feature that we needed to continue the project. I also worked on the Friends system UI and worked with David in order to link the recycler views with the Firestore DB. We have now a nice interface to search users but we still have to implement the requests and link the UI to Keran's work.
+
+It took me more time than expected but I expected it when helping Emmanuelle.
 
 
 # Keran
