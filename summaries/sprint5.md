@@ -5,7 +5,7 @@
 
 
 # David (scrum master)
-This week I tried to create and run tests for user search, I was unable to find any documentation on how to make espresso type in a searchview so I wasted most of my time. I then tried to make a generic interface for Adapter and FirestoreRecyclerView, but unfortunately this doesn't appear to be possible, or not without extreme cmplexity or reduced abstraction. 
+This week I tried to create and run tests for user search, I was unable to find any documentation on how to make espresso type in a searchview so I wasted most of my time. I then tried to make a generic interface for Adapter and FirestoreRecyclerView, but unfortunately this doesn't appear to be possible, at least not without extreme complexity or reduced abstraction. 
 I then turned to the feed view and refactored the fetching, filtering and displaying of events.
 
 
