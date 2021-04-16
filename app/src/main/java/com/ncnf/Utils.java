@@ -18,7 +18,9 @@ public class Utils {
     public static final String OWNED_EVENTS_KEY = "owned_events";
     public static final String SAVED_EVENTS_KEY = "saved_events";
     public static final String NOTIFICATIONS_KEY = "notifications";
-    public static final String NOTIFICATIONS_TOKEN_KEY = "/notifications_token";
+    public static final String NOTIFICATIONS_TOKEN_KEY = "notifications_token";
+    public static final String PENDING_REQUESTS_KEY = "pending_requests";
+    public static final String AWAITING_REQUESTS_KEY = "awaiting_requests";
 
     /**
      * Keys related to events
