@@ -6,8 +6,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
 import com.ncnf.event.update.EventNewsActivity;
+import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.main.MainActivity;
-import com.ncnf.user_search.UserSearchActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -49,9 +49,9 @@ public final class HomeFragmentTest {
     }
 
     @Test
-    public void searchUserOpensTest(){
-        onView(withId(R.id.homeSearchUserButton)).perform(click());
-        Intents.intended(hasComponent(UserSearchActivity.class.getName()));
+    public void friendsActivityOpensTest(){
+        onView(withId(R.id.homeFriendsButton)).perform(click());
+        Intents.intended(hasComponent(FriendsActivity.class.getName()));
     }
 
     @Test
@@ -64,11 +64,5 @@ public final class HomeFragmentTest {
     public void eventNewsActivityOpensTest(){
         onView(withId(R.id.homeEventNewsButton)).perform(click());
         Intents.intended(hasComponent(EventNewsActivity.class.getName()));
-    }
-
-    @Test
-    public void searchUserActivityOpensTest(){
-        onView(withId(R.id.homeSearchUserButton)).perform(click());
-        Intents.intended(hasComponent(UserSearchActivity.class.getName()));
     }
 }
