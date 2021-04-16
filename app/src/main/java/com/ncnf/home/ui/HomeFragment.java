@@ -21,8 +21,8 @@ import com.ncnf.event.Event;
 import com.ncnf.event.create.EventCreateActivity;
 import com.ncnf.event.update.EventNewsActivity;
 import com.ncnf.main.MainActivity;
+import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.user.UserProfileActivity;
-import com.ncnf.user_search.UserSearchActivity;
 
 import static com.ncnf.Utils.NEXT_ACTIVITY_EXTRA_KEY;
 import static com.ncnf.Utils.UUID_KEY;
@@ -40,11 +40,9 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         getView().findViewById(R.id.homeProfileButton).setOnClickListener(this::gotToProfile);
-
         getView().findViewById(R.id.homeCreateEventButton).setOnClickListener(this::goToEventCreation);
-
         getView().findViewById(R.id.homeEventNewsButton).setOnClickListener(this::goToEventNews);
-        getView().findViewById(R.id.homeSearchUserButton).setOnClickListener(this::goToUserSearch);
+        getView().findViewById(R.id.homeFriendsButton).setOnClickListener(this::goToFriends);
     }
 
     public void gotToProfile(View view){
@@ -64,8 +62,8 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void goToUserSearch(View view){
-        Intent intent = new Intent(getContext(), UserSearchActivity.class);
+    public void goToFriends(View view){
+        Intent intent = new Intent(getContext(), FriendsActivity.class);
         startActivity(intent);
     }
 
