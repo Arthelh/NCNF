@@ -1,5 +1,6 @@
 package com.ncnf.feed;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.widget.SearchView;
@@ -39,7 +40,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static com.ncnf.Utils.DEBUG_TAG;
 import static org.hamcrest.Matchers.allOf;
+import static org.mockito.Matchers.anyString;
 
 
 @HiltAndroidTest

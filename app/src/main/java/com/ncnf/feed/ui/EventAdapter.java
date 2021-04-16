@@ -150,7 +150,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder viewHolder, int position) {
         Event event = events.get(position);
-        Log.d(DEBUG_TAG, "Entering here");
 
         viewHolder.event.setText(event.getName());
         viewHolder.date.setText(new DateAdapter(event.getDate()).toString());
