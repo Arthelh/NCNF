@@ -27,7 +27,7 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
-import com.ncnf.map.EventProvider;
+import com.ncnf.map.PublicEventProvider;
 import com.ncnf.map.MapHandler;
 import com.ncnf.map.SearchBarHandler;
 import com.ncnf.map.VenueProvider;
@@ -55,7 +55,7 @@ public class MapFragment extends Fragment{
     private boolean map_ready = false;
 
     @Inject
-    EventProvider eventProvider;
+    PublicEventProvider publicEventProvider;
 
     @Inject
     VenueProvider venueProvider;
@@ -89,7 +89,7 @@ public class MapFragment extends Fragment{
         mapView.getMapAsync(googleMap -> {
             mMap = googleMap;
 
-            mapHandler = new MapHandler(getActivity(), mMap, eventProvider, venueProvider);
+            mapHandler = new MapHandler(getActivity(), mMap, publicEventProvider, venueProvider);
             searchBarHandler = new SearchBarHandler(getActivity(), materialSearchBar, mapHandler);
 
             mapHandler.show_markers();

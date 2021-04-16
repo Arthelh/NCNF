@@ -1,8 +1,12 @@
 package com.ncnf.map;
 
+import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.event.Event;
+import com.ncnf.event.PublicEvent;
+
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -12,13 +16,9 @@ public class ProvidersTest {
 
     @Test
     public void testEventProvider(){
-        EventProvider ep = new EventProvider();
-        List<Event> list = ep.getAll();
+        PublicEventProvider ep = new PublicEventProvider();
+        List<PublicEvent> list = ep.getAll();
         assertEquals(4, list.size());
-        assertTrue(list.contains(new Event("Math Conference, EPFL, 1pm March 3rd", 46.5191f, 6.5668f)));
-        assertTrue(list.contains(new Event("Les Noces de Figaro, Lausanne Opera, 7pm March 12th", 46.5180f, 6.6369f)));
-        assertTrue(list.contains(new Event("Caravan Palace, Les Docks, 9pm March 12th", 46.5224f, 6.6193f)));
-        assertTrue(list.contains(new Event("Cours de danse, Espace Arsenic, 3pm March 13th", 46.5227f, 6.6216f)));
     }
 
     @Test

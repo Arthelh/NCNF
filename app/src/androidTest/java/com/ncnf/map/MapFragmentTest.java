@@ -4,10 +4,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.SeekBar;
 
-import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
-import androidx.test.espresso.ViewAssertion;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -18,8 +16,11 @@ import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 
+import com.google.firebase.firestore.GeoPoint;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
+import com.ncnf.event.Event;
+import com.ncnf.event.PublicEvent;
 import com.ncnf.main.MainActivity;
 import com.ncnf.settings.SettingsActivity;
 
@@ -33,6 +34,7 @@ import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import dagger.hilt.android.testing.BindValue;
@@ -53,7 +55,7 @@ import static org.junit.Assert.assertTrue;
 @HiltAndroidTest
 public final class MapFragmentTest {
 
-    List<Event> TEST_EVENTS = Collections.singletonList(new Event("Math Conference, EPFL, 1pm March 3rd", 46.5191f, 6.5668f));
+    List<PublicEvent> TEST_EVENTS = Collections.singletonList(new PublicEvent("lol", "Math Conference", new Date(), new GeoPoint(46.5191f, 6.5668f), "EPFL", "Math Conference", Event.Type.Conference, 0, 0));
     List<Venue> TEST_VENUES = Arrays.asList(new Venue("EPFL", 46.5191f, 6.5668f),
             new Venue("UniL", 46.5211f, 6.5802f));
 
@@ -63,14 +65,14 @@ public final class MapFragmentTest {
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(MainActivity.class));
 
     @BindValue
-    public EventProvider eventProvider = Mockito.mock(EventProvider.class);
+    public PublicEventProvider publicEventProvider = Mockito.mock(PublicEventProvider.class);
     @BindValue
     public VenueProvider venueProvider = Mockito.mock(VenueProvider.class);
 
     @Before
     public void setup() {
         Intents.init();
-        Mockito.when(eventProvider.getAll()).thenReturn(TEST_EVENTS);
+        Mockito.when(publicEventProvider.getAll()).thenReturn(TEST_EVENTS);
         Mockito.when(venueProvider.getAll()).thenReturn(TEST_VENUES);
         onView(withId(R.id.navigation_map)).perform(click());
     }
@@ -91,7 +93,7 @@ public final class MapFragmentTest {
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
         assertNotNull("Map with events is loaded",
-                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 10000)
+                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 1000)
         );
         // Events are shown
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Math"));
@@ -100,11 +102,11 @@ public final class MapFragmentTest {
         onView(withId(R.id.map_switch_button)).perform(click());
 
         assertNotNull("Map with venues is loaded",
-                device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 10000)
+                device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 1000)
         );
         // Venues are shown
         marker = device.findObject(new UiSelector().descriptionContains("EPFL"));
-        assertTrue("Venue markers exist", marker.waitForExists(10000));
+        assertTrue("Venue markers exist", marker.waitForExists(1000));
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
@@ -112,7 +114,7 @@ public final class MapFragmentTest {
                 device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 10000)
         );
 
-        Mockito.verify(eventProvider).getAll();
+        Mockito.verify(publicEventProvider).getAll();
         Mockito.verify(venueProvider).getAll();
     }
 
@@ -121,11 +123,11 @@ public final class MapFragmentTest {
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
         assertNotNull("Map with events is loaded",
-                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 10000)
+                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 1000)
         );
         // Events are shown
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Math"));
-        assertTrue("Events markers exist", marker.waitForExists(10000));
+        assertTrue("Events markers exist", marker.waitForExists(1000));
 
         onView(withId(R.id.map_settings_button)).perform(click());
         onView(withId(R.id.distanceSeekBar)).perform(new ViewAction() {
@@ -147,14 +149,14 @@ public final class MapFragmentTest {
         });
         onView(withId(R.id.validateButton)).perform(click());
         marker = device.findObject(new UiSelector().descriptionContains("Math"));
-        assertFalse("Events markers exist", marker.waitForExists(10000));
+        assertFalse("Events markers exist", marker.waitForExists(1000));
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
         marker = device.findObject(new UiSelector().descriptionContains("EPFL"));
-        assertFalse("Venue markers exist", marker.waitForExists(10000));
+        assertFalse("Venue markers exist", marker.waitForExists(1000));
         marker = device.findObject(new UiSelector().descriptionContains("UniL"));
-        assertTrue("Venue markers exist", marker.waitForExists(10000));
+        assertTrue("Venue markers exist", marker.waitForExists(1000));
 
         onView(withId(R.id.map_settings_button)).perform(click());
         onView(withId(R.id.distanceSeekBar)).perform(new ViewAction() {
