@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -207,4 +208,38 @@ public class EventBuilderTest {
         assertEquals(event, null);
     }
 
+
+
+    @Test
+    public void worksOnSnapshot(){
+        DocumentSnapshot document = Mockito.mock(DocumentSnapshot.class);
+        Map<String, Object> privateEvent = new HashMap<>();
+        privateEvent.put(OWNER_KEY, ownerId);
+        privateEvent.put(UUID_KEY, this.uuid);
+        privateEvent.put(NAME_KEY, this.name);
+        privateEvent.put(DATE_KEY, new Timestamp(this.date));
+        privateEvent.put(LOCATION_KEY, this.location);
+        privateEvent.put(ADDRESS_KEY, this.address);
+        privateEvent.put(VISIBILITY_KEY, "PRIVATE");
+        privateEvent.put(TYPE_KEY, this.type);
+        privateEvent.put(ATTENDEES_KEY, this.attendees);
+        privateEvent.put(DESCRIPTION_KEY, this.description);
+        privateEvent.put(OWNER_KEY, this.ownerId);
+        privateEvent.put(INVITED_KEY, invited);
+        when(document.getData()).thenReturn(privateEvent);
+
+        PrivateEvent event = (PrivateEvent) eventBuilder.eventFromSnapshot(document);
+
+        assertEquals(event.getUuid().toString(), uuid);
+        assertEquals(event.getName(), name);
+        assertEquals(event.getDate(), date);
+        assertEquals(event.getLocation(), location);
+        assertEquals(event.getAddress(), address);
+        assertEquals(event.getVisibility().toString(), "PRIVATE");
+        assertEquals(event.getType().toString(), type);
+        assertEquals(event.getAttendees().get(0), attendees.get(0));
+        assertEquals(event.getDescription(), description);
+        assertEquals(event.getOwnerId(), ownerId);
+        assertEquals(event.getInvited().get(0), "invited");
+    }
 }
