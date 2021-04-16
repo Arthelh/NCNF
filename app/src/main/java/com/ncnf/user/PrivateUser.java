@@ -1,6 +1,8 @@
 package com.ncnf.user;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.ncnf.Utils;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
@@ -34,6 +36,8 @@ public class PrivateUser {
     private String email;
     private final String UUID;
     private final String path;
+    private Map<String, Object> userData;
+
     
     private final IllegalStateException wrongCredentials = new IllegalStateException("User doesn't have the right credentials to perform current operation");
 
@@ -42,7 +46,6 @@ public class PrivateUser {
         this.UUID = FirebaseAuth.getInstance().getUid();
         this.email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         this.path = USERS_COLLECTION_KEY + UUID;
-
     }
 
     public PrivateUser(String UUID, String email) {
@@ -66,6 +69,14 @@ public class PrivateUser {
         this.db = db;
     }
 
+    public PrivateUser(DocumentSnapshot snapshot){
+        this.db = new DatabaseService();
+        this.UUID = snapshot.get(Utils.UUID_KEY, String.class);
+        this.path = USERS_COLLECTION_KEY + UUID;
+        this.email = snapshot.get(EMAIL_KEY, String.class);
+        this.userData = snapshot.getData();
+    }
+
     protected PrivateUser(DatabaseService db, String UUID, String email) {
         if(!checkArgument(UUID) || !checkArgument(email)) {
             throw wrongCredentials;
@@ -87,6 +98,10 @@ public class PrivateUser {
 
     public String getEmail(){
         return email;
+    }
+
+    public Map<String, Object> getUserData() {
+        return userData;
     }
 
     public void setEmail(String email){
