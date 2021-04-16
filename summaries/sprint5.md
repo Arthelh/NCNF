@@ -15,7 +15,7 @@ I then turned to the feed view and refactored the fetching, filtering and displa
 
 # Emmanuelle
 
-
+This week, I started working on the user profile when we search for them. I did not have time to do a lot this week, so I will catch up next week by doing more work then. 
 
 # Jérémie
 
