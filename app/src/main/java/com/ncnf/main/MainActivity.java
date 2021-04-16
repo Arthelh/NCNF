@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ncnf.R;
+import com.ncnf.event.EventDB;
 import com.ncnf.feed.ui.FeedFragment;
 import com.ncnf.home.ui.HomeFragment;
 import com.ncnf.map.ui.MapFragment;
@@ -38,10 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        EventDB eventDB = new EventDB();
+
         if(savedInstanceState == null){
             this.homeFragment = new HomeFragment();
-            this.mapFragment = new MapFragment();
-            this.feedFragment = new FeedFragment();
+            this.feedFragment = new FeedFragment(eventDB);
+            this.mapFragment = new MapFragment(eventDB);
             this.activeFragment = this.homeFragment;
         }
 

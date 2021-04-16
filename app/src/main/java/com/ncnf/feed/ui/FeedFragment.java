@@ -30,9 +30,13 @@ public class FeedFragment extends Fragment {
     private RecyclerView.LayoutManager lManager;
     private EventAdapter adapter;
     private List<Event> eventList = new ArrayList<>();
-    private EventDB eventDB = new EventDB();
+    private EventDB eventDB;
     private static final String CHANNEL_NAME = "events_to_be_shown";
 
+    public FeedFragment(EventDB eventDB){
+        super();
+        this.eventDB = eventDB;
+    }
 
     @Nullable
     @Override

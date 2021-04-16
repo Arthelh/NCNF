@@ -15,13 +15,6 @@ import static org.junit.Assert.assertTrue;
 public class ProvidersTest {
 
     @Test
-    public void testEventProvider(){
-        PublicEventProvider ep = new PublicEventProvider();
-        List<PublicEvent> list = ep.getAll();
-        assertEquals(4, list.size());
-    }
-
-    @Test
     public void testVenueProvider(){
         VenueProvider ep = new VenueProvider();
         List<Venue> list = ep.getAll();
