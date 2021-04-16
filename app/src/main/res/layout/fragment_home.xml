@@ -34,14 +34,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:text="Events news" />
+                android:text="@string/home_events_news_button" />
             
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/homeFriendsButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:text="@string/search_user_button" />
+                android:text="@string/home_friends_button" />
         </LinearLayout>
 
 

@@ -34,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class AddFriendFragment extends Fragment {
 
-    private final List<PrivateUser> users = new LinkedList<>();
     private RecyclerView recycler;
     private UserAdapter adapter;
     private CollectionReference usersRef;
@@ -97,18 +96,13 @@ public class AddFriendFragment extends Fragment {
                     @NonNull
                     @Override
                     public PrivateUser parseSnapshot(@NonNull DocumentSnapshot snapshot) {
-                        return new PrivateUser((String)snapshot.get(Utils.UUID_KEY), (String)snapshot.get(Utils.EMAIL_KEY));
+                        return new PrivateUser(snapshot);
                     }
                 })
                 .build();
 
-        adapter = new UserAdapter(options, new UserAdapter.OnItemClickListener() {
-            //Custom method to display profile when clicking on it
-            @Override
-            public void onItemClick(PrivateUser user) {
-                displayUser(user);
-            }
-        });
+        //Custom method to display profile when clicking on it
+        adapter = new UserAdapter(options, user -> displayUser(user));
 
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         //TODO find better way to listen to optimize resources

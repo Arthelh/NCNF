@@ -96,5 +96,7 @@
     <string name="search_user_button">Search User</string>
     <string name="search_user_hint">Search User</string>
     <string name="user_search_title">Search User</string>
+    <string name="home_friends_button">Friends</string>
+    <string name="home_events_news_button">Events news</string>
 
 </resources>
