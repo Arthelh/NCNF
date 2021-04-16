@@ -24,7 +24,7 @@ This week, I've completed the bookmark, linked it to the database and extended i
 
 # Emmanuelle
 
-
+This week, my task was to test and merge what I implemented last week. The tests were quite difficult and there were some elements that I did not manage to test. Also, I had a lot of difficulties with the merge and in the end Jérémie did it for me ; next time, I will work on merging better.
 
 # Jérémie
 This week, I worked on the layout of the application and changed activities to use fragments, allawing us to have a bottom navigation bar that looks way cleaner than a main activity with buttons. This took me some time since I had to refactor the existing activities but I think this is a nice layout on which we can build on top of. 
