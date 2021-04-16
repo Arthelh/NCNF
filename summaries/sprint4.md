@@ -19,7 +19,7 @@ This week I implemented the ability to chose an event picture from the library. 
 The first two tasks only took a couple of hourse, but the third one has already taken much more time than expected
 
 # Eloi (scrum master)
-
+This week, I've completed the bookmark, linked it to the database and extended it to owned events (already had saved events). To do so I had to rethink about the front end and getting a clean interface took more time than expected. But at the end, the result is quite good I think.
 
 
 # Emmanuelle
