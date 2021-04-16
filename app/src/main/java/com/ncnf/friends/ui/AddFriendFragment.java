@@ -55,10 +55,10 @@ public class AddFriendFragment extends Fragment {
         usersRef = databaseReference.collection(Utils.USERS_COLLECTION_KEY);
 
         //Handle recyclerView
-        recycler = getView().findViewById(R.id.user_search_recycler_view);
+        recycler = getView().findViewById(R.id.add_friend_recycler_view);
         recycler.hasFixedSize();
 
-        materialSearchBar = getView().findViewById(R.id.search_user_searchBar);
+        materialSearchBar = getView().findViewById(R.id.add_friend_search_bar);
 
         materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
@@ -87,7 +87,7 @@ public class AddFriendFragment extends Fragment {
         Query firestoreSearchQuery = usersRef
                 .orderBy("first_name") //TODO change to "username" when available
                 .startAt(name)
-                .endAt(name+ "\uf8ff");
+                .endAt(name + "\uf8ff");
 
 
         FirestoreRecyclerOptions<PrivateUser> options
@@ -97,7 +97,7 @@ public class AddFriendFragment extends Fragment {
                     @NonNull
                     @Override
                     public PrivateUser parseSnapshot(@NonNull DocumentSnapshot snapshot) {
-                        return new PrivateUser((String)snapshot.get("first_name"), (String)snapshot.get("email"));
+                        return new PrivateUser((String)snapshot.get(Utils.UUID_KEY), (String)snapshot.get(Utils.EMAIL_KEY));
                     }
                 })
                 .build();
@@ -121,7 +121,5 @@ public class AddFriendFragment extends Fragment {
     private void displayUser(PrivateUser user){
         Toast.makeText(getActivity(), "TEST_PROFILE_DISPLAY", Toast.LENGTH_LONG).show();
     }
-
-
 
 }

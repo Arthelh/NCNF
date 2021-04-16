@@ -18,7 +18,6 @@ import com.ncnf.event.create.EventCreateActivity;
 import com.ncnf.event.update.EventNewsActivity;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.user.UserProfileActivity;
-import com.ncnf.user_search.UserSearchActivity;
 
 
 public class HomeFragment extends Fragment {
@@ -35,7 +34,7 @@ public class HomeFragment extends Fragment {
         getView().findViewById(R.id.homeProfileButton).setOnClickListener(this::gotToProfile);
         getView().findViewById(R.id.homeCreateEventButton).setOnClickListener(this::goToEventCreation);
         getView().findViewById(R.id.homeEventNewsButton).setOnClickListener(this::goToEventNews);
-        getView().findViewById(R.id.homeSearchUserButton).setOnClickListener(this::goToFriends);
+        getView().findViewById(R.id.homeFriendsButton).setOnClickListener(this::goToFriends);
     }
 
     public void gotToProfile(View view){

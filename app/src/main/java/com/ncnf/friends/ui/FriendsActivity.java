@@ -24,10 +24,10 @@ public class FriendsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friends);
 
         FragmentSelector fragmentSelector = new FragmentSelector(this);
-        ViewPager2 viewPager = findViewById(R.id.view_pager);
+        ViewPager2 viewPager = findViewById(R.id.friends_view_pager);
         viewPager.setAdapter(fragmentSelector);
 
-        TabLayout tabs = findViewById(R.id.tabs);
+        TabLayout tabs = findViewById(R.id.friends_tabs);
         new TabLayoutMediator(tabs, viewPager,
                 (tab, position) -> tab.setText(fragmentSelector.getPageTitle(position))
         ).attach();
