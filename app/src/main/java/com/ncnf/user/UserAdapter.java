@@ -13,23 +13,21 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.ncnf.R;
 import com.ncnf.Utils;
 
-import io.grpc.stub.StreamObserver;
-
-public class UserAdapter extends FirestoreRecyclerAdapter<PrivateUser, UserAdapter.UserViewHolder> {
+public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.UserViewHolder> {
 
     public interface OnItemClickListener {
-        void onItemClick(PrivateUser item);
+        void onItemClick(User item);
     }
 
     private final UserAdapter.OnItemClickListener listener;
 
-    public UserAdapter(FirestoreRecyclerOptions<PrivateUser> options, UserAdapter.OnItemClickListener listener) {
+    public UserAdapter(FirestoreRecyclerOptions<User> options, UserAdapter.OnItemClickListener listener) {
         super(options);
         this.listener = listener;
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull UserAdapter.UserViewHolder holder, int position, @NonNull PrivateUser user) {
+    protected void onBindViewHolder(@NonNull UserAdapter.UserViewHolder holder, int position, @NonNull User user) {
         holder.bind(user, listener);
     }
 
@@ -53,7 +51,7 @@ public class UserAdapter extends FirestoreRecyclerAdapter<PrivateUser, UserAdapt
             profilePictureText = v.findViewById(R.id.profile_picture_placeholder);
         }
 
-        public void bind(final PrivateUser u, final UserAdapter.OnItemClickListener listener) {
+        public void bind(final User u, final UserAdapter.OnItemClickListener listener) {
             String firstNameText = (String) u.getUserData().getOrDefault(Utils.FIRST_NAME_KEY, "empty");
             if(firstNameText == "") firstNameText = "empty";
             String lastNameText = (String) u.getUserData().getOrDefault(Utils.LAST_NAME_KEY, "empty");

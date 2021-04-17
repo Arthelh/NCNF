@@ -1,6 +1,5 @@
 package com.ncnf.event.create;
 
-import android.content.Intent;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -10,11 +9,10 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
 import com.ncnf.database.DatabaseResponse;
-import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.main.MainActivity;
 import com.ncnf.user.CurrentUserModule;
-import com.ncnf.user.PrivateUser;
+import com.ncnf.user.User;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -38,7 +36,6 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
-import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
@@ -46,12 +43,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -61,10 +55,10 @@ import static org.mockito.Mockito.when;
 public class EventCreateActivityTest {
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    private static final PrivateUser mockUser = Mockito.mock(PrivateUser.class);
+    private static final User mockUser = Mockito.mock(User.class);
 
     @BindValue
-    public PrivateUser user = mockUser;
+    public User user = mockUser;
 
     CompletableFuture response = CompletableFuture.completedFuture(CompletableFuture.completedFuture(new DatabaseResponse(true, false, null)));
 

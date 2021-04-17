@@ -24,16 +24,12 @@ import android.widget.TimePicker;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
-import com.ncnf.authentication.AuthenticationService;
-import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.event.PrivateEvent;
 import com.ncnf.main.MainActivity;
-import com.ncnf.user.CurrentUserModule;
-import com.ncnf.user.PrivateUser;
+import com.ncnf.user.User;
 import com.ncnf.utilities.InputValidator;
 
 import java.time.LocalDate;
@@ -58,7 +54,7 @@ import static com.ncnf.Utils.*;
 public class EventCreateActivity extends AppCompatActivity {
 
     @Inject
-    public PrivateUser user;
+    public User user;
 
     private Event.Type eventType;
     private LocalDate eventDate = LocalDate.now();

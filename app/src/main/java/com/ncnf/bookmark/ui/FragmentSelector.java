@@ -1,17 +1,11 @@
 package com.ncnf.bookmark.ui;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.ncnf.bookmark.EventDisplayFragment;
-import com.ncnf.user.PrivateUser;
 
 import static com.ncnf.Utils.*;
 

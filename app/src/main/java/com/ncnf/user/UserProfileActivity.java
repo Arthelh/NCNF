@@ -38,7 +38,7 @@ import static com.ncnf.Utils.NOTIFICATIONS_KEY;
 public class UserProfileActivity extends AppCompatActivity {
 
     @Inject
-    public PrivateUser user;
+    public User user;
 
     @Inject
     public Registration registration;
