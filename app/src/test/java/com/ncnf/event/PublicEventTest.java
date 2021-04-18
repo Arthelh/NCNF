@@ -76,7 +76,7 @@ public class PublicEventTest {
         assertEquals(event.getType(), type);
         assertEquals(event.getDescription(), description);
         assertEquals(event.getMinAge(), 0);
-        assertEquals(event.getPrice(), 0);
+        assertEquals(event.getPrice(), 0, 0);
         assertEquals(event.getNumOfAttendees(), 0);
         assertEquals(event.getAttendees().size(), 0);
 

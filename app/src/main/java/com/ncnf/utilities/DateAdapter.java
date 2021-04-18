@@ -45,6 +45,24 @@ public class DateAdapter {
         minute = calendar.get(Calendar.MINUTE);
     }
 
+    public DateAdapter(int year, int month, int day, int hour, int minute) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+
+        this.year = year;
+        this.month = month;
+        this.day = day;
+
+        date = new Date(calendar.getTimeInMillis());
+
+        this.hour = hour;
+        this.minute = minute;
+    }
+
     public Date getDate() {
         return date;
     }
