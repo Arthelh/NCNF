@@ -220,8 +220,7 @@ public class LoginActivityTest {
 
     @Test
     public void signUpFragmentSuccessfulRegisterTest(){
-        CompletableFuture<AuthenticationResponse> future = new CompletableFuture<>();
-        future.complete(new AuthenticationResponse(true, null, null));
+        CompletableFuture<AuthenticationResponse> future = CompletableFuture.completedFuture(new AuthenticationResponse(true, null, null));
 
         when(mockedAuth.register(anyString(), anyString())).thenReturn(future);
 
