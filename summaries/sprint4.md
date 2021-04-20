@@ -7,7 +7,7 @@ to allow for more room for untestable/hard to test features. For both part we wo
 figure out how to do it. I also implemented the gps into the map by adding a button that when clicked requests for permission if not yet granted and/or moves the map back
 to the location of the user.
 
-I also helped Eloï for testing his part and we worked together to discover and fix a bug that came from implementing a different way of opening the "Create Event"
+I also helped Eloi for testing his part and we worked together to discover and fix a bug that came from implementing a different way of opening the "Create Event"
 activity from the main menu.
 
 Surprisingly it took less time to do my tasks than what was expected for the testing tasks, but the gps took a bit longer than expected.
@@ -45,6 +45,9 @@ The second part was to let an organizer publish an update and notify the user. P
 I also reviewed 2 pull requests.
 
 # Overall team
+
+This week, we had a great sprint with a great overall improvement on the app. Despite being on vacation, everybody still managed to code and finish their respective tasks.
+
 
 
 
