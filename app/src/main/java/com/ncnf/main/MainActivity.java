@@ -1,112 +1,103 @@
 package com.ncnf.main;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Switch;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ncnf.R;
-import com.ncnf.authentication.ui.LoginActivity;
-import com.ncnf.event.EventActivity;
-import com.ncnf.event.create.EventCreateActivity;
-import com.ncnf.feed.FeedActivity;
-import com.ncnf.map.MapActivity;
-import com.ncnf.user.UserProfileActivity;
+import com.ncnf.event.EventDB;
+import com.ncnf.feed.ui.FeedFragment;
+import com.ncnf.home.ui.HomeFragment;
+import com.ncnf.map.ui.MapFragment;
 
-import static com.ncnf.Utils.CONNECTED_KEYWORD;
-import static com.ncnf.Utils.DISCONNECTED_KEYWORD;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
+
+    private BottomNavigationView navigationBar;
+
+    final FragmentManager fragmentManager = getSupportFragmentManager();
+    private Fragment homeFragment;
+    private Fragment mapFragment;
+    private Fragment feedFragment;
+
+    private Fragment activeFragment;
+
+    private final String HOME_FRAGMENT = "home_fragment";
+    private final String MAP_FRAGMENT = "map_fragment";
+    private final String FEED_FRAGMENT = "feed_fragment";
+    private final String ACTIVE_FRAGMENT = "active_fragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+        EventDB eventDB = new EventDB();
+
+        if(savedInstanceState == null){
+            this.homeFragment = new HomeFragment();
+            this.feedFragment = new FeedFragment(eventDB);
+            this.mapFragment = new MapFragment(eventDB);
+            this.activeFragment = this.homeFragment;
+        }
+
+        fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, feedFragment).hide(feedFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, mapFragment).hide(mapFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, homeFragment).hide(homeFragment).commit();
+
+        fragmentManager.beginTransaction().show(activeFragment).commit();
+
+        navigationBar = findViewById(R.id.mainNavigationBar);
+
+        navigationBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+
+    public final  BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
+        switch (item.getItemId()){
+            case R.id.navigation_home:
+                fragmentManager.beginTransaction().hide(activeFragment).show(homeFragment).commit();
+                activeFragment = homeFragment;
+                return true;
+
+            case R.id.navigation_map:
+                fragmentManager.beginTransaction().hide(activeFragment).show(mapFragment).commit();
+                activeFragment = mapFragment;
+                return true;
+
+            case R.id.navigation_feed:
+                fragmentManager.beginTransaction().hide(activeFragment).show(feedFragment).commit();
+                activeFragment = feedFragment;
+                return true;
+            default:
+                return false;
+        }
+    };
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-        Switch s = findViewById(R.id.connected);
-
-        if(isConnected()){
-            s.setText(CONNECTED_KEYWORD);
-            s.setChecked(true);
-        } else {
-            s.setText(DISCONNECTED_KEYWORD);
-            s.setChecked(false);
-        }
-
-        //RecyclerView r = (RecyclerView)findViewById(R.id.recycler_view);
-
-        Button launchFeed = (Button) findViewById(R.id.feedViewButton);
-        Button launchEventCreation = (Button) findViewById(R.id.create_event_button);
-
-        launchFeed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                feedView(view);
-            }
-        });
-
-        launchEventCreation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                eventCreationView();
-            }
-        });
-
+        fragmentManager.putFragment(outState, HOME_FRAGMENT, homeFragment);
+        fragmentManager.putFragment(outState, MAP_FRAGMENT, mapFragment);
+        fragmentManager.putFragment(outState, FEED_FRAGMENT, feedFragment);
+        fragmentManager.putFragment(outState, ACTIVE_FRAGMENT, activeFragment);
     }
 
-    public void goToMap(View view){
-        Intent intent = new Intent(this, MapActivity.class);
-        startActivity(intent);
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        this.homeFragment = fragmentManager.getFragment(savedInstanceState, HOME_FRAGMENT);
+        this.mapFragment = fragmentManager.getFragment(savedInstanceState, MAP_FRAGMENT);
+        this.feedFragment = fragmentManager.getFragment(savedInstanceState, FEED_FRAGMENT);
+        this.activeFragment = fragmentManager.getFragment(savedInstanceState, ACTIVE_FRAGMENT);
     }
-
-    public void feedView(View view) {
-        Intent intent = new Intent(this, FeedActivity.class);
-        startActivity(intent);
-    }
-
-
-    public void gotToProfile(View view){
-        Intent intent;
-
-        if(!isConnected()){
-            intent = new Intent(this, LoginActivity.class);
-        } else {
-            intent = new Intent(this, UserProfileActivity.class);
-        }
-
-        startActivity(intent);
-    }
-
-    private boolean isConnected(){
-        return FirebaseAuth.getInstance().getCurrentUser() != null;
-    }
-
-
-    public void seeEvent1(View view) {
-        Intent intent = new Intent(this, EventActivity.class);
-        intent.putExtra("EVENT_NUM", 0);
-        startActivity(intent);
-    }
-
-    public void seeEvent2(View view) {
-        Intent intent = new Intent(this, EventActivity.class);
-        intent.putExtra("EVENT_NUM", 1);
-        startActivity(intent);
-    }
-
-    public void eventCreationView(){
-        Intent intent = new Intent(this, EventCreateActivity.class);
-        startActivity(intent);
-    }
-
 }

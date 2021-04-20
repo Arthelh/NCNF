@@ -31,6 +31,6 @@ public class Tag {
     @Override
     public boolean equals(@Nullable Object obj) {
         Tag otherTag = (Tag) obj;
-        return otherTag.getName().toUpperCase().replaceAll("\\s+","").equals(name.toUpperCase().replaceAll("\\s+",""));
+        return otherTag.getName().toLowerCase().trim().equals(name.toLowerCase().trim());
     }
 }
