@@ -2,27 +2,24 @@ package com.ncnf.user;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.ncnf.database.DatabaseService;
 
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.components.ActivityComponent;
 
-import static com.ncnf.Utils.USERS_COLLECTION_KEY;
-
 @Module
 @InstallIn(ActivityComponent.class)
 public class CurrentUserModule {
 
-    private static PrivateUser currentUser;
+    private static User currentUser;
 
     @Provides
-    public static PrivateUser getCurrentUser() {
+    public static User getCurrentUser() {
         if (currentUser == null) {
             FirebaseUser user = currentUser();
             if (user != null) {
-                currentUser = new PrivateUser(user.getUid(), user.getEmail());
+                currentUser = new User(user.getUid(), user.getEmail());
             } else {
                 return null;
             }

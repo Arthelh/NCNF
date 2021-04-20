@@ -30,7 +30,7 @@ import static com.ncnf.Utils.OWNED_EVENTS_KEY;
 import static com.ncnf.Utils.SAVED_EVENTS_KEY;
 import static com.ncnf.Utils.USERS_COLLECTION_KEY;
 
-public class PrivateUser {
+public class User {
 
     private DatabaseService db;
     private String email;
@@ -41,14 +41,14 @@ public class PrivateUser {
     
     private final IllegalStateException wrongCredentials = new IllegalStateException("User doesn't have the right credentials to perform current operation");
 
-    public PrivateUser(){
+    public User(){
         this.db = new DatabaseService();
         this.UUID = FirebaseAuth.getInstance().getUid();
         this.email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         this.path = USERS_COLLECTION_KEY + UUID;
     }
 
-    public PrivateUser(String UUID, String email) {
+    public User(String UUID, String email) {
         if(!checkArgument(UUID) || !checkArgument(email)) {
             throw wrongCredentials;
         }
@@ -59,7 +59,7 @@ public class PrivateUser {
         this.email = email;
     }
 
-    public PrivateUser(String UUID, DatabaseService db){
+    public User(String UUID, DatabaseService db){
         if(!checkArgument(UUID)) {
             throw wrongCredentials;
         }
@@ -69,7 +69,7 @@ public class PrivateUser {
         this.db = db;
     }
 
-    public PrivateUser(DocumentSnapshot snapshot){
+    public User(DocumentSnapshot snapshot){
         this.db = new DatabaseService();
         this.UUID = snapshot.get(Utils.UUID_KEY, String.class);
         this.path = USERS_COLLECTION_KEY + UUID;
@@ -77,7 +77,7 @@ public class PrivateUser {
         this.userData = snapshot.getData();
     }
 
-    protected PrivateUser(DatabaseService db, String UUID, String email) {
+    protected User(DatabaseService db, String UUID, String email) {
         if(!checkArgument(UUID) || !checkArgument(email)) {
             throw wrongCredentials;
         }
@@ -224,7 +224,7 @@ public class PrivateUser {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PrivateUser that = (PrivateUser) o;
+        User that = (User) o;
         return this.UUID.equals(that.UUID) && this.path.equals(that.path) && this.email.equals(that.email);
     }
 
