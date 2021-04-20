@@ -3,7 +3,7 @@ package com.ncnf.notification;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.mocks.MockTask;
-import com.ncnf.user.PrivateUser;
+import com.ncnf.user.User;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class RegistrationTests {
 
     private final FirebaseMessaging messaging = Mockito.mock(FirebaseMessaging.class);
-    private final PrivateUser user = Mockito.mock(PrivateUser.class);
+    private final User user = Mockito.mock(User.class);
     Registration registration = new Registration(messaging, user);
 
     @Test

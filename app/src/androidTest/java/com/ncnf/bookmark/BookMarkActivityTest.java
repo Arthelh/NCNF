@@ -9,7 +9,7 @@ import com.ncnf.event.Event;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.event.EventActivity;
 import com.ncnf.user.CurrentUserModule;
-import com.ncnf.user.PrivateUser;
+import com.ncnf.user.User;
 
 import org.junit.After;
 import org.junit.Before;
@@ -41,13 +41,13 @@ import static org.mockito.Mockito.when;
 @UninstallModules(CurrentUserModule.class)
 public class BookMarkActivityTest {
 
-    private static final PrivateUser mockUser = Mockito.mock(PrivateUser.class);
+    private static final User mockUser = Mockito.mock(User.class);
     List<Event> list = new ArrayList<>();
     private final Event event = new PublicEvent("EPFL", "EPFL event", new Date(2021, 03, 11), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0);
     private CompletableFuture<CompletableFuture<List<Event>>> events;
 
     @BindValue
-    public PrivateUser user = mockUser;
+    public User user = mockUser;
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     @Rule
