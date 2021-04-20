@@ -56,13 +56,14 @@ public class EventBuilder {
             Event.Type type = Event.Type.valueOf(typeStr);
             List<String> attendees = (ArrayList) data.get(ATTENDEES_KEY);
             String description = (String) data.get(DESCRIPTION_KEY);
+            String email = (String) data.get(EVENT_EMAIL_KEY);
 
             if(visibility.equals(Event.Visibility.PUBLIC)){
                 int minAge = (int) data.get(MIN_AGE_KEY);
                 int price = (int) data.get(PRICE_KEY);
                 List<Tag> tags = (ArrayList) data.get(TAGS_LIST_KEY);
                 //TODO : should serialize / deserialize tags before adding them
-                return new PublicEvent(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags);
+                return new PublicEvent(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags, email);
 
             } else {
                 List<String> invited = (ArrayList) data.get(INVITED_KEY);

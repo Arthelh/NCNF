@@ -54,7 +54,7 @@ public class DatabaseServiceTest {
         db = Mockito.mock(FirebaseFirestore.class, Mockito.RETURNS_DEEP_STUBS);
         service = new DatabaseService(db);
 
-        event = new PublicEvent(ownerID, name, date, geoPoint,address,description, type, 0, 0);
+        event = new PublicEvent(ownerID, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
         task = new MockTask<Event>(event, null);
     }
 

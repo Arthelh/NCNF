@@ -56,7 +56,7 @@ import static org.junit.Assert.assertTrue;
 @HiltAndroidTest
 public final class MapFragmentTest {
 
-    List<Event> TEST_EVENTS = Collections.singletonList(new PublicEvent("lol", "Carmen", new Date(), new GeoPoint(46.5191f, 6.5668f), "EPFL", "Math Conference", Event.Type.Conference, 0, 0));
+    List<Event> TEST_EVENTS = Collections.singletonList(new PublicEvent("lol", "Carmen", new Date(), new GeoPoint(46.5191f, 6.5668f), "EPFL", "Math Conference", Event.Type.Conference, 0, 0, "email@test.com"));
     List<Venue> TEST_VENUES = Arrays.asList(new Venue("EPFL", 46.5191f, 6.5668f),
             new Venue("UniL", 46.5211f, 6.5802f));
 
