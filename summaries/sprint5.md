@@ -13,6 +13,8 @@ I then turned to the feed view and refactored the fetching, filtering and displa
 
 # Eloi 
 
+This week, I have implemented pop-up alerts for the app and also changed the error format of the login/register screen. I didn't encounter any difficulties, this was relatively fast and easy to do. The only problem was that I had to change almost every test of this screen with new tests, which took a lot of time.
+
 
 # Emmanuelle
 
