@@ -126,7 +126,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
         public EventViewHolder(View v, OnEventListener e) {
             super(v);
-            event = (TextView) v.findViewById(R.id.event_name);
+            event = (TextView) v.findViewById(R.id.set_event_name);
             date = (TextView) v.findViewById(R.id.event_date);
             description = (TextView) v.findViewById(R.id.event_descr);
             //add timestamp
