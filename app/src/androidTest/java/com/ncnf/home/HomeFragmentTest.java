@@ -58,7 +58,7 @@ public final class HomeFragmentTest {
     @Test
     public void createEventActivityOpensTest(){
         onView(withId(R.id.homeCreateEventButton)).perform(click());
-        Intents.intended(hasComponent(EventCreateActivity.class.getName()));
+        Intents.intended(hasComponent(LoginActivity.class.getName()));
     }
 
     @Test
