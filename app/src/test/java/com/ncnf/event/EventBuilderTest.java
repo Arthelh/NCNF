@@ -111,7 +111,7 @@ public class EventBuilderTest {
         assertEquals(event.getDescription(), description);
         assertEquals(event.getOwnerId(), ownerId);
         assertEquals(event.getMinAge(), minAge);
-        assertEquals(event.getPrice(), price);
+        assertEquals(event.getPrice(), price, 0);
 
     }
 
