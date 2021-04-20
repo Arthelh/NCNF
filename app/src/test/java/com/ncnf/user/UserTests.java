@@ -62,7 +62,7 @@ public class UserTests {
     String address = "address";
     String description = "description";
     Event.Type type = Event.Type.Movie;
-    PublicEvent publicEvent = new PublicEvent(ownerID, name, date, geoPoint, address, description, type, 0 , 0);
+    PublicEvent publicEvent = new PublicEvent(ownerID, name, date, geoPoint, address, description, type, 0 , 0, "test@email.com");
     PrivateEvent privateEvent = new PrivateEvent(ownerID, name, date, geoPoint, address, description, type);
     CompletableFuture<DatabaseResponse> response = CompletableFuture.completedFuture(new DatabaseResponse(true, null, null));
 
@@ -247,7 +247,7 @@ public class UserTests {
     @Test
     public void saveEventCallsDatabase() {
         when(db.updateArrayField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
-        Event event = new PublicEvent("00","Conference", new Date(), new GeoPoint(0., 0.) ,"North Pole", "Description goes here", Event.Type.Movie, 0 , 0);
+        Event event = new PublicEvent("00","Conference", new Date(), new GeoPoint(0., 0.) ,"North Pole", "Description goes here", Event.Type.Movie, 0 , 0, "test@email.com");
         User user = new User(db, "1234567890","foo@bar.com");
         user.saveEvent(event);
         verify(db).updateArrayField(eq(USERS_COLLECTION_KEY  + "1234567890"), eq(SAVED_EVENTS_KEY), anyObject());

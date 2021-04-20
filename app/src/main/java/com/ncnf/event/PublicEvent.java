@@ -21,8 +21,9 @@ public class PublicEvent extends Event {
 
     private double price;
     private int minAge;
+    private String email;
 
-    public PublicEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type, int minAge, double price) {
+    public PublicEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type, int minAge, double price, String email) {
         super(ownerId, name, date, location, address, type, Event.Visibility.PUBLIC, description);
 
         checkConstraints(minAge, price);
@@ -30,9 +31,10 @@ public class PublicEvent extends Event {
         tags = new ArrayList<>();
         this.minAge = minAge;
         this.price = price;
+        this.email = email;
     }
 
-    public PublicEvent(String ownerId, UUID uuid, String name, Date date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<Tag> tags) {
+    public PublicEvent(String ownerId, UUID uuid, String name, Date date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<Tag> tags, String email) {
         super(ownerId, uuid, name, date, location, address, type, Visibility.PUBLIC, attendees, description);
 
         checkConstraints(minAge, price);
@@ -40,6 +42,7 @@ public class PublicEvent extends Event {
         setTags(tags);
         this.minAge = minAge;
         this.price = price;
+        this.email = email;
     }
 
     private void checkConstraints(int minAge, double price){
@@ -50,6 +53,7 @@ public class PublicEvent extends Event {
 
     public int getMinAge() { return minAge; }
     public double getPrice() { return price; }
+    public String getEmail() { return email; }
     public List<Tag> getTags() { return new ArrayList<Tag>(tags); }
 
     public void setMinAge(int minAge) {
@@ -58,6 +62,8 @@ public class PublicEvent extends Event {
     }
 
     public void setPrice(double price) { this.price = price; }
+
+    public void setEmail(String email) { this.email = email; }
 
     public void setTags(List<Tag> tags) {
         this.tags = new ArrayList<Tag>(tags);
@@ -97,8 +103,8 @@ public class PublicEvent extends Event {
     }
 
     public CompletableFuture<DatabaseResponse> store(DatabaseService db){
-        String[] fields = {MIN_AGE_KEY, PRICE_KEY, TAGS_LIST_KEY};
-        Object[] objects = {this.minAge, this.price, this.tags};
+        String[] fields = {MIN_AGE_KEY, PRICE_KEY, TAGS_LIST_KEY, EMAIL_KEY};
+        Object[] objects = {this.minAge, this.price, this.tags, this.email};
         return super.store(db, fields, objects);
     }
 }
