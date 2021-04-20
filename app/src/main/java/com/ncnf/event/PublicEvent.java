@@ -103,7 +103,7 @@ public class PublicEvent extends Event {
     }
 
     public CompletableFuture<DatabaseResponse> store(DatabaseService db){
-        String[] fields = {MIN_AGE_KEY, PRICE_KEY, TAGS_LIST_KEY, EVENT_EMAIL_KEY};
+        String[] fields = {MIN_AGE_KEY, PRICE_KEY, TAGS_LIST_KEY, EMAIL_KEY};
         Object[] objects = {this.minAge, this.price, this.tags, this.email};
         return super.store(db, fields, objects);
     }

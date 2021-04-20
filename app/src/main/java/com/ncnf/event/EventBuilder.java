@@ -56,7 +56,7 @@ public class EventBuilder {
             Event.Type type = Event.Type.valueOf(typeStr);
             List<String> attendees = (ArrayList) data.get(ATTENDEES_KEY);
             String description = (String) data.get(DESCRIPTION_KEY);
-            String email = (String) data.get(EVENT_EMAIL_KEY);
+            String email = (String) data.get(EMAIL_KEY);
 
             if(visibility.equals(Event.Visibility.PUBLIC)){
                 int minAge = (int) data.get(MIN_AGE_KEY);
