@@ -14,13 +14,13 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="-89dp">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:text="@string/login" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="40dp"

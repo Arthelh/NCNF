@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.ncnf.R;
+import com.ncnf.bookmark.BookMarkActivity;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
@@ -37,7 +38,7 @@ import static com.ncnf.Utils.NOTIFICATIONS_KEY;
 public class UserProfileActivity extends AppCompatActivity {
 
     @Inject
-    public PrivateUser user;
+    public User user;
 
     @Inject
     public Registration registration;
@@ -234,5 +235,9 @@ public class UserProfileActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    public void openBookmark(View view){
+        startActivity(new Intent(this, BookMarkActivity.class));
     }
 }

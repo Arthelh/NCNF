@@ -8,6 +8,8 @@ import com.ncnf.database.DatabaseResponse;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,12 +48,12 @@ import static org.mockito.Mockito.when;
 @UninstallModules(CurrentUserModule.class)
 public class UserProfileActivityTests {
 
-    private static final PrivateUser mockUser = Mockito.mock(PrivateUser.class);
+    private static final User mockUser = Mockito.mock(User.class);
     private static final CompletableFuture<DatabaseResponse> future = new CompletableFuture();
 
     // BeforeClass is required because the mocking must be done before the activity is launched
     @BeforeClass
-    public static void setup() {
+    public static void setupClass() {
         HashMap<String, Object> values = new HashMap<>();
         values.put(FIRST_NAME_KEY, "John");
         values.put(LAST_NAME_KEY, "Doe");
@@ -69,10 +71,20 @@ public class UserProfileActivityTests {
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);
 
     @BindValue
-    public PrivateUser user = mockUser;
+    public User user = mockUser;
 
     @BindValue
     Registration registration = Mockito.mock(Registration.class);
+
+    @Before
+    public void setup(){
+        Intents.init();
+    }
+
+    @After
+    public void cleanup(){
+        Intents.release();
+    }
 
     @Test
     public void titleIsVisible() {
@@ -92,10 +104,8 @@ public class UserProfileActivityTests {
 
     @Test
     public void logOutReturnsToHome() {
-        Intents.init();
         onView(withId(R.id.logOutButton)).perform(scrollTo(), click());
         Intents.intended(hasComponent(MainActivity.class.getName()));
-        Intents.release();
     }
 
     @Test
@@ -180,5 +190,4 @@ public class UserProfileActivityTests {
         onView(withId(com.google.android.material.R.id.snackbar_text))
                 .check(matches(withText("An error happened! Try again later")));
     }
-
 }

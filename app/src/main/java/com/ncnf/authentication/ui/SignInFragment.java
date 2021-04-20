@@ -48,8 +48,7 @@ public class SignInFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_sign_in, container, false);
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -61,7 +60,7 @@ public class SignInFragment extends Fragment {
         loginButton.setOnClickListener(v -> signIn());
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    
     public void signIn() {
         String emailString = email.getText().toString();
         String passwordString = password.getText().toString();
@@ -71,7 +70,7 @@ public class SignInFragment extends Fragment {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    
     private void logIn(String email, String password){
 
         showProgressBar(true);
