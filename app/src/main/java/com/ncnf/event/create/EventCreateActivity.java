@@ -198,7 +198,7 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
                                 date.getDate(), getLocationFromAddress(eventAddress.getText().toString()),
                                 eventAddress.getText().toString(),
                                 eventDescription.getText().toString(),
-                                eventType, minAgeVal, priceVal
+                                eventType, minAgeVal, priceVal, eventEmail.getText().toString()
                                 );
                         if(event != null) {
                             user.createEvent(event).thenAccept(task1 -> {
