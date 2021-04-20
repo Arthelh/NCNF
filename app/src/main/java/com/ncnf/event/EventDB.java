@@ -1,5 +1,7 @@
 package com.ncnf.event;
 
+import android.util.Log;
+
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.utilities.DateAdapter;
 
@@ -8,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import static com.ncnf.Utils.DEBUG_TAG;
 
 public class EventDB {
 

@@ -1,5 +1,6 @@
 package com.ncnf.authentication.ui;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +32,9 @@ import dagger.hilt.android.AndroidEntryPoint;
 import static com.ncnf.Utils.BADLY_FORMATTED_EMAIL_STRING;
 import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EMPTY_FIELD_STRING;
+import static com.ncnf.Utils.NEXT_ACTIVITY_EXTRA_KEY;
+import static com.ncnf.Utils.POPUP_POSITIVE_BUTTON;
+import static com.ncnf.Utils.POPUP_TITLE;
 import static com.ncnf.utilities.InputValidator.verifyEmailInput;
 
 @AndroidEntryPoint
@@ -42,7 +46,11 @@ public class SignInFragment extends Fragment {
     private EditText password;
     private TextView exceptionText;
     private Button loginButton;
+    private final Class<?> activity;
 
+    public SignInFragment(Class<?> activity){
+        this.activity = activity;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -80,7 +88,7 @@ public class SignInFragment extends Fragment {
         futureResponse.thenAccept(response -> {
             if(response.isSuccessful()){
                 Log.d(DEBUG_TAG,"Successful login for " + email);
-                Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+                Intent intent = new Intent(getActivity(), this.activity);
                 startActivity(intent);
             } else {
                 Log.d(DEBUG_TAG,"Unsuccessful login for " + email + " : " + response.getException().getMessage());
@@ -95,11 +103,13 @@ public class SignInFragment extends Fragment {
         String emailString = email.getText().toString();
         String passwordString = password.getText().toString();
 
-        if(emailString.isEmpty() || passwordString.isEmpty()) {
-            setException(EMPTY_FIELD_STRING);
+        if(emailString.isEmpty()){
+            email.setError(EMPTY_FIELD_STRING);
+            return false;
+        } else if(passwordString.isEmpty()) {
+            password.setError(EMPTY_FIELD_STRING);
             return false;
         } else if (!verifyEmailInput(emailString)){
-            setException(BADLY_FORMATTED_EMAIL_STRING);
             email.setError(BADLY_FORMATTED_EMAIL_STRING);
             return false;
         }
@@ -124,7 +134,14 @@ public class SignInFragment extends Fragment {
     }
 
     private void setException(String s){
-        exceptionText.setText(s);
+        AlertDialog.Builder popup = new AlertDialog.Builder(getActivity());
+        popup.setCancelable(true);
+        popup.setTitle(POPUP_TITLE);
+        popup.setMessage(s);
+        popup.setPositiveButton(POPUP_POSITIVE_BUTTON, (dialog, which) -> {
+            dialog.cancel();
+        });
+        popup.show();
 //        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 }
