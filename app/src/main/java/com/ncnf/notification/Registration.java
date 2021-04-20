@@ -1,7 +1,7 @@
 package com.ncnf.notification;
 
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.ncnf.user.PrivateUser;
+import com.ncnf.user.User;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -10,15 +10,15 @@ import javax.inject.Inject;
 public class Registration {
 
     private final FirebaseMessaging service;
-    private final PrivateUser user;
+    private final User user;
 
     @Inject
-    public Registration(PrivateUser user) {
+    public Registration(User user) {
         this.service = FirebaseMessaging.getInstance();
         this.user = user;
     }
 
-    public Registration(FirebaseMessaging messaging, PrivateUser user) {
+    public Registration(FirebaseMessaging messaging, User user) {
         this.service = messaging;
         this.user = user;
     }

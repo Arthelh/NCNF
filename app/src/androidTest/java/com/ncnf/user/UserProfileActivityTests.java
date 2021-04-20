@@ -48,7 +48,7 @@ import static org.mockito.Mockito.when;
 @UninstallModules(CurrentUserModule.class)
 public class UserProfileActivityTests {
 
-    private static final PrivateUser mockUser = Mockito.mock(PrivateUser.class);
+    private static final User mockUser = Mockito.mock(User.class);
     private static final CompletableFuture<DatabaseResponse> future = new CompletableFuture();
 
     // BeforeClass is required because the mocking must be done before the activity is launched
@@ -71,7 +71,7 @@ public class UserProfileActivityTests {
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);
 
     @BindValue
-    public PrivateUser user = mockUser;
+    public User user = mockUser;
 
     @BindValue
     Registration registration = Mockito.mock(Registration.class);

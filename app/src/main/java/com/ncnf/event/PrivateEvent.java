@@ -1,22 +1,12 @@
 package com.ncnf.event;
 
-import com.ncnf.organizer.Organizer;
-import com.ncnf.organizer.PublicOrganizer;
-import com.ncnf.utilities.DateAdapter;
-import com.ncnf.utilities.Location;
-import android.util.Log;
-
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.user.PrivateUser;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
-import java.util.UUID;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import static com.ncnf.Utils.*;

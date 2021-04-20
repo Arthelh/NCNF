@@ -21,8 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.authentication.AuthenticationResponse;
 import com.ncnf.authentication.AuthenticationService;
-import com.ncnf.database.DatabaseService;
-import com.ncnf.user.PrivateUser;
+import com.ncnf.user.User;
 import com.ncnf.user.UserProfileActivity;
 
 import java.util.concurrent.CompletableFuture;
@@ -37,7 +36,6 @@ import static com.ncnf.Utils.EMPTY_FIELD_STRING;
 import static com.ncnf.Utils.EMPTY_STRING;
 import static com.ncnf.Utils.INVALID_PASSWORD_STRING;
 import static com.ncnf.Utils.PASSWORDS_DO_NOT_MATCH_STRING;
-import static com.ncnf.Utils.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.InputValidator.isValidPassword;
 import static com.ncnf.utilities.InputValidator.verifyEmailInput;
 
@@ -102,7 +100,7 @@ public class SignUpFragment extends Fragment {
             if(response.isSuccessful()){
                 Log.d(DEBUG_TAG, "Successful register for " + email);
                 FirebaseUser fb = response.getResult().getUser();
-                PrivateUser user = new PrivateUser(fb.getUid(), fb.getEmail());
+                User user = new User(fb.getUid(), fb.getEmail());
                 user.saveUserToDB().thenAccept(dbResponse -> {
                     if (dbResponse.isSuccessful()) {
                         Intent intent = new Intent(getActivity(), UserProfileActivity.class);

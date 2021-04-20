@@ -1,6 +1,5 @@
 package com.ncnf.event.create;
 
-import android.content.Intent;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -13,7 +12,7 @@ import com.ncnf.database.DatabaseResponse;
 import com.ncnf.event.Event;
 import com.ncnf.main.MainActivity;
 import com.ncnf.user.CurrentUserModule;
-import com.ncnf.user.PrivateUser;
+import com.ncnf.user.User;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -62,10 +61,10 @@ import static org.mockito.Mockito.when;
 public class EventCreateActivityTest {
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    private static final PrivateUser mockUser = Mockito.mock(PrivateUser.class);
+    private static final User mockUser = Mockito.mock(User.class);
 
     @BindValue
-    public PrivateUser user = mockUser;
+    public User user = mockUser;
 
     CompletableFuture response = CompletableFuture.completedFuture(CompletableFuture.completedFuture(new DatabaseResponse(true, false, null)));
 

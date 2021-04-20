@@ -5,6 +5,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
+import com.ncnf.event.create.EventCreateActivity;
 import com.ncnf.event.update.EventNewsActivity;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.main.MainActivity;
@@ -57,7 +58,7 @@ public final class HomeFragmentTest {
     @Test
     public void createEventActivityOpensTest(){
         onView(withId(R.id.homeCreateEventButton)).perform(click());
-        Intents.intended(hasComponent(LoginActivity.class.getName()));
+        Intents.intended(hasComponent(EventCreateActivity.class.getName()));
     }
 
     @Test

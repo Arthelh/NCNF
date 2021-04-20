@@ -36,8 +36,8 @@ import com.ncnf.event.EventActivity;
 import com.ncnf.event.PrivateEvent;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.main.MainActivity;
-import com.ncnf.user.PrivateUser;
 import com.ncnf.utilities.DateAdapter;
+import com.ncnf.user.User;
 import com.ncnf.utilities.InputValidator;
 
 import java.lang.reflect.Array;
@@ -67,7 +67,7 @@ import static com.ncnf.Utils.DEBUG_TAG;
 public class EventCreateActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     @Inject
-    public PrivateUser user;
+    public User user;
 
     private Event.Type eventType;
     private LocalDate eventDate = LocalDate.now();
