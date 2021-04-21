@@ -15,6 +15,11 @@ public class FileUpload {
     private final FirebaseStorage storage;
     private final StorageReference fileRef;
 
+    public FileUpload(FirebaseStorage storage, String directory, String filename) {
+        this.storage = storage;
+        this.fileRef = storage.getReference().child(directory).child(filename);
+    }
+
     public FileUpload(String directory, String filename) {
         this.storage = FirebaseStorage.getInstance();
         this.fileRef = storage.getReference().child(directory).child(filename);
