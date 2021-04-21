@@ -25,7 +25,7 @@ public abstract class Event implements Comparable {
     }
 
     public enum Type {
-        Movie, Museum, Conference, Opera, NOTHING
+        NOTHING, Movie, Museum, Conference, Opera, OTHER
     }
 
 

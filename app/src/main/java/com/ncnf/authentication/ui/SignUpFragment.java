@@ -1,5 +1,6 @@
 package com.ncnf.authentication.ui;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,6 +37,8 @@ import static com.ncnf.Utils.EMPTY_FIELD_STRING;
 import static com.ncnf.Utils.EMPTY_STRING;
 import static com.ncnf.Utils.INVALID_PASSWORD_STRING;
 import static com.ncnf.Utils.PASSWORDS_DO_NOT_MATCH_STRING;
+import static com.ncnf.Utils.POPUP_POSITIVE_BUTTON;
+import static com.ncnf.Utils.POPUP_TITLE;
 import static com.ncnf.utilities.InputValidator.isValidPassword;
 import static com.ncnf.utilities.InputValidator.verifyEmailInput;
 
@@ -53,6 +56,12 @@ public class SignUpFragment extends Fragment {
     private TextView exceptionText;
     private Button organizerButton;
     private Button registerButton;
+
+    private final Class<?> activity;
+
+    public SignUpFragment(Class<?> activity){
+        this.activity = activity;
+    }
 
     @Nullable
     @Override
@@ -103,12 +112,12 @@ public class SignUpFragment extends Fragment {
                 User user = new User(fb.getUid(), fb.getEmail());
                 user.saveUserToDB().thenAccept(dbResponse -> {
                     if (dbResponse.isSuccessful()) {
-                        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+                        Intent intent = new Intent(getActivity(), this.activity);
                         startActivity(intent);
                     } else {
                         Log.d(DEBUG_TAG, "Deleting user.");
                         fb.delete();
-                        setException("Couldn't create a new user : please try again");
+                        setException("Couldn't create a new user");
                     }
                 });
             } else {
@@ -123,7 +132,7 @@ public class SignUpFragment extends Fragment {
         this.email = getView().findViewById(R.id.signUpEmail);
         this.password = getView().findViewById(R.id.signUpPassword);
         this.confirmPassword = getView().findViewById(R.id.signUpConfirmPassword);
-        this.exceptionText = getView().findViewById(R.id.exceptionSignUp);
+        this.exceptionText = getView().findViewById(R.id.InformationSignUp);
         this.organizerButton = getView().findViewById(R.id.organizerButton);
         this.registerButton = getView().findViewById(R.id.signUpRegisterButton);
     }
@@ -135,21 +144,24 @@ public class SignUpFragment extends Fragment {
         String passwordString = this.password.getText().toString();
         String confirmPasswordString = this.confirmPassword.getText().toString();
 
-        if(emailString.isEmpty() || passwordString.isEmpty() || confirmPasswordString.isEmpty()){
-            setException(EMPTY_FIELD_STRING);
+        if(emailString.isEmpty()){
+            email.setError(EMPTY_FIELD_STRING);
+            passed = false;
+        } else if(passwordString.isEmpty()){
+            password.setError(EMPTY_FIELD_STRING);
+            passed = false;
+        } else if(confirmPasswordString.isEmpty()){
+            confirmPassword.setError(EMPTY_FIELD_STRING);
             passed = false;
         } else if(!passwordString.equals(confirmPasswordString)){
-            setException(PASSWORDS_DO_NOT_MATCH_STRING);
             confirmPassword.setError(PASSWORDS_DO_NOT_MATCH_STRING);
             password.setText(EMPTY_STRING);
             confirmPassword.setText(EMPTY_STRING);
             passed = false;
         } else if (!verifyEmailInput(emailString)){
-            setException(BADLY_FORMATTED_EMAIL_STRING);
             email.setError(BADLY_FORMATTED_EMAIL_STRING);
             passed = false;
         } else if (!isValidPassword(passwordString)){
-            setException(INVALID_PASSWORD_STRING);
             password.setError(INVALID_PASSWORD_STRING);
             password.setText(EMPTY_STRING);
             confirmPassword.setText(EMPTY_STRING);
@@ -169,20 +181,27 @@ public class SignUpFragment extends Fragment {
     }
 
     private void setException(String s){
-        exceptionText.setText(s);
+        AlertDialog.Builder popup = new AlertDialog.Builder(getActivity());
+        popup.setCancelable(true);
+        popup.setTitle(POPUP_TITLE);
+        popup.setMessage(s);
+        popup.setPositiveButton(POPUP_POSITIVE_BUTTON, (dialog, which) -> {
+            dialog.cancel();
+        });
+        popup.show();
 //        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 
     private void setOrganizerView(){
         isOrganizer = true;
-        setException("Organizer Registration");
+        ((TextView)getActivity().findViewById(R.id.InformationSignUp)).setText("Organizer Registration");
         email.setHint("Business Email..");
         organizerButton.setText("I'm a regular user...");
     }
 
     private void setPrivateUserView(){
         isOrganizer = false;
-        setException("Register");
+        ((TextView)getActivity().findViewById(R.id.InformationSignUp)).setText("Register");
         email.setHint("Email..");
         organizerButton.setText("I'm an organizer...");
     }

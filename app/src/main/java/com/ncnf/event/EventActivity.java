@@ -1,6 +1,7 @@
 package com.ncnf.event;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,9 @@ import com.ncnf.utilities.FileUpload;
 
 import java.lang.reflect.Field;
 
+import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.Utils.UUID_KEY;
+
 public class EventActivity extends AppCompatActivity {
 
     private static final EventDB db = new EventDB();
@@ -22,7 +26,7 @@ public class EventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
-        String event_uid = getIntent().getStringExtra("event_uid");
+        String event_uid = getIntent().getStringExtra(UUID_KEY);
         Event event = db.getEvent(event_uid);
         if (event == null) {
             finish();

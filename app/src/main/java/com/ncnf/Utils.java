@@ -5,6 +5,9 @@ public class Utils {
      * Global variables
      */
     public static final int PASSWORD_MINIMUM_LENGTH = 6;
+    public static final String NEXT_ACTIVITY_EXTRA_KEY = "next_activity";
+    public final static String POPUP_TITLE = "Connection Error";
+    public final static String POPUP_POSITIVE_BUTTON = "Retry";
 
     /**
      * Keys related to users
