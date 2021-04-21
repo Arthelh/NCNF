@@ -3,6 +3,8 @@ package com.ncnf.event.create;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.location.Address;
 import android.location.Geocoder;
@@ -30,6 +32,7 @@ import com.ncnf.event.Event;
 import com.ncnf.event.PrivateEvent;
 import com.ncnf.main.MainActivity;
 import com.ncnf.user.User;
+import com.ncnf.utilities.FileUpload;
 import com.ncnf.utilities.InputValidator;
 
 import java.time.LocalDate;
@@ -168,6 +171,15 @@ public class EventCreateActivity extends AppCompatActivity {
                 if (checkAllFieldsAreFilledAndCorrect()) {
 
                     if (user != null) {
+
+                        // TODO: might change with the new event class
+                        // File upload must happened after the event is saved, such that the image path
+                        // contains the event's UUID
+                        FileUpload file = new FileUpload(Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
+                        pictureView.setDrawingCacheEnabled(true);
+                        pictureView.buildDrawingCache();
+                        Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
+                        file.upload(bitmap);
 
                         //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
                         PrivateEvent event = new PrivateEvent(

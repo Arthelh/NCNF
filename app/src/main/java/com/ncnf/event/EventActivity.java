@@ -6,8 +6,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ncnf.GlideApp;
 import com.ncnf.R;
 import com.ncnf.utilities.DateAdapter;
+import com.ncnf.utilities.FileUpload;
 
 import java.lang.reflect.Field;
 
@@ -27,13 +29,12 @@ public class EventActivity extends AppCompatActivity {
             return;
         }
 
+        // Change with event UUID
         ImageView imageView = findViewById(R.id.eventImage);
-        try {
-            Field id = R.drawable.class.getDeclaredField("rolex");
-            imageView.setImageResource(id.getInt(id));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        FileUpload file = new FileUpload(Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
+        GlideApp.with(this)
+                .load(file.getStorageRef())
+                .into(imageView);
 
         TextView name = findViewById(R.id.eventName);
         name.setText(event.getName());
