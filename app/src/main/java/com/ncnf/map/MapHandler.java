@@ -10,9 +10,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventDB;
+import com.ncnf.utilities.Location;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class MapHandler {
 
@@ -90,13 +94,26 @@ public class MapHandler {
     }
 
     private void addEventMarkers(){
-        List<Event> events = eventDB.toList();
-        eventMarkers = new ArrayList<>();
+        List<Event> events = queryEvents();
+        Map<LatLng, List<Event>> eventMap = new HashMap<>();
         for (Event p : events) {
             LatLng event_position = new LatLng(p.getLocation().getLatitude(), p.getLocation().getLongitude());
             if (MapUtilities.position_in_range(event_position, userPosition)){
-                clusterManager.addItem(new com.ncnf.map.Marker(event_position, p.getName(), p.getDescription()));
+                if (!eventMap.containsKey(event_position)){
+                    eventMap.put(event_position, new ArrayList<>());
+                }
+                eventMap.get(event_position).add(p);
             }
+        }
+        Set<LatLng> keys = eventMap.keySet();
+        for (LatLng k : keys){
+            List<Event> list = eventMap.get(k);
+            StringBuilder desc = new StringBuilder();
+            for (Event p : list){
+                desc.append(p.getDescription()).append("\n");
+            }
+            String description = desc.toString();
+            clusterManager.addItem(new com.ncnf.map.Marker(k, description, eventMap.get(k).get(0).getAddress()));
         }
     }
 
@@ -109,5 +126,9 @@ public class MapHandler {
                 clusterManager.addItem(new com.ncnf.map.Marker(venue_position, p.getName(), p.getName()));
             }
         }
+    }
+
+    private List<Event> queryEvents(){
+        return eventDB.toList();
     }
 }
