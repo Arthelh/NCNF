@@ -14,7 +14,7 @@ Overall I'm a bit behind on this week due to other workload and I'll have to cat
 
 
 # Eloi 
-This week, I had to refractor the Private/Public event classes. We change our event model to Groups/Events and dropped the abstract class we made. As for Jérémie, this change impacted a lot of files, especially the test files. For that reason, I won't have a PR before the meeting but hopefully this week-end. Also managed to help Jérémie with the Database Service.
+This week, I had to refactor the Private/Public event classes. We change our event model to Groups/Events and dropped the abstract class we made. As for Jérémie, this change impacted a lot of files, especially the test files. For that reason, I won't have a PR before the meeting but hopefully this week-end. Also managed to help Jérémie with the Database Service.
 
 
 # Emmanuelle (scrum master)
