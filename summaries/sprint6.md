@@ -2,6 +2,13 @@
 
 # Beltan
 
+For this week I modified the markers on the map. I have three tasks to do: The first one is to make that when there are multiple markers
+very close to each other, instead of having many markers overlapping we have a circle instead with a number showing how many markers are in
+this area. This is already done and merged. The Second is to have it so that when there are multiple events at the exact same place it only creates
+one marker with the information of all events it represents and the third is to have it so that when you click on a marker you can access the event
+page of the event(s) it represents. Task 2 is still underway and I still have to work on task 3.
+
+Overall I'm a bit behind on this week due to other workload and I'll have to catch up this weekend
 
 # David
 
