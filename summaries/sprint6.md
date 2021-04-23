@@ -23,6 +23,10 @@ This week, I redid the UI for the event creation now that we know exactly what f
 
 # Jérémie
 
+This week, I work on the refactoring of the DatabaseService. This part impacted a lot of files in the project and I had to change many tests. Work still has to be done on this matter which explains why I do not have a PR this week. 
+
+This took me a lot of time already and I not close to be done. But this is looking good.
+
 
 # Keran
 
