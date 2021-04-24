@@ -4,6 +4,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,6 @@ import com.ncnf.database.DatabaseService;
 
 import static com.ncnf.Utils.ADDRESS_KEY;
 import static com.ncnf.Utils.ADMIN_KEY;
-import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
 import static com.ncnf.Utils.LOCATION_KEY;
 import static com.ncnf.Utils.NAME_KEY;
 import static com.ncnf.Utils.ORGANIZATIONS_COLLECTION_KEY;
@@ -33,19 +33,16 @@ public class Organization {
     private GeoPoint location;
     private String address;
     private String phoneNumber;
-    private List<String> adminId;
+    private List<String> adminIds;
     private List<String>  events;
 
-    public GeoPoint getLocation() {
-        return location;
-    }
-
     public Organization(String name, GeoPoint location, String address, String phoneNumber, String originalOwner) {
-        this(UUID.randomUUID(), name, location, address, phoneNumber, Arrays.asList(new String[]{originalOwner}), new ArrayList<>());
+
+        this(UUID.randomUUID(), name, location, address, phoneNumber, new ArrayList<String>() {{ add(originalOwner); }}, new ArrayList<>());
     }
 
-    public Organization(UUID uuid, String name, GeoPoint location, String address, String phoneNumber, List<String> adminId, List<String> events) {
-        if(isArrayEmpty(adminId)){
+    public Organization(UUID uuid, String name, GeoPoint location, String address, String phoneNumber, List<String> adminIds, List<String> events) {
+        if(isArrayEmpty(adminIds) || !checkAdminIds(adminIds)){
             throw new IllegalArgumentException("Organization should have at least one admin created when created");
         }
 
@@ -54,12 +51,21 @@ public class Organization {
         this.location = location;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.adminId = adminId;
+        this.adminIds = adminIds;
         this.events = events;
     }
 
+    public boolean checkAdminIds(List<String> l){
+        for(String s : l){
+            if(isStringEmpty(s)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public CompletableFuture<DatabaseResponse> saveToDB(DatabaseService db){
-        if(uuid == null || isArrayEmpty(adminId)){
+        if(uuid == null || isArrayEmpty(adminIds)){
             return CompletableFuture.completedFuture(new DatabaseResponse(false, null, new IllegalStateException()));
         }
         Map<String, Object> data = new HashMap<>();
@@ -68,22 +74,22 @@ public class Organization {
         data.put(LOCATION_KEY, location);
         data.put(ADDRESS_KEY, address);
         data.put(PHONE_NB_KEY, phoneNumber);
-        data.put(ADMIN_KEY, adminId);
+        data.put(ADMIN_KEY, adminIds);
         data.put(ORGANIZED_EVENTS_KEY, events);
 
         return db.setDocument(ORGANIZATIONS_COLLECTION_KEY + uuid.toString(), data);
+    }
+
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setLocation(GeoPoint location) {
-        this.location = location;
+    public GeoPoint getLocation() {
+        return location;
     }
 
     public String getAddress() {
@@ -94,61 +100,67 @@ public class Organization {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public List<String> getAdminId() {
-        return adminId;
-    }
-
-    public void setAdminId(List<String> adminId) {
-        this.adminId = adminId;
-    }
-
-    public boolean addAdmin(String adminId){
-        return this.addToList(adminId, this.adminId);
-    }
-
-    public boolean deleteAdmin(String adminId){
-        return this.removeFromList(adminId, this.adminId);
-    }
-
-    public boolean addEvent(String eventId){
-        return this.addToList(eventId, this.events);
-    }
-
-    public boolean removeEvent(String eventId){
-        return this.removeFromList(eventId, this.events);
-    }
-
-    private boolean addToList(String id, List l){
-        if(isStringEmpty(id)){
-            return false;
-        }
-        return l.add(id);
-    }
-
-    private boolean removeFromList(String id, List l){
-        if(isStringEmpty(id)){
-            return false;
-        }
-        if(l.contains(id)){
-            return l.remove(id);
-        }
-        return true;
+    public List<String> getAdminIds() {
+        return adminIds;
     }
 
     public List<String> getEvents() {
-        return events;
+        return Collections.unmodifiableList(events);
     }
 
-    public void setEvents(List<String> events) {
-        this.events = events;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLocation(GeoPoint location) {
+        this.location = location;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setAdminIds(List<String> adminIds) {
+        this.adminIds = new ArrayList<>(adminIds);
+    }
+
+    public void setEvents(List<String> events) {
+        this.events = new ArrayList<>(events);
+    }
+
+    public boolean addAdmin(String adminId){
+        if(isStringEmpty(adminId)){
+            return false;
+        }
+        return this.adminIds.add(adminId);
+    }
+
+    public boolean deleteAdmin(String adminId){
+        if(this.adminIds.size() == 1 && this.adminIds.contains(adminId)){
+            throw new IllegalStateException("Organization should have at least one admin");
+        }
+        if(isStringEmpty(adminId)){
+            return false;
+        }
+        return this.adminIds.remove(adminId);
+    }
+
+    public boolean addEvent(String eventId){
+        if(isStringEmpty(eventId)){
+            return false;
+        }
+        return this.events.add(eventId);
+    }
+
+    public boolean removeEvent(String eventId){
+        if(isStringEmpty(eventId)){
+            return false;
+        }
+        return this.events.remove(eventId);
     }
 
     @Override
