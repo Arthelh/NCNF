@@ -1,12 +1,10 @@
 package com.ncnf.bookmark;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,14 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
-import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventActivity;
 import com.ncnf.feed.ui.EventAdapter;
-import com.ncnf.user.PrivateUser;
+import com.ncnf.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +29,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.Utils.UUID_KEY;
 
 @AndroidEntryPoint
 public class EventDisplayFragment extends Fragment implements EventAdapter.OnEventListener{
@@ -44,7 +40,7 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
     private final String eventCollection;
 
     @Inject
-    public PrivateUser user;
+    public User user;
 
     public EventDisplayFragment(String eventCollection){
         this.eventCollection = eventCollection;
@@ -91,7 +87,8 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
     @Override
     public void onEventClick(Event event) {
         Intent intent = new Intent(getActivity(), EventActivity.class);
-        intent.putExtra("event_uid", event.getUuid().toString());
+        intent.putExtra(UUID_KEY, event.getUuid().toString());
+        Log.d(DEBUG_TAG, "Going on event activity");
         startActivity(intent);
     }
 }

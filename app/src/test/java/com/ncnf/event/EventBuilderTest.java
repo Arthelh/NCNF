@@ -1,27 +1,17 @@
 package com.ncnf.event;
 
-import android.util.Log;
-
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FieldPath;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.organizer.PublicOrganizer;
-import com.ncnf.user.PrivateUser;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,12 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import static com.ncnf.Utils.ADDRESS_KEY;
 import static com.ncnf.Utils.ATTENDEES_KEY;
 import static com.ncnf.Utils.DATE_KEY;
-import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.DESCRIPTION_KEY;
 import static com.ncnf.Utils.INVITED_KEY;
 import static com.ncnf.Utils.LOCATION_KEY;
@@ -50,8 +38,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -125,7 +111,7 @@ public class EventBuilderTest {
         assertEquals(event.getDescription(), description);
         assertEquals(event.getOwnerId(), ownerId);
         assertEquals(event.getMinAge(), minAge);
-        assertEquals(event.getPrice(), price);
+        assertEquals(event.getPrice(), price, 0);
 
     }
 
@@ -207,4 +193,38 @@ public class EventBuilderTest {
         assertEquals(event, null);
     }
 
+
+
+    @Test
+    public void worksOnSnapshot(){
+        DocumentSnapshot document = Mockito.mock(DocumentSnapshot.class);
+        Map<String, Object> privateEvent = new HashMap<>();
+        privateEvent.put(OWNER_KEY, ownerId);
+        privateEvent.put(UUID_KEY, this.uuid);
+        privateEvent.put(NAME_KEY, this.name);
+        privateEvent.put(DATE_KEY, new Timestamp(this.date));
+        privateEvent.put(LOCATION_KEY, this.location);
+        privateEvent.put(ADDRESS_KEY, this.address);
+        privateEvent.put(VISIBILITY_KEY, "PRIVATE");
+        privateEvent.put(TYPE_KEY, this.type);
+        privateEvent.put(ATTENDEES_KEY, this.attendees);
+        privateEvent.put(DESCRIPTION_KEY, this.description);
+        privateEvent.put(OWNER_KEY, this.ownerId);
+        privateEvent.put(INVITED_KEY, invited);
+        when(document.getData()).thenReturn(privateEvent);
+
+        PrivateEvent event = (PrivateEvent) eventBuilder.eventFromSnapshot(document);
+
+        assertEquals(event.getUuid().toString(), uuid);
+        assertEquals(event.getName(), name);
+        assertEquals(event.getDate(), date);
+        assertEquals(event.getLocation(), location);
+        assertEquals(event.getAddress(), address);
+        assertEquals(event.getVisibility().toString(), "PRIVATE");
+        assertEquals(event.getType().toString(), type);
+        assertEquals(event.getAttendees().get(0), attendees.get(0));
+        assertEquals(event.getDescription(), description);
+        assertEquals(event.getOwnerId(), ownerId);
+        assertEquals(event.getInvited().get(0), "invited");
+    }
 }

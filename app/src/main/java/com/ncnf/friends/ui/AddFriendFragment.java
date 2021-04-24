@@ -21,11 +21,8 @@ import com.google.firebase.firestore.Query;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
 import com.ncnf.Utils;
-import com.ncnf.user.PrivateUser;
+import com.ncnf.user.User;
 import com.ncnf.user.UserAdapter;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -89,14 +86,14 @@ public class AddFriendFragment extends Fragment {
                 .endAt(name + "\uf8ff");
 
 
-        FirestoreRecyclerOptions<PrivateUser> options
-                = new FirestoreRecyclerOptions.Builder<PrivateUser>()
-                .setQuery(firestoreSearchQuery, new SnapshotParser<PrivateUser>() {
+        FirestoreRecyclerOptions<User> options
+                = new FirestoreRecyclerOptions.Builder<User>()
+                .setQuery(firestoreSearchQuery, new SnapshotParser<User>() {
                     //Create a new Profile to show from the retrieved information from the db
                     @NonNull
                     @Override
-                    public PrivateUser parseSnapshot(@NonNull DocumentSnapshot snapshot) {
-                        return new PrivateUser(snapshot);
+                    public User parseSnapshot(@NonNull DocumentSnapshot snapshot) {
+                        return new User(snapshot);
                     }
                 })
                 .build();
@@ -112,7 +109,7 @@ public class AddFriendFragment extends Fragment {
 
 
     //TODO decide how and what to display
-    private void displayUser(PrivateUser user){
+    private void displayUser(User user){
         Toast.makeText(getActivity(), "TEST_PROFILE_DISPLAY", Toast.LENGTH_LONG).show();
     }
 

@@ -17,12 +17,15 @@ import static com.ncnf.Utils.*;
 
 public abstract class Event implements Comparable {
 
+    public static final String IMAGE_PATH = "/events/images";
+    public static final String IMAGE_NAME = "banner_%s";
+
     public enum Visibility {
         PUBLIC, PRIVATE
     }
 
     public enum Type {
-        Movie, Museum, Conference, Opera, NOTHING
+        NOTHING, Movie, Museum, Conference, Opera, OTHER
     }
 
 
