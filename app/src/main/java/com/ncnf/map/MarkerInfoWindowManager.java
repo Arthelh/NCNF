@@ -27,7 +27,6 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
 
     private final Context context;
     private final View window;
-    private Marker item;
     private NCNFMarker item;
 
     public MarkerInfoWindowManager(Context context){

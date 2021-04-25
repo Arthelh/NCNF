@@ -8,6 +8,8 @@ import androidx.core.util.PatternsCompat;
 
 import com.ncnf.Utils;
 
+import java.util.List;
+
 public class InputValidator {
 
     static public boolean verifyEmailInput(String emailInputString) {
@@ -79,5 +81,9 @@ public class InputValidator {
 
     public static boolean isStringEmpty(String s){
         return s == null || s.length() == 0;
+    }
+
+    public static boolean isArrayEmpty(List l){
+        return l == null || l.isEmpty();
     }
 }
