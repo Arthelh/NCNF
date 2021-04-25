@@ -18,6 +18,7 @@ import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
 import static com.ncnf.Utils.LOCATION_KEY;
 import static com.ncnf.Utils.NAME_KEY;
 import static com.ncnf.Utils.ORGANIZATIONS_COLLECTION_KEY;
+import static com.ncnf.Utils.ORGANIZED_EVENTS_KEY;
 import static com.ncnf.Utils.PHONE_NB_KEY;
 import static com.ncnf.Utils.UUID_KEY;
 
@@ -38,8 +39,8 @@ public class OrganizationBuilder {
     }
 
     public CompletableFuture<DatabaseResponse> loadFromDB(String uuid){
-        CompletableFuture<DatabaseResponse> getData = db.getData(ORGANIZATIONS_COLLECTION_KEY + uuid);
-        return getData.thenApply(task -> {
+        CompletableFuture<DatabaseResponse> query = db.getData(ORGANIZATIONS_COLLECTION_KEY + uuid);
+        return query.thenApply(task -> {
             if(task.isSuccessful()){
                 try {
                     Map<String, Object> data = (Map<String, Object>) task.getResult();
@@ -63,11 +64,10 @@ public class OrganizationBuilder {
             GeoPoint location = (GeoPoint) data.get(LOCATION_KEY);
             String phoneNb = data.get(PHONE_NB_KEY).toString();
             List<String> admin = (List<String>) data.get(ADMIN_KEY);
-            List<String> events = (List<String>) data.get(EVENTS_COLLECTION_KEY);
+            List<String> events = (List<String>) data.get(ORGANIZED_EVENTS_KEY);
 
             return new Organization(UUID.fromString(uuidStr), name, location, address, phoneNb, admin, events);
         } catch (Exception e){
-            Log.d(DEBUG_TAG, "Couldn't load organization");
             return null;
         }
     }
