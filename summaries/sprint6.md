@@ -31,6 +31,9 @@ This took me a lot of time already and I not close to be done. But this is looki
 
 # Keran
 
+I mainly worked on file upload. We chose to use Firestore to store the images for our app (for example event banner or profile image). I implemented a class to interact with Firestore and upload an image. For now, this is used to upload the selected image when creating an event. I then display the image from the store using Glide. However, this will change as the next steps is to implement image caching, so the way images are fetched will be revisited.
+
+I also helped Jeremie on the refactoring of our database service.
 
 # Overall team
 
