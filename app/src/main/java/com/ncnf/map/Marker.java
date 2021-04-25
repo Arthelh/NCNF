@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 import com.ncnf.event.Event;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Marker implements ClusterItem {
@@ -45,5 +46,5 @@ public class Marker implements ClusterItem {
         return snippet;
     }
 
-    public List<Event> getEventList() {return eventList;}
+    public List<Event> getEventList() {return Collections.unmodifiableList(eventList);}
 }

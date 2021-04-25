@@ -36,7 +36,7 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
     @Override
     public boolean onClusterItemClick(Marker item) {
         this.item = item;
-        Log.i("MIWM", "Clicked on cluster item");
+        Log.i(DEBUG_TAG, "Clicked on cluster item");
         return false;
     }
 
@@ -46,7 +46,7 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
     }
 
     private void renderInfoWindow(){
-        Log.i("MIWM", "Rendering Info Window");
+        Log.i(DEBUG_TAG, "Rendering Info Window");
 
         TextView tvTitle = (TextView) window.findViewById(R.id.test_title);
         TextView tvSnippet = (TextView) window.findViewById(R.id.test_snippet);
@@ -67,7 +67,7 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
     public View getInfoContents(com.google.android.gms.maps.model.Marker marker) {
         //if (item == null)
         //    return null;
-        Log.i("MIWM", "Getting info content");
+        Log.i(DEBUG_TAG, "Getting info content");
         TextView tvTitle = (TextView) window.findViewById(R.id.test_title);
         TextView tvSnippet = (TextView) window.findViewById(R.id.test_snippet);
 
