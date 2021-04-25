@@ -14,7 +14,9 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.Utils.EVENTs_COLLECTION_KEY;
+import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.FRIENDS_KEY;
+import static com.ncnf.Utils.NAME_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_TOKEN_KEY;
 import static com.ncnf.Utils.OWNED_EVENTS_KEY;
@@ -176,16 +178,17 @@ public class User {
     }
 
 
-    public CompletableFuture<List<User>> getFriends(){ //TODO: test with WHEREIN()
+    public CompletableFuture<List<User>> getFriends(){
         if(this.friendsIds.isEmpty()){
             return CompletableFuture.completedFuture(new ArrayList<>());
         }
 
-        return this.db.whereArrayContains(USERS_COLLECTION_KEY, FRIENDS_KEY, this.uuid, User.class);
+        return this.db.whereIn(USERS_COLLECTION_KEY, UUID_KEY, this.friendsIds, User.class);
     }
 
-    public CompletableFuture<List<User>> getAllUsers(){
-        return this.db.getCollection(USERS_COLLECTION_KEY, User.class);
+
+    public CompletableFuture<List<User>> getAllUsersLike(String username){
+        return this.db.withFieldLike(USERS_COLLECTION_KEY, FIRST_NAME_KEY, username, User.class); // TODO : change to USERNAME_KEY
     }
 
     public CompletableFuture<Boolean> saveEvent(Event event){
@@ -221,7 +224,7 @@ public class User {
 
     //TODO : for now it can store both type of events but won't be the case in the future
     public CompletableFuture<Boolean> createEvent(Event event){
-        if(event.getOwnerId() != this.uuid){
+        if(!event.getOwnerId().equals(this.uuid)){
             return CompletableFuture.completedFuture(false);
         }
 

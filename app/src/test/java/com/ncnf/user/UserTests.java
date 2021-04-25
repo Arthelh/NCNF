@@ -66,7 +66,7 @@ public class UserTests {
     PrivateEvent privateEvent = new PrivateEvent(ownerID, name, date, geoPoint, address, description, type);
     CompletableFuture<DatabaseResponse<String>> response = CompletableFuture.completedFuture(new DatabaseResponse(true, null, null));
 
-    User user = new User(db, )
+//    User user = new User(db, )
 
 
     @Test

@@ -112,16 +112,12 @@ public class EventCreateActivity extends AppCompatActivity {
                 selMonth = calendar.get(Calendar.MONTH);
                 selDay = calendar.get(Calendar.DATE);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(EventCreateActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        selYear = year;
-                        selMonth = month;
-                        selDay = dayOfMonth;
-                        eventDate = LocalDate.of(selYear, Month.of(selMonth+1), dayOfMonth);
-                        dateSelection.setText(eventDate.toString());
-                    }
+                DatePickerDialog datePickerDialog = new DatePickerDialog(EventCreateActivity.this, (view1, year, month, dayOfMonth) -> {
+                    selYear = year;
+                    selMonth = month;
+                    selDay = dayOfMonth;
+                    eventDate = LocalDate.of(selYear, Month.of(selMonth+1), dayOfMonth);
+                    dateSelection.setText(eventDate.toString());
                 }, selYear, selMonth, selDay);
                 datePickerDialog.show();
             }
@@ -137,15 +133,11 @@ public class EventCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(EventCreateActivity.this,
-                        new TimePickerDialog.OnTimeSetListener() {
-
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                selHour = hourOfDay;
-                                selMin = minute;
-                                eventTime = LocalTime.of(selHour, selMin);
-                                timeSelection.setText(eventTime.toString());
-                            }
+                        (view, hourOfDay, minute) -> {
+                            selHour = hourOfDay;
+                            selMin = minute;
+                            eventTime = LocalTime.of(selHour, selMin);
+                            timeSelection.setText(eventTime.toString());
                         }, selHour, selMin, false);
                 timePickerDialog.show();
             }
@@ -162,32 +154,29 @@ public class EventCreateActivity extends AppCompatActivity {
         });
 
         //Validate
-        validateCreation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkAllFieldsAreFilledAndCorrect()) {
+        validateCreation.setOnClickListener(v -> {
+            if (checkAllFieldsAreFilledAndCorrect()) {
 
-                    if (user != null) {
+                if (user != null) {
 
-                        //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
-                        PrivateEvent event = new PrivateEvent(
-                                user.getUuid(),
-                                eventName.getText().toString(),
-                                dateConversion(eventDate, eventTime),
-                                getLocationFromAddress(eventAddress.getText().toString()),
-                                eventAddress.getText().toString(),
-                                eventDescription.getText().toString(),
-                                eventType);
+                    //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
+                    PrivateEvent event = new PrivateEvent(
+                            user.getUuid(),
+                            eventName.getText().toString(),
+                            dateConversion(eventDate, eventTime),
+                            getLocationFromAddress(eventAddress.getText().toString()),
+                            eventAddress.getText().toString(),
+                            eventDescription.getText().toString(),
+                            eventType);
 
-                        user.createEvent(event).thenAccept(res -> {
-                            nextStep();
-                        }).exceptionally(exception -> {
-                            Log.d(DEBUG_TAG, "Fail to store new event : " + exception.getMessage());
-                            return null;
-                        });
-                    } else {
-                        Log.d(DEBUG_TAG, "Can't create new event if not logged in");
-                    }
+                    user.createEvent(event).thenAccept(res -> {
+                        nextStep();
+                    }).exceptionally(exception -> {
+                        Log.d(DEBUG_TAG, "Fail to store new event : " + exception.getMessage());
+                        return null;
+                    });
+                } else {
+                    Log.d(DEBUG_TAG, "Can't create new event if not logged in");
                 }
             }
         });

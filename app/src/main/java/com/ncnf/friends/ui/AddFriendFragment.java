@@ -53,6 +53,9 @@ public class AddFriendFragment extends Fragment {
 
         //Handle recyclerView
         recycler = getView().findViewById(R.id.add_friend_recycler_view);
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new UserAdapter(new ArrayList<>(), this::displayUser);
+        recycler.setAdapter(adapter);
         recycler.hasFixedSize();
 
         materialSearchBar = getView().findViewById(R.id.add_friend_search_bar);
@@ -79,12 +82,7 @@ public class AddFriendFragment extends Fragment {
 
     //Search the database for a user with the given name
     private void searchUserWithName(String name){
-        //Handle recyclerView
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new UserAdapter(new ArrayList<>(), this::displayUser);
-        recycler.setAdapter(adapter);
-
-        user.loadUserFromDB().thenCompose(user1 -> user.getAllUsers()).thenAccept(users -> {
+        user.loadUserFromDB().thenCompose(user1 -> user.getAllUsersLike(name)).thenAccept(users -> {
             adapter.setUsers(users);
         }).exceptionally(exception -> {
             return null; // TODO : handle exception
