@@ -45,12 +45,6 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
         //TODO Implement going to event page
     }
 
-    private void onEventClicked(Event e){
-        Intent intent = new Intent(context, EventActivity.class);
-        intent.putExtra(UUID_KEY, e.getUuid().toString());
-        context.startActivity(intent);
-    }
-
     private void renderInfoWindow(){
         Log.i("MIWM", "Rendering Info Window");
 

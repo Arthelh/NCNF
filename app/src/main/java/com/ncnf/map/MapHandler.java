@@ -35,8 +35,9 @@ public class MapHandler {
     public MapHandler(Activity context, GoogleMap mMap, EventDB eventDB, VenueProvider venueProvider){
         this.context = context;
         this.mMap = mMap;
-        MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context);
         if (mMap != null) { //This is just for MapHandler Unit test
+            MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context);
+
             this.mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL));
 
             this.clusterManager = new ClusterManager<>(context, mMap);
