@@ -17,11 +17,11 @@ public class NCNFMarker implements ClusterItem {
     private final String snippet;
     private final List<Event> eventList;
 
-    public Marker(float lat, float lon, String title, String snippet, List<Event> eventList){
+    public NCNFMarker(float lat, float lon, String title, String snippet, List<Event> eventList){
         this(new LatLng(lat, lon), title, snippet, eventList);
     }
 
-    public Marker(LatLng position, String title, String snippet, List<Event> eventList){
+    public NCNFMarker(LatLng position, String title, String snippet, List<Event> eventList){
         this.position = position;
         this.title = title;
         this.snippet = snippet;
