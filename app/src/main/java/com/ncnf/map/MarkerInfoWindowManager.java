@@ -23,11 +23,12 @@ import java.util.List;
 import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.UUID_KEY;
 
-public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, ClusterManager.OnClusterItemClickListener<Marker>, ClusterManager.OnClusterItemInfoWindowClickListener<Marker> {
+public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, ClusterManager.OnClusterItemClickListener<NCNFMarker>, ClusterManager.OnClusterItemInfoWindowClickListener<NCNFMarker> {
 
     private final Context context;
     private final View window;
     private Marker item;
+    private NCNFMarker item;
 
     public MarkerInfoWindowManager(Context context){
         this.context = context;
