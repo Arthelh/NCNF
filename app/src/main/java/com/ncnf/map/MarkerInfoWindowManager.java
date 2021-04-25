@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.maps.android.clustering.ClusterItem;
+import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.R;
 import com.ncnf.event.Event;
@@ -35,14 +35,14 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
     }
 
     @Override
-    public boolean onClusterItemClick(Marker item) {
+    public boolean onClusterItemClick(NCNFMarker item) {
         this.item = item;
         Log.i(DEBUG_TAG, "Clicked on cluster item");
         return false;
     }
 
     @Override
-    public void onClusterItemInfoWindowClick(Marker item) {
+    public void onClusterItemInfoWindowClick(NCNFMarker item) {
         //TODO Implement going to event page
     }
 
@@ -57,7 +57,7 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
     }
 
     @Override
-    public View getInfoWindow(com.google.android.gms.maps.model.Marker marker) {
+    public View getInfoWindow(Marker marker) {
         if (item == null)
             return null;
         renderInfoWindow();

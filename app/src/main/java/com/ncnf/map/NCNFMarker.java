@@ -10,7 +10,7 @@ import com.ncnf.event.Event;
 import java.util.Collections;
 import java.util.List;
 
-public class Marker implements ClusterItem {
+public class NCNFMarker implements ClusterItem {
 
     private final LatLng position;
     private final String title;
