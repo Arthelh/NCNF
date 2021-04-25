@@ -1,8 +1,6 @@
 
 package com.ncnf.event;
 
-import android.util.Log;
-
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.GeoPoint;
@@ -11,7 +9,6 @@ import com.ncnf.database.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,12 +24,15 @@ public class EventBuilder {
     }
 
     public EventBuilder(DatabaseService db){
+        if(db == null){
+            throw new IllegalArgumentException("Database is null");
+        }
         this.db = db;
     }
 
     public CompletableFuture<Event> build(String eventId){
 
-        CompletableFuture<DatabaseResponse> event = db.getData(EVENTs_COLLECTION_KEY + eventId);
+        CompletableFuture<DatabaseResponse> event = db.getData(EVENTS_COLLECTION_KEY + eventId);
         return event.thenApply(task -> {
             if (task.isSuccessful()) {
                 return this.build((Map<String, Object>) task.getResult());
