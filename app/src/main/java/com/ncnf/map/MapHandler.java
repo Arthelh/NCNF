@@ -10,7 +10,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventDB;
-import com.ncnf.utilities.Location;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +26,6 @@ public class MapHandler {
 
     private LatLng userPosition;
     private Marker userMarker;
-    private ArrayList<Marker> eventMarkers, venueMarkers;
     private ClusterManager<com.ncnf.map.Marker> clusterManager;
 
     // Indicate whether Events or Venues are shown. If false -> venues are shown
@@ -37,18 +35,23 @@ public class MapHandler {
     public MapHandler(Activity context, GoogleMap mMap, EventDB eventDB, VenueProvider venueProvider){
         this.context = context;
         this.mMap = mMap;
+        MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context);
         if (mMap != null) { //This is just for MapHandler Unit test
             this.mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL));
-            this.clusterManager = new ClusterManager<com.ncnf.map.Marker>(context, mMap);
-            mMap.setOnCameraIdleListener(this.clusterManager);
-            mMap.setOnMarkerClickListener(this.clusterManager);
+
+            this.clusterManager = new ClusterManager<>(context, mMap);
+            this.mMap.setInfoWindowAdapter(this.clusterManager.getMarkerManager());
+
+            this.clusterManager.getMarkerCollection().setInfoWindowAdapter(markerInfoWindowManager);
+            this.clusterManager.setOnClusterItemClickListener(markerInfoWindowManager);
+
+            this.mMap.setOnCameraIdleListener(this.clusterManager);
+            this.mMap.setOnMarkerClickListener(this.clusterManager);
         }
         this.eventDB = eventDB;
         this.venueProvider = venueProvider;
 
-        userPosition = new LatLng(46.526120f, 6.576330f);
-        eventMarkers = new ArrayList<>();
-        venueMarkers = new ArrayList<>();
+        this.userPosition = new LatLng(46.526120f, 6.576330f);
     }
 
     public void switchMarkers(GoogleMap mMap) {
@@ -110,20 +113,19 @@ public class MapHandler {
             List<Event> list = eventMap.get(k);
             StringBuilder desc = new StringBuilder();
             for (Event p : list){
-                desc.append(p.getDescription()).append("\n");
+                desc.append(p.getName()).append("\n");
             }
             String description = desc.toString();
-            clusterManager.addItem(new com.ncnf.map.Marker(k, description, eventMap.get(k).get(0).getAddress()));
+            clusterManager.addItem(new com.ncnf.map.Marker(k, description, eventMap.get(k).get(0).getAddress(), list));
         }
     }
 
     private void addVenueMarkers(){
         List<Venue> venues = venueProvider.getAll();
-        venueMarkers = new ArrayList<>();
         for (Venue p : venues) {
             LatLng venue_position = new LatLng(p.getLatitude(), p.getLongitude());
             if (MapUtilities.position_in_range(venue_position, userPosition)){
-                clusterManager.addItem(new com.ncnf.map.Marker(venue_position, p.getName(), p.getName()));
+                clusterManager.addItem(new com.ncnf.map.Marker(venue_position, p.getName(), p.getName(), null));
             }
         }
     }
