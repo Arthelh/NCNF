@@ -14,7 +14,6 @@ import com.ncnf.mocks.MockTask;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static com.ncnf.Utils.EVENTs_COLLECTION_KEY;
+import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
 import static com.ncnf.Utils.NAME_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
@@ -111,7 +110,7 @@ public class DatabaseServiceTest {
         when(document.getData()).thenReturn(map);
         task = new MockTask(document, null);
         when(db.document(anyString()).get()).thenReturn(task);
-        CompletableFuture<DatabaseResponse> future = service.getField(EVENTs_COLLECTION_KEY, NAME_KEY);
+        CompletableFuture<DatabaseResponse> future = service.getField(EVENTS_COLLECTION_KEY, NAME_KEY);
 
         try {
             assertEquals(name, future.get().getResult());
@@ -129,7 +128,7 @@ public class DatabaseServiceTest {
         when(document.getData()).thenReturn(map);
         task = new MockTask(null, new IllegalArgumentException(), false);
         when(db.document(anyString()).get()).thenReturn(task);
-        CompletableFuture<DatabaseResponse> future = service.getField(EVENTs_COLLECTION_KEY, NAME_KEY);
+        CompletableFuture<DatabaseResponse> future = service.getField(EVENTS_COLLECTION_KEY, NAME_KEY);
 
         try {
             DatabaseResponse response = future.get();
