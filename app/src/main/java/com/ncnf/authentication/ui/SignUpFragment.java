@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.authentication.AuthenticationResponse;
 import com.ncnf.authentication.AuthenticationService;
+import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
 import com.ncnf.user.UserProfileActivity;
 
@@ -60,7 +61,6 @@ public class SignUpFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_sign_up, container, false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -80,7 +80,6 @@ public class SignUpFragment extends Fragment {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void signUp() {
         String emailString = this.email.getText().toString();
         String passwordString = this.password.getText().toString();
@@ -90,33 +89,29 @@ public class SignUpFragment extends Fragment {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void register(String email, String password){
         showProgressBar(true);
 
-        CompletableFuture<AuthenticationResponse> futureResponse= auth.register(email, password);
+        CompletableFuture<Boolean> futureResponse= auth.register(email, password);
 
-        futureResponse.thenAccept(response -> {
-            if(response.isSuccessful()){
-                Log.d(DEBUG_TAG, "Successful register for " + email);
-                FirebaseUser fb = response.getResult().getUser();
-                User user = new User(fb.getUid(), fb.getEmail());
-                user.saveUserToDB().thenAccept(dbResponse -> {
-                    if (dbResponse.isSuccessful()) {
-                        Intent intent = new Intent(getActivity(), UserProfileActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Log.d(DEBUG_TAG, "Deleting user.");
-                        fb.delete();
-                        setException("Couldn't create a new user : please try again");
-                    }
-                });
-            } else {
-                Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + response.getException().getMessage());
-                setException(response.getException().getMessage());
-            }
-            showProgressBar(false);
-        });
+        futureResponse.handle((res, exception) -> {
+            Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + exception.getMessage());
+            setException(exception.getMessage());
+            return null;
+        }).thenCompose(res -> {
+            Log.d(DEBUG_TAG, "Successful register for " + email);
+            User user = CurrentUserModule.getCurrentUser();
+            return user.saveUserToDB();
+        }).thenApply(res -> {
+            Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+            startActivity(intent);
+            return null;
+        }).exceptionally(exception -> {
+            Log.d(DEBUG_TAG, "Deleting user.");
+            this.auth.delete();
+            setException("Couldn't create a new user : please try again");
+            return null;
+        }).thenRun(() -> showProgressBar(false));
     }
 
     private void getItemsFromView(){

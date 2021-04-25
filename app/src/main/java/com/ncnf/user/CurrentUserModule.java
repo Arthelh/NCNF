@@ -19,7 +19,7 @@ public class CurrentUserModule {
         if (currentUser == null) {
             FirebaseUser user = currentUser();
             if (user != null) {
-                currentUser = new User(user.getUid(), user.getEmail());
+                currentUser = new User();
             } else {
                 return null;
             }

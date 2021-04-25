@@ -140,7 +140,7 @@ public abstract class Event implements Comparable {
         this.description = description;
     }
 
-    protected CompletableFuture<DatabaseResponse> store(DatabaseService db, String[] fields, Object[] objects) {
+    protected CompletableFuture<Boolean> store(DatabaseService db, String[] fields, Object[] objects) {
         Map<String, Object> map = new HashMap<>();
         map.put(UUID_KEY, this.uuid.toString());
         map.put(NAME_KEY, this.name);
@@ -158,7 +158,7 @@ public abstract class Event implements Comparable {
         return db.setDocument(path, map);
     }
 
-    public static CompletableFuture<DatabaseResponse> addNews(DatabaseService db, String uuid, String value) {
+    public static CompletableFuture<Boolean> addNews(DatabaseService db, String uuid, String value) {
        return db.updateArrayField(EVENTs_COLLECTION_KEY + uuid, NEWS_KEY, value);
     }
 }

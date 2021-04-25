@@ -20,6 +20,7 @@ import static com.ncnf.Utils.PENDING_REQUESTS_KEY;
 import static com.ncnf.Utils.USERS_COLLECTION_KEY;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
@@ -37,12 +38,12 @@ public class FriendsTests {
     private List<String> ids;
     private HashMap<String, String> users;
 
-    private CompletableFuture<DatabaseResponse> successFuture(Object result) {
-        return CompletableFuture.completedFuture(new DatabaseResponse(true, result, null));
+    private <T> CompletableFuture<DatabaseResponse<T>> successFuture(T result) {
+        return CompletableFuture.completedFuture(new DatabaseResponse<T>(true, result, null));
     }
 
-    private CompletableFuture<DatabaseResponse> failedFuture(Object result) {
-        return CompletableFuture.completedFuture(new DatabaseResponse(false, result, null));
+    private <T> CompletableFuture<DatabaseResponse<T>> failedFuture(T result) {
+        return CompletableFuture.completedFuture(new DatabaseResponse<T>(false, result, null));
     }
 
     @Before
@@ -55,9 +56,9 @@ public class FriendsTests {
 
     @Test
     public void requestSuccessfullyUpdateTwoUsers() {
-        when(mockDatabase.updateArrayField(anyString(), anyString(), anyObject())).thenReturn(successFuture(null));
+        when(mockDatabase.updateArrayField(anyString(), anyString(), anyObject())).thenReturn(successFuture(anyObject()));
 
-        CompletableFuture<DatabaseResponse> res = friends.request(other_uuid);
+        CompletableFuture<DatabaseResponse<Object>> res = friends.request(other_uuid);
 
         verify(mockDatabase).updateArrayField(USERS_COLLECTION_KEY + uuid, PENDING_REQUESTS_KEY, other_uuid);
         verify(mockDatabase).updateArrayField(USERS_COLLECTION_KEY + other_uuid, AWAITING_REQUESTS_KEY, uuid);
@@ -73,7 +74,7 @@ public class FriendsTests {
     public void requestFailsToUpdateTwoUsers() {
         when(mockDatabase.updateArrayField(anyString(), anyString(), anyObject())).thenReturn(failedFuture(null));
 
-        CompletableFuture<DatabaseResponse> res = friends.request(other_uuid);
+        CompletableFuture<DatabaseResponse<Object>> res = friends.request(other_uuid);
 
         try {
             assertFalse(res.get().isSuccessful());
@@ -84,13 +85,13 @@ public class FriendsTests {
 
     @Test
     public void awaitingRequestsIsSuccessful() {
-        when(mockDatabase.getField(anyString(), anyString())).thenReturn(successFuture(ids));
-        when(mockDatabase.whereEqualTo(anyString(), anyString(), anyList())).thenReturn(successFuture(users));
+        when(mockDatabase.getField(anyString(), anyString(), any())).thenReturn(successFuture(ids));
+        when(mockDatabase.whereEqualTo(anyString(), anyString(), anyList(), any())).thenReturn(successFuture(users));
 
-        CompletableFuture<DatabaseResponse> res = friends.awaitingRequests();
+        CompletableFuture<DatabaseResponse<Object>> res = friends.awaitingRequests();
 
-        verify(mockDatabase).getField(USERS_COLLECTION_KEY + uuid, AWAITING_REQUESTS_KEY);
-        verify(mockDatabase).whereEqualTo(USERS_COLLECTION_KEY, "uuid", ids);
+        verify(mockDatabase).getField(USERS_COLLECTION_KEY + uuid, AWAITING_REQUESTS_KEY, any());
+        verify(mockDatabase).whereEqualTo(USERS_COLLECTION_KEY, "uuid", ids, any());
 
         try {
             assertTrue(res.get().isSuccessful());
@@ -101,9 +102,9 @@ public class FriendsTests {
 
     @Test
     public void awaitingRequestsFailsWithTheFirstRequest() {
-        when(mockDatabase.getField(anyString(), anyString())).thenReturn(failedFuture(ids));
+        when(mockDatabase.getField(anyString(), anyString(), any())).thenReturn(failedFuture(anyObject()));
 
-        CompletableFuture<DatabaseResponse> res = friends.awaitingRequests();
+        CompletableFuture<DatabaseResponse<Object>> res = friends.awaitingRequests();
 
         try {
             assertFalse(res.get().isSuccessful());
@@ -114,10 +115,10 @@ public class FriendsTests {
 
     @Test
     public void awaitingRequestsFailsWithTheSecondRequest() {
-        when(mockDatabase.getField(anyString(), anyString())).thenReturn(successFuture(ids));
-        when(mockDatabase.whereEqualTo(anyString(), anyString(), anyList())).thenReturn(failedFuture(users));
+        when(mockDatabase.getField(anyString(), anyString(), any())).thenReturn(successFuture(ids));
+        when(mockDatabase.whereEqualTo(anyString(), anyString(), anyList(), any())).thenReturn(failedFuture(users));
 
-        CompletableFuture<DatabaseResponse> res = friends.awaitingRequests();
+        CompletableFuture<DatabaseResponse<Object>> res = friends.awaitingRequests();
 
         try {
             assertFalse(res.get().isSuccessful());
@@ -128,13 +129,13 @@ public class FriendsTests {
 
     @Test
     public void pendingRequestsIsSuccessful() {
-        when(mockDatabase.getField(anyString(), anyString())).thenReturn(successFuture(ids));
-        when(mockDatabase.whereEqualTo(anyString(), anyString(), anyList())).thenReturn(successFuture(users));
+        when(mockDatabase.getField(anyString(), anyString(), any())).thenReturn(successFuture(ids));
+        when(mockDatabase.whereEqualTo(anyString(), anyString(), anyList(), any())).thenReturn(successFuture(users));
 
-        CompletableFuture<DatabaseResponse> res = friends.pendingRequests();
+        CompletableFuture<DatabaseResponse<Object>> res = friends.pendingRequests();
 
-        verify(mockDatabase).getField(USERS_COLLECTION_KEY + uuid, PENDING_REQUESTS_KEY);
-        verify(mockDatabase).whereEqualTo(USERS_COLLECTION_KEY, "uuid", ids);
+        verify(mockDatabase).getField(USERS_COLLECTION_KEY + uuid, PENDING_REQUESTS_KEY, any());
+        verify(mockDatabase).whereEqualTo(USERS_COLLECTION_KEY, "uuid", ids, any());
 
         try {
             assertTrue(res.get().isSuccessful());
@@ -145,39 +146,9 @@ public class FriendsTests {
 
     @Test
     public void pendingRequestsFails() {
-        when(mockDatabase.getField(anyString(), anyString())).thenReturn(failedFuture(ids));
+        when(mockDatabase.getField(anyString(), anyString(), any())).thenReturn(failedFuture(ids));
 
-        CompletableFuture<DatabaseResponse> res = friends.pendingRequests();
-
-        try {
-            assertFalse(res.get().isSuccessful());
-        } catch (ExecutionException | InterruptedException e) {
-            Assert.fail("The future did not complete correctly !");
-        }
-    }
-
-    @Test
-    public void getFriendsIsSuccessful() {
-        when(mockDatabase.getField(anyString(), anyString())).thenReturn(successFuture(ids));
-        when(mockDatabase.whereEqualTo(anyString(), anyString(), anyList())).thenReturn(successFuture(users));
-
-        CompletableFuture<DatabaseResponse> res = friends.getFriends();
-
-        verify(mockDatabase).getField(USERS_COLLECTION_KEY + uuid, FRIENDS_KEY);
-        verify(mockDatabase).whereEqualTo(USERS_COLLECTION_KEY, "uuid", ids);
-
-        try {
-            assertTrue(res.get().isSuccessful());
-        } catch (ExecutionException | InterruptedException e) {
-            Assert.fail("The future did not complete correctly !");
-        }
-    }
-
-    @Test
-    public void getFriendsFails() {
-        when(mockDatabase.getField(anyString(), anyString())).thenReturn(failedFuture(ids));
-
-        CompletableFuture<DatabaseResponse> res = friends.getFriends();
+        CompletableFuture<DatabaseResponse<Object>> res = friends.pendingRequests();
 
         try {
             assertFalse(res.get().isSuccessful());
@@ -185,13 +156,14 @@ public class FriendsTests {
             Assert.fail("The future did not complete correctly !");
         }
     }
+
 
     @Test
     public void updateRequestIsSuccessful() {
         when(mockDatabase.removeArrayField(anyString(), anyString(), anyString())).thenReturn(successFuture(null));
         when(mockDatabase.updateArrayField(anyString(), anyString(), anyString())).thenReturn(successFuture(null));
 
-        CompletableFuture<DatabaseResponse> res = friends.updateRequest(true, other_uuid);
+        CompletableFuture<DatabaseResponse<Object>> res = friends.updateRequest(true, other_uuid);
 
         verify(mockDatabase).removeArrayField(USERS_COLLECTION_KEY + uuid, AWAITING_REQUESTS_KEY, other_uuid);
         verify(mockDatabase).removeArrayField(USERS_COLLECTION_KEY + other_uuid, PENDING_REQUESTS_KEY, uuid);
@@ -210,7 +182,7 @@ public class FriendsTests {
         when(mockDatabase.removeArrayField(anyString(), anyString(), anyString())).thenReturn(failedFuture(null));
         when(mockDatabase.updateArrayField(anyString(), anyString(), anyString())).thenReturn(failedFuture(null));
 
-        CompletableFuture<DatabaseResponse> res = friends.updateRequest(true, other_uuid);
+        CompletableFuture<DatabaseResponse<Object>> res = friends.updateRequest(true, other_uuid);
 
         try {
             assertFalse(res.get().isSuccessful());

@@ -34,7 +34,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.ncnf.Utils.BIRTH_YEAR_KEY;
+import static com.ncnf.Utils.BIRTH_DATE_KEY;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_KEY;
@@ -57,11 +57,11 @@ public class UserProfileActivityTests {
         HashMap<String, Object> values = new HashMap<>();
         values.put(FIRST_NAME_KEY, "John");
         values.put(LAST_NAME_KEY, "Doe");
-        values.put(BIRTH_YEAR_KEY, "2012");
+        values.put(BIRTH_DATE_KEY, "2012");
         values.put(NOTIFICATIONS_KEY, false);
         future.complete(new DatabaseResponse(true, values, new Exception()));
 
-        when(mockUser.loadUserFromDB()).thenReturn(future);
+//        when(mockUser.loadUserFromDB()).thenReturn(future);
     }
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
@@ -120,9 +120,9 @@ public class UserProfileActivityTests {
         CompletableFuture<DatabaseResponse> future = new CompletableFuture<>();
         future.complete(new DatabaseResponse(true, new HashMap<>(), new Exception()));
 
-        when(user.updateFirstName(anyString())).thenReturn(future);
-        when(user.updateLastName(anyString())).thenReturn(future);
-        when(user.updateBirth(anyInt())).thenReturn(future);
+//        when(user.updateFirstName(anyString())).thenReturn(future);
+//        when(user.updateLastName(anyString())).thenReturn(future);
+//        when(user.updateBirth(anyInt())).thenReturn(future);
 
         onView(withId(R.id.userProfileFirstName)).perform(typeText("Jean"), closeSoftKeyboard());
         onView(withId(R.id.userProfileSaveButton)).perform(click());
@@ -142,9 +142,9 @@ public class UserProfileActivityTests {
         CompletableFuture<DatabaseResponse> future = new CompletableFuture<>();
         future.complete(new DatabaseResponse(false, new HashMap<>(), new Exception()));
 
-        when(user.updateFirstName(anyString())).thenReturn(future);
-        when(user.updateLastName(anyString())).thenReturn(future);
-        when(user.updateBirth(anyInt())).thenReturn(future);
+//        when(user.updateFirstName(anyString())).thenReturn(future);
+//        when(user.updateLastName(anyString())).thenReturn(future);
+//        when(user.updateBirth(anyInt())).thenReturn(future);
 
         onView(withId(R.id.userProfileFirstName)).perform(typeText("Jean"), closeSoftKeyboard());
         onView(withId(R.id.userProfileSaveButton)).perform(click());

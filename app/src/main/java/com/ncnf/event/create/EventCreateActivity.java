@@ -171,7 +171,7 @@ public class EventCreateActivity extends AppCompatActivity {
 
                         //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
                         PrivateEvent event = new PrivateEvent(
-                                user.getID(),
+                                user.getUuid(),
                                 eventName.getText().toString(),
                                 dateConversion(eventDate, eventTime),
                                 getLocationFromAddress(eventAddress.getText().toString()),
@@ -179,14 +179,11 @@ public class EventCreateActivity extends AppCompatActivity {
                                 eventDescription.getText().toString(),
                                 eventType);
 
-                        user.createEvent(event).thenAccept(task1 -> {
-                            task1.thenAccept(task2 -> {
-                                if (task2.isSuccessful()) {
-                                    nextStep();
-                                } else {
-                                    Log.d(DEBUG_TAG, "Fail to store new event");
-                                }
-                            });
+                        user.createEvent(event).thenAccept(res -> {
+                            nextStep();
+                        }).exceptionally(exception -> {
+                            Log.d(DEBUG_TAG, "Fail to store new event : " + exception.getMessage());
+                            return null;
                         });
                     } else {
                         Log.d(DEBUG_TAG, "Can't create new event if not logged in");

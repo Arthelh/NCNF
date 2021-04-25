@@ -97,7 +97,7 @@ public class EventCreateActivityTest {
 
     @Test
     public void eventFormValidatesCorrectInput() {
-        when(user.getID()).thenReturn("ownerId");
+        when(user.getUuid()).thenReturn("ownerId");
         when(user.createEvent(anyObject())).thenReturn(response);
 
         onView(withId(R.id.event_name)).perform(scrollTo(), replaceText("Conference"));
@@ -122,7 +122,7 @@ public class EventCreateActivityTest {
         onView(withId(R.id.event_create_button)).perform(scrollTo());
         onView(withId(R.id.event_create_button)).perform(click());
 
-        verify(user).getID();
+        verify(user).getUuid();
         verify(user).createEvent(anyObject());
         Intents.intended(hasComponent(MainActivity.class.getName()));
 

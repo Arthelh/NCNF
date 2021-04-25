@@ -14,7 +14,6 @@ import com.ncnf.mocks.MockTask;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -75,7 +74,7 @@ public class DatabaseServiceTest {
     public void updateFieldReturnResult() {
         when(db.document(anyString()).update((FieldPath) anyObject(), anyObject())).thenReturn(task);
 
-        CompletableFuture<DatabaseResponse> future = service.updateField("/events", NAME_KEY, "Conference");
+        CompletableFuture<DatabaseResponse> future = service.setField("/events", NAME_KEY, "Conference");
 
         try {
             assertEquals(event, future.get().getResult());
@@ -111,7 +110,7 @@ public class DatabaseServiceTest {
         when(document.getData()).thenReturn(map);
         task = new MockTask(document, null);
         when(db.document(anyString()).get()).thenReturn(task);
-        CompletableFuture<DatabaseResponse> future = service.getField(EVENTs_COLLECTION_KEY, NAME_KEY);
+        CompletableFuture<DatabaseResponse<String>> future = service.getField(EVENTs_COLLECTION_KEY, NAME_KEY, String.class);
 
         try {
             assertEquals(name, future.get().getResult());
@@ -129,7 +128,7 @@ public class DatabaseServiceTest {
         when(document.getData()).thenReturn(map);
         task = new MockTask(null, new IllegalArgumentException(), false);
         when(db.document(anyString()).get()).thenReturn(task);
-        CompletableFuture<DatabaseResponse> future = service.getField(EVENTs_COLLECTION_KEY, NAME_KEY);
+        CompletableFuture<DatabaseResponse<String>> future = service.getField(EVENTs_COLLECTION_KEY, NAME_KEY, String.class);
 
         try {
             DatabaseResponse response = future.get();
@@ -183,7 +182,7 @@ public class DatabaseServiceTest {
     @Test
     public void whereEqualsWithEmptyValues() {
         assertThrows(IllegalArgumentException.class, () -> {
-           service.whereEqualTo("", "", new ArrayList<>());
+           service.whereEqualTo("", "", new ArrayList<>(), null);
         });
     }
 
@@ -196,7 +195,7 @@ public class DatabaseServiceTest {
         when(query.whereEqualTo(anyString(), anyString())).thenReturn(query);
         when(query.get()).thenReturn(task);
 
-        CompletableFuture<DatabaseResponse> res = service.whereEqualTo("/events", "uuid", Arrays.asList("1", "2"));
+        CompletableFuture<DatabaseResponse> res = service.whereEqualTo("/events", "uuid", Arrays.asList("1", "2"), null);
 
         try {
             assertEquals(event, res.get().getResult());

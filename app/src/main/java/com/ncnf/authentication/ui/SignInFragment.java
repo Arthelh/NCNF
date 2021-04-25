@@ -75,19 +75,18 @@ public class SignInFragment extends Fragment {
 
         showProgressBar(true);
 
-        CompletableFuture<AuthenticationResponse> futureResponse = auth.logIn(email, password);
+        CompletableFuture<Boolean> futureResponse = auth.logIn(email, password);
 
-        futureResponse.thenAccept(response -> {
-            if(response.isSuccessful()){
-                Log.d(DEBUG_TAG,"Successful login for " + email);
-                Intent intent = new Intent(getActivity(), UserProfileActivity.class);
-                startActivity(intent);
-            } else {
-                Log.d(DEBUG_TAG,"Unsuccessful login for " + email + " : " + response.getException().getMessage());
+        futureResponse.thenAccept(result -> {
+            Log.d(DEBUG_TAG,"Successful login for " + email);
+            Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+            startActivity(intent);
+        }).exceptionally(exception -> {
+            Log.d(DEBUG_TAG,"Unsuccessful login for " + email + " : " + exception.getMessage());
 
-                setException(response.getException().getMessage());
-            }
+            setException(exception.getMessage());
             showProgressBar(false);
+            return null;
         });
     }
 

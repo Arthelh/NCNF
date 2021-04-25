@@ -2,12 +2,12 @@ package com.ncnf.database;
 
 import javax.annotation.Nullable;
 
-public class DatabaseResponse {
+public class DatabaseResponse<T> {
     private final boolean isSuccessful;
-    private final Object result;
+    private final T result;
     private final Exception exception;
 
-    public DatabaseResponse(boolean isSuccessful, @Nullable Object result, Exception exception){
+    public DatabaseResponse(boolean isSuccessful, @Nullable T result, Exception exception){
         this.isSuccessful = isSuccessful;
         this.result = result;
         this.exception = exception;
@@ -17,7 +17,11 @@ public class DatabaseResponse {
         return isSuccessful;
     }
 
-    public Object getResult() {
+    public T getResult() {
+        return result;
+    }
+
+    public T getResult(Class type) {
         return result;
     }
 

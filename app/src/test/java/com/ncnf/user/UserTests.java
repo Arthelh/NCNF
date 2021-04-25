@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.Utils.ADDRESS_KEY;
 import static com.ncnf.Utils.ATTENDEES_KEY;
-import static com.ncnf.Utils.BIRTH_YEAR_KEY;
+import static com.ncnf.Utils.BIRTH_DATE_KEY;
 import static com.ncnf.Utils.DATE_KEY;
 import static com.ncnf.Utils.DESCRIPTION_KEY;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
@@ -64,7 +64,9 @@ public class UserTests {
     Event.Type type = Event.Type.Movie;
     PublicEvent publicEvent = new PublicEvent(ownerID, name, date, geoPoint, address, description, type, 0 , 0);
     PrivateEvent privateEvent = new PrivateEvent(ownerID, name, date, geoPoint, address, description, type);
-    CompletableFuture<DatabaseResponse> response = CompletableFuture.completedFuture(new DatabaseResponse(true, null, null));
+    CompletableFuture<DatabaseResponse<String>> response = CompletableFuture.completedFuture(new DatabaseResponse(true, null, null));
+
+    User user = new User(db, )
 
 
     @Test
@@ -170,7 +172,7 @@ public class UserTests {
     public void getId() {
         String id = "1234567890";
         User user = new User(db, "1234567890","foo@bar.com");
-        assertEquals(id, user.getID());
+        assertEquals(id, user.getUuid());
     }
 
     @Test
@@ -192,48 +194,48 @@ public class UserTests {
     public void getFieldCallsDatabase() {
         when(db.getField(anyString(), anyString())).thenReturn(new CompletableFuture<>());
         User user = new User(db, "1234567890","foo@bar.com");
-        user.getField(FIRST_NAME_KEY);
+        user.getUserField(FIRST_NAME_KEY);
         verify(db).getField(USERS_COLLECTION_KEY + "1234567890", FIRST_NAME_KEY);
     }
 
     @Test
     public void updateLastNameCallsDatabase() {
-        when(db.updateField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
+        when(db.setField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
         User user = new User(db, "1234567890","foo@bar.com");
         user.updateLastName("Doe");
-        verify(db).updateField(USERS_COLLECTION_KEY + "1234567890", LAST_NAME_KEY, "Doe");
+        verify(db).setField(USERS_COLLECTION_KEY + "1234567890", LAST_NAME_KEY, "Doe");
     }
 
     @Test
     public void updateFirstNameCallsDatabase() {
-        when(db.updateField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
+        when(db.setField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
         User user = new User(db, "1234567890","foo@bar.com");
         user.updateFirstName("John");
-        verify(db).updateField(USERS_COLLECTION_KEY + "1234567890", FIRST_NAME_KEY, "John");
+        verify(db).setField(USERS_COLLECTION_KEY + "1234567890", FIRST_NAME_KEY, "John");
     }
 
     @Test
     public void updateBirthCallsDatabase() {
-        when(db.updateField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
+        when(db.setField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
         User user = new User(db, "1234567890","foo@bar.com");
         user.updateBirth(2011);
-        verify(db).updateField(USERS_COLLECTION_KEY + "1234567890", BIRTH_YEAR_KEY, 2011);
+        verify(db).setField(USERS_COLLECTION_KEY + "1234567890", BIRTH_DATE_KEY, 2011);
     }
 
     @Test
     public void updateNotificationsCallsDatabase() {
-        when(db.updateField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
+        when(db.setField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
         User user = new User(db, "1234567890","foo@bar.com");
         user.updateNotifications(true);
-        verify(db).updateField(USERS_COLLECTION_KEY + "1234567890", NOTIFICATIONS_KEY, true);
+        verify(db).setField(USERS_COLLECTION_KEY + "1234567890", NOTIFICATIONS_KEY, true);
     }
 
     @Test
     public void updateNotificationsTokenCallsDatabase() {
-        when(db.updateField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
+        when(db.setField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
         User user = new User(db, "1234567890","foo@bar.com");
         user.updateNotificationsToken("My token");
-        verify(db).updateField(USERS_COLLECTION_KEY + "1234567890", NOTIFICATIONS_TOKEN_KEY, "My token");
+        verify(db).setField(USERS_COLLECTION_KEY + "1234567890", NOTIFICATIONS_TOKEN_KEY, "My token");
     }
 
     @Test
@@ -258,7 +260,7 @@ public class UserTests {
         UUID uuid = UUID.randomUUID();
         String email = "i@i.com";
         User user = new User(uuid.toString(), db);
-        assertEquals(user.getID(), uuid.toString());
+        assertEquals(user.getUuid(), uuid.toString());
         user.setEmail(email);
         assertEquals(user.getEmail(), email);
     }

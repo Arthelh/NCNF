@@ -96,7 +96,7 @@ public class PublicEvent extends Event {
         return p.getUuid().equals(getUuid());
     }
 
-    public CompletableFuture<DatabaseResponse> store(DatabaseService db){
+    public CompletableFuture<Boolean> store(DatabaseService db){
         String[] fields = {MIN_AGE_KEY, PRICE_KEY, TAGS_LIST_KEY};
         Object[] objects = {this.minAge, this.price, this.tags};
         return super.store(db, fields, objects);

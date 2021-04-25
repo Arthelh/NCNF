@@ -66,17 +66,13 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
 
     private void getEventList(View view){
         if(user != null){
-            CompletableFuture<CompletableFuture<List<Event>>> listEvent = user.getAllEvents(eventCollection);
+            CompletableFuture<List<Event>> listEvent = user.getOwnedEvents();
 
-            listEvent.thenAccept(task -> task.thenAccept(events -> {
+            listEvent.thenAccept(events -> {
                 if(events != null){
-                    for(Event e : events){
-                        if (e != null) {
-                            this.adapter.addEvent(e);
-                        }
-                    }
+                    this.adapter.setEvents(events);
                 }
-            }));
+            });
         }
     }
 

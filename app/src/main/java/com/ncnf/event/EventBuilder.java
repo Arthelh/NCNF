@@ -32,13 +32,8 @@ public class EventBuilder {
 
     public CompletableFuture<Event> build(String eventId){
 
-        CompletableFuture<DatabaseResponse> event = db.getData(EVENTs_COLLECTION_KEY + eventId);
-        return event.thenApply(task -> {
-            if (task.isSuccessful()) {
-                return this.build((Map<String, Object>) task.getResult());
-            }
-            return null;
-        });
+        CompletableFuture<Event> event = db.getDocument(EVENTs_COLLECTION_KEY + eventId, Event.class);
+        return event;
     }
 
     private Event build(Map<String, Object> data){

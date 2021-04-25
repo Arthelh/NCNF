@@ -21,8 +21,11 @@ import com.google.firebase.firestore.Query;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
 import com.ncnf.Utils;
+import com.ncnf.database.builder.UserBuilder;
 import com.ncnf.user.User;
 import com.ncnf.user.UserAdapter;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -37,7 +40,7 @@ public class AddFriendFragment extends Fragment {
     private MaterialSearchBar materialSearchBar;
 
     @Inject
-    public FirebaseFirestore databaseReference;
+    public User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,8 +50,6 @@ public class AddFriendFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        usersRef = databaseReference.collection(Utils.USERS_COLLECTION_KEY);
 
         //Handle recyclerView
         recycler = getView().findViewById(R.id.add_friend_recycler_view);
@@ -78,33 +79,17 @@ public class AddFriendFragment extends Fragment {
 
     //Search the database for a user with the given name
     private void searchUserWithName(String name){
-
-        //The query responsible for the results
-        Query firestoreSearchQuery = usersRef
-                .orderBy("first_name") //TODO change to "username" when available
-                .startAt(name)
-                .endAt(name + "\uf8ff");
-
-
-        FirestoreRecyclerOptions<User> options
-                = new FirestoreRecyclerOptions.Builder<User>()
-                .setQuery(firestoreSearchQuery, new SnapshotParser<User>() {
-                    //Create a new Profile to show from the retrieved information from the db
-                    @NonNull
-                    @Override
-                    public User parseSnapshot(@NonNull DocumentSnapshot snapshot) {
-                        return new User(snapshot);
-                    }
-                })
-                .build();
-
-        //Custom method to display profile when clicking on it
-        adapter = new UserAdapter(options, user -> displayUser(user));
-
+        //Handle recyclerView
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //TODO find better way to listen to optimize resources
-        adapter.startListening();
+        adapter = new UserAdapter(new ArrayList<>(), this::displayUser);
         recycler.setAdapter(adapter);
+
+        user.loadUserFromDB().thenCompose(user1 -> user.getAllUsers()).thenAccept(users -> {
+            adapter.setUsers(users);
+        }).exceptionally(exception -> {
+            return null; // TODO : handle exception
+        });
+
     }
 
 

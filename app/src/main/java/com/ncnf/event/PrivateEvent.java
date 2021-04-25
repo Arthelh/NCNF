@@ -45,7 +45,7 @@ public class PrivateEvent extends Event {
         PrivateEvent otherEvent = (PrivateEvent) o;
         return getDate().compareTo(otherEvent.getDate());
     }
-    public CompletableFuture<DatabaseResponse> store(DatabaseService db){
+    public CompletableFuture<Boolean> store(DatabaseService db){
         String[] fields = {INVITED_KEY};
         Object[] objects = {this.invited};
         return super.store(db, fields, objects);
