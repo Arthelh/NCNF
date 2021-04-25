@@ -101,7 +101,7 @@ public class Organization {
     }
 
     public List<String> getAdminIds() {
-        return adminIds;
+        return Collections.unmodifiableList(adminIds);
     }
 
     public List<String> getEvents() {
