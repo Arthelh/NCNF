@@ -20,6 +20,7 @@ import com.ncnf.feed.ui.EventAdapter;
 
 import java.util.List;
 
+import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.UUID_KEY;
 
 public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, ClusterManager.OnClusterItemClickListener<Marker>, ClusterManager.OnClusterItemInfoWindowClickListener<Marker> {
