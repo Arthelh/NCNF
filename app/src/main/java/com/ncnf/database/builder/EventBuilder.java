@@ -50,15 +50,15 @@ public class EventBuilder extends DatabaseObjectBuilder<Event> {
 
         if(visibility.equals(Event.Visibility.PUBLIC)){
             int minAge = (int) data.get(MIN_AGE_KEY);
-            int price = (int) data.get(PRICE_KEY);
+            double price = (double) data.get(PRICE_KEY);
             List<Tag> tags = (ArrayList) data.get(TAGS_LIST_KEY);
             String email = data.get(EMAIL_KEY).toString();
             //TODO : should serialize / deserialize tags before adding them
-            return new PublicEvent(ownerId, UUID.fromString(uuid), name, date, location, address, description, type, attendees, minAge, price, tags, email);
+            return new PublicEvent(ownerId, UUID.fromString(uuidStr), name, date, location, address, description, type, attendees, minAge, price, tags, email);
 
         } else {
             List<String> invited = (ArrayList) data.get(INVITED_KEY);
-            return new PrivateEvent(ownerId, UUID.fromString(uuid), name, date, location, address, type, attendees, description, invited);
+            return new PrivateEvent(ownerId, UUID.fromString(uuidStr), name, date, location, address, type, attendees, description, invited);
         }
     }
 
@@ -72,7 +72,7 @@ public class EventBuilder extends DatabaseObjectBuilder<Event> {
         map.put(ADDRESS_KEY, event.getAddress());
         map.put(VISIBILITY_KEY, event.getVisibility().toString());
         map.put(TYPE_KEY, event.getType().toString());
-        map.put(ATTENDEES_KEY, event.getAddress());
+        map.put(ATTENDEES_KEY, event.getAttendees());
         map.put(DESCRIPTION_KEY, event.getDescription());
         map.put(OWNER_KEY, event.getOwnerId());
 

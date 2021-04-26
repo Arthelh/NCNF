@@ -3,11 +3,13 @@ package com.ncnf.database;
 import android.app.VoiceInteractor;
 import android.util.Log;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.ncnf.database.builder.DatabaseObjectBuilder;
 import com.ncnf.database.builder.EventBuilder;
 import com.ncnf.database.builder.UserBuilder;
@@ -46,6 +48,7 @@ public class DatabaseService implements DatabaseServiceInterface {
 
     private void initMap(){
         registry.put(User.class, new UserBuilder());
+        registry.put(Event.class, new EventBuilder());
         registry.put(PublicEvent.class, new EventBuilder());
         registry.put(PrivateEvent.class, new EventBuilder());
     }
@@ -120,10 +123,11 @@ public class DatabaseService implements DatabaseServiceInterface {
     public <T> CompletableFuture<List<T>> getCollection(String collectionPath, Class<T> collectionType) {
         CompletableFuture<List<T>> futureResponse = new CompletableFuture<>();
 
-        this.db.collection(collectionPath).get().addOnCompleteListener(task -> {
+        Task<QuerySnapshot> query = this.db.collection(collectionPath).get();
+        query.addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 List<T> result = new ArrayList<>();
-                for(QueryDocumentSnapshot document : task.getResult()){
+                for(DocumentSnapshot document :  task.getResult().getDocuments()){
                     result.add((T) registry.get(collectionType).toObject(document.getId(), document.getData()));
                 }
                 futureResponse.complete(result);
@@ -142,7 +146,7 @@ public class DatabaseService implements DatabaseServiceInterface {
         this.db.collection(collectionPath).orderBy(field).startAt(value).endAt(value + "\uf8ff").get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 List<T> result = new ArrayList<>();
-                for(QueryDocumentSnapshot document : task.getResult()){
+                for(DocumentSnapshot document : task.getResult().getDocuments()){
                     result.add((T) registry.get(collectionType).toObject(document.getId(), document.getData()));
                 }
 
@@ -162,7 +166,7 @@ public class DatabaseService implements DatabaseServiceInterface {
         this.db.collection(collectionPath).whereArrayContains(field, value).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 List<R> result = new ArrayList<>();
-                for(QueryDocumentSnapshot document : task.getResult()){
+                for(DocumentSnapshot document : task.getResult().getDocuments()){
                     result.add((R) registry.get(type).toObject(document.getId(), document.getData()));
                 }
 
@@ -182,7 +186,7 @@ public class DatabaseService implements DatabaseServiceInterface {
         this.db.collection(collectionPath).whereEqualTo(field, value).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 List<R> result = new ArrayList<>();
-                for(QueryDocumentSnapshot document : task.getResult()){
+                for(DocumentSnapshot document : task.getResult().getDocuments()){
                     result.add((R) registry.get(type).toObject(document.getId(), document.getData()));
                 }
 
