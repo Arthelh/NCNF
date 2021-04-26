@@ -59,7 +59,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     }
 
     public List<Event> getEvents() {
-        return events;
+        return Collections.unmodifiableList(events);
     }
 
     public void setEvents(List<Event> events) {

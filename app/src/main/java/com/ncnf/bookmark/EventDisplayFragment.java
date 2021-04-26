@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.Utils.SAVED_EVENTS_KEY;
 import static com.ncnf.Utils.UUID_KEY;
 
 @AndroidEntryPoint
@@ -70,9 +71,16 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
 
     private void getEventList(View view){
         if(user != null){
-            CompletableFuture<List<Event>> listEvent = user.getOwnedEvents();
+            CompletableFuture<List<Event>> listEvent;
+            Log.d(DEBUG_TAG, "here");
+            if(eventCollection == SAVED_EVENTS_KEY){
+                listEvent = user.getSavedEvents();
+            } else {
+                listEvent = user.getOwnedEvents();
+            }
 
             listEvent.thenAccept(events -> {
+                Log.d(DEBUG_TAG, Integer.toString(events.size()));
                 if(events != null){
                     this.adapter.setEvents(events);
                 }

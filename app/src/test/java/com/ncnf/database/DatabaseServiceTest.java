@@ -364,7 +364,7 @@ public class DatabaseServiceTest {
     @Test
     public void whereEqualTo(){
         String uuid = UUID.randomUUID().toString();
-        PublicEvent event = new PublicEvent(uuid, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        PublicEvent event = new PublicEvent(uuid, name, date, geoPoint,address,description, type, 0, 0L, "test@email.com");
         Map<String, Object> data = new EventBuilder().toMap(event);
 
         QueryDocumentSnapshot document = Mockito.mock(QueryDocumentSnapshot.class);

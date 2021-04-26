@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState == null){
             this.homeFragment = new HomeFragment();
             this.feedFragment = new FeedFragment(eventDB);
-            this.mapFragment = new MapFragment();
+            this.mapFragment = new MapFragment(eventDB);
             this.activeFragment = this.homeFragment;
         }
 

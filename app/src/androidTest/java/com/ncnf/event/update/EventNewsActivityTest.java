@@ -61,7 +61,7 @@ public class EventNewsActivityTest {
 
     @Test
     public void successfullyPublishNews() {
-        CompletableFuture<DatabaseResponse> future = CompletableFuture.completedFuture(new DatabaseResponse(true, null, null));
+        CompletableFuture<Boolean> future = CompletableFuture.completedFuture(true);
         when(db.updateArrayField(anyString(), anyString(), anyObject())).thenReturn(future);
 
         onView(withId(R.id.event_news_field)).perform(typeText("The event starts soon !"), closeSoftKeyboard());
@@ -73,7 +73,7 @@ public class EventNewsActivityTest {
 
     @Test
     public void unsuccessfullyPublishNews() {
-        CompletableFuture<DatabaseResponse> future = CompletableFuture.completedFuture(new DatabaseResponse(false, null, null));
+        CompletableFuture<Boolean> future = CompletableFuture.completedFuture(false);
         when(db.updateArrayField(anyString(), anyString(), anyObject())).thenReturn(future);
 
         onView(withId(R.id.event_news_field)).perform(typeText("The event starts soon !"), closeSoftKeyboard());

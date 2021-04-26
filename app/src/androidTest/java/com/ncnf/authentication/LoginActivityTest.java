@@ -45,6 +45,7 @@ import static com.ncnf.Utils.PASSWORDS_DO_NOT_MATCH_STRING;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.floatThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -104,8 +105,7 @@ public class LoginActivityTest {
     @Test
     public void signInFragmentUnsuccessfulLoginTest(){
         Exception exception = new Exception(unsuccessfulLogin);
-        CompletableFuture<AuthenticationResponse> future = new CompletableFuture<>();
-        future.complete(new AuthenticationResponse(false, null, exception));
+        CompletableFuture<Boolean> future = CompletableFuture.completedFuture(false);
 
         when(mockedAuth.logIn(anyString(), anyString())).thenReturn(future);
 
@@ -200,8 +200,7 @@ public class LoginActivityTest {
     @Test
     public void signUpFragmentUnsuccessfulRegisterTest(){
         Exception exception = new Exception(unsuccessfulRegister);
-        CompletableFuture<AuthenticationResponse> future = new CompletableFuture<>();
-        future.complete(new AuthenticationResponse(false, null, exception));
+        CompletableFuture<Boolean> future = CompletableFuture.completedFuture(false);
 
         when(mockedAuth.register(anyString(), anyString())).thenReturn(future);
 
@@ -220,7 +219,7 @@ public class LoginActivityTest {
 
     @Test
     public void signUpFragmentSuccessfulRegisterTest(){
-        CompletableFuture<AuthenticationResponse> future = CompletableFuture.completedFuture(new AuthenticationResponse(true, null, null));
+        CompletableFuture<Boolean> future = CompletableFuture.completedFuture(true);
 
         when(mockedAuth.register(anyString(), anyString())).thenReturn(future);
 
