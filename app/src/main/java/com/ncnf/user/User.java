@@ -189,13 +189,21 @@ public class User {
         return this.db.withFieldLike(USERS_COLLECTION_KEY, FIRST_NAME_KEY, username, User.class); // TODO : change to USERNAME_KEY
     }
 
-    public CompletableFuture<Boolean> saveEvent(Event event){
-        this.savedEventsIds.add(event.getUuid().toString());
-        return this.addEvent(event, SAVED_EVENTS_KEY);
+    public CompletableFuture<Boolean> addSavedEvent(Event event){
+        if(this.savedEventsIds.add(event.getUuid().toString())){
+            return this.addEvent(event, SAVED_EVENTS_KEY);
+        }
+        return CompletableFuture.completedFuture(false);
+    }
+
+    public CompletableFuture<Boolean> addOwnedEvent(Event event){
+        if(this.ownedEventsIds.add(event.getUuid().toString())){
+            return this.addEvent(event, OWNED_EVENTS_KEY);
+        }
+        return CompletableFuture.completedFuture(false);
     }
 
     private CompletableFuture<Boolean> addEvent(Event event, String array){
-        this.ownedEventsIds.add(event.getUuid().toString());
         return db.updateArrayField(USERS_COLLECTION_KEY + uuid, array, event.getUuid().toString());
     }
 
@@ -237,8 +245,8 @@ public class User {
        }
 
         return storing
-                .thenCompose(task -> this.addEvent(event, OWNED_EVENTS_KEY))
-                .exceptionally(exception -> null); // TODO: handle exception
+                .thenCompose(task -> this.addOwnedEvent(event))
+                .exceptionally(exception -> false); // TODO: handle exception
     }
 
     public void signOut() {

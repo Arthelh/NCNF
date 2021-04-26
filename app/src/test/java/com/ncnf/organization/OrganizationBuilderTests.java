@@ -46,7 +46,7 @@ public class OrganizationBuilderTests {
     private String admin1 = "admin1";
     private List<String> events = new ArrayList<>();
     private String event1 = "event1";
-/*
+
 
     @Before
     public void initMap(){
@@ -63,9 +63,9 @@ public class OrganizationBuilderTests {
         data.put(PHONE_NB_KEY, phoneNb);
         data.put(ORGANIZED_EVENTS_KEY, events);
 
-        assertEquals(builder.build(data), null);
+        assertEquals(builder.toObject(uuid.toString(), data), null);
         data.put(ADMIN_KEY, admins);
-        Organization org = builder.build(data);
+        Organization org = builder.toObject(uuid.toString(), data);
         Organization org2 = new Organization(uuid, name, location, address, phoneNb, admins, events);
         assertTrue(org != null);
         assertTrue(org.getEventIds().contains(event1));
@@ -76,64 +76,10 @@ public class OrganizationBuilderTests {
 
     @Test
     public void buildOnErrorTest() {
-        String errorMessage = "Error Test";
-        DatabaseResponse response = new DatabaseResponse(false, null, new Exception(errorMessage));
-        when(db.getData(anyString())).thenReturn(CompletableFuture.completedFuture(response));
+        Organization org = new Organization(uuid, name, location, address, phoneNb, admins, events);
+        Map<String, Object> map = builder.toMap(org);
+        Organization org2 = builder.toObject(uuid.toString(), map);
 
-        CompletableFuture<DatabaseResponse> query = builder.loadFromDB(uuid.toString());
-        try {
-            assertFalse(query.get().isSuccessful());
-            assertEquals(errorMessage, query.get().getException().getMessage());
-        } catch (Exception e) {
-            Assert.fail("Something went wrong with the future");
-        }
+        assertEquals(org, org2);
     }
-
-    @Test
-    public void buildOnMissingDataTest(){
-        //Admins missing
-        data.put(UUID_KEY, uuid.toString());
-        data.put(NAME_KEY, name);
-        data.put(LOCATION_KEY, location);
-        data.put(ADDRESS_KEY, address);
-        data.put(PHONE_NB_KEY, phoneNb);
-        data.put(ORGANIZED_EVENTS_KEY, events);
-        DatabaseResponse response = new DatabaseResponse(true, data,null);
-        when(db.getData(anyString())).thenReturn(CompletableFuture.completedFuture(response));
-        CompletableFuture<DatabaseResponse> query = builder.loadFromDB(uuid.toString());
-        try {
-            DatabaseResponse databaseResponse = query.get();
-            assertEquals(databaseResponse.getResult(), null);
-        } catch(Exception e){
-           Assert.fail("Something went wrong with the future");
-        }
-    }
-
-    @Test
-    public void buildWorksTest(){
-        data.put(UUID_KEY, uuid.toString());
-        data.put(NAME_KEY, name);
-        data.put(LOCATION_KEY, location);
-        data.put(ADDRESS_KEY, address);
-        data.put(PHONE_NB_KEY, phoneNb);
-        data.put(ADMIN_KEY, admins);
-        data.put(ORGANIZED_EVENTS_KEY, events);
-        DatabaseResponse response = new DatabaseResponse(true, data,null);
-        when(db.getData(anyString())).thenReturn(CompletableFuture.completedFuture(response));
-        CompletableFuture<DatabaseResponse> query = builder.loadFromDB(uuid.toString());
-        try {
-            Organization org = (Organization) query.get().getResult();
-            assertEquals(org.getName(), name);
-            assertEquals(org.getUuid(), uuid);
-            assertEquals(location, org.getLocation());
-            assertEquals(org.getEventIds().get(0), event1);
-            assertEquals(org.getAdminIds().get(0), admin1);
-            assertEquals(phoneNb, org.getPhoneNumber());
-            assertEquals(address, org.getAddress());
-        } catch(Exception e){
-            Assert.fail("Something went wrong with the future");
-        }
-    }
-
- */
 }
