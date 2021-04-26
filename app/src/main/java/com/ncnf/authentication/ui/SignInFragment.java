@@ -19,7 +19,6 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
-import com.ncnf.authentication.AuthenticationResponse;
 import com.ncnf.authentication.AuthenticationService;
 import com.ncnf.user.UserProfileActivity;
 
@@ -87,7 +86,7 @@ public class SignInFragment extends Fragment {
 
         futureResponse.thenAccept(result -> {
             Log.d(DEBUG_TAG,"Successful login for " + email);
-            Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+            Intent intent = new Intent(getActivity(), activity);
             startActivity(intent);
         }).exceptionally(exception -> {
             Log.d(DEBUG_TAG,"Unsuccessful login for " + email + " : " + exception.getMessage());

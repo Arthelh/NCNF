@@ -76,10 +76,10 @@ public class OrganizationTests {
         org.setAdminIds(adminIds2);
         assertEquals(org.getAdminIds(), adminIds2);
 
-        assertEquals(org.getEvents(), events);
+        assertEquals(org.getEventIds(), events);
         List<String> events2 =  Arrays.asList(new String[]{"event"});
-        org.setEvents(events2);
-        assertEquals(org.getEvents(), events2);
+        org.setEventIds(events2);
+        assertEquals(org.getEventIds(), events2);
     }
 
     @Test
@@ -115,16 +115,16 @@ public class OrganizationTests {
         String event3 = "third_event3";
 
         Organization org = new Organization("Test1", new GeoPoint(1,1), "address", "phone", admin1);
-        assertTrue(org.getEvents().size() == 0);
+        assertTrue(org.getEventIds().size() == 0);
 
-        assertTrue(org.addEvent(event2) && org.getEvents().size() == 1 && org.getEvents().contains(event2));
+        assertTrue(org.addEvent(event2) && org.getEventIds().size() == 1 && org.getEventIds().contains(event2));
 
-        assertTrue(!org.removeEvent(event3) && org.getEvents().size() == 1 && !org.getEvents().contains(event3));
+        assertTrue(!org.removeEvent(event3) && org.getEventIds().size() == 1 && !org.getEventIds().contains(event3));
 
-        assertTrue(!org.removeEvent(null) && org.getEvents().size() == 1 && org.getEvents().contains(event2));
+        assertTrue(!org.removeEvent(null) && org.getEventIds().size() == 1 && org.getEventIds().contains(event2));
 
-        assertTrue(org.removeEvent(event2) && org.getEvents().size() == 0 && !org.getEvents().contains(event2));
+        assertTrue(org.removeEvent(event2) && org.getEventIds().size() == 0 && !org.getEventIds().contains(event2));
 
-        assertTrue(!org.addEvent(null) && org.getEvents().size() == 0 && !org.getEvents().contains(null));
+        assertTrue(!org.addEvent(null) && org.getEventIds().size() == 0 && !org.getEventIds().contains(null));
     }
 }

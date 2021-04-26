@@ -1,5 +1,6 @@
 package com.ncnf.event.create;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -53,6 +54,8 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.Utils.POPUP_POSITIVE_BUTTON;
+import static com.ncnf.Utils.POPUP_TITLE;
 
 @AndroidEntryPoint
 public class EventCreateActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -140,14 +143,13 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
         pictureView = findViewById(R.id.set_event_image);
         pictureView.setOnClickListener(v -> openGallery());
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(EventCreateActivity.this, (view1, year, month, dayOfMonth) -> {
-                    selYear = year;
-                    selMonth = month;
-                    selDay = dayOfMonth;
-                    eventDate = LocalDate.of(selYear, Month.of(selMonth+1), dayOfMonth);
-                    dateSelection.setText(eventDate.toString());
-                }, selYear, selMonth, selDay);
-                datePickerDialog.show();
+        //Email default setting
+        CheckBox useDefault = findViewById(R.id.use_personal_email_checkbox);
+        useDefault.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked) {
+                if(user != null) {
+                    eventEmail.setText(user.getEmail());
+                }
             }
             else {
                 eventEmail.setText("");
@@ -160,19 +162,11 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
         spinner.setOnItemSelectedListener(EventCreateActivity.this);
         List<String> options = Stream.of(Event.Type.values()).map(Event.Type::name).collect(Collectors.toList());
 
-        timeSelection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(EventCreateActivity.this,
-                        (view, hourOfDay, minute) -> {
-                            selHour = hourOfDay;
-                            selMin = minute;
-                            eventTime = LocalTime.of(selHour, selMin);
-                            timeSelection.setText(eventTime.toString());
-                        }, selHour, selMin, false);
-                timePickerDialog.show();
-            }
-        });
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(EventCreateActivity.this, android.R.layout.simple_spinner_item, options);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(typeAdapter);
+
+        // Set price
 
         eventPrice.setOnEditorActionListener((TextView.OnEditorActionListener) (v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -187,30 +181,42 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
             }
         });
 
-        //Validate
-        validateCreation.setOnClickListener(v -> {
-            if (checkAllFieldsAreFilledAndCorrect()) {
+        validate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkAllFieldsAreFilledAndCorrect()) {
 
-                if (user != null) {
+                    if (user != null) {
 
-                    //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
-                    PrivateEvent event = new PrivateEvent(
-                            user.getUuid(),
-                            eventName.getText().toString(),
-                            dateConversion(eventDate, eventTime),
-                            getLocationFromAddress(eventAddress.getText().toString()),
-                            eventAddress.getText().toString(),
-                            eventDescription.getText().toString(),
-                            eventType);
+                        // TODO: might change with the new event class
+                        // File upload must happened after the event is saved, such that the image path
+                        // contains the event's UUID
+                        FileUpload file = new FileUpload(Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
+                        pictureView.setDrawingCacheEnabled(true);
+                        pictureView.buildDrawingCache();
+                        Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
+                        file.upload(bitmap);
 
-                    user.createEvent(event).thenAccept(res -> {
-                        nextStep();
-                    }).exceptionally(exception -> {
-                        Log.d(DEBUG_TAG, "Fail to store new event : " + exception.getMessage());
-                        return null;
-                    });
-                } else {
-                    Log.d(DEBUG_TAG, "Can't create new event if not logged in");
+                        //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
+                        DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());
+                        PublicEvent event = new PublicEvent(user.getUuid(),
+                                eventName.getText().toString(),
+                                date.getDate(), getLocationFromAddress(eventAddress.getText().toString()),
+                                eventAddress.getText().toString(),
+                                eventDescription.getText().toString(),
+                                eventType, minAgeVal, priceVal, eventEmail.getText().toString()
+                        );
+                        if(event != null) {
+
+                            user.createEvent(event).thenAccept(task -> nextStep()).exceptionally(exception -> {
+                                failToCreateEvent(exception.getMessage());
+                                return null;
+                            });
+                        }
+                    }
+                    else {
+                        Log.d(DEBUG_TAG, "Can't create new event if not logged in");
+                    }
                 }
             }
         });
@@ -264,6 +270,21 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
         startActivity(intent);
     }
 
+    /**
+     * Pop-up telling the user that the the application failed to save its event
+     */
+    private void failToCreateEvent(String s){
+        AlertDialog.Builder popup = new AlertDialog.Builder(this);
+        popup.setCancelable(true);
+        popup.setTitle(POPUP_TITLE);
+        popup.setMessage(s);
+        popup.setPositiveButton(POPUP_POSITIVE_BUTTON, (dialog, which) -> {
+            dialog.cancel();
+        });
+        popup.show();
+
+    }
+
 
     private boolean checkAllFieldsAreFilledAndCorrect() {
 
@@ -275,10 +296,10 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
 
         // TODO : find a way to reject invalid addresses
         /**
-        if(getLocationFromAddress(eventAddress.getText().toString()) == null) {
-            eventAddress.setError("Invalid address");
-            return false;
-        }
+         if(getLocationFromAddress(eventAddress.getText().toString()) == null) {
+         eventAddress.setError("Invalid address");
+         return false;
+         }
          **/
 
         if(!(InputValidator.verifyEmailInput(eventEmail.getText().toString()))) {

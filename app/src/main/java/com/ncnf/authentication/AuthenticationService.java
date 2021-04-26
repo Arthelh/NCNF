@@ -1,11 +1,15 @@
 package com.ncnf.authentication;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
+
+import static com.ncnf.Utils.DEBUG_TAG;
 
 public class AuthenticationService implements AuthenticationServiceInterface {
 

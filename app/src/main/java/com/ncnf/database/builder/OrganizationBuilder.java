@@ -1,11 +1,11 @@
-package com.ncnf.organization;
-
-import android.util.Log;
+package com.ncnf.database.builder;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
+import com.ncnf.organization.Organization;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -13,8 +13,6 @@ import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.Utils.ADDRESS_KEY;
 import static com.ncnf.Utils.ADMIN_KEY;
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
 import static com.ncnf.Utils.LOCATION_KEY;
 import static com.ncnf.Utils.NAME_KEY;
 import static com.ncnf.Utils.ORGANIZATIONS_COLLECTION_KEY;
@@ -22,41 +20,10 @@ import static com.ncnf.Utils.ORGANIZED_EVENTS_KEY;
 import static com.ncnf.Utils.PHONE_NB_KEY;
 import static com.ncnf.Utils.UUID_KEY;
 
-public class OrganizationBuilder {
+public class OrganizationBuilder extends DatabaseObjectBuilder<Organization>{
 
-
-    private DatabaseService db;
-
-    public OrganizationBuilder(){
-        this.db = new DatabaseService();
-    }
-
-    public OrganizationBuilder(DatabaseService db){
-        if(db == null){
-            throw new IllegalArgumentException("Database is null");
-        }
-        this.db = db;
-    }
-
-    public CompletableFuture<DatabaseResponse> loadFromDB(String uuid){
-        CompletableFuture<DatabaseResponse> query = db.getData(ORGANIZATIONS_COLLECTION_KEY + uuid);
-        return query.thenApply(task -> {
-            if(task.isSuccessful()){
-                try {
-                    Map<String, Object> data = (Map<String, Object>) task.getResult();
-                    Organization organization = build(data);
-                    return new DatabaseResponse(true, organization, null);
-
-
-                } catch (Exception e){
-                    return new DatabaseResponse(false, null, e);
-                }
-            }
-            return new DatabaseResponse(false, null, task.getException());
-        });
-    }
-
-    public Organization build(Map<String, Object> data){
+    @Override
+    public Organization toObject(String uuid, Map<String, Object> data) {
         try {
             String uuidStr = data.get(UUID_KEY).toString();
             String name = data.get(NAME_KEY).toString();
@@ -70,5 +37,20 @@ public class OrganizationBuilder {
         } catch (Exception e){
             return null;
         }
+    }
+
+    @Override
+    public Map<String, Object> toMap(Organization org) {
+
+        Map<String, Object> data = new HashMap<>();
+        data.put(UUID_KEY, org.getUuid().toString());
+        data.put(NAME_KEY, org.getName());
+        data.put(LOCATION_KEY, org.getLocation());
+        data.put(ADDRESS_KEY, org.getAddress());
+        data.put(PHONE_NB_KEY, org.getPhoneNumber());
+        data.put(ADMIN_KEY, org.getAdminIds());
+        data.put(ORGANIZED_EVENTS_KEY, org.getEventIds());
+
+        return data;
     }
 }

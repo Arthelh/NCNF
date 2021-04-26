@@ -59,9 +59,9 @@ public class MapFragment extends Fragment{
     @Inject
     VenueProvider venueProvider;
 
-    public MapFragment(EventDB eventDB){
+    public MapFragment(){
         super();
-        this.eventDB = eventDB;
+        eventDB = new EventDB();
     }
 
     @Nullable

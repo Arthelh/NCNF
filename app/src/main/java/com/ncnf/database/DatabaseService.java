@@ -1,6 +1,7 @@
 package com.ncnf.database;
 
 import android.app.VoiceInteractor;
+import android.util.Log;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
@@ -11,6 +12,8 @@ import com.ncnf.database.builder.DatabaseObjectBuilder;
 import com.ncnf.database.builder.EventBuilder;
 import com.ncnf.database.builder.UserBuilder;
 import com.ncnf.event.Event;
+import com.ncnf.event.PrivateEvent;
+import com.ncnf.event.PublicEvent;
 import com.ncnf.user.User;
 
 import java.util.ArrayList;
@@ -22,6 +25,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+
+import static com.ncnf.Utils.DEBUG_TAG;
 
 public class DatabaseService implements DatabaseServiceInterface {
 
@@ -41,7 +46,8 @@ public class DatabaseService implements DatabaseServiceInterface {
 
     private void initMap(){
         registry.put(User.class, new UserBuilder());
-        registry.put(Event.class, new EventBuilder());
+        registry.put(PublicEvent.class, new EventBuilder());
+        registry.put(PrivateEvent.class, new EventBuilder());
     }
 
     @Override

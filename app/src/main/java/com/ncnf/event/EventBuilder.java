@@ -4,7 +4,6 @@ package com.ncnf.event;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class EventBuilder {
 
     public CompletableFuture<Event> build(String eventId){
 
-        CompletableFuture<Event> event = db.getDocument(EVENTs_COLLECTION_KEY + eventId, Event.class);
+        CompletableFuture<Event> event = db.getDocument(EVENTS_COLLECTION_KEY + eventId, Event.class);
         return event;
     }
 

@@ -28,10 +28,8 @@ public class RegistrationTests {
     public void registerIsSuccessful() {
 
         MockTask<String> task = new MockTask("My token", null);
-        CompletableFuture<DatabaseResponse> notificationFuture = CompletableFuture.completedFuture(
-                new DatabaseResponse(true, null, null));
-        CompletableFuture<DatabaseResponse> tokenFuture = CompletableFuture.completedFuture(
-                new DatabaseResponse(true, null, null));
+        CompletableFuture<Boolean> notificationFuture = CompletableFuture.completedFuture(true);
+        CompletableFuture<Boolean> tokenFuture = CompletableFuture.completedFuture(true);
 
         when(messaging.getToken()).thenReturn(task);
         when(user.updateNotifications(anyBoolean())).thenReturn(notificationFuture);
@@ -69,8 +67,7 @@ public class RegistrationTests {
 
     @Test
     public void unregisterIsSuccessful() {
-        CompletableFuture<DatabaseResponse> notificationFuture = CompletableFuture.completedFuture(
-                new DatabaseResponse(true, null, null));
+        CompletableFuture<Boolean> notificationFuture = CompletableFuture.completedFuture(true);
 
         when(user.updateNotifications(anyBoolean())).thenReturn(notificationFuture);
 
@@ -84,7 +81,7 @@ public class RegistrationTests {
 
     @Test
     public void unregisterFails() {
-        CompletableFuture<DatabaseResponse> notificationFuture = new CompletableFuture<>();
+        CompletableFuture<Boolean> notificationFuture = new CompletableFuture<>();
 
         when(user.updateNotifications(anyBoolean())).thenReturn(notificationFuture);
 

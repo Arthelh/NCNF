@@ -143,25 +143,9 @@ public abstract class Event implements Comparable {
         this.description = description;
     }
 
-    protected CompletableFuture<Boolean> store(DatabaseService db, String[] fields, Object[] objects) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(UUID_KEY, this.uuid.toString());
-        map.put(NAME_KEY, this.name);
-        map.put(DATE_KEY, new Timestamp(this.date));
-        map.put(LOCATION_KEY, this.location);
-        map.put(ADDRESS_KEY, this.address);
-        map.put(VISIBILITY_KEY, this.visibility.toString());
-        map.put(TYPE_KEY, this.type.toString());
-        map.put(ATTENDEES_KEY, this.attendees);
-        map.put(DESCRIPTION_KEY, this.description);
-        map.put(OWNER_KEY, this.ownerId);
-        for (int i = 0; i < fields.length; ++i) {
-            map.put(fields[i], objects[i]);
-        }
-        return db.setDocument(path, map);
-    }
+    abstract public CompletableFuture<Boolean> store(DatabaseService db);
 
     public static CompletableFuture<Boolean> addNews(DatabaseService db, String uuid, String value) {
-       return db.updateArrayField(EVENTs_COLLECTION_KEY + uuid, NEWS_KEY, value);
+       return db.updateArrayField(EVENTS_COLLECTION_KEY + uuid, NEWS_KEY, value);
     }
 }

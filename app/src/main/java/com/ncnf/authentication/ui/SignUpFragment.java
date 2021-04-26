@@ -103,19 +103,17 @@ public class SignUpFragment extends Fragment {
 
         CompletableFuture<Boolean> futureResponse= auth.register(email, password);
 
-        futureResponse.handle((res, exception) -> {
-            Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + exception.getMessage());
-            setException(exception.getMessage());
-            return null;
-        }).thenCompose(res -> {
+        futureResponse.thenCompose(res -> {
             Log.d(DEBUG_TAG, "Successful register for " + email);
             User user = CurrentUserModule.getCurrentUser();
             return user.saveUserToDB();
         }).thenApply(res -> {
-            Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+            Intent intent = new Intent(getActivity(), activity);
             startActivity(intent);
             return null;
         }).exceptionally(exception -> {
+            Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + exception.getMessage());
+            setException(exception.getMessage());
             Log.d(DEBUG_TAG, "Deleting user.");
             this.auth.delete();
             setException("Couldn't create a new user : please try again");
