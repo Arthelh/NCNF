@@ -201,15 +201,19 @@ public class DatabaseService implements DatabaseServiceInterface {
 
     @Override
     public <T, R> CompletableFuture<List<R>> whereIn(String collectionPath, String field, List<T> values, Class<R> type) {
-        if(values.isEmpty()){
-            CompletableFuture<List<R>> futureResponse = new CompletableFuture<>();
+        CompletableFuture<List<R>> futureResponse = new CompletableFuture<>();
+
+        if(values == null) {
+            futureResponse.completeExceptionally(new IllegalArgumentException());
+            return futureResponse;
+        } else if(values.isEmpty()){
             futureResponse.complete(new ArrayList<>());
             return futureResponse;
         }
 
         List<CompletableFuture<List<R>>> futures = values
                 .stream()
-                .map(value -> whereEqualTo(collectionPath, field, value, type))
+                .map(value -> this.whereEqualTo(collectionPath, field, value, type))
                 .collect(Collectors.toList());
 
         return CompletableFuture

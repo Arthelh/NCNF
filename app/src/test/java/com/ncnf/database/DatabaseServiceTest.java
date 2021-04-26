@@ -347,7 +347,94 @@ public class DatabaseServiceTest {
 
     @Test
     public void whereArrayContainsFails(){
-        
+        Task<QuerySnapshot> task = new MockTask(null, new IllegalArgumentException(), false);
+
+        Query query = Mockito.mock(Query.class);
+        when(query.get()).thenReturn(task);
+
+        CollectionReference mockCollection = Mockito.mock(CollectionReference.class);
+        when(db.collection(anyString())).thenReturn(mockCollection);
+        when(mockCollection.whereArrayContains(anyString(), anyString())).thenReturn(query);
+
+        CompletableFuture<List<Event>> future = service.whereArrayContains("/events", "field", "value", Event.class);
+
+        assertTrue(future.isCompletedExceptionally());
+    }
+
+    @Test
+    public void whereEqualTo(){
+        String uuid = UUID.randomUUID().toString();
+        PublicEvent event = new PublicEvent(uuid, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        Map<String, Object> data = new EventBuilder().toMap(event);
+
+        QueryDocumentSnapshot document = Mockito.mock(QueryDocumentSnapshot.class);
+        when(document.getData()).thenReturn(data);
+        when(document.getId()).thenReturn(uuid);
+
+        QuerySnapshot querySnapshot = Mockito.mock(QuerySnapshot.class);
+        when(querySnapshot.getDocuments()).thenReturn(Arrays.asList(document));
+        Task<QuerySnapshot> task = new MockTask(querySnapshot, null, true);
+
+        Query query = Mockito.mock(Query.class);
+        when(query.get()).thenReturn(task);
+
+
+        CollectionReference mockCollection = Mockito.mock(CollectionReference.class);
+        when(db.collection(anyString())).thenReturn(mockCollection);
+        when(mockCollection.whereEqualTo(anyString(), anyString())).thenReturn(query);
+
+        CompletableFuture<List<Event>> future = service.whereEqualTo("/events", "field", "value", Event.class);
+
+        try {
+            assertEquals(event, future.get().get(0));
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly !");
+        }
+    }
+
+    @Test
+    public void whereEqualToFails(){
+        Task<QuerySnapshot> task = new MockTask(null, new IllegalArgumentException(), false);
+
+        Query query = Mockito.mock(Query.class);
+        when(query.get()).thenReturn(task);
+
+        CollectionReference mockCollection = Mockito.mock(CollectionReference.class);
+        when(db.collection(anyString())).thenReturn(mockCollection);
+        when(mockCollection.whereEqualTo(anyString(), anyString())).thenReturn(query);
+
+        CompletableFuture<List<Event>> future = service.whereEqualTo("/events", "field", "value", Event.class);
+
+        assertTrue(future.isCompletedExceptionally());
+    }
+
+    /*
+    @Test
+    public void whereInWorks(){
+        CompletableFuture future = CompletableFuture.completedFuture(Arrays.asList(event));
+        when(service.whereEqualTo(anyString(), anyString(), any(), any())).thenReturn(future);
+
+        CompletableFuture<List<Event>> listFuture = service.whereIn("/events", "field", Arrays.asList("value"), Event.class);
+
+        try {
+            assertEquals(listFuture.get().get(0), event);
+        } catch (Exception e){
+            Assert.fail("The future did not complete correctly !");
+        }
+    }
+    */
+
+    @Test
+    public void whereInFailsOnEmpty(){
+        CompletableFuture<List<Event>> future = service.whereIn("path", "path", null, Event.class);
+        assertTrue(future.isCompletedExceptionally());
+        future = service.whereIn("path", "path", new ArrayList<>(), Event.class);
+
+        try {
+            assertTrue(future.get().isEmpty());
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly !");
+        }
     }
 
     @Test
@@ -373,27 +460,4 @@ public class DatabaseServiceTest {
 
         assertTrue(future.isCompletedExceptionally());
     }
-
-    /*
-
-    @Test
-    public void whereEqualsReturnResults() {
-        CollectionReference mockCollection = Mockito.mock(CollectionReference.class);
-        when(db.collection(anyString())).thenReturn(mockCollection);
-        Query query = Mockito.mock(Query.class);
-        when(mockCollection.whereEqualTo(anyString(), anyString())).thenReturn(query);
-        when(query.whereEqualTo(anyString(), anyString())).thenReturn(query);
-        when(query.get()).thenReturn(task);
-
-        CompletableFuture<List<Event>> res = service.whereIn("/events", "uuid", Arrays.asList("1", "2"), Event.class);
-
-        try {
-            assertEquals(event, res.get().get(0));
-        } catch (ExecutionException | InterruptedException e) {
-            Assert.fail("The future did not complete correctly !");
-        }
-    }
-    */
-
-
 }
