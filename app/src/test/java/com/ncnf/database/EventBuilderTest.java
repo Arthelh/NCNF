@@ -29,6 +29,7 @@ import static com.ncnf.Utils.ADDRESS_KEY;
 import static com.ncnf.Utils.ATTENDEES_KEY;
 import static com.ncnf.Utils.DATE_KEY;
 import static com.ncnf.Utils.DESCRIPTION_KEY;
+import static com.ncnf.Utils.EMAIL_KEY;
 import static com.ncnf.Utils.INVITED_KEY;
 import static com.ncnf.Utils.LOCATION_KEY;
 import static com.ncnf.Utils.MIN_AGE_KEY;
@@ -54,28 +55,29 @@ public class EventBuilderTest {
     String uuid = UUID.randomUUID().toString();
     String name = "name";
     Date date = new Date();
-    GeoPoint location = new GeoPoint(0,0);
+    GeoPoint location = new GeoPoint(0, 0);
     String address = "address";
     String type = "Conference";
     List<String> attendees = new ArrayList<>(Collections.singleton("attendee1"));
     String description = "description";
+    String email = "email";
 
     int minAge = 0;
-    int price = 0;
+    double price = 0;
     List<Tag> tags = new ArrayList<>(Collections.singleton(new Tag("\uD83C\uDFB8", "Rock Music")));
 
     List<String> invited = new ArrayList<>(Collections.singleton("invited"));
-/*
+
     @Before
-    public void setup(){
+    public void setup() {
         db = Mockito.mock(DatabaseService.class);
-        eventBuilder = new EventBuilder(db);
+        eventBuilder = new EventBuilder();
         publicEvent = new HashMap<>();
         privateEvent = new HashMap<>();
     }
 
     @Test
-    public void loadPublic(){
+    public void loadPublic() {
         publicEvent.put(OWNER_KEY, ownerId);
         publicEvent.put(UUID_KEY, this.uuid);
         publicEvent.put(NAME_KEY, this.name);
@@ -87,6 +89,7 @@ public class EventBuilderTest {
         publicEvent.put(ATTENDEES_KEY, this.attendees);
         publicEvent.put(DESCRIPTION_KEY, this.description);
         publicEvent.put(OWNER_KEY, this.ownerId);
+        publicEvent.put(EMAIL_KEY, email);
 
         publicEvent.put(MIN_AGE_KEY, minAge);
         publicEvent.put(PRICE_KEY, price);
@@ -107,36 +110,14 @@ public class EventBuilderTest {
         assertEquals(event.getOwnerId(), ownerId);
         assertEquals(event.getMinAge(), minAge);
         assertEquals(event.getPrice(), price, 0);
+        assertEquals(event.getEmail(), email);
 
     }
 
-    @Test
-    public void nonSuccessfulTaskTest(){
-        when(db.getData(anyString())).thenReturn(CompletableFuture.completedFuture(new DatabaseResponse(false, null, null)));
-
-        CompletableFuture<Event> eventQuery = eventBuilder.build(uuid);
-        try {
-            PublicEvent event = (PublicEvent) eventQuery.get();
-            assertEquals(event, null);
-        } catch(Exception e){
-            Assert.fail("Something went wrong with the Future");
-        }
-    }
 
     @Test
-    public void ExceptionCatchTest(){
-        when(db.getData(anyString())).thenReturn(CompletableFuture.completedFuture(new DatabaseResponse(true, new HashMap<>(), null)));
-        CompletableFuture<Event> eventQuery = eventBuilder.build(uuid);
-        try {
-            PublicEvent event = (PublicEvent) eventQuery.get();
-            assertEquals(event, null);
-        } catch(Exception e){
-            Assert.fail("Something went wrong with the Future");
-        }
-    }
+    public void loadPrivate() {
 
-    @Test
-    public void loadPrivate(){
         privateEvent.put(OWNER_KEY, ownerId);
         privateEvent.put(UUID_KEY, this.uuid);
         privateEvent.put(NAME_KEY, this.name);
@@ -149,16 +130,10 @@ public class EventBuilderTest {
         privateEvent.put(DESCRIPTION_KEY, this.description);
         privateEvent.put(OWNER_KEY, this.ownerId);
 
-        privateEvent.put(INVITED_KEY, invited);
-        when(db.getData(anyString())).thenReturn(CompletableFuture.completedFuture(new DatabaseResponse(true, privateEvent, null)));
 
-        CompletableFuture<Event> eventQuery = eventBuilder.build(uuid);
-        PrivateEvent event = null;
-        try {
-            event = (PrivateEvent) eventQuery.get();
-        } catch(Exception e){
-            Assert.fail("Something went wrong with the Future");
-        }
+        privateEvent.put(INVITED_KEY, invited);
+
+        PrivateEvent event = (PrivateEvent) eventBuilder.toObject(uuid, privateEvent);
 
         assertEquals(event.getUuid().toString(), uuid);
         assertEquals(event.getName(), name);
@@ -171,22 +146,32 @@ public class EventBuilderTest {
         assertEquals(event.getDescription(), description);
         assertEquals(event.getOwnerId(), ownerId);
         assertEquals(event.getInvited().get(0), "invited");
+
     }
 
     @Test
-    public void failsOnFirstUnsuccessfulData(){
-        when(db.getData(anyString())).thenReturn(CompletableFuture.completedFuture(new DatabaseResponse(false, null, null)));
+    public void privateToMapWorks() {
 
-        CompletableFuture<Event> eventQuery = eventBuilder.build(uuid);
-        PrivateEvent event = null;
-        try {
-            event = (PrivateEvent) eventQuery.get();
-        } catch(Exception e){
-            Assert.fail("Something went wrong with the Future");
-        }
+        Event.Type type = Event.Type.Movie;
+        UUID uuid = UUID.randomUUID();
 
-        assertEquals(event, null);
+
+        PrivateEvent event = new PrivateEvent(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
+        Map<String, Object> map = eventBuilder.toMap(event);
+        assertEquals(eventBuilder.toObject(uuid.toString(), map), event);
+
     }
 
- */
+    @Test
+    public void publicToMapWorks() {
+
+        Event.Type type = Event.Type.Movie;
+        UUID uuid = UUID.randomUUID();
+
+
+        PublicEvent event = new PublicEvent(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags, email);
+        Map<String, Object> map = eventBuilder.toMap(event);
+        assertEquals(eventBuilder.toObject(uuid.toString(), map), event);
+
+    }
 }
