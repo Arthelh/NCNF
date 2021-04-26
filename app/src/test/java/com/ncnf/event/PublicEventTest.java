@@ -41,25 +41,24 @@ public class PublicEventTest {
 
     DatabaseService db;
     PublicEvent mainEvent;
-    CompletableFuture<DatabaseResponse> response;
-    CompletableFuture<DatabaseResponse> response2;
+    CompletableFuture<Boolean> response;
+    CompletableFuture<Boolean> response2;
 
     @Before
     public void setup(){
         db = Mockito.mock(DatabaseService.class);
         mainEvent = new PublicEvent(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, tags, "test@email.com");
-        response = CompletableFuture.completedFuture(new DatabaseResponse(true, false, null));
+        response = CompletableFuture.completedFuture(true);
     }
-/*
+
     @Test
     public void storeEventWorks() {
         when(db.setDocument(anyString(), anyMap())).thenReturn(response);
 
-        CompletableFuture<DatabaseResponse> storeTest = mainEvent.store(db);
+        CompletableFuture<Boolean> storeTest = mainEvent.store(db);
 
         try {
-            assertEquals(true, storeTest.get().isSuccessful());
-            assertEquals(false, storeTest.get().getResult());
+            assertTrue(storeTest.get());
         } catch (ExecutionException | InterruptedException e) {
             Assert.fail("The future did not complete correctly ! " + e.getMessage());
         }
@@ -203,12 +202,10 @@ public class PublicEventTest {
 
     @Test
     public void compareToWorks() {
-        PublicEvent event = new PublicEvent("ownerId", name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        PublicEvent event = new PublicEvent("ownerId", name, date, geoPoint, address, description, type, 0, 0, "test@email.com");
         Date date2 = new Date(2021, 03, 30);
-        PublicEvent event2 = new PublicEvent("ownerId", name, date2, geoPoint,address,description, type, 0, 0, "test@email.com");
+        PublicEvent event2 = new PublicEvent("ownerId", name, date2, geoPoint, address, description, type, 0, 0, "test@email.com");
 
         assertEquals(event.compareTo(event2), -1);
     }
-
- */
 }
