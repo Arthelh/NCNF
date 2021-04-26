@@ -19,10 +19,11 @@ public class PublicEvent extends Event {
 
     private List<Tag> tags;
 
-    private int price;
+    private double price;
     private int minAge;
+    private String email;
 
-    public PublicEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type, int minAge, int price) {
+    public PublicEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type, int minAge, double price, String email) {
         super(ownerId, name, date, location, address, type, Event.Visibility.PUBLIC, description);
 
         checkConstraints(minAge, price);
@@ -30,9 +31,10 @@ public class PublicEvent extends Event {
         tags = new ArrayList<>();
         this.minAge = minAge;
         this.price = price;
+        this.email = email;
     }
 
-    public PublicEvent(String ownerId, UUID uuid, String name, Date date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, int price, List<Tag> tags) {
+    public PublicEvent(String ownerId, UUID uuid, String name, Date date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<Tag> tags, String email) {
         super(ownerId, uuid, name, date, location, address, type, Visibility.PUBLIC, attendees, description);
 
         checkConstraints(minAge, price);
@@ -40,16 +42,18 @@ public class PublicEvent extends Event {
         setTags(tags);
         this.minAge = minAge;
         this.price = price;
+        this.email = email;
     }
 
-    private void checkConstraints(int minAge, int price){
+    private void checkConstraints(int minAge, double price){
         if(!(minAge >= MIN_AGE && minAge <= MAX_AGE) || price < 0) {
             throw new IllegalArgumentException();
         }
     }
 
     public int getMinAge() { return minAge; }
-    public int getPrice() { return price; }
+    public double getPrice() { return price; }
+    public String getEmail() { return email; }
     public List<Tag> getTags() { return new ArrayList<Tag>(tags); }
 
     public void setMinAge(int minAge) {
@@ -57,7 +61,9 @@ public class PublicEvent extends Event {
         this.minAge = minAge;
     }
 
-    public void setPrice(int price) { this.price = price; }
+    public void setPrice(double price) { this.price = price; }
+
+    public void setEmail(String email) { this.email = email; }
 
     public void setTags(List<Tag> tags) {
         this.tags = new ArrayList<Tag>(tags);

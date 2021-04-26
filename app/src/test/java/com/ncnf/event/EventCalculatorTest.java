@@ -25,9 +25,9 @@ public class EventCalculatorTest {
     @Test
     public void eventRelevanceCalculatorWorks() {
 
-        PublicEvent event1 = new PublicEvent(ownerId, name, date, geoPoint,address,description, type, 0, 0);
-        PublicEvent event2 = new PublicEvent(ownerId, name, date, geoPoint,address,description, type, 0, 0);
-        PublicEvent event3 = new PublicEvent(ownerId, name, date, geoPoint,address,description, type, 0, 0);
+        PublicEvent event1 = new PublicEvent(ownerId, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        PublicEvent event2 = new PublicEvent(ownerId, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        PublicEvent event3 = new PublicEvent(ownerId, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
 
         event1.addTag(new Tag("\uD83D\uDCF1", "Technology"));
         event1.addTag(new Tag("\uD83D\uDCF1", "Conference"));

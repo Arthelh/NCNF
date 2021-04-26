@@ -17,12 +17,15 @@ import static com.ncnf.Utils.*;
 
 public abstract class Event implements Comparable {
 
+    public static final String IMAGE_PATH = "/events/images";
+    public static final String IMAGE_NAME = "banner_%s";
+
     public enum Visibility {
         PUBLIC, PRIVATE
     }
 
     public enum Type {
-        Movie, Museum, Conference, Opera, NOTHING
+        NOTHING, Movie, Museum, Conference, Opera, OTHER
     }
 
 
@@ -46,7 +49,7 @@ public abstract class Event implements Comparable {
 
     public Event(String ownerId, UUID id, String name, Date date, GeoPoint location, String address, Type type, Visibility visibility, List<String> attendees, String description) {
         this.uuid = id;
-        this.path = EVENTs_COLLECTION_KEY + uuid;
+        this.path = EVENTS_COLLECTION_KEY + uuid;
         this.ownerId = ownerId;
         this.name = name;
         this.date = date;

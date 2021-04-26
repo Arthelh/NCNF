@@ -1,5 +1,6 @@
 package com.ncnf.feed.ui;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import com.ncnf.event.Event;
 import com.ncnf.event.EventRelevanceCalculator;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.utilities.DateAdapter;
+
+import static com.ncnf.Utils.DEBUG_TAG;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> implements Filterable {
     private List<Event> events;
@@ -127,7 +130,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
         public EventViewHolder(View v, OnEventListener e) {
             super(v);
-            event = (TextView) v.findViewById(R.id.event_name);
+            event = (TextView) v.findViewById(R.id.set_event_name);
             date = (TextView) v.findViewById(R.id.event_date);
             description = (TextView) v.findViewById(R.id.event_descr);
             //add timestamp

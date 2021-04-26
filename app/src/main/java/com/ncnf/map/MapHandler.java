@@ -7,11 +7,16 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventDB;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class MapHandler {
 
@@ -22,38 +27,46 @@ public class MapHandler {
 
     private LatLng userPosition;
     private Marker userMarker;
-    private ArrayList<Marker> eventMarkers, venueMarkers;
+    private ClusterManager<NCNFMarker> clusterManager;
 
     // Indicate whether Events or Venues are shown. If false -> venues are shown
     private boolean eventsShown = true;
-    private final float ZOOM_LEVEL = 11;
+    private final float ZOOM_LEVEL = 13;
 
     public MapHandler(Activity context, GoogleMap mMap, EventDB eventDB, VenueProvider venueProvider){
         this.context = context;
         this.mMap = mMap;
-        if (mMap != null) //This is just for MapHandler Unit test
+        if (mMap != null) { //This is just for MapHandler Unit test
+            MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context);
+
             this.mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL));
+
+            this.clusterManager = new ClusterManager<>(context, mMap);
+            this.mMap.setInfoWindowAdapter(this.clusterManager.getMarkerManager());
+
+            this.clusterManager.getMarkerCollection().setInfoWindowAdapter(markerInfoWindowManager);
+            this.clusterManager.setOnClusterItemClickListener(markerInfoWindowManager);
+
+            this.mMap.setOnCameraIdleListener(this.clusterManager);
+            this.mMap.setOnMarkerClickListener(this.clusterManager);
+        }
         this.eventDB = eventDB;
         this.venueProvider = venueProvider;
 
-        userPosition = new LatLng(46.526120f, 6.576330f);
-        eventMarkers = new ArrayList<>();
-        venueMarkers = new ArrayList<>();
+        this.userPosition = new LatLng(46.526120f, 6.576330f);
     }
 
     public void switchMarkers(GoogleMap mMap) {
         eventsShown = !eventsShown;
-        for (Marker e : eventMarkers) {
-            e.setVisible(eventsShown);
-        }
-        for (Marker v : venueMarkers) {
-            v.setVisible(!eventsShown);
-        }
+        clusterManager.clearItems();
         if (eventsShown) {
+            addEventMarkers();
             mMap.setContentDescription("MAP_WITH_EVENTS");
         } else {
+            addVenueMarkers();
             mMap.setContentDescription("MAP_WITH_VENUES");
         }
+        clusterManager.cluster();
     }
 
     public void show_markers(){
@@ -61,38 +74,18 @@ public class MapHandler {
         MarkerOptions position_marker = new MarkerOptions().position(userPosition).title("Your Position").icon(MapUtilities.bitmapDescriptorFromVector(context));
         userMarker = mMap.addMarker(position_marker);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
-        //mMap.moveCamera(CameraUpdateFactory.zoomTo(zoomLevel));
 
-        // Add a marker for each event
-        List<Event> events = eventDB.toList();
-        eventMarkers = new ArrayList<>();
-        for (Event p : events) {
-            LatLng event_position = new LatLng(p.getLocation().getLatitude(), p.getLocation().getLongitude());
-            if (MapUtilities.position_in_range(event_position, userPosition)){
-                eventMarkers.add(mMap.addMarker(new MarkerOptions().position(event_position).title(p.getName())));
-            }
+        if (eventsShown){
+            addEventMarkers();
+        } else {
+            addVenueMarkers();
         }
-        // Add a marker for each venue
-        List<Venue> venues = venueProvider.getAll();
-        venueMarkers = new ArrayList<>();
-        for (Venue p : venues) {
-            LatLng venue_position = new LatLng(p.getLatitude(), p.getLongitude());
-            if (MapUtilities.position_in_range(venue_position, userPosition)){
-                venueMarkers.add(mMap.addMarker(new MarkerOptions().position(new LatLng(p.getLatitude(), p.getLongitude())).title(p.getName())));
-                //Set last element (above line) to invisible
-                venueMarkers.get(venueMarkers.size() - 1).setVisible(false);
-            }
-        }
+        clusterManager.cluster();
     }
 
     //Removes all markers from the map and recreates them according to current position
     public void update_markers(){
-        for (Marker m : eventMarkers)
-            m.remove();
-        for (Marker m : venueMarkers)
-            m.remove();
-        eventMarkers.clear();
-        venueMarkers.clear();
+        clusterManager.clearItems();
         userMarker.remove();
         show_markers();
     }
@@ -103,5 +96,43 @@ public class MapHandler {
 
     public LatLng getUserPosition(){
         return this.userPosition;
+    }
+
+    private void addEventMarkers(){
+        List<Event> events = queryEvents();
+        Map<LatLng, List<Event>> eventMap = new HashMap<>();
+        for (Event p : events) {
+            LatLng event_position = new LatLng(p.getLocation().getLatitude(), p.getLocation().getLongitude());
+            if (MapUtilities.position_in_range(event_position, userPosition)){
+                if (!eventMap.containsKey(event_position)){
+                    eventMap.put(event_position, new ArrayList<>());
+                }
+                eventMap.get(event_position).add(p);
+            }
+        }
+        Set<LatLng> keys = eventMap.keySet();
+        for (LatLng k : keys){
+            List<Event> list = eventMap.get(k);
+            StringBuilder desc = new StringBuilder();
+            for (Event p : list){
+                desc.append(p.getName()).append("\n");
+            }
+            String description = desc.toString();
+            clusterManager.addItem(new NCNFMarker(k, description, eventMap.get(k).get(0).getAddress(), list));
+        }
+    }
+
+    private void addVenueMarkers(){
+        List<Venue> venues = venueProvider.getAll();
+        for (Venue p : venues) {
+            LatLng venue_position = new LatLng(p.getLatitude(), p.getLongitude());
+            if (MapUtilities.position_in_range(venue_position, userPosition)){
+                clusterManager.addItem(new NCNFMarker(venue_position, p.getName(), p.getName(), new ArrayList<>()));
+            }
+        }
+    }
+
+    private List<Event> queryEvents(){
+        return Collections.unmodifiableList(eventDB.toList());
     }
 }

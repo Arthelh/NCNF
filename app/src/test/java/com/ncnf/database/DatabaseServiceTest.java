@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static com.ncnf.Utils.EVENTs_COLLECTION_KEY;
+import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
 import static com.ncnf.Utils.NAME_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
@@ -53,7 +53,7 @@ public class DatabaseServiceTest {
         db = Mockito.mock(FirebaseFirestore.class, Mockito.RETURNS_DEEP_STUBS);
         service = new DatabaseService(db);
 
-        event = new PublicEvent(ownerID, name, date, geoPoint,address,description, type, 0, 0);
+        event = new PublicEvent(ownerID, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
         task = new MockTask<Event>(event, null);
     }
 

@@ -2,6 +2,7 @@ package com.ncnf.feed.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +24,9 @@ import com.ncnf.event.EventDB;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.Utils.UUID_KEY;
 
 
 public class FeedFragment extends Fragment {
@@ -64,7 +68,7 @@ public class FeedFragment extends Fragment {
 
     private void onEventClick(Event e) {
         Intent intent = new Intent(getActivity(), EventActivity.class);
-        intent.putExtra("event_uid", e.getUuid().toString());
+        intent.putExtra(UUID_KEY, e.getUuid().toString());
         startActivity(intent);
     }
 

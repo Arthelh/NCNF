@@ -1,8 +1,6 @@
 
 package com.ncnf.event;
 
-import android.util.Log;
-
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.GeoPoint;
@@ -11,7 +9,6 @@ import com.ncnf.database.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,6 +24,9 @@ public class EventBuilder {
     }
 
     public EventBuilder(DatabaseService db){
+        if(db == null){
+            throw new IllegalArgumentException("Database is null");
+        }
         this.db = db;
     }
 
@@ -51,13 +51,14 @@ public class EventBuilder {
             Event.Type type = Event.Type.valueOf(typeStr);
             List<String> attendees = (ArrayList) data.get(ATTENDEES_KEY);
             String description = (String) data.get(DESCRIPTION_KEY);
+            String email = (String) data.get(EMAIL_KEY);
 
             if(visibility.equals(Event.Visibility.PUBLIC)){
                 int minAge = (int) data.get(MIN_AGE_KEY);
                 int price = (int) data.get(PRICE_KEY);
                 List<Tag> tags = (ArrayList) data.get(TAGS_LIST_KEY);
                 //TODO : should serialize / deserialize tags before adding them
-                return new PublicEvent(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags);
+                return new PublicEvent(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags, email);
 
             } else {
                 List<String> invited = (ArrayList) data.get(INVITED_KEY);

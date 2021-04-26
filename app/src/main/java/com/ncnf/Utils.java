@@ -5,6 +5,9 @@ public class Utils {
      * Global variables
      */
     public static final int PASSWORD_MINIMUM_LENGTH = 6;
+    public static final String NEXT_ACTIVITY_EXTRA_KEY = "next_activity";
+    public final static String POPUP_TITLE = "Connection Error";
+    public final static String POPUP_POSITIVE_BUTTON = "Retry";
 
     /**
      * Keys related to users
@@ -26,7 +29,7 @@ public class Utils {
     /**
      * Keys related to events
      */
-    public static final String EVENTs_COLLECTION_KEY ="events/";
+    public static final String EVENTS_COLLECTION_KEY ="events/";
     public static final String UUID_KEY = "uuid";
     public static final String NAME_KEY = "name";
     public static final String DATE_KEY  = "date";
@@ -42,6 +45,15 @@ public class Utils {
     public static final String TAGS_LIST_KEY = "tags";
     public static final String ADDRESS_KEY = "address";
     public static final String NEWS_KEY = "news";
+
+
+    /**
+     * Keys related to organizations
+     */
+    public static final String ADMIN_KEY = "admins";
+    public static final String ORGANIZATIONS_COLLECTION_KEY = "organizations";
+    public static final String ORGANIZED_EVENTS_KEY = "organized_events";
+    public static final String PHONE_NB_KEY = "phone_number";
 
     /**
      * Keys related to tests
