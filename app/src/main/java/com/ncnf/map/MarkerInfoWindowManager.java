@@ -51,7 +51,7 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
 
     @Override
     public void onClusterItemInfoWindowClick(NCNFMarker item) {
-        if (item.getType() == NCNFMarker.TYPE.EVENT) {
+        if (item.isEvent()) {
 
             List<Event> events = item.getEventList();
 

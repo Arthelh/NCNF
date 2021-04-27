@@ -12,26 +12,22 @@ import java.util.List;
 
 public class NCNFMarker implements ClusterItem {
 
-    public enum TYPE {
-        EVENT, ORGANIZER;
-    }
-
     private final LatLng position;
     private final String title;
     private final String snippet;
     private final List<Event> eventList;
-    private final TYPE type;
+    private final boolean isEvent;
 
-    public NCNFMarker(float lat, float lon, String title, String snippet, List<Event> eventList, TYPE type){
-        this(new LatLng(lat, lon), title, snippet, eventList, type);
+    public NCNFMarker(float lat, float lon, String title, String snippet, List<Event> eventList, boolean isEvent){
+        this(new LatLng(lat, lon), title, snippet, eventList, isEvent);
     }
 
-    public NCNFMarker(LatLng position, String title, String snippet, List<Event> eventList, TYPE type){
+    public NCNFMarker(LatLng position, String title, String snippet, List<Event> eventList, boolean isEvent){
         this.position = position;
         this.title = title;
         this.snippet = snippet;
         this.eventList = eventList;
-        this.type = type;
+        this.isEvent = isEvent;
     }
 
     @NonNull
@@ -54,7 +50,7 @@ public class NCNFMarker implements ClusterItem {
 
     public List<Event> getEventList() {return Collections.unmodifiableList(eventList);}
 
-    public TYPE getType(){
-        return type;
+    public boolean isEvent(){
+        return isEvent;
     }
 }

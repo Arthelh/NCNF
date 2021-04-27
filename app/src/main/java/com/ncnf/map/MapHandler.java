@@ -122,7 +122,7 @@ public class MapHandler {
                 desc.append(p.getName()).append("\n");
             }
             String description = desc.toString();
-            clusterManager.addItem(new NCNFMarker(k, description, eventMap.get(k).get(0).getAddress(), list, NCNFMarker.TYPE.EVENT));
+            clusterManager.addItem(new NCNFMarker(k, description, eventMap.get(k).get(0).getAddress(), list, true));
         }
     }
 
@@ -131,7 +131,7 @@ public class MapHandler {
         for (Venue p : venues) {
             LatLng venue_position = new LatLng(p.getLatitude(), p.getLongitude());
             if (MapUtilities.position_in_range(venue_position, userPosition)){
-                clusterManager.addItem(new NCNFMarker(venue_position, p.getName(), p.getName(), new ArrayList<>(), NCNFMarker.TYPE.ORGANIZER));
+                clusterManager.addItem(new NCNFMarker(venue_position, p.getName(), p.getName(), new ArrayList<>(), false));
             }
         }
     }
