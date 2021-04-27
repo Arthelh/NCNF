@@ -46,24 +46,23 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
     @Override
     public boolean onClusterItemClick(NCNFMarker item) {
         this.item = item;
-        Log.i(DEBUG_TAG, "Clicked on cluster item");
         return false;
     }
 
     @Override
     public void onClusterItemInfoWindowClick(NCNFMarker item) {
-        //TODO Implement going to event page
-        Log.i(DEBUG_TAG, "Item info window clicked");
         if (item.getType() == NCNFMarker.TYPE.EVENT) {
+
             List<Event> events = item.getEventList();
+
             if (events.size() == 1) { //When the marker represents only one event
-                Log.i(DEBUG_TAG, "Launching event activity");
+
                 Event e = events.get(0);
                 Intent intent = new Intent(context, EventActivity.class);
                 intent.putExtra(UUID_KEY, e.getUuid().toString());
                 context.startActivity(intent);
+
             } else {
-                Log.i(DEBUG_TAG, "Launching feed activity");
 
                 Fragment feedFragment = new FeedFragment(events);
                 FrameLayout feedFrame = globalWindow.findViewById(R.id.map_feed_fragment);
@@ -88,8 +87,6 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
     }
 
     private void renderInfoWindow(){
-        Log.i(DEBUG_TAG, "Rendering Info Window");
-
         TextView tvTitle = (TextView) markerWindow.findViewById(R.id.marker_title);
         TextView tvSnippet = (TextView) markerWindow.findViewById(R.id.marker_snippet);
 
@@ -107,14 +104,9 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
 
     @Override
     public View getInfoContents(com.google.android.gms.maps.model.Marker marker) {
-        //if (item == null)
-        //    return null;
-        Log.i(DEBUG_TAG, "Getting info content");
-        TextView tvTitle = (TextView) markerWindow.findViewById(R.id.marker_title);
-        TextView tvSnippet = (TextView) markerWindow.findViewById(R.id.marker_snippet);
-
-        tvTitle.setText(item.getTitle());
-        tvSnippet.setText(item.getSnippet());
+        if (item == null)
+            return null;
+        renderInfoWindow();
         return markerWindow;
     }
 }
