@@ -17,6 +17,9 @@ import static com.ncnf.Utils.*;
 
 public abstract class Event implements Comparable {
 
+    public static final String IMAGE_PATH = "/events/images";
+    public static final String IMAGE_NAME = "banner_%s";
+
     public enum Visibility {
         PUBLIC, PRIVATE
     }
@@ -46,7 +49,7 @@ public abstract class Event implements Comparable {
 
     public Event(String ownerId, UUID id, String name, Date date, GeoPoint location, String address, Type type, Visibility visibility, List<String> attendees, String description) {
         this.uuid = id;
-        this.path = EVENTs_COLLECTION_KEY + uuid;
+        this.path = EVENTS_COLLECTION_KEY + uuid;
         this.ownerId = ownerId;
         this.name = name;
         this.date = date;
@@ -159,6 +162,6 @@ public abstract class Event implements Comparable {
     }
 
     public static CompletableFuture<DatabaseResponse> addNews(DatabaseService db, String uuid, String value) {
-       return db.updateArrayField(EVENTs_COLLECTION_KEY + uuid, NEWS_KEY, value);
+       return db.updateArrayField(EVENTS_COLLECTION_KEY + uuid, NEWS_KEY, value);
     }
 }
