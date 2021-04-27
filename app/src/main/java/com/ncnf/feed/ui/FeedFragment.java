@@ -2,7 +2,6 @@ package com.ncnf.feed.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,10 +21,8 @@ import com.ncnf.event.Event;
 import com.ncnf.event.EventActivity;
 import com.ncnf.event.EventDB;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.UUID_KEY;
 
 
@@ -33,13 +30,17 @@ public class FeedFragment extends Fragment {
 
     private RecyclerView.LayoutManager lManager;
     private EventAdapter adapter;
-    private List<Event> eventList = new ArrayList<>();
-    private EventDB eventDB;
+    private List<Event> eventList;
     private static final String CHANNEL_NAME = "events_to_be_shown";
 
     public FeedFragment(EventDB eventDB){
         super();
-        this.eventDB = eventDB;
+        this.eventList = eventDB.toList();
+    }
+
+    public FeedFragment(List<Event> eventList){
+        super();
+        this.eventList = eventList;
     }
 
     @Nullable
@@ -62,7 +63,7 @@ public class FeedFragment extends Fragment {
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter
-        adapter = new EventAdapter(eventDB.toList(), this::onEventClick, EventAdapter.SortingMethod.DATE);
+        adapter = new EventAdapter(eventList, this::onEventClick, EventAdapter.SortingMethod.DATE);
         recycler.setAdapter(adapter);
     }
 

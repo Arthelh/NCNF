@@ -7,8 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -16,7 +15,7 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.R;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventActivity;
-import com.ncnf.feed.ui.EventAdapter;
+import com.ncnf.feed.ui.FeedFragment;
 
 import java.util.List;
 
@@ -44,13 +43,30 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
     @Override
     public void onClusterItemInfoWindowClick(NCNFMarker item) {
         //TODO Implement going to event page
+        Log.i(DEBUG_TAG, "Item info window clicked");
+        if (item.getType() == NCNFMarker.TYPE.EVENT) {
+            List<Event> events = item.getEventList();
+            if (events.size() == 1) { //When the marker represents only one event
+                Log.i(DEBUG_TAG, "Launching event activity");
+                Event e = events.get(0);
+                Intent intent = new Intent(context, EventActivity.class);
+                intent.putExtra(UUID_KEY, e.getUuid().toString());
+                context.startActivity(intent);
+            } else {
+                Log.i(DEBUG_TAG, "Launching feed activity");
+                Fragment feedFragment = new FeedFragment(events);
+
+            }
+        } else {
+            //TODO show the organization page
+        }
     }
 
     private void renderInfoWindow(){
         Log.i(DEBUG_TAG, "Rendering Info Window");
 
-        TextView tvTitle = (TextView) window.findViewById(R.id.test_title);
-        TextView tvSnippet = (TextView) window.findViewById(R.id.test_snippet);
+        TextView tvTitle = (TextView) window.findViewById(R.id.marker_title);
+        TextView tvSnippet = (TextView) window.findViewById(R.id.marker_snippet);
 
         tvTitle.setText(item.getTitle());
         tvSnippet.setText(item.getSnippet());
@@ -69,8 +85,8 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
         //if (item == null)
         //    return null;
         Log.i(DEBUG_TAG, "Getting info content");
-        TextView tvTitle = (TextView) window.findViewById(R.id.test_title);
-        TextView tvSnippet = (TextView) window.findViewById(R.id.test_snippet);
+        TextView tvTitle = (TextView) window.findViewById(R.id.marker_title);
+        TextView tvSnippet = (TextView) window.findViewById(R.id.marker_snippet);
 
         tvTitle.setText(item.getTitle());
         tvSnippet.setText(item.getSnippet());

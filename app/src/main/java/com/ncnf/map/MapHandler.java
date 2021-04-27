@@ -46,9 +46,11 @@ public class MapHandler {
 
             this.clusterManager.getMarkerCollection().setInfoWindowAdapter(markerInfoWindowManager);
             this.clusterManager.setOnClusterItemClickListener(markerInfoWindowManager);
+            this.clusterManager.setOnClusterItemInfoWindowClickListener(markerInfoWindowManager);
 
             this.mMap.setOnCameraIdleListener(this.clusterManager);
             this.mMap.setOnMarkerClickListener(this.clusterManager);
+            this.mMap.setOnInfoWindowClickListener(this.clusterManager);
         }
         this.eventDB = eventDB;
         this.venueProvider = venueProvider;
@@ -118,7 +120,7 @@ public class MapHandler {
                 desc.append(p.getName()).append("\n");
             }
             String description = desc.toString();
-            clusterManager.addItem(new NCNFMarker(k, description, eventMap.get(k).get(0).getAddress(), list));
+            clusterManager.addItem(new NCNFMarker(k, description, eventMap.get(k).get(0).getAddress(), list, NCNFMarker.TYPE.EVENT));
         }
     }
 
@@ -127,7 +129,7 @@ public class MapHandler {
         for (Venue p : venues) {
             LatLng venue_position = new LatLng(p.getLatitude(), p.getLongitude());
             if (MapUtilities.position_in_range(venue_position, userPosition)){
-                clusterManager.addItem(new NCNFMarker(venue_position, p.getName(), p.getName(), new ArrayList<>()));
+                clusterManager.addItem(new NCNFMarker(venue_position, p.getName(), p.getName(), new ArrayList<>(), NCNFMarker.TYPE.ORGANIZER));
             }
         }
     }
