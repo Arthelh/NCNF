@@ -1,13 +1,18 @@
 package com.ncnf.map;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -24,13 +29,18 @@ import static com.ncnf.Utils.UUID_KEY;
 
 public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, ClusterManager.OnClusterItemClickListener<NCNFMarker>, ClusterManager.OnClusterItemInfoWindowClickListener<NCNFMarker> {
 
-    private final Context context;
-    private final View window;
+    private final Activity context;
+    private final View markerWindow;
+    private final Window globalWindow;
+    private final FragmentManager fragmentManager;
     private NCNFMarker item;
 
-    public MarkerInfoWindowManager(Context context){
+    public MarkerInfoWindowManager(Activity context, Window globalWindow, FragmentManager fragmentManager){
         this.context = context;
-        this.window = LayoutInflater.from(context).inflate(R.layout.map_marker_info, null);
+        this.fragmentManager = fragmentManager;
+
+        this.globalWindow = globalWindow;
+        this.markerWindow = LayoutInflater.from(context).inflate(R.layout.map_marker_info, null);
     }
 
     @Override
@@ -54,7 +64,22 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
                 context.startActivity(intent);
             } else {
                 Log.i(DEBUG_TAG, "Launching feed activity");
+
                 Fragment feedFragment = new FeedFragment(events);
+                FrameLayout feedFrame = globalWindow.findViewById(R.id.map_feed_fragment);
+                ImageButton imageButton = globalWindow.findViewById(R.id.map_feed_button);
+
+                feedFrame.setBackgroundResource(R.drawable.main_background_gradient);
+                feedFrame.setVisibility(View.VISIBLE);
+                imageButton.setVisibility(View.VISIBLE);
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.map_feed_fragment, feedFragment).commit();
+
+                imageButton.setOnClickListener(v -> {
+                    fragmentManager.beginTransaction().remove(feedFragment).commit();
+                    feedFrame.setVisibility(View.GONE);
+                });
 
             }
         } else {
@@ -65,8 +90,8 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
     private void renderInfoWindow(){
         Log.i(DEBUG_TAG, "Rendering Info Window");
 
-        TextView tvTitle = (TextView) window.findViewById(R.id.marker_title);
-        TextView tvSnippet = (TextView) window.findViewById(R.id.marker_snippet);
+        TextView tvTitle = (TextView) markerWindow.findViewById(R.id.marker_title);
+        TextView tvSnippet = (TextView) markerWindow.findViewById(R.id.marker_snippet);
 
         tvTitle.setText(item.getTitle());
         tvSnippet.setText(item.getSnippet());
@@ -77,7 +102,7 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
         if (item == null)
             return null;
         renderInfoWindow();
-        return window;
+        return markerWindow;
     }
 
     @Override
@@ -85,11 +110,11 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
         //if (item == null)
         //    return null;
         Log.i(DEBUG_TAG, "Getting info content");
-        TextView tvTitle = (TextView) window.findViewById(R.id.marker_title);
-        TextView tvSnippet = (TextView) window.findViewById(R.id.marker_snippet);
+        TextView tvTitle = (TextView) markerWindow.findViewById(R.id.marker_title);
+        TextView tvSnippet = (TextView) markerWindow.findViewById(R.id.marker_snippet);
 
         tvTitle.setText(item.getTitle());
         tvSnippet.setText(item.getSnippet());
-        return window;
+        return markerWindow;
     }
 }

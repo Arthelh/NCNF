@@ -11,7 +11,7 @@ public class MapHandlerTest {
 
     @Test
     public void testPositionSetterGetter(){
-        MapHandler mapHandler = new MapHandler(null, null, null, null);
+        MapHandler mapHandler = new MapHandler(null, null, null, null, null);
 
         LatLng testPosition = new LatLng(0, 0);
         assertNotEquals(mapHandler.getUserPosition(), testPosition);

@@ -2,6 +2,8 @@ package com.ncnf.map;
 
 import android.app.Activity;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -33,11 +35,11 @@ public class MapHandler {
     private boolean eventsShown = true;
     private final float ZOOM_LEVEL = 13;
 
-    public MapHandler(Activity context, GoogleMap mMap, EventDB eventDB, VenueProvider venueProvider){
+    public MapHandler(Activity context, GoogleMap mMap, EventDB eventDB, VenueProvider venueProvider, FragmentManager fragmentManager){
         this.context = context;
         this.mMap = mMap;
         if (mMap != null) { //This is just for MapHandler Unit test
-            MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context);
+            MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context, context.getWindow(), fragmentManager);
 
             this.mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL));
 
