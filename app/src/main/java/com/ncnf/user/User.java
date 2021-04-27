@@ -164,7 +164,7 @@ public class User {
             this.lastName = user.getLastName();
             this.friendsIds = user.getFriendsIds();
             this.ownedEventsIds = user.getOwnedEventsIds();
-            this.savedEventsIds = user.getOwnedEventsIds();
+            this.savedEventsIds = user.getSavedEventsIds();
             this.birthDate = user.getBirthDate();
             this.notifications = user.getNotifications();
 

@@ -67,6 +67,11 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
         adapter = new EventAdapter(eventsToDisplay, this, EventAdapter.SortingMethod.DATE);
         recycler.setAdapter(adapter);
         getEventList(view.findViewById(R.id.SavedEventsRecyclerView));
+
+        user.loadUserFromDB().exceptionally(exception -> {
+            // TODO : HANDLE EXCEPTION
+            return null;
+        });
     }
 
     private void getEventList(View view){
@@ -81,6 +86,7 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
 
             listEvent.thenAccept(events -> {
                 Log.d(DEBUG_TAG, Integer.toString(events.size()));
+                Log.d(DEBUG_TAG, events.toString());
                 if(events != null){
                     this.adapter.setEvents(events);
                 }
