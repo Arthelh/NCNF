@@ -66,7 +66,7 @@ public class EventCreateActivityTest {
     @BindValue
     public User user = mockUser;
 
-    CompletableFuture response = CompletableFuture.completedFuture(CompletableFuture.completedFuture(new DatabaseResponse(true, false, null)));
+    CompletableFuture<Boolean> response = CompletableFuture.completedFuture(true);
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(EventCreateActivity.class));
@@ -139,7 +139,6 @@ public class EventCreateActivityTest {
         verify(user).getUuid();
         verify(user).createEvent(anyObject());
         intended(hasComponent(MainActivity.class.getName()));
-
     }
 
     @Test

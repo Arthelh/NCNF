@@ -154,15 +154,16 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     // TODO: find a way to refactor -> save multiple fields at the time but how ?
-    public CompletableFuture<Boolean> saveNewFields(View view){
-        findViewById(R.id.userProfileSaveButton).setEnabled(false);
-        Log.d(DEBUG_TAG, "tsdzfugihoij  " + user.getFirstName());
+    public void saveNewFields(View view){
 
         if(firstNameChanged || lastNameChanged || birthDateChanged){
-            return user.saveUserToDB();
+            user.saveUserToDB().thenAccept(result -> {
+                findViewById(R.id.userProfileSaveButton).setEnabled(false);
+            }).exceptionally(exception -> {
+                findViewById(R.id.userProfileSaveButton).setEnabled(true);
+                return null;
+            });
         }
-
-        return CompletableFuture.completedFuture(true);
     }
 
 
@@ -172,16 +173,14 @@ public class UserProfileActivity extends AppCompatActivity {
         notification_switch.setChecked(hasNotifications);
         notification_switch.setOnCheckedChangeListener((view, isChecked) -> {
             if (isChecked) {
-                registration.register().thenAccept(success -> {
-                    if (!success) {
-                        errorMsg.show();
-                    }
+                registration.register().exceptionally(exception -> {
+                    errorMsg.show();
+                    return null;
                 });
             } else {
-                registration.unregister().thenAccept(success -> {
-                    if ((!success)) {
-                        errorMsg.show();
-                    }
+                registration.unregister().exceptionally(exception -> {
+                    errorMsg.show();
+                    return null;
                 });
             }
         });

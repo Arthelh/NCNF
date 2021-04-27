@@ -5,6 +5,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
 import com.ncnf.database.DatabaseResponse;
+import com.ncnf.database.builder.UserBuilder;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
 
@@ -16,6 +17,7 @@ import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.mockito.Mockito;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
@@ -35,6 +37,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.ncnf.Utils.BIRTH_DATE_KEY;
+import static com.ncnf.Utils.EMAIL_KEY;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.LAST_NAME_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_KEY;
@@ -49,19 +52,16 @@ import static org.mockito.Mockito.when;
 public class UserProfileActivityTests {
 
     private static final User mockUser = Mockito.mock(User.class);
-    private static final CompletableFuture<DatabaseResponse> future = new CompletableFuture();
+    private Exception exception = new Exception("There was an error.");
 
     // BeforeClass is required because the mocking must be done before the activity is launched
     @BeforeClass
     public static void setupClass() {
-        HashMap<String, Object> values = new HashMap<>();
-        values.put(FIRST_NAME_KEY, "John");
-        values.put(LAST_NAME_KEY, "Doe");
-        values.put(BIRTH_DATE_KEY, "2012");
-        values.put(NOTIFICATIONS_KEY, false);
-        future.complete(new DatabaseResponse(true, values, new Exception()));
-
-//        when(mockUser.loadUserFromDB()).thenReturn(future);
+        when(mockUser.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(mockUser));
+        when(mockUser.getEmail()).thenReturn("john@doe.ch");
+        when(mockUser.getFirstName()).thenReturn("John");
+        when(mockUser.getLastName()).thenReturn("Doe");
+        when(mockUser.getBirthDate()).thenReturn(new Date());
     }
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
@@ -110,20 +110,16 @@ public class UserProfileActivityTests {
 
     @Test
     public void attributesAreDisplayed() {
-        onView(withId(R.id.userProfileFirstName)).check(matches(withText("John")));
-        onView(withId(R.id.userProfileLastName)).check(matches(withText("Doe")));
+        onView(withId(R.id.userProfileFirstName)).check(matches(withText(mockUser.getFirstName())));
+        onView(withId(R.id.userProfileLastName)).check(matches(withText(mockUser.getLastName())));
     }
 
 
     @Test
     public void saveIsDisabledAfterSave() {
-        CompletableFuture<DatabaseResponse> future = new CompletableFuture<>();
-        future.complete(new DatabaseResponse(true, new HashMap<>(), new Exception()));
+        CompletableFuture<Boolean> future = CompletableFuture.completedFuture(true);
 
-//        when(user.updateFirstName(anyString())).thenReturn(future);
-//        when(user.updateLastName(anyString())).thenReturn(future);
-//        when(user.updateBirth(anyInt())).thenReturn(future);
-
+        when(mockUser.saveUserToDB()).thenReturn(future);
         onView(withId(R.id.userProfileFirstName)).perform(typeText("Jean"), closeSoftKeyboard());
         onView(withId(R.id.userProfileSaveButton)).perform(click());
         onView(withId(R.id.userProfileSaveButton)).check(matches(not(isEnabled())));
@@ -139,12 +135,10 @@ public class UserProfileActivityTests {
 
     @Test
     public void saveIsEnabledIfRequestFails() {
-        CompletableFuture<DatabaseResponse> future = new CompletableFuture<>();
-        future.complete(new DatabaseResponse(false, new HashMap<>(), new Exception()));
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        future.completeExceptionally(exception);
 
-//        when(user.updateFirstName(anyString())).thenReturn(future);
-//        when(user.updateLastName(anyString())).thenReturn(future);
-//        when(user.updateBirth(anyInt())).thenReturn(future);
+        when(mockUser.saveUserToDB()).thenReturn(future);
 
         onView(withId(R.id.userProfileFirstName)).perform(typeText("Jean"), closeSoftKeyboard());
         onView(withId(R.id.userProfileSaveButton)).perform(click());
@@ -176,7 +170,9 @@ public class UserProfileActivityTests {
 
     @Test
     public void enableNotificationsFails() {
-        CompletableFuture<Boolean> future = CompletableFuture.completedFuture(false);
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        future.completeExceptionally(exception);
+
         when(registration.register()).thenReturn(future);
         when(registration.unregister()).thenReturn(future);
 

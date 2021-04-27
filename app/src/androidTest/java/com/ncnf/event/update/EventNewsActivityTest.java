@@ -5,6 +5,7 @@ import android.content.Intent;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import com.google.firebase.FirebaseException;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
@@ -73,7 +74,8 @@ public class EventNewsActivityTest {
 
     @Test
     public void unsuccessfullyPublishNews() {
-        CompletableFuture<Boolean> future = CompletableFuture.completedFuture(false);
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        future.completeExceptionally(new FirebaseException("Error connecting to firebase"));
         when(db.updateArrayField(anyString(), anyString(), anyObject())).thenReturn(future);
 
         onView(withId(R.id.event_news_field)).perform(typeText("The event starts soon !"), closeSoftKeyboard());

@@ -1,14 +1,11 @@
 package com.ncnf.database.builder;
 
-import android.util.Log;
-
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.event.Event;
 import com.ncnf.event.PrivateEvent;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.event.Tag;
-import com.ncnf.user.User;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,7 +17,6 @@ import java.util.UUID;
 import static com.ncnf.Utils.ADDRESS_KEY;
 import static com.ncnf.Utils.ATTENDEES_KEY;
 import static com.ncnf.Utils.DATE_KEY;
-import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.DESCRIPTION_KEY;
 import static com.ncnf.Utils.EMAIL_KEY;
 import static com.ncnf.Utils.INVITED_KEY;
@@ -38,8 +34,6 @@ public class EventBuilder extends DatabaseObjectBuilder<Event> {
 
     @Override
     public Event toObject(String uuid, Map<String, Object> data) {
-        Log.d(DEBUG_TAG, uuid);
-
         String ownerId = data.get(OWNER_KEY).toString();
         String uuidStr = data.get(UUID_KEY).toString();
         String name = (String) data.get(NAME_KEY);

@@ -56,7 +56,7 @@ public class FriendsFragment extends Fragment {
         adapter = new UserAdapter(new ArrayList<>(), this::displayUser);
         recycler.setAdapter(adapter);
 
-        user.loadUserFromDB().thenCompose(user1 -> user.getFriends()).thenAccept(users -> {
+        this.user.loadUserFromDB().thenCompose(user1 -> user.getFriends()).thenAccept(users -> {
             adapter.setUsers(users);
         }).exceptionally(exception -> {
             return null; // TODO : handle exception

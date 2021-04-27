@@ -63,8 +63,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void goToFriends(View view){
-        Intent intent = new Intent(getContext(), FriendsActivity.class);
-        startActivity(intent);
+        GoTo(FriendsActivity.class);
     }
 
     // Temporary

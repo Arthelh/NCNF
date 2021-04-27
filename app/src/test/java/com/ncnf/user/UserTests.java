@@ -72,9 +72,6 @@ public class UserTests {
     PrivateEvent privateEvent = new PrivateEvent(ownerID, name, date, geoPoint, address, description, type);
     CompletableFuture<Boolean> response = CompletableFuture.completedFuture(true);
 
-//    User user = new User(db, )
-
-
 
     @Test
     public void hashCodeMatches() {

@@ -177,7 +177,7 @@ public class SignUpFragment extends Fragment {
         AlertDialog.Builder popup = new AlertDialog.Builder(getActivity());
         popup.setCancelable(true);
         popup.setTitle(POPUP_TITLE);
-        popup.setMessage(s);
+//        popup.setMessage(s);
         popup.setPositiveButton(POPUP_POSITIVE_BUTTON, (dialog, which) -> {
             dialog.cancel();
         });
