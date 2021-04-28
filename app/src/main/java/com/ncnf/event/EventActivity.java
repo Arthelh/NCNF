@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ncnf.R;
+import com.ncnf.storage.CacheFileStore;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.storage.FileStore;
 
@@ -30,7 +31,7 @@ public class EventActivity extends AppCompatActivity {
 
         // Change with event UUID
         ImageView imageView = findViewById(R.id.eventImage);
-        FileStore file = new FileStore(Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
+        FileStore file = new CacheFileStore(this, Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
         file.downloadImage(imageView);
 
         TextView name = findViewById(R.id.eventName);

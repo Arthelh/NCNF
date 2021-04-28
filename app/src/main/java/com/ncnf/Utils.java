@@ -56,7 +56,7 @@ public class Utils {
     /**
      * Keys related to Log
      */
-    public static final String DEBUG_TAG = "debugging";
+    public static final String DEBUG_TAG = "DEBUGGING";
     public static final String EMPTY_STRING =  "";
     public static final String CONNECTED_KEYWORD = "Connected";
     public static final String DISCONNECTED_KEYWORD = "Disconnected";
