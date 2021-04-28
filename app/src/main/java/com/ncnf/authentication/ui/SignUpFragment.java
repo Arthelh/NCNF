@@ -107,10 +107,9 @@ public class SignUpFragment extends Fragment {
             Log.d(DEBUG_TAG, "Successful register for " + email);
             User user = CurrentUserModule.getCurrentUser();
             return user.saveUserToDB();
-        }).thenApply(res -> {
+        }).thenRun(() -> {
             Intent intent = new Intent(getActivity(), activity);
             startActivity(intent);
-            return null;
         }).exceptionally(exception -> {
             Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + exception.getMessage());
             setException(exception.getMessage());
