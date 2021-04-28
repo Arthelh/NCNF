@@ -12,7 +12,11 @@ import com.ncnf.event.Event;
 import com.ncnf.event.EventDB;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class MapHandler {
 
@@ -23,8 +27,7 @@ public class MapHandler {
 
     private LatLng userPosition;
     private Marker userMarker;
-    private ArrayList<Marker> eventMarkers, venueMarkers;
-    private ClusterManager<com.ncnf.map.Marker> clusterManager;
+    private ClusterManager<NCNFMarker> clusterManager;
 
     // Indicate whether Events or Venues are shown. If false -> venues are shown
     private boolean eventsShown = true;
@@ -34,17 +37,23 @@ public class MapHandler {
         this.context = context;
         this.mMap = mMap;
         if (mMap != null) { //This is just for MapHandler Unit test
+            MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context);
+
             this.mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL));
-            this.clusterManager = new ClusterManager<com.ncnf.map.Marker>(context, mMap);
-            mMap.setOnCameraIdleListener(this.clusterManager);
-            mMap.setOnMarkerClickListener(this.clusterManager);
+
+            this.clusterManager = new ClusterManager<>(context, mMap);
+            this.mMap.setInfoWindowAdapter(this.clusterManager.getMarkerManager());
+
+            this.clusterManager.getMarkerCollection().setInfoWindowAdapter(markerInfoWindowManager);
+            this.clusterManager.setOnClusterItemClickListener(markerInfoWindowManager);
+
+            this.mMap.setOnCameraIdleListener(this.clusterManager);
+            this.mMap.setOnMarkerClickListener(this.clusterManager);
         }
         this.eventDB = eventDB;
         this.venueProvider = venueProvider;
 
-        userPosition = new LatLng(46.526120f, 6.576330f);
-        eventMarkers = new ArrayList<>();
-        venueMarkers = new ArrayList<>();
+        this.userPosition = new LatLng(46.526120f, 6.576330f);
     }
 
     public void switchMarkers(GoogleMap mMap) {
@@ -90,24 +99,40 @@ public class MapHandler {
     }
 
     private void addEventMarkers(){
-        List<Event> events = eventDB.toList();
-        eventMarkers = new ArrayList<>();
+        List<Event> events = queryEvents();
+        Map<LatLng, List<Event>> eventMap = new HashMap<>();
         for (Event p : events) {
             LatLng event_position = new LatLng(p.getLocation().getLatitude(), p.getLocation().getLongitude());
             if (MapUtilities.position_in_range(event_position, userPosition)){
-                clusterManager.addItem(new com.ncnf.map.Marker(event_position, p.getName(), p.getDescription()));
+                if (!eventMap.containsKey(event_position)){
+                    eventMap.put(event_position, new ArrayList<>());
+                }
+                eventMap.get(event_position).add(p);
             }
+        }
+        Set<LatLng> keys = eventMap.keySet();
+        for (LatLng k : keys){
+            List<Event> list = eventMap.get(k);
+            StringBuilder desc = new StringBuilder();
+            for (Event p : list){
+                desc.append(p.getName()).append("\n");
+            }
+            String description = desc.toString();
+            clusterManager.addItem(new NCNFMarker(k, description, eventMap.get(k).get(0).getAddress(), list));
         }
     }
 
     private void addVenueMarkers(){
         List<Venue> venues = venueProvider.getAll();
-        venueMarkers = new ArrayList<>();
         for (Venue p : venues) {
             LatLng venue_position = new LatLng(p.getLatitude(), p.getLongitude());
             if (MapUtilities.position_in_range(venue_position, userPosition)){
-                clusterManager.addItem(new com.ncnf.map.Marker(venue_position, p.getName(), p.getName()));
+                clusterManager.addItem(new NCNFMarker(venue_position, p.getName(), p.getName(), new ArrayList<>()));
             }
         }
+    }
+
+    private List<Event> queryEvents(){
+        return Collections.unmodifiableList(eventDB.toList());
     }
 }
