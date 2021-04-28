@@ -1,10 +1,11 @@
-package com.ncnf.utilities;
+package com.ncnf.storage;
 
 import android.graphics.Bitmap;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.ncnf.storage.FileStore;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -14,7 +15,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class FileUploadTests {
+public class FileStoreTests {
 
     @Test
     public void uploadIsSuccessful() {
@@ -28,7 +29,7 @@ public class FileUploadTests {
         when(task.addOnSuccessListener(any())).thenReturn(task);
         when(task.addOnFailureListener(any())).thenReturn(task);
 
-        FileUpload file = new FileUpload(storage,"/events", "event.jpg");
+        FileStore file = new FileStore(storage,"/events", "event.jpg");
 
         file.uploadImage(bitmap);
 

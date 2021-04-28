@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ncnf.R;
 import com.ncnf.utilities.DateAdapter;
-import com.ncnf.utilities.FileUpload;
+import com.ncnf.storage.FileStore;
 
 import static com.ncnf.Utils.UUID_KEY;
 
@@ -30,7 +30,7 @@ public class EventActivity extends AppCompatActivity {
 
         // Change with event UUID
         ImageView imageView = findViewById(R.id.eventImage);
-        FileUpload file = new FileUpload(Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
+        FileStore file = new FileStore(Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
         file.downloadImage(imageView);
 
         TextView name = findViewById(R.id.eventName);

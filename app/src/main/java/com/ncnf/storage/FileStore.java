@@ -1,4 +1,4 @@
-package com.ncnf.utilities;
+package com.ncnf.storage;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,19 +13,19 @@ import com.ncnf.database.DatabaseResponse;
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.CompletableFuture;
 
-public class FileUpload {
+public class FileStore {
 
     private final long MAX_SIZE = 10 * 1024 * 1024;
 
     private final FirebaseStorage storage;
     private final StorageReference fileRef;
 
-    public FileUpload(FirebaseStorage storage, String directory, String filename) {
+    public FileStore(FirebaseStorage storage, String directory, String filename) {
         this.storage = storage;
         this.fileRef = storage.getReference().child(directory).child(filename);
     }
 
-    public FileUpload(String directory, String filename) {
+    public FileStore(String directory, String filename) {
         this.storage = FirebaseStorage.getInstance();
         this.fileRef = storage.getReference().child(directory).child(filename);
     }
@@ -72,10 +72,6 @@ public class FileUpload {
         });
 
         return future;
-    }
-
-    public StorageReference getStorageRef() {
-        return fileRef;
     }
 
 }
