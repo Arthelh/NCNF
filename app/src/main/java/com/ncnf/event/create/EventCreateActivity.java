@@ -164,7 +164,7 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
 
         // Select event type
 
-        Spinner spinner = (Spinner) findViewById(R.id.select_event_type);
+        Spinner spinner = findViewById(R.id.select_event_type);
         spinner.setOnItemSelectedListener(EventCreateActivity.this);
         List<String> options = Stream.of(Event.Type.values()).map(Event.Type::name).collect(Collectors.toList());
 

@@ -37,6 +37,9 @@
             android:parentActivityName=".main.MainActivity"
             tools:ignore="MissingClass" />
         <activity
+            android:name=".user.FriendsTrackerActivity"
+            android:parentActivityName=".main.MainActivity" />
+        <activity
             android:name=".authentication.ui.LoginActivity"
             android:parentActivityName=".main.MainActivity"
             tools:ignore="MissingClass" />

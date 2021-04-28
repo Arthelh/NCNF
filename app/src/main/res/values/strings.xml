@@ -6,6 +6,7 @@
     <string name="main_feedview_button">Events Feed</string>
     <string name="main_event_creation_button">Create Event</string>
     <string name="main_placeholder_event_view">PH Event</string>
+    <string name="find_your_friends_button">Find your friends</string>
 
     <!-- Strings used for Map Activity -->
     <string name="map_switch_button">Switch between Events and Venues</string>

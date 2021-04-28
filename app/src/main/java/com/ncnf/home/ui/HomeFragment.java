@@ -17,6 +17,7 @@ import com.ncnf.authentication.ui.LoginActivity;
 import com.ncnf.event.create.EventCreateActivity;
 import com.ncnf.event.update.EventNewsActivity;
 import com.ncnf.friends.ui.FriendsActivity;
+import com.ncnf.user.FriendsTrackerActivity;
 import com.ncnf.user.UserProfileActivity;
 
 
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment {
         getView().findViewById(R.id.homeCreateEventButton).setOnClickListener(this::goToEventCreation);
         getView().findViewById(R.id.homeEventNewsButton).setOnClickListener(this::goToEventNews);
         getView().findViewById(R.id.homeFriendsButton).setOnClickListener(this::goToFriends);
+        getView().findViewById(R.id.track_friends_button).setOnClickListener(this::goToFindFriends);
     }
 
     public void gotToProfile(View view){
@@ -63,6 +65,18 @@ public class HomeFragment extends Fragment {
 
     public void goToFriends(View view){
         Intent intent = new Intent(getContext(), FriendsActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToFindFriends(View view){
+        Intent intent;
+
+        if(!isConnected()){
+            intent = new Intent(getContext(), LoginActivity.class);
+        } else {
+            intent = new Intent(getContext(), FriendsTrackerActivity.class);
+        }
+
         startActivity(intent);
     }
 

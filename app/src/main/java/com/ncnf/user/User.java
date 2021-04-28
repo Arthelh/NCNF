@@ -2,6 +2,7 @@ package com.ncnf.user;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.Utils;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
@@ -29,6 +30,7 @@ import static com.ncnf.Utils.NOTIFICATIONS_TOKEN_KEY;
 import static com.ncnf.Utils.OWNED_EVENTS_KEY;
 import static com.ncnf.Utils.SAVED_EVENTS_KEY;
 import static com.ncnf.Utils.USERS_COLLECTION_KEY;
+import static com.ncnf.Utils.USER_LOCATION_KEY;
 
 public class User {
 
@@ -38,6 +40,8 @@ public class User {
     private final String path;
     private Map<String, Object> userData;
 
+    private GeoPoint loc;
+
     
     private final IllegalStateException wrongCredentials = new IllegalStateException("User doesn't have the right credentials to perform current operation");
 
@@ -46,6 +50,8 @@ public class User {
         this.UUID = FirebaseAuth.getInstance().getUid();
         this.email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         this.path = USERS_COLLECTION_KEY + UUID;
+
+        this.loc = null;
     }
 
     public User(String UUID, String email) {
@@ -57,6 +63,8 @@ public class User {
         this.path = USERS_COLLECTION_KEY + UUID;
         this.UUID = UUID;
         this.email = email;
+
+        this.loc = null;
     }
 
     public User(String UUID, DatabaseService db){
@@ -74,7 +82,9 @@ public class User {
         this.UUID = snapshot.get(Utils.UUID_KEY, String.class);
         this.path = USERS_COLLECTION_KEY + UUID;
         this.email = snapshot.get(EMAIL_KEY, String.class);
+        this.loc = snapshot.get(USER_LOCATION_KEY, GeoPoint.class);
         this.userData = snapshot.getData();
+
     }
 
     protected User(DatabaseService db, String UUID, String email) {
@@ -86,6 +96,7 @@ public class User {
         this.path = USERS_COLLECTION_KEY + UUID;
         this.UUID = UUID;
         this.email = email;
+        this.loc = null;
     }
     
     private boolean checkArgument(String s){
@@ -100,6 +111,10 @@ public class User {
         return email;
     }
 
+    public GeoPoint getLocation(){
+        return loc;
+    }
+
     public Map<String, Object> getUserData() {
         return userData;
     }
@@ -107,6 +122,8 @@ public class User {
     public void setEmail(String email){
         this.email = email;
     }
+
+    public void setLocation(GeoPoint loc) { this.loc = loc; }
 
     public CompletableFuture<DatabaseResponse> saveUserToDB(){
         if(!checkArgument(this.email)){
@@ -122,6 +139,7 @@ public class User {
         initial_data.put(OWNED_EVENTS_KEY, new ArrayList<String>());
         initial_data.put(SAVED_EVENTS_KEY, new ArrayList<String>());
         initial_data.put(NOTIFICATIONS_KEY, false);
+        initial_data.put(USER_LOCATION_KEY, null);
 
         return this.db.setDocument(this.path, initial_data);
     }
@@ -144,6 +162,10 @@ public class User {
 
     public CompletableFuture<DatabaseResponse>  updateBirth(int year){
         return this.update(BIRTH_YEAR_KEY, year);
+    }
+
+    public CompletableFuture<DatabaseResponse>  updateUserLocation(GeoPoint loc) {
+        return this.update(USER_LOCATION_KEY, loc);
     }
 
     public CompletableFuture<DatabaseResponse>  updateNotifications(boolean isEnabled) {
