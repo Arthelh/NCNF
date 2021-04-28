@@ -1,20 +1,15 @@
 package com.ncnf.event;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ncnf.GlideApp;
 import com.ncnf.R;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.FileUpload;
 
-import java.lang.reflect.Field;
-
-import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.UUID_KEY;
 
 public class EventActivity extends AppCompatActivity {
