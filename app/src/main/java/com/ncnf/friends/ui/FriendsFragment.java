@@ -19,7 +19,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.ncnf.R;
-import com.ncnf.Utils;
+import com.ncnf.utilities.StringCodes;
 import com.ncnf.user.User;
 import com.ncnf.user.UserAdapter;
 
@@ -47,7 +47,7 @@ public class FriendsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        usersRef = databaseReference.collection(Utils.USERS_COLLECTION_KEY);
+        usersRef = databaseReference.collection(StringCodes.USERS_COLLECTION_KEY);
 
         //Handle recyclerView
         recycler = getView().findViewById(R.id.friends_recycler_view);

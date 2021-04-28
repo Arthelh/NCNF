@@ -2,7 +2,7 @@ package com.ncnf.user;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.ncnf.Utils;
+import com.ncnf.utilities.StringCodes;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
@@ -18,17 +18,17 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import static com.ncnf.Utils.BIRTH_YEAR_KEY;
-import static com.ncnf.Utils.EMAIL_KEY;
-import static com.ncnf.Utils.EMPTY_STRING;
-import static com.ncnf.Utils.FIRST_NAME_KEY;
-import static com.ncnf.Utils.FRIENDS_KEY;
-import static com.ncnf.Utils.LAST_NAME_KEY;
-import static com.ncnf.Utils.NOTIFICATIONS_KEY;
-import static com.ncnf.Utils.NOTIFICATIONS_TOKEN_KEY;
-import static com.ncnf.Utils.OWNED_EVENTS_KEY;
-import static com.ncnf.Utils.SAVED_EVENTS_KEY;
-import static com.ncnf.Utils.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.BIRTH_YEAR_KEY;
+import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
+import static com.ncnf.utilities.StringCodes.EMPTY_STRING;
+import static com.ncnf.utilities.StringCodes.FIRST_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.FRIENDS_KEY;
+import static com.ncnf.utilities.StringCodes.LAST_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_KEY;
+import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_TOKEN_KEY;
+import static com.ncnf.utilities.StringCodes.OWNED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 
 public class User {
 
@@ -71,7 +71,7 @@ public class User {
 
     public User(DocumentSnapshot snapshot){
         this.db = new DatabaseService();
-        this.UUID = snapshot.get(Utils.UUID_KEY, String.class);
+        this.UUID = snapshot.get(StringCodes.UUID_KEY, String.class);
         this.path = USERS_COLLECTION_KEY + UUID;
         this.email = snapshot.get(EMAIL_KEY, String.class);
         this.userData = snapshot.getData();

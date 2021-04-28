@@ -26,7 +26,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static com.ncnf.Utils.NEXT_ACTIVITY_EXTRA_KEY;
+import static com.ncnf.utilities.StringCodes.NEXT_ACTIVITY_EXTRA_KEY;
 
 @HiltAndroidTest
 public final class HomeFragmentTest {

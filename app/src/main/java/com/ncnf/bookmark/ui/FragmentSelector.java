@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.ncnf.bookmark.EventDisplayFragment;
 
-import static com.ncnf.Utils.*;
+import static com.ncnf.utilities.StringCodes.*;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

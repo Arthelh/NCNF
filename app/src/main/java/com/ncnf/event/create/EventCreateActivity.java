@@ -52,7 +52,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 
 @AndroidEntryPoint
 public class EventCreateActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {

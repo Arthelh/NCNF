@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static com.ncnf.Utils.AWAITING_REQUESTS_KEY;
-import static com.ncnf.Utils.FRIENDS_KEY;
-import static com.ncnf.Utils.PENDING_REQUESTS_KEY;
-import static com.ncnf.Utils.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.AWAITING_REQUESTS_KEY;
+import static com.ncnf.utilities.StringCodes.FRIENDS_KEY;
+import static com.ncnf.utilities.StringCodes.PENDING_REQUESTS_KEY;
+import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyList;

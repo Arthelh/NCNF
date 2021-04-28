@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import static com.ncnf.Utils.*;
+import static com.ncnf.utilities.StringCodes.*;
 
 
 public class PrivateEvent extends Event {

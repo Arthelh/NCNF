@@ -28,8 +28,8 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 @AndroidEntryPoint
 public class EventDisplayFragment extends Fragment implements EventAdapter.OnEventListener{

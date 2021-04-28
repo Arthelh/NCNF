@@ -1,8 +1,5 @@
 package com.ncnf.organization;
 
-import android.provider.ContactsContract;
-import android.util.Log;
-
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
@@ -18,17 +15,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
-import static com.ncnf.Utils.ADDRESS_KEY;
-import static com.ncnf.Utils.ADMIN_KEY;
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
-import static com.ncnf.Utils.LOCATION_KEY;
-import static com.ncnf.Utils.NAME_KEY;
-import static com.ncnf.Utils.ORGANIZED_EVENTS_KEY;
-import static com.ncnf.Utils.PHONE_NB_KEY;
-import static com.ncnf.Utils.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.ADDRESS_KEY;
+import static com.ncnf.utilities.StringCodes.ADMIN_KEY;
+import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
+import static com.ncnf.utilities.StringCodes.NAME_KEY;
+import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.PHONE_NB_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

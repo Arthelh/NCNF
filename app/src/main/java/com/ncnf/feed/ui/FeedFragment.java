@@ -2,7 +2,6 @@ package com.ncnf.feed.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,8 +24,7 @@ import com.ncnf.event.EventDB;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 
 public class FeedFragment extends Fragment {

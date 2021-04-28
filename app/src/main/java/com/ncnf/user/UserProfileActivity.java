@@ -28,11 +28,11 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
-import static com.ncnf.Utils.BIRTH_YEAR_KEY;
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.FIRST_NAME_KEY;
-import static com.ncnf.Utils.LAST_NAME_KEY;
-import static com.ncnf.Utils.NOTIFICATIONS_KEY;
+import static com.ncnf.utilities.StringCodes.BIRTH_YEAR_KEY;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.FIRST_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.LAST_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_KEY;
 
 @AndroidEntryPoint
 public class UserProfileActivity extends AppCompatActivity {

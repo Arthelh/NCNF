@@ -5,13 +5,12 @@ import com.ncnf.database.DatabaseService;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import static com.ncnf.Utils.AWAITING_REQUESTS_KEY;
-import static com.ncnf.Utils.FRIENDS_KEY;
-import static com.ncnf.Utils.PENDING_REQUESTS_KEY;
-import static com.ncnf.Utils.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.AWAITING_REQUESTS_KEY;
+import static com.ncnf.utilities.StringCodes.FRIENDS_KEY;
+import static com.ncnf.utilities.StringCodes.PENDING_REQUESTS_KEY;
+import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 
 /*
     Interactions with the database to handle friends

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.ncnf.R;
-import com.ncnf.Utils;
+import com.ncnf.utilities.StringCodes;
 
 public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.UserViewHolder> {
 
@@ -52,11 +52,11 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.User
         }
 
         public void bind(final User u, final UserAdapter.OnItemClickListener listener) {
-            String firstNameText = (String) u.getUserData().getOrDefault(Utils.FIRST_NAME_KEY, "empty");
+            String firstNameText = (String) u.getUserData().getOrDefault(StringCodes.FIRST_NAME_KEY, "empty");
             if(firstNameText == "") firstNameText = "empty";
-            String lastNameText = (String) u.getUserData().getOrDefault(Utils.LAST_NAME_KEY, "empty");
+            String lastNameText = (String) u.getUserData().getOrDefault(StringCodes.LAST_NAME_KEY, "empty");
             if(lastNameText == "") lastNameText = "empty";
-            String usernameText = (String) u.getUserData().getOrDefault("@"+Utils.LAST_NAME_KEY, "@empty");
+            String usernameText = (String) u.getUserData().getOrDefault("@"+ StringCodes.LAST_NAME_KEY, "@empty");
             if(usernameText == "") usernameText = "empty";
             
             String concatNameText = firstNameText + " " + lastNameText;

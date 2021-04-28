@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -13,6 +15,7 @@ import java.util.UUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -31,12 +34,12 @@ public class OrganizationTests {
         });
 
 
-        assertTrue(org1.equals(org1));
-        assertFalse(org1.equals(org2));
-        assertFalse(org1.equals(null));
-        assertFalse(org1.equals(new ArrayList<>()));
-        assertTrue(o1.equals(o2));
-        assertTrue(o1.hashCode() == Objects.hash(uuid));
+        assertEquals(org1, org1);
+        assertNotEquals(org1, org2);
+        assertNotEquals(null, org1);
+        assertNotEquals(org1, new ArrayList<>());
+        assertEquals(o1, o2);
+        assertEquals(o1.hashCode(), Objects.hash(uuid));
 
     }
 
@@ -47,10 +50,10 @@ public class OrganizationTests {
         GeoPoint location = new GeoPoint(1,1);
         String address = "address";
         String phoneNumber = "phone_number";
-        List<String> adminIds =  Arrays.asList(new String[]{"first_owner"});
+        List<String> adminIds = Collections.singletonList("first_owner");
         List<String>  events = new ArrayList<>();
 
-        Organization org = new Organization(name, new GeoPoint(1,1), address, phoneNumber, "first_owner");
+        Organization org = new Organization(name, new GeoPoint(1,1), address, phoneNumber, "first_owner" );
         assertEquals(org.getName(), name);
         String name2 = "name2";
         org.setName(name2);
@@ -72,14 +75,26 @@ public class OrganizationTests {
         assertEquals(org.getPhoneNumber(), phoneNumber2);
 
         assertEquals(org.getAdminIds(), adminIds);
-        List<String> adminIds2 =  Arrays.asList(new String[]{"original"});
+        List<String> adminIds2 = Collections.singletonList("original");
         org.setAdminIds(adminIds2);
         assertEquals(org.getAdminIds(), adminIds2);
 
         assertEquals(org.getEvents(), events);
-        List<String> events2 =  Arrays.asList(new String[]{"event"});
-        org.setEvents(events2);
+        List<String> events2 = Collections.singletonList("event");
+        org.addListEvents(events2);
         assertEquals(org.getEvents(), events2);
+
+        org.clearEvents();
+        assertTrue(org.getEvents().isEmpty());
+
+        String events3 = "event";
+        org.addEvent(events3);
+        assertEquals(org.getEvents(), events2);
+
+        List<String> events4list = new ArrayList<>(Arrays.asList("abc", "def", "ijk"));
+        org.replaceEvents(events4list);
+        assertEquals(org.getEvents(), events4list);
+
     }
 
     @Test
@@ -106,6 +121,46 @@ public class OrganizationTests {
         });
     }
 
+    public String nullElem = null;
+    public UUID nullUUID = null;
+    public String phone = "phone";
+    private UUID uuid = UUID.randomUUID();
+    private String name = "name";
+    private GeoPoint location = new GeoPoint(0,0);
+    private String address = "address";
+    private List<String> goob = new ArrayList<>(Arrays.asList("fabulous", "utterly", "concise", "kitchen", "salvation", "discrepancy", "pinnacle"));
+    private List<String>  bad = Collections.singletonList(nullElem);
+
+
+    @Test
+    public void exceptionsThrownTest() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Organization(nullUUID, name, location, address, phone, goob, goob);
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Organization(uuid, name, location, address, phone, bad, goob);
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Organization(uuid, name, location, address, phone, goob, null);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Organization(uuid, name, location, address, phone, bad, goob);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Organization(uuid, name, location, address, phone, goob, goob).setAdminIds(bad);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Organization(uuid, name, location, address, phone, bad, goob).addListEvents(bad);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Organization(uuid, name, location, address, phone, bad, goob).replaceEvents(bad);
+        });
+    }
+
     @Test
     public void addDeleteEvents(){
         String admin1 = "first_admin";
@@ -115,7 +170,7 @@ public class OrganizationTests {
         String event3 = "third_event3";
 
         Organization org = new Organization("Test1", new GeoPoint(1,1), "address", "phone", admin1);
-        assertTrue(org.getEvents().size() == 0);
+        assertEquals(0, org.getEvents().size());
 
         assertTrue(org.addEvent(event2) && org.getEvents().size() == 1 && org.getEvents().contains(event2));
 
