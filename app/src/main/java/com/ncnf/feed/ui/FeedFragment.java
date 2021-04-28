@@ -22,6 +22,7 @@ import com.ncnf.event.EventActivity;
 import com.ncnf.event.EventDB;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.ncnf.Utils.UUID_KEY;
 
@@ -35,11 +36,14 @@ public class FeedFragment extends Fragment {
 
     public FeedFragment(EventDB eventDB){
         super();
+        
         this.eventList = eventDB.toList();
     }
 
     public FeedFragment(List<Event> eventList){
         super();
+
+        Objects.requireNonNull(eventList);
         this.eventList = eventList;
     }
 
