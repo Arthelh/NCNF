@@ -63,13 +63,22 @@ public class MockTask<D> extends Task<D> {
         return this;
     }
 
-    // UNSUPPORTED OPERATIONS
+    @NonNull
+    @Override
+    public Task<D> addOnSuccessListener(@NonNull OnSuccessListener<? super D> onSuccessListener) {
+        onSuccessListener.onSuccess(result);
+        return this;
+    }
 
     @NonNull
     @Override
-    public Task addOnSuccessListener(@NonNull OnSuccessListener onSuccessListener) {
-        throw new UnsupportedOperationException();
+    public Task<D> addOnFailureListener(@NonNull OnFailureListener onFailureListener) {
+        onFailureListener.onFailure(exception);
+        return this;
     }
+
+
+    // UNSUPPORTED OPERATIONS
 
     @NonNull
     @Override
@@ -80,12 +89,6 @@ public class MockTask<D> extends Task<D> {
     @NonNull
     @Override
     public Task addOnSuccessListener(@NonNull Activity activity, @NonNull OnSuccessListener onSuccessListener) {
-        throw new UnsupportedOperationException();
-    }
-
-    @NonNull
-    @Override
-    public Task addOnFailureListener(@NonNull OnFailureListener onFailureListener) {
         throw new UnsupportedOperationException();
     }
 
