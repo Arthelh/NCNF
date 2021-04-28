@@ -20,6 +20,7 @@ public class VenueProvider {
         list.add(new Venue("Théâtre Sévelin 36", 46.5225f, 6.6197f));
         list.add(new Venue("MAD", 46.5219f, 6.6272f));
         list.add(new Venue("UniL", 46.5211f, 6.5802f));
+        list.add(new Venue("Renens - Salle de Concerts", 46.5338f, 6.5914f));
         return list;
     }
 }
