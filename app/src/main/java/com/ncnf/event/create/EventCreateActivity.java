@@ -34,7 +34,7 @@ import com.ncnf.event.PublicEvent;
 import com.ncnf.main.MainActivity;
 import com.ncnf.user.User;
 import com.ncnf.utilities.DateAdapter;
-import com.ncnf.utilities.FileUpload;
+import com.ncnf.storage.FileStore;
 import com.ncnf.utilities.InputValidator;
 
 import java.text.DecimalFormat;
@@ -191,11 +191,11 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
                         // TODO: might change with the new event class
                         // File upload must happened after the event is saved, such that the image path
                         // contains the event's UUID
-                        FileUpload file = new FileUpload(Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
+                        FileStore file = new FileStore(Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
                         pictureView.setDrawingCacheEnabled(true);
                         pictureView.buildDrawingCache();
                         Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
-                        file.upload(bitmap);
+                        file.uploadImage(bitmap);
 
                         //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
                         DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());
