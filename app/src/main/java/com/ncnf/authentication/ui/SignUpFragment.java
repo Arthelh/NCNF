@@ -2,7 +2,6 @@ package com.ncnf.authentication.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,16 +14,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
-import com.ncnf.authentication.AuthenticationResponse;
 import com.ncnf.authentication.AuthenticationService;
 import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
-import com.ncnf.user.UserProfileActivity;
 
 import java.util.concurrent.CompletableFuture;
 
