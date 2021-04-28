@@ -30,7 +30,7 @@ public class FileUploadTests {
 
         FileUpload file = new FileUpload(storage,"/events", "event.jpg");
 
-        file.upload(bitmap);
+        file.uploadImage(bitmap);
 
         verify(fileRef).putBytes(any(byte[].class));
     }

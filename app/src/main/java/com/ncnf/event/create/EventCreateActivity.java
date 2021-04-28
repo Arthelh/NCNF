@@ -192,7 +192,7 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
                         pictureView.setDrawingCacheEnabled(true);
                         pictureView.buildDrawingCache();
                         Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
-                        file.upload(bitmap);
+                        file.uploadImage(bitmap);
 
                         //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
                         DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());

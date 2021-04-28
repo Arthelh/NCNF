@@ -36,9 +36,7 @@ public class EventActivity extends AppCompatActivity {
         // Change with event UUID
         ImageView imageView = findViewById(R.id.eventImage);
         FileUpload file = new FileUpload(Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
-        GlideApp.with(this)
-                .load(file.getStorageRef())
-                .into(imageView);
+        file.downloadImage(imageView);
 
         TextView name = findViewById(R.id.eventName);
         name.setText(event.getName());
