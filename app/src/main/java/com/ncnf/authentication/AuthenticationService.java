@@ -29,13 +29,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
     @Override
     public CompletableFuture<Boolean> register(String email, String password){
         CompletableFuture<Boolean> futureResponse = new CompletableFuture<>();
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                futureResponse.complete(true);
-            } else {
-                futureResponse.completeExceptionally(task.getException());
-            }
-        });
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> onTaskComplete(task, futureResponse));
 
         return futureResponse;
     }
@@ -44,13 +38,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
     public CompletableFuture<Boolean> logIn(String email, String password) {
         CompletableFuture<Boolean> futureResponse = new CompletableFuture<>();
 
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                futureResponse.complete(true);
-            } else {
-                futureResponse.completeExceptionally(task.getException());
-            }
-        });
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> onTaskComplete(task, futureResponse));
 
         return futureResponse;
     }
@@ -73,7 +61,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
         return futureResponse;
     }
 
-    private void onTaskComplete(Task<Void> task, CompletableFuture<Boolean> futureResponse){
+    private void onTaskComplete(Task<?> task, CompletableFuture<Boolean> futureResponse){
         if(task.isSuccessful()){
             futureResponse.complete(true);
         } else {
