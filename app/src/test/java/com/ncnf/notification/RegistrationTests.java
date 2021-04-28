@@ -50,10 +50,6 @@ public class RegistrationTests {
     @Test
     public void registerFails() {
         MockTask<String> task = new MockTask("My token", null, false);
-        CompletableFuture<DatabaseResponse> notificationFuture = CompletableFuture.completedFuture(
-                new DatabaseResponse(true, null, null));
-        CompletableFuture<DatabaseResponse> tokenFuture = CompletableFuture.completedFuture(
-                new DatabaseResponse(true, null, null));
 
         when(messaging.getToken()).thenReturn(task);
 
