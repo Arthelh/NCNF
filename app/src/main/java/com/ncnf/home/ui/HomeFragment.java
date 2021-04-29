@@ -1,13 +1,11 @@
 package com.ncnf.home.ui;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -17,10 +15,8 @@ import android.view.ViewGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
-import com.ncnf.event.Event;
 import com.ncnf.event.create.EventCreateActivity;
 import com.ncnf.event.update.EventNewsActivity;
-import com.ncnf.main.MainActivity;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.user.UserProfileActivity;
 
@@ -46,14 +42,14 @@ public class HomeFragment extends Fragment {
     }
 
     public void gotToProfile(View view){
-        GoTo(UserProfileActivity.class);
+        goToActivity(UserProfileActivity.class);
     }
 
     public void goToEventCreation(View view){
-        GoTo(EventCreateActivity.class);
+        goToActivity(EventCreateActivity.class);
     }
 
-    private void GoTo(Class<?> activity){
+    private void goToActivity(Class<?> activity){
         if(!isConnected()){
             createLoginPop(activity);
         } else {
@@ -63,7 +59,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void goToFriends(View view){
-        GoTo(FriendsActivity.class);
+        goToActivity(FriendsActivity.class);
     }
 
     // Temporary
