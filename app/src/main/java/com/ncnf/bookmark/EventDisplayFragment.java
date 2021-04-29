@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.Utils.SAVED_EVENTS_KEY;
 import static com.ncnf.Utils.UUID_KEY;
 
 @AndroidEntryPoint
@@ -66,21 +67,24 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
         adapter = new EventAdapter(eventsToDisplay, this, EventAdapter.SortingMethod.DATE);
         recycler.setAdapter(adapter);
         getEventList(view.findViewById(R.id.SavedEventsRecyclerView));
+
+        user.loadUserFromDB();
     }
 
     private void getEventList(View view){
         if(user != null){
-            CompletableFuture<CompletableFuture<List<Event>>> listEvent = user.getAllEvents(eventCollection);
+            CompletableFuture<List<Event>> listEvent;
+            if(eventCollection == SAVED_EVENTS_KEY){
+                listEvent = user.getSavedEvents();
+            } else {
+                listEvent = user.getOwnedEvents();
+            }
 
-            listEvent.thenAccept(task -> task.thenAccept(events -> {
+            listEvent.thenAccept(events -> {
                 if(events != null){
-                    for(Event e : events){
-                        if (e != null) {
-                            this.adapter.addEvent(e);
-                        }
-                    }
+                    this.adapter.setEvents(events);
                 }
-            }));
+            });
         }
     }
 
