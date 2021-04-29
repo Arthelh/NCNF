@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.mocks.MockTask;
 
 import org.junit.Assert;
