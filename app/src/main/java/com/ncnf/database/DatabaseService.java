@@ -31,15 +31,15 @@ public class DatabaseService implements DatabaseServiceInterface {
     @Inject
     public DatabaseService(){
         this.db = FirebaseFirestore.getInstance();
-        initMap();
+        initRegistry();
     }
 
     protected DatabaseService(FirebaseFirestore db)  {
         this.db = db;
-        initMap();
+        initRegistry();
     }
 
-    private void initMap(){
+    private void initRegistry(){
         registry.put(User.class, new UserBuilder());
         registry.put(Event.class, new EventBuilder());
         registry.put(PublicEvent.class, new EventBuilder());
