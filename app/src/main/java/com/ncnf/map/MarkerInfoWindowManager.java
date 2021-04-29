@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -65,19 +67,21 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
             } else {
 
                 Fragment feedFragment = new FeedFragment(events);
+                ConstraintLayout feedContainer = globalWindow.findViewById(R.id.map_feed_container);
                 FrameLayout feedFrame = globalWindow.findViewById(R.id.map_feed_fragment);
-                ImageButton imageButton = globalWindow.findViewById(R.id.map_feed_button);
+                Button feedButton = globalWindow.findViewById(R.id.map_feed_button);
 
-                feedFrame.setBackgroundResource(R.drawable.main_background_gradient);
+                feedContainer.setBackgroundResource(R.drawable.main_background_gradient);
+                feedContainer.setVisibility(View.VISIBLE);
                 feedFrame.setVisibility(View.VISIBLE);
-                imageButton.setVisibility(View.VISIBLE);
+                feedButton.setVisibility(View.VISIBLE);
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.map_feed_fragment, feedFragment).commit();
 
-                imageButton.setOnClickListener(v -> {
+                feedButton.setOnClickListener(v -> {
                     fragmentManager.beginTransaction().remove(feedFragment).commit();
-                    feedFrame.setVisibility(View.GONE);
+                    feedContainer.setVisibility(View.GONE);
                 });
 
             }
