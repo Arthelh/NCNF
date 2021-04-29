@@ -55,18 +55,17 @@ public class FileStoreTests {
     public void downloadIsSuccessful() {
         FirebaseStorage storage = Mockito.mock(FirebaseStorage.class, Mockito.RETURNS_DEEP_STUBS);
         StorageReference fileRef = Mockito.mock(StorageReference.class);
-        MockTask<byte[]> task = new MockTask<>(data, null);
-        ImageView view = Mockito.mock(ImageView.class);
+        MockTask<byte[]> task = new MockTask<>(data, new Exception("Download failed"));
 
         when(storage.getReference().child(anyString()).child(anyString())).thenReturn(fileRef);
         when(fileRef.getBytes(anyLong())).thenReturn(task);
 
         FileStore file = new FileStore(storage, directory, filename);
 
-        CompletableFuture<DatabaseResponse> future = file.download();
+        CompletableFuture<byte[]> future = file.download();
 
         try {
-            assertEquals(data, future.get().getResult());
+            assertEquals(data, future.get());
         } catch (ExecutionException | InterruptedException e) {
             Assert.fail("The future did not complete correctly !");
         }

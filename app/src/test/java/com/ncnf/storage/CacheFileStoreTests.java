@@ -46,13 +46,13 @@ public class CacheFileStoreTests {
         when(context.getCacheDir()).thenReturn(folder.getRoot());
 
         CacheFileStore fileStore = new CacheFileStore(storage, context,directory, filename);
-        CompletableFuture<DatabaseResponse> future = fileStore.download();
+        CompletableFuture<byte[]> future = fileStore.download();
 
         File file = new File(folder.getRoot() + "/" + directory,filename);
         assertTrue(file.exists());
 
         try {
-            assertEquals(data, future.get().getResult());
+            assertEquals(data, future.get());
         } catch (ExecutionException | InterruptedException e) {
             Assert.fail("The future did not complete correctly !");
         }
@@ -79,10 +79,10 @@ public class CacheFileStoreTests {
         when(context.getCacheDir()).thenReturn(folder.getRoot());
 
         CacheFileStore fileStore = new CacheFileStore(storage, context,directory, filename);
-        CompletableFuture<DatabaseResponse> future = fileStore.download();
+        CompletableFuture<byte[]> future = fileStore.download();
 
         try {
-            assertArrayEquals(data, (byte[]) future.get().getResult());
+            assertArrayEquals(data, (byte[]) future.get());
         } catch (ExecutionException | InterruptedException e) {
             Assert.fail("The future did not complete correctly !");
         }

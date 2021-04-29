@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.storage.FirebaseStorage;
-import com.ncnf.database.DatabaseResponse;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,22 +31,22 @@ public class CacheFileStore extends FileStore {
     }
 
     @Override
-    public CompletableFuture<DatabaseResponse> download() {
+    public CompletableFuture<byte[]> download() {
         if (file.exists()) {
             try {
                 byte[] data = Files.readAllBytes(file.toPath());
-                return CompletableFuture.completedFuture(new DatabaseResponse(true, data, null));
+                return CompletableFuture.completedFuture(data);
             } catch (IOException e) {
                 // Will download the file
                 Log.w(LOG_TAG, "Could not read the file: " + file.getPath());
             }
         }
-        CompletableFuture<DatabaseResponse> f = super.download();
-        f.thenApply(res -> {
-            storeFile((byte[]) res.getResult());
-            return res;
+        CompletableFuture<byte[]> future = super.download();
+        future.thenApply(data -> {
+            storeFile(data);
+            return data;
         });
-        return f;
+        return future;
     }
 
     private void storeFile(byte[] data) {
