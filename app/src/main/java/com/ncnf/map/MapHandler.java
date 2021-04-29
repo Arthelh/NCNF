@@ -2,6 +2,8 @@ package com.ncnf.map;
 
 import android.app.Activity;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -33,11 +35,11 @@ public class MapHandler {
     private boolean eventsShown = true;
     private final float ZOOM_LEVEL = 13;
 
-    public MapHandler(Activity context, GoogleMap mMap, EventDB eventDB, VenueProvider venueProvider){
+    public MapHandler(Activity context, GoogleMap mMap, EventDB eventDB, VenueProvider venueProvider, FragmentManager fragmentManager){
         this.context = context;
         this.mMap = mMap;
         if (mMap != null) { //This is just for MapHandler Unit test
-            MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context);
+            MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context, context.getWindow(), fragmentManager);
 
             this.mMap.moveCamera(CameraUpdateFactory.zoomTo(ZOOM_LEVEL));
 
@@ -46,9 +48,11 @@ public class MapHandler {
 
             this.clusterManager.getMarkerCollection().setInfoWindowAdapter(markerInfoWindowManager);
             this.clusterManager.setOnClusterItemClickListener(markerInfoWindowManager);
+            this.clusterManager.setOnClusterItemInfoWindowClickListener(markerInfoWindowManager);
 
             this.mMap.setOnCameraIdleListener(this.clusterManager);
             this.mMap.setOnMarkerClickListener(this.clusterManager);
+            this.mMap.setOnInfoWindowClickListener(this.clusterManager);
         }
         this.eventDB = eventDB;
         this.venueProvider = venueProvider;
@@ -118,7 +122,7 @@ public class MapHandler {
                 desc.append(p.getName()).append("\n");
             }
             String description = desc.toString();
-            clusterManager.addItem(new NCNFMarker(k, description, eventMap.get(k).get(0).getAddress(), list));
+            clusterManager.addItem(new NCNFMarker(k, description, eventMap.get(k).get(0).getAddress(), list, true));
         }
     }
 
@@ -127,7 +131,7 @@ public class MapHandler {
         for (Venue p : venues) {
             LatLng venue_position = new LatLng(p.getLatitude(), p.getLongitude());
             if (MapUtilities.position_in_range(venue_position, userPosition)){
-                clusterManager.addItem(new NCNFMarker(venue_position, p.getName(), p.getName(), new ArrayList<>()));
+                clusterManager.addItem(new NCNFMarker(venue_position, p.getName(), p.getName(), new ArrayList<>(), false));
             }
         }
     }

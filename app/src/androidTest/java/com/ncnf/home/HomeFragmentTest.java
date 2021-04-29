@@ -10,6 +10,7 @@ import com.ncnf.event.update.EventNewsActivity;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.main.MainActivity;
 import com.ncnf.user.UserProfileActivity;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

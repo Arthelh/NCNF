@@ -93,7 +93,7 @@ public class MapFragment extends Fragment{
         mapView.getMapAsync(googleMap -> {
             mMap = googleMap;
 
-            mapHandler = new MapHandler(getActivity(), mMap, eventDB, venueProvider);
+            mapHandler = new MapHandler(getActivity(), mMap, eventDB, venueProvider, getChildFragmentManager());
             searchBarHandler = new SearchBarHandler(getActivity(), materialSearchBar, mapHandler);
 
             mapHandler.show_markers();

@@ -16,16 +16,18 @@ public class NCNFMarker implements ClusterItem {
     private final String title;
     private final String snippet;
     private final List<Event> eventList;
+    private final boolean isEvent;
 
-    public NCNFMarker(float lat, float lon, String title, String snippet, List<Event> eventList){
-        this(new LatLng(lat, lon), title, snippet, eventList);
+    public NCNFMarker(float lat, float lon, String title, String snippet, List<Event> eventList, boolean isEvent){
+        this(new LatLng(lat, lon), title, snippet, eventList, isEvent);
     }
 
-    public NCNFMarker(LatLng position, String title, String snippet, List<Event> eventList){
+    public NCNFMarker(LatLng position, String title, String snippet, List<Event> eventList, boolean isEvent){
         this.position = position;
         this.title = title;
         this.snippet = snippet;
         this.eventList = eventList;
+        this.isEvent = isEvent;
     }
 
     @NonNull
@@ -47,4 +49,8 @@ public class NCNFMarker implements ClusterItem {
     }
 
     public List<Event> getEventList() {return Collections.unmodifiableList(eventList);}
+
+    public boolean isEvent(){
+        return isEvent;
+    }
 }
