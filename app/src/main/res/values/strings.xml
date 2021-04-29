@@ -13,6 +13,8 @@
     <string name="map_zoom_in_button">Zoom In</string>
     <string name="map_zoom_out_button">Zoom Out</string>
     <string name="map_settings_button">Settings</string>
+    <string name="map_marker_arrow">Arrow</string>
+    <string name="map_feed_button">Back to Map</string>
 
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_map">MapActivity</string>
