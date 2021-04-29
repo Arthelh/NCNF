@@ -2,6 +2,7 @@
 
 # Beltan
 
+This week I finished my tasks of modifying the map markers so that first, many events happening at the exact same place would create only one marker representing them all and second, when clicking on a marker's info window, you can access either the event page if it's the only one represented by the marker or a custom feed view if the marker represents multiple ones. Showing the info window took me more time than expected because it was surprisingly more difficult than I thought and the other task went pretty much as expected.
 
 # David (scrum master)
 
