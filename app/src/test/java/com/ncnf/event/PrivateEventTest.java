@@ -1,7 +1,6 @@
 package com.ncnf.event;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 
 import org.junit.Assert;

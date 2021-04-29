@@ -1,10 +1,6 @@
 package com.ncnf.user;
 
-import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.event.PrivateEvent;
@@ -15,33 +11,14 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static com.ncnf.Utils.ADDRESS_KEY;
-import static com.ncnf.Utils.ATTENDEES_KEY;
-import static com.ncnf.Utils.BIRTH_DATE_KEY;
-import static com.ncnf.Utils.DATE_KEY;
-import static com.ncnf.Utils.DESCRIPTION_KEY;
-import static com.ncnf.Utils.FIRST_NAME_KEY;
-import static com.ncnf.Utils.INVITED_KEY;
-import static com.ncnf.Utils.LAST_NAME_KEY;
-import static com.ncnf.Utils.LOCATION_KEY;
-import static com.ncnf.Utils.NAME_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_TOKEN_KEY;
-import static com.ncnf.Utils.OWNER_KEY;
-import static com.ncnf.Utils.SAVED_EVENTS_KEY;
-import static com.ncnf.Utils.TYPE_KEY;
 import static com.ncnf.Utils.USERS_COLLECTION_KEY;
-import static com.ncnf.Utils.UUID_KEY;
-import static com.ncnf.Utils.VISIBILITY_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;

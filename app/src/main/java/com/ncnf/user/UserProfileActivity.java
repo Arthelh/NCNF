@@ -1,39 +1,28 @@
 package com.ncnf.user;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.ncnf.R;
 import com.ncnf.bookmark.BookMarkActivity;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
 
 import java.util.Date;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
-import static com.ncnf.Utils.BIRTH_DATE_KEY;
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.FIRST_NAME_KEY;
-import static com.ncnf.Utils.LAST_NAME_KEY;
-import static com.ncnf.Utils.NOTIFICATIONS_KEY;
 
 @AndroidEntryPoint
 public class UserProfileActivity extends AppCompatActivity {

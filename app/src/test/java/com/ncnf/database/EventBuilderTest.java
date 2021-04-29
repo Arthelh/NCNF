@@ -1,17 +1,13 @@
 package com.ncnf.database;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.DatabaseResponse;
-import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.database.builder.EventBuilder;
 import com.ncnf.event.PrivateEvent;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.event.Tag;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -23,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.Utils.ADDRESS_KEY;
 import static com.ncnf.Utils.ATTENDEES_KEY;
@@ -41,8 +36,6 @@ import static com.ncnf.Utils.TYPE_KEY;
 import static com.ncnf.Utils.UUID_KEY;
 import static com.ncnf.Utils.VISIBILITY_KEY;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
 
 public class EventBuilderTest {
 

@@ -1,15 +1,11 @@
 package com.ncnf.storage;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.widget.ImageView;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.mocks.MockTask;
-import com.ncnf.storage.FileStore;
 
 import org.junit.Assert;
 import org.junit.Test;

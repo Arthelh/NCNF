@@ -1,21 +1,17 @@
 package com.ncnf.database.builder;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.DatabaseResponse;
-import com.ncnf.database.DatabaseService;
 import com.ncnf.organization.Organization;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.Utils.ADDRESS_KEY;
 import static com.ncnf.Utils.ADMIN_KEY;
 import static com.ncnf.Utils.LOCATION_KEY;
 import static com.ncnf.Utils.NAME_KEY;
-import static com.ncnf.Utils.ORGANIZATIONS_COLLECTION_KEY;
 import static com.ncnf.Utils.ORGANIZED_EVENTS_KEY;
 import static com.ncnf.Utils.PHONE_NB_KEY;
 import static com.ncnf.Utils.UUID_KEY;

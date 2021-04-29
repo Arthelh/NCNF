@@ -1,7 +1,6 @@
 package com.ncnf.notification;
 
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.mocks.MockTask;
 import com.ncnf.user.User;
 

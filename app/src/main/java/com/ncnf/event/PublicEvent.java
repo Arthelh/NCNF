@@ -3,9 +3,7 @@ package com.ncnf.event;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.utilities.*;
 
 import java.util.ArrayList;
 import java.util.Date;

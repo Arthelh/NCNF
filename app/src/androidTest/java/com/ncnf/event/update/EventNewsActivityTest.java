@@ -7,7 +7,6 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.google.firebase.FirebaseException;
 import com.ncnf.R;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 
 import org.junit.Before;
