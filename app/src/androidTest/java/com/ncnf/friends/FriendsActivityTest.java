@@ -9,7 +9,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.ncnf.R;
+import com.ncnf.database.DatabaseService;
 import com.ncnf.friends.ui.FriendsActivity;
+import com.ncnf.user.CurrentUserModule;
+import com.ncnf.user.User;
 import com.ncnf.utilities.FirestoreModule;
 import com.ncnf.utilities.RecyclerViewItemCountAssertion;
 
@@ -18,6 +21,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import dagger.hilt.android.testing.BindValue;
 import dagger.hilt.android.testing.HiltAndroidRule;
@@ -41,7 +48,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
-@UninstallModules(FirestoreModule.class)
+@UninstallModules({FirestoreModule.class, CurrentUserModule.class})
 public class FriendsActivityTest {
 
     public static FirebaseFirestore mockDatabaseReference = Mockito.mock(FirebaseFirestore.class);
@@ -50,6 +57,10 @@ public class FriendsActivityTest {
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(FriendsActivity.class);
+    private static final User mockUser = Mockito.mock(User.class);
+    private static final DatabaseService db = Mockito.mock(DatabaseService.class);
+
+    private User u1 = new User(db,"1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false);
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);
@@ -57,6 +68,8 @@ public class FriendsActivityTest {
     @BindValue
     public FirebaseFirestore databaseReference = mockDatabaseReference;
 
+    @BindValue
+    public User user = mockUser;
 
     @BeforeClass
     public static void setup() {
@@ -65,7 +78,11 @@ public class FriendsActivityTest {
 
     @Test
     public void friendsPageViewerTest(){
+        when(mockUser.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user));
+        when(mockUser.getFriends()).thenReturn(CompletableFuture.completedFuture(List.of(u1)));
+
         onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
+
         onView(withId(R.id.friends_view_pager)).perform(swipeRight());
     }
 

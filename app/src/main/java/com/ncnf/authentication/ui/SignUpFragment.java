@@ -2,7 +2,6 @@ package com.ncnf.authentication.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,15 +14,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
-import com.ncnf.authentication.AuthenticationResponse;
 import com.ncnf.authentication.AuthenticationService;
+import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
-import com.ncnf.user.UserProfileActivity;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -70,7 +66,6 @@ public class SignUpFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_sign_up, container, false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -90,7 +85,6 @@ public class SignUpFragment extends Fragment {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void signUp() {
         String emailString = this.email.getText().toString();
         String passwordString = this.password.getText().toString();
@@ -100,33 +94,26 @@ public class SignUpFragment extends Fragment {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void register(String email, String password){
         showProgressBar(true);
 
-        CompletableFuture<AuthenticationResponse> futureResponse= auth.register(email, password);
+        CompletableFuture<Boolean> futureResponse= auth.register(email, password);
 
-        futureResponse.thenAccept(response -> {
-            if(response.isSuccessful()){
-                Log.d(DEBUG_TAG, "Successful register for " + email);
-                FirebaseUser fb = response.getResult().getUser();
-                User user = new User(fb.getUid(), fb.getEmail());
-                user.saveUserToDB().thenAccept(dbResponse -> {
-                    if (dbResponse.isSuccessful()) {
-                        Intent intent = new Intent(getActivity(), this.activity);
-                        startActivity(intent);
-                    } else {
-                        Log.d(DEBUG_TAG, "Deleting user.");
-                        fb.delete();
-                        setException("Couldn't create a new user");
-                    }
-                });
-            } else {
-                Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + response.getException().getMessage());
-                setException(response.getException().getMessage());
-            }
-            showProgressBar(false);
-        });
+        futureResponse.thenCompose(res -> {
+            Log.d(DEBUG_TAG, "Successful register for " + email);
+            User user = CurrentUserModule.getCurrentUser();
+            return user.saveUserToDB();
+        }).thenRun(() -> {
+            Intent intent = new Intent(getActivity(), activity);
+            startActivity(intent);
+        }).exceptionally(exception -> {
+            Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + exception.getMessage());
+            setException(exception.getMessage());
+            Log.d(DEBUG_TAG, "Deleting user.");
+            this.auth.delete();
+            setException("Couldn't create a new user : please try again");
+            return null;
+        }).thenRun(() -> showProgressBar(false));
     }
 
     private void getItemsFromView(){
@@ -185,7 +172,7 @@ public class SignUpFragment extends Fragment {
         AlertDialog.Builder popup = new AlertDialog.Builder(getActivity());
         popup.setCancelable(true);
         popup.setTitle(POPUP_TITLE);
-        popup.setMessage(s);
+//        popup.setMessage(s);
         popup.setPositiveButton(POPUP_POSITIVE_BUTTON, (dialog, which) -> {
             dialog.cancel();
         });

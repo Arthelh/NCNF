@@ -8,7 +8,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.ncnf.database.DatabaseResponse;
 
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.CompletableFuture;
@@ -30,7 +29,7 @@ public class FileStore {
         this.fileRef = storage.getReference().child(directory).child(filename);
     }
 
-    public CompletableFuture<DatabaseResponse> uploadImage(Bitmap bitmap) {
+    public CompletableFuture<Boolean> uploadImage(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
@@ -38,37 +37,31 @@ public class FileStore {
         return upload(data);
     }
 
-    public CompletableFuture<DatabaseResponse> upload(byte[] data) {
-        CompletableFuture<DatabaseResponse> future = new CompletableFuture<>();
+    public CompletableFuture<Boolean> upload(byte[] data) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         UploadTask uploadTask = fileRef.putBytes(data);
-        uploadTask.addOnSuccessListener(task -> {
-            future.complete(new DatabaseResponse(true, task.getMetadata(), null));
-        });
-        uploadTask.addOnFailureListener(exception -> {
-            future.complete(new DatabaseResponse(false, null, exception));
-        });
+        uploadTask.addOnSuccessListener(task -> future.complete(true));
+        uploadTask.addOnFailureListener(future::completeExceptionally);
+
         return future;
     }
 
     public void downloadImage(ImageView view) {
-        download().thenAccept(res -> {
-            byte[] data = (byte[]) res.getResult();
+        download().thenAccept(data -> {
             Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
             view.setImageBitmap(bitmap);
         });
 
     }
 
-    public CompletableFuture<DatabaseResponse> download() {
-        CompletableFuture<DatabaseResponse> future = new CompletableFuture<>();
+    public CompletableFuture<byte[]> download() {
+        CompletableFuture<byte[]> future = new CompletableFuture<>();
 
         Task<byte[]> download = fileRef.getBytes(MAX_SIZE);
-        download.addOnSuccessListener(data -> {
-            future.complete(new DatabaseResponse(true, data, null));
-        });
+        download.addOnSuccessListener(future::complete);
         download.addOnFailureListener(exception -> {
-            future.complete(new DatabaseResponse(false, null, exception));
+
         });
 
         return future;

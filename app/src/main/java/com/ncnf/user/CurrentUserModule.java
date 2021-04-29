@@ -3,6 +3,8 @@ package com.ncnf.user;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.jetbrains.annotations.Nullable;
+
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -19,7 +21,7 @@ public class CurrentUserModule {
         if (currentUser == null) {
             FirebaseUser user = currentUser();
             if (user != null) {
-                currentUser = new User(user.getUid(), user.getEmail());
+                currentUser = new User();
             } else {
                 return null;
             }
