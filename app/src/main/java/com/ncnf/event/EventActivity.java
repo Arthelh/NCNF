@@ -7,9 +7,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ncnf.R;
+import com.ncnf.storage.CacheFileStore;
 import com.ncnf.utilities.DateAdapter;
+import com.ncnf.storage.FileStore;
 
-import java.lang.reflect.Field;
+import static com.ncnf.Utils.UUID_KEY;
 
 public class EventActivity extends AppCompatActivity {
 
@@ -20,20 +22,17 @@ public class EventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
-        String event_uid = getIntent().getStringExtra("event_uid");
+        String event_uid = getIntent().getStringExtra(UUID_KEY);
         Event event = db.getEvent(event_uid);
         if (event == null) {
             finish();
             return;
         }
 
+        // Change with event UUID
         ImageView imageView = findViewById(R.id.eventImage);
-        try {
-            Field id = R.drawable.class.getDeclaredField("rolex");
-            imageView.setImageResource(id.getInt(id));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        FileStore file = new CacheFileStore(this, Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
+        file.downloadImage(imageView);
 
         TextView name = findViewById(R.id.eventName);
         name.setText(event.getName());

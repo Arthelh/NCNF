@@ -3,59 +3,50 @@ package com.ncnf.event.create;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.event.Event;
-import com.ncnf.event.EventActivity;
-import com.ncnf.event.PrivateEvent;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.main.MainActivity;
-import com.ncnf.utilities.DateAdapter;
 import com.ncnf.user.User;
+import com.ncnf.utilities.DateAdapter;
+import com.ncnf.storage.FileStore;
 import com.ncnf.utilities.InputValidator;
 
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-
 
 import javax.inject.Inject;
 
@@ -191,7 +182,19 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
             @Override
             public void onClick(View v) {
                 if (checkAllFieldsAreFilledAndCorrect()) {
-                    if(user != null) {
+
+                    if (user != null) {
+
+                        // TODO: might change with the new event class
+                        // File upload must happened after the event is saved, such that the image path
+                        // contains the event's UUID
+                        FileStore file = new FileStore(Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
+                        pictureView.setDrawingCacheEnabled(true);
+                        pictureView.buildDrawingCache();
+                        Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
+                        file.uploadImage(bitmap);
+
+                        //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
                         DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());
                         PublicEvent event = new PublicEvent(user.getID(),
                                 eventName.getText().toString(),
@@ -202,17 +205,15 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
                                 );
                         if(event != null) {
                             user.createEvent(event).thenAccept(task1 -> {
-                                        task1.thenAccept(task2 -> {
-                                            if (task2.isSuccessful()) {
-                                                nextStep();
-                                            } else {
-                                                Log.d(DEBUG_TAG, "Fail to store new event");
-                                            }
-                                        });
+                                task1.thenAccept(task2 -> {
+                                    if (task2.isSuccessful()) {
+                                        nextStep();
+                                    } else {
+                                        Log.d(DEBUG_TAG, "Fail to store new event");
                                     }
-                            );
+                                });
+                            });
                         }
-
                     }
                     else {
                         Log.d(DEBUG_TAG, "Can't create new event if not logged in");

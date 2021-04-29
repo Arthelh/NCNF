@@ -19,7 +19,7 @@ public class ProvidersTest {
         VenueProvider ep = new VenueProvider();
         List<Venue> list = ep.getAll();
 
-        assertEquals(7, list.size());
+        assertEquals(8, list.size());
 
         assertTrue(list.contains(new Venue("EPFL", 46.5191f, 6.5668f)));
         assertTrue(list.contains(new Venue("Lausanne Opera", 46.5180f, 6.6369f)));
@@ -28,6 +28,7 @@ public class ProvidersTest {
         assertTrue(list.contains(new Venue("Théâtre Sévelin 36", 46.5225f, 6.6197f)));
         assertTrue(list.contains(new Venue("MAD", 46.5219f, 6.6272f)));
         assertTrue(list.contains(new Venue("UniL", 46.5211f, 6.5802f)));
+        assertTrue(list.contains(new Venue("Renens - Salle de Concerts", 46.5338f, 6.5914f)));
     }
 
 }

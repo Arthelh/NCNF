@@ -1,5 +1,7 @@
 package com.ncnf.event;
 
+import android.util.Log;
+
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.utilities.DateAdapter;
 
@@ -8,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import static com.ncnf.Utils.DEBUG_TAG;
 
 public class EventDB {
 
@@ -28,7 +32,7 @@ public class EventDB {
     public static final String ownerEmail = "test@email.com";
 
     private static final PublicEvent event1 = new PublicEvent(ownerID.toString(), "EPFL event", (new DateAdapter(2021, 03, 30)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0, ownerEmail);
-    private static final PublicEvent event2 = new PublicEvent(ownerID.toString(), "Carmen", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.5191, 6.5668), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0, ownerEmail);
+    private static final PublicEvent event2 = new PublicEvent(ownerID.toString(), "Carmen", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.5338, 6.5914), "Renens Salle de Concerts, 1020 Renens", "Event description goes here", Event.Type.Conference, 0, 0, ownerEmail);
     private static final PublicEvent event3 = new PublicEvent(ownerID.toString(), "Concert", (new DateAdapter(2021, 04, 10)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0, ownerEmail);
     private static final PublicEvent event4 = new PublicEvent(ownerID.toString(), "UNIL event", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0, ownerEmail);
     private static final PublicEvent event5 = new PublicEvent(ownerID.toString(), "Exposition", (new DateAdapter(2021, 04, 24)).getDate(), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0,ownerEmail);
