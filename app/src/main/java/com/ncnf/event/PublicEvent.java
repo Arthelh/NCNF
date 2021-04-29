@@ -1,9 +1,9 @@
 package com.ncnf.event;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.utilities.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +18,6 @@ public class PublicEvent extends Event {
     private static final int MAX_AGE = 125;
 
     private List<Tag> tags;
-
     private double price;
     private int minAge;
     private String email;
@@ -102,9 +101,7 @@ public class PublicEvent extends Event {
         return p.getUuid().equals(getUuid());
     }
 
-    public CompletableFuture<DatabaseResponse> store(DatabaseService db){
-        String[] fields = {MIN_AGE_KEY, PRICE_KEY, TAGS_LIST_KEY, EMAIL_KEY};
-        Object[] objects = {this.minAge, this.price, this.tags, this.email};
-        return super.store(db, fields, objects);
+    public CompletableFuture<Boolean> store(@NonNull DatabaseService db){
+        return db.setDocument(EVENTS_COLLECTION_KEY + this.getUuid(), this);
     }
 }

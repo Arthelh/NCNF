@@ -44,7 +44,7 @@ public class BookMarkActivityTest {
     private static final User mockUser = Mockito.mock(User.class);
     List<Event> list = new ArrayList<>();
     private final Event event = new PublicEvent("EPFL", "EPFL event", new Date(2021, 03, 11), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0, "test@email.com");
-    private CompletableFuture<CompletableFuture<List<Event>>> events;
+    private CompletableFuture<List<Event>> events;
 
     @BindValue
     public User user = mockUser;
@@ -58,8 +58,10 @@ public class BookMarkActivityTest {
         for(int i = 0; i < 8; ++i){
             list.add(event);
         }
-        events =  CompletableFuture.completedFuture(CompletableFuture.completedFuture(list));
-        when(user.getAllEvents(anyString())).thenReturn(events);
+        events =  CompletableFuture.completedFuture(list);
+        when(user.getSavedEvents()).thenReturn(events);
+        when(user.getOwnedEvents()).thenReturn(events);
+
         Intents.init();
     }
 

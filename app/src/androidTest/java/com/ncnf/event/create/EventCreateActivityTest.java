@@ -8,8 +8,6 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
-import com.ncnf.database.DatabaseResponse;
-import com.ncnf.event.Event;
 import com.ncnf.main.MainActivity;
 import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
@@ -38,7 +36,6 @@ import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
@@ -47,7 +44,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.JMock1Matchers.equalTo;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -66,7 +62,7 @@ public class EventCreateActivityTest {
     @BindValue
     public User user = mockUser;
 
-    CompletableFuture response = CompletableFuture.completedFuture(CompletableFuture.completedFuture(new DatabaseResponse(true, false, null)));
+    CompletableFuture<Boolean> response = CompletableFuture.completedFuture(true);
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(EventCreateActivity.class));
@@ -111,7 +107,7 @@ public class EventCreateActivityTest {
 
     @Test
     public void eventFormValidatesCorrectInput() {
-        when(user.getID()).thenReturn("ownerId");
+        when(user.getUuid()).thenReturn("ownerId");
         when(user.createEvent(anyObject())).thenReturn(response);
 
         onView(withId(R.id.set_event_name)).perform(scrollTo(), replaceText("Conference"));
@@ -136,10 +132,9 @@ public class EventCreateActivityTest {
         onView(withId(R.id.validate_event)).perform(scrollTo());
         onView(withId(R.id.validate_event)).perform(click());
 
-        verify(user).getID();
+        verify(user).getUuid();
         verify(user).createEvent(anyObject());
         intended(hasComponent(MainActivity.class.getName()));
-
     }
 
     @Test

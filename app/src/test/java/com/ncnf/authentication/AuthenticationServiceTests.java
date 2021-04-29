@@ -12,12 +12,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
@@ -75,7 +78,7 @@ public class AuthenticationServiceTests {
             @Nullable
             @Override
             public Exception getException() {
-                return null;
+                return new IllegalArgumentException();
             }
 
             @NonNull
@@ -197,7 +200,8 @@ public class AuthenticationServiceTests {
             @Override
             public Task<AuthResult> addOnCompleteListener(@NonNull OnCompleteListener<AuthResult> onCompleteListener) {
                 onCompleteListener.onComplete(successTask);
-                return successTask;                       }
+                return successTask;
+            }
         };
     }
 
@@ -205,51 +209,50 @@ public class AuthenticationServiceTests {
     public void registerSuccessTest() throws ExecutionException, InterruptedException {
         when(mockedAuth.createUserWithEmailAndPassword(anyString(), anyString())).thenReturn(successTask);
 
-        AuthenticationResponse res = service.register(email, password).get();
+        boolean registered = service.register(email, password).get();
 
         verify(mockedAuth).createUserWithEmailAndPassword(anyString(), anyString());
 
-        assertTrue(res.isSuccessful());
-        assertTrue(res.getResult()==null);
-        assertTrue(res.getException()==null);
+        assertTrue(registered);
     }
 
     @Test
     public void registerFailureTest() throws ExecutionException, InterruptedException {
         when(mockedAuth.createUserWithEmailAndPassword(anyString(), anyString())).thenReturn(failureTask);
 
-        AuthenticationResponse res = service.register(email, password).get();
+        CompletableFuture<Boolean> registered = service.register(email, password);
+        try{
+            assertTrue(registered.isCompletedExceptionally());
+        } catch (Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
 
         verify(mockedAuth).createUserWithEmailAndPassword(anyString(), anyString());
-
-        assertFalse(res.isSuccessful());
-        assertTrue(res.getResult()==null);
-        assertTrue(res.getException()==null);
     }
 
     @Test
     public void loginSuccessTest() throws ExecutionException, InterruptedException {
         when(mockedAuth.signInWithEmailAndPassword(anyString(), anyString())).thenReturn(successTask);
 
-        AuthenticationResponse res = service.logIn(email, password).get();
+        boolean logged = service.logIn(email, password).get();
 
         verify(mockedAuth).signInWithEmailAndPassword(anyString(), anyString());
 
-        assertTrue(res.isSuccessful());
-        assertTrue(res.getResult()==null);
-        assertTrue(res.getException()==null);
+        assertTrue(logged);
     }
 
     @Test
     public void loginFailureTest() throws ExecutionException, InterruptedException {
         when(mockedAuth.signInWithEmailAndPassword(anyString(), anyString())).thenReturn(failureTask);
 
-        AuthenticationResponse res = service.logIn(email, password).get();
+        CompletableFuture<Boolean> logged = service.logIn(email, password);
+        try{
+            assertTrue(logged.isCompletedExceptionally());
+        } catch (Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
 
         verify(mockedAuth).signInWithEmailAndPassword(anyString(), anyString());
 
-        assertFalse(res.isSuccessful());
-        assertTrue(res.getResult()==null);
-        assertTrue(res.getException()==null);
     }
 }

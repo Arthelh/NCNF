@@ -1,7 +1,6 @@
 package com.ncnf.notification;
 
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.mocks.MockTask;
 import com.ncnf.user.User;
 
@@ -28,10 +27,8 @@ public class RegistrationTests {
     public void registerIsSuccessful() {
 
         MockTask<String> task = new MockTask("My token", null);
-        CompletableFuture<DatabaseResponse> notificationFuture = CompletableFuture.completedFuture(
-                new DatabaseResponse(true, null, null));
-        CompletableFuture<DatabaseResponse> tokenFuture = CompletableFuture.completedFuture(
-                new DatabaseResponse(true, null, null));
+        CompletableFuture<Boolean> notificationFuture = CompletableFuture.completedFuture(true);
+        CompletableFuture<Boolean> tokenFuture = CompletableFuture.completedFuture(true);
 
         when(messaging.getToken()).thenReturn(task);
         when(user.updateNotifications(anyBoolean())).thenReturn(notificationFuture);
@@ -52,10 +49,6 @@ public class RegistrationTests {
     @Test
     public void registerFails() {
         MockTask<String> task = new MockTask("My token", null, false);
-        CompletableFuture<DatabaseResponse> notificationFuture = CompletableFuture.completedFuture(
-                new DatabaseResponse(true, null, null));
-        CompletableFuture<DatabaseResponse> tokenFuture = CompletableFuture.completedFuture(
-                new DatabaseResponse(true, null, null));
 
         when(messaging.getToken()).thenReturn(task);
 
@@ -69,8 +62,7 @@ public class RegistrationTests {
 
     @Test
     public void unregisterIsSuccessful() {
-        CompletableFuture<DatabaseResponse> notificationFuture = CompletableFuture.completedFuture(
-                new DatabaseResponse(true, null, null));
+        CompletableFuture<Boolean> notificationFuture = CompletableFuture.completedFuture(true);
 
         when(user.updateNotifications(anyBoolean())).thenReturn(notificationFuture);
 
@@ -84,7 +76,7 @@ public class RegistrationTests {
 
     @Test
     public void unregisterFails() {
-        CompletableFuture<DatabaseResponse> notificationFuture = new CompletableFuture<>();
+        CompletableFuture<Boolean> notificationFuture = new CompletableFuture<>();
 
         when(user.updateNotifications(anyBoolean())).thenReturn(notificationFuture);
 
