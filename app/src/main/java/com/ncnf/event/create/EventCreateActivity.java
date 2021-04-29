@@ -1,5 +1,6 @@
 package com.ncnf.event.create;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -53,6 +54,8 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.Utils.POPUP_POSITIVE_BUTTON;
+import static com.ncnf.Utils.POPUP_TITLE;
 
 @AndroidEntryPoint
 public class EventCreateActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -196,22 +199,18 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
 
                         //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
                         DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());
-                        PublicEvent event = new PublicEvent(user.getID(),
+                        PublicEvent event = new PublicEvent(user.getUuid(),
                                 eventName.getText().toString(),
                                 date.getDate(), getLocationFromAddress(eventAddress.getText().toString()),
                                 eventAddress.getText().toString(),
                                 eventDescription.getText().toString(),
                                 eventType, minAgeVal, priceVal, eventEmail.getText().toString()
-                                );
+                        );
                         if(event != null) {
-                            user.createEvent(event).thenAccept(task1 -> {
-                                task1.thenAccept(task2 -> {
-                                    if (task2.isSuccessful()) {
-                                        nextStep();
-                                    } else {
-                                        Log.d(DEBUG_TAG, "Fail to store new event");
-                                    }
-                                });
+
+                            user.createEvent(event).thenAccept(task -> nextStep()).exceptionally(exception -> {
+                                failToCreateEvent(exception.getMessage());
+                                return null;
                             });
                         }
                     }
@@ -271,6 +270,21 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
         startActivity(intent);
     }
 
+    /**
+     * Pop-up telling the user that the the application failed to save its event
+     */
+    private void failToCreateEvent(String s){
+        AlertDialog.Builder popup = new AlertDialog.Builder(this);
+        popup.setCancelable(true);
+        popup.setTitle(POPUP_TITLE);
+        popup.setMessage(s);
+        popup.setPositiveButton(POPUP_POSITIVE_BUTTON, (dialog, which) -> {
+            dialog.cancel();
+        });
+        popup.show();
+
+    }
+
 
     private boolean checkAllFieldsAreFilledAndCorrect() {
 
@@ -282,10 +296,10 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
 
         // TODO : find a way to reject invalid addresses
         /**
-        if(getLocationFromAddress(eventAddress.getText().toString()) == null) {
-            eventAddress.setError("Invalid address");
-            return false;
-        }
+         if(getLocationFromAddress(eventAddress.getText().toString()) == null) {
+         eventAddress.setError("Invalid address");
+         return false;
+         }
          **/
 
         if(!(InputValidator.verifyEmailInput(eventEmail.getText().toString()))) {

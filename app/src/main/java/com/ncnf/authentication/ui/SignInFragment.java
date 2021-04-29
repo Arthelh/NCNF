@@ -19,7 +19,6 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
-import com.ncnf.authentication.AuthenticationResponse;
 import com.ncnf.authentication.AuthenticationService;
 import com.ncnf.user.UserProfileActivity;
 
@@ -83,19 +82,18 @@ public class SignInFragment extends Fragment {
 
         showProgressBar(true);
 
-        CompletableFuture<AuthenticationResponse> futureResponse = auth.logIn(email, password);
+        CompletableFuture<Boolean> futureResponse = auth.logIn(email, password);
 
-        futureResponse.thenAccept(response -> {
-            if(response.isSuccessful()){
-                Log.d(DEBUG_TAG,"Successful login for " + email);
-                Intent intent = new Intent(getActivity(), this.activity);
-                startActivity(intent);
-            } else {
-                Log.d(DEBUG_TAG,"Unsuccessful login for " + email + " : " + response.getException().getMessage());
+        futureResponse.thenAccept(result -> {
+            Log.d(DEBUG_TAG,"Successful login for " + email);
+            Intent intent = new Intent(getActivity(), activity);
+            startActivity(intent);
+        }).exceptionally(exception -> {
+            Log.d(DEBUG_TAG,"Unsuccessful login for " + email + " : " + exception.getMessage());
 
-                setException(response.getException().getMessage());
-            }
+            setException(exception.getMessage());
             showProgressBar(false);
+            return null;
         });
     }
 

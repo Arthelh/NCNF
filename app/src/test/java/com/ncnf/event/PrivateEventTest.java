@@ -1,7 +1,6 @@
 package com.ncnf.event;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 
 import org.junit.Assert;
@@ -17,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -36,24 +36,23 @@ public class PrivateEventTest {
 
     DatabaseService db;
     PrivateEvent mainEvent;
-    CompletableFuture<DatabaseResponse> response;
+    CompletableFuture<Boolean> response;
 
     @Before
     public void setup(){
         db = Mockito.mock(DatabaseService.class);
         mainEvent = new PrivateEvent(ownerId,name, date, geoPoint,address,description, type);
-        response = CompletableFuture.completedFuture(new DatabaseResponse(true, false, null));
+        response = CompletableFuture.completedFuture(true);
     }
 
     @Test
     public void storeEventWorks(){
         when(db.setDocument(anyString(), anyMap())).thenReturn(response);
 
-        CompletableFuture<DatabaseResponse> storeTest = mainEvent.store(db);
+        CompletableFuture<Boolean> storeTest = mainEvent.store(db);
 
         try {
-            assertEquals(true, storeTest.get().isSuccessful());
-            assertEquals(false, storeTest.get().getResult());
+            assertTrue(storeTest.get());
         } catch (ExecutionException | InterruptedException e){
             Assert.fail("The future did not complete correctly ! " + e.getMessage());
         }
