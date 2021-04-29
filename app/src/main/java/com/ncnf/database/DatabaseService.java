@@ -24,6 +24,7 @@ package com.ncnf.database;
 
         import javax.inject.Inject;
 
+        import static android.content.ContentValues.TAG;
         import static com.ncnf.Utils.*;
 
 public class DatabaseService implements DatabaseServiceInterface {
@@ -52,7 +53,9 @@ public class DatabaseService implements DatabaseServiceInterface {
     public CompletableFuture<DatabaseResponse> updateField(String path, String field, Object value) {
         CompletableFuture<DatabaseResponse> futureResponse = new CompletableFuture<>();
 
-        this.db.document(path).update(FieldPath.of(field), value).addOnCompleteListener(task -> onTaskComplete(task, futureResponse));
+        this.db.document(path).update(FieldPath.of(field), value).addOnCompleteListener(task -> {
+                onTaskComplete(task, futureResponse);});
+
         return futureResponse;
     }
 
@@ -72,7 +75,10 @@ public class DatabaseService implements DatabaseServiceInterface {
     public CompletableFuture<DatabaseResponse> getData(String path) {
         CompletableFuture<DatabaseResponse> futureResponse = new CompletableFuture<>();
 
-        this.db.document(path).get().addOnCompleteListener(task -> onTaskComplete(task, futureResponse));
+        this.db.document(path).get().addOnCompleteListener(task -> {
+            Log.d(TAG, "get was launched");
+            onTaskComplete(task, futureResponse);
+        });
 
         return futureResponse;
     }

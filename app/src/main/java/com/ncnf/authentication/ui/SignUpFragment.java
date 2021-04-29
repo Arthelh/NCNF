@@ -30,6 +30,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+import static android.content.ContentValues.TAG;
 import static com.ncnf.Utils.BADLY_FORMATTED_EMAIL_STRING;
 import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EMPTY_FIELD_STRING;

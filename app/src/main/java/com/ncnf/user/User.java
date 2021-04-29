@@ -1,5 +1,7 @@
 package com.ncnf.user;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.GeoPoint;
@@ -19,6 +21,7 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import static android.content.ContentValues.TAG;
 import static com.ncnf.Utils.BIRTH_YEAR_KEY;
 import static com.ncnf.Utils.EMAIL_KEY;
 import static com.ncnf.Utils.EMPTY_STRING;
@@ -78,6 +81,7 @@ public class User {
     }
 
     public User(DocumentSnapshot snapshot){
+
         this.db = new DatabaseService();
         this.UUID = snapshot.get(Utils.UUID_KEY, String.class);
         this.path = USERS_COLLECTION_KEY + UUID;
