@@ -18,6 +18,8 @@ determined and then implemented. Next week I might be able to request a PR with 
 
 # Jérémie
 
+This week I continued the refactor of the DatabaseService and was able to merge those changes with the help of Eloi. It was a big PR and I spent a lot of time figuring out how to moduralize this service as clean as possible. Now we have clean functions and abstractions to communicate with Firebase. 
+As expected, the time it took to refactor this part was underestimated but thanks to Eloi this was possible to finish this part in order to continue working on extra features next week.
 
 # Keran
 
