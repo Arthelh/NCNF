@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
+import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventDB;
 
@@ -20,11 +21,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
+
 public class MapHandler {
 
     private final Activity context;
     private final GoogleMap mMap;
-    private final EventDB eventDB;
+    private final DatabaseService databaseService;
     private final VenueProvider venueProvider;
 
     private LatLng userPosition;
@@ -54,7 +57,7 @@ public class MapHandler {
             this.mMap.setOnMarkerClickListener(this.clusterManager);
             this.mMap.setOnInfoWindowClickListener(this.clusterManager);
         }
-        this.eventDB = eventDB;
+        this.databaseService = new DatabaseService();
         this.venueProvider = venueProvider;
 
         this.userPosition = new LatLng(46.526120f, 6.576330f);
@@ -137,6 +140,16 @@ public class MapHandler {
     }
 
     private List<Event> queryEvents(){
-        return Collections.unmodifiableList(eventDB.toList());
+        final List<Event> result = new ArrayList<>();
+        databaseService.getCollection(EVENTS_COLLECTION_KEY, Event.class).whenComplete((output, exception) -> {
+            if (exception != null){
+                System.err.println("Error retrieving events: " + exception.toString());
+            } else {
+                result.addAll(output);
+            }
+        });
+        if (result.isEmpty())
+            return Collections.unmodifiableList(new EventDB().toList());
+        return Collections.unmodifiableList(result);
     }
 }
