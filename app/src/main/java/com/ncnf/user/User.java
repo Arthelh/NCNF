@@ -3,6 +3,7 @@ package com.ncnf.user;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.event.PrivateEvent;
@@ -45,7 +46,7 @@ public class User {
     
     private final IllegalStateException wrongCredentials = new IllegalStateException("User doesn't have the right credentials to perform current operation");
 
-    public User(DatabaseService db, String uuid, String username, String email, String firstName, String lastName, List<String> friendsIds, List<String> ownedEventsIds, List<String> savedEventsIds, Date birthDate, boolean notifications) {
+    public User(DatabaseService db, String uuid, String username, String email, String firstName, String lastName, List<String> friendsIds, List<String> ownedEventsIds, List<String> savedEventsIds, Date birthDate, boolean notifications, GeoPoint loc) {
         if(isStringEmpty(uuid) || isStringEmpty(email)){
             throw new IllegalArgumentException();
         }
@@ -60,14 +61,15 @@ public class User {
         this.savedEventsIds = savedEventsIds;
         this.birthDate = birthDate;
         this.notifications = notifications;
+        this.loc = loc;
     }
 
     public User(){
-        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), "",FirebaseAuth.getInstance().getCurrentUser().getEmail(),"",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false);
+        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), "",FirebaseAuth.getInstance().getCurrentUser().getEmail(),"",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false, null);
     }
 
-    public User(String username, String email, String firstName, String lastName, List<String> friendsIds, List<String> ownedEventsIds, List<String> savedEventsIds, Date birthDate, boolean notifications) {
-        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), username, email, firstName, lastName, friendsIds, ownedEventsIds, savedEventsIds, birthDate, notifications);
+    public User(String username, String email, String firstName, String lastName, List<String> friendsIds, List<String> ownedEventsIds, List<String> savedEventsIds, Date birthDate, boolean notifications, GeoPoint point) {
+        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), username, email, firstName, lastName, friendsIds, ownedEventsIds, savedEventsIds, birthDate, notifications, point);
     }
 
     public String getUuid(){
@@ -106,6 +108,8 @@ public class User {
         return birthDate;
     }
 
+    public GeoPoint getLoc() { return loc; }
+
     public boolean getNotifications() {
         return notifications;
     }
@@ -125,6 +129,8 @@ public class User {
     public void setFriendsIds(List<String> friendsIds) {
         this.friendsIds = friendsIds;
     }
+
+    public void setLoc(GeoPoint loc) { this.loc = loc; }
 
     public void setOwnedEventsIds(List<String> ownedEventsIds) {
         this.ownedEventsIds = ownedEventsIds;
@@ -170,6 +176,7 @@ public class User {
             this.savedEventsIds = user.getSavedEventsIds();
             this.birthDate = user.getBirthDate();
             this.notifications = user.getNotifications();
+            this.loc = user.getLoc();
 
             return this;
         }).exceptionally(exception -> {

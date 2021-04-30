@@ -1,6 +1,8 @@
 package com.ncnf.user;
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -25,12 +27,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static android.content.ContentValues.TAG;
 import static com.ncnf.Utils.DEBUG_TAG;
@@ -40,77 +43,41 @@ import static com.ncnf.Utils.USER_LOCATION_KEY;
 
 public class FriendsTrackerActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-
-    public User user;
-
-    private List<User> friends;
+    private User user;
 
     private GoogleMap mMap;
     private MapView mapView;
 
+    private List<User> friends;
+    private List<Marker> markers;
+
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private FusedLocationProviderClient myFusedLocationClient;
+
+    private static final String uuid = "MSpKLkyyrrN3PC5KmxkoD05Vy1m2";
 
     private Marker marker;
     private Marker marker2;
 
-    // for test purposes
-    private boolean wasInitialized;
-
-    private static final String uuid = "MSpKLkyyrrN3PC5KmxkoD05Vy1m2";
-
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DatabaseService dbs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        friends = new ArrayList<>();
-
-        user = CurrentUserModule.getCurrentUser();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_tracker);
-        wasInitialized = false;
 
-        DatabaseService dbs = new DatabaseService();
-
-        dbs.getField(USERS_COLLECTION_KEY + uuid, EMAIL_KEY).thenAccept(dbr -> {
-            if(dbr.isSuccessful()) {
-                User user = new User(uuid, dbr.getResult().toString());
-                friends.add(user);
-            }
-            else {
-                Log.d(TAG, "could not get email");
-            }
-        });
-
-        dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, new GeoPoint(0, 0)).thenAccept(dbr -> {
-            if(dbr.isSuccessful()) {
-                wasInitialized = true;
-            }
-        });
-
+        user = CurrentUserModule.getCurrentUser();
+        user.loadUserFromDB();
+        dbs = new DatabaseService();
 
         myFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // *** IMPORTANT ***
-        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
-        // objects or sub-Bundles.
         mapView = findViewById(R.id.friends_map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(googleMap -> {
             mMap = googleMap;
             onMapReady(mMap);
             getLastKnownLocation();
-
-            marker2 = mMap.addMarker(new MarkerOptions().position(new LatLng(43, 6)));
-
-            if(wasInitialized) {
-                getUserLocation(friends.get(0));
-            }
-            else {
-                Log.d(TAG, "wasn't initialized");
-            }
-
         });
 
     }
@@ -133,18 +100,21 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
                 if (location != null) {
                     GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
 
-                    Log.d(TAG, "Latitude " + geoPoint.getLatitude());
-                    Log.d(TAG, "Longitude " + geoPoint.getLongitude());
+                    user.setLoc(geoPoint);
 
-                    user.setLocation(geoPoint);
-
-                    if(marker == null) {
+                    if (marker == null) {
                         marker = mMap.addMarker(new MarkerOptions().position(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude())));
-                    }
-                    else {
+                    } else {
                         marker.setPosition(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude()));
                     }
                     saveUserLocation();
+
+                    CompletableFuture<GeoPoint> field = dbs.getField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY);
+                    field.thenAccept(point -> {
+                        mMap.addMarker(new MarkerOptions().position(new LatLng(point.getLatitude(), point.getLongitude())));
+                        startLocationService();
+                    });
+
                 }
             }
         });
@@ -152,34 +122,8 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     private void saveUserLocation() {
         if(user != null) {
-            user.updateUserLocation(user.getLocation());
+            dbs.updateField(USERS_COLLECTION_KEY + user.getUuid(), USER_LOCATION_KEY, user.getLoc());
         }
-    }
-
-    private void getUserLocation(User u) {
-        if(u != null) {
-            try {
-                u.getField(USER_LOCATION_KEY).thenAccept(dbr -> {
-                    if(dbr.isSuccessful()) {
-                        GeoPoint p = (GeoPoint) dbr.getResult();
-                        u.setLocation(p);
-                        marker2.setPosition(new LatLng(p.getLatitude(), p.getLongitude()));
-                    }
-                });
-            }
-            catch (Exception e) {
-                return;
-            }
-        }
-    }
-
-
-    private void setMarker(GeoPoint point, String title) {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(point.getLatitude(), point.getLongitude())).title(title));
-    }
-
-    private void setMarkers() {
-        //marker.setPosition(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()));
     }
 
     @Override
@@ -195,13 +139,47 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         mapView.onSaveInstanceState(mapViewBundle);
     }
 
+    private void startLocationService(){
+        if(!isLocationServiceRunning()){
+            Intent serviceIntent = new Intent(this, LocationService.class);
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+                FriendsTrackerActivity.this.startForegroundService(serviceIntent);
+            }
+            else{
+                startService(serviceIntent);
+            }
+        }
+    }
+
+    private boolean isLocationServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+            if("com.ncnf.user.LocationService".equals(service.service.getClassName())) {
+                Log.d(TAG, "isLocationServiceRunning: location service is already running.");
+                return true;
+            }
+        }
+        Log.d(TAG, "isLocationServiceRunning: location service is not running.");
+        return false;
+    }
+
+    private void getUserLocation(User u) {
+        if(u != null) {
+            u.loadUserFromDB();
+        }
+    }
+
+    private void setMarkers() {
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         mapView.onResume();
-        if(mMap != null) {
+        if (mMap != null) {
             getLastKnownLocation();
-            setMarker(user.getLocation(), "ME !");
         }
     }
 
@@ -220,7 +198,6 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     @Override
     public void onMapReady(GoogleMap map) {
 
-        setMarkers();
     }
 
     @Override
@@ -240,5 +217,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
 }
+
+
+

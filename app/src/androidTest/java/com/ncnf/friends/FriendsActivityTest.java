@@ -60,7 +60,7 @@ public class FriendsActivityTest {
     private static final User mockUser = Mockito.mock(User.class);
     private static final DatabaseService db = Mockito.mock(DatabaseService.class);
 
-    private User u1 = new User(db,"1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false);
+    private User u1 = new User(db,"1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false, null);
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);

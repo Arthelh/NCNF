@@ -1,36 +1,22 @@
 package com.ncnf.database;
 
-        import android.os.Build;
-        import android.util.Log;
 
-        import androidx.annotation.RequiresApi;
-
-        import com.google.android.gms.tasks.SuccessContinuation;
         import com.google.android.gms.tasks.Task;
-        import com.google.firebase.auth.AuthResult;
-        import com.google.firebase.firestore.CollectionReference;
+
         import com.google.firebase.firestore.DocumentSnapshot;
         import com.google.firebase.firestore.FieldPath;
         import com.google.firebase.firestore.FieldValue;
         import com.google.firebase.firestore.FirebaseFirestore;
         import com.google.firebase.firestore.Query;
-        import com.ncnf.authentication.AuthenticationResponse;
 
         import java.util.ArrayList;
         import java.util.List;
         import java.util.Map;
         import java.util.concurrent.CompletableFuture;
-        import java.util.concurrent.FutureTask;
+
 
         import javax.inject.Inject;
 
-        import static android.content.ContentValues.TAG;
-        import static com.ncnf.Utils.*;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ncnf.database.builder.DatabaseObjectBuilder;
 import com.ncnf.database.builder.EventBuilder;

@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.user.User;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,10 +38,12 @@ public class UserBuilder extends DatabaseObjectBuilder<User> {
         List<String> ownedEvents = (List<String>) data.get(OWNED_EVENTS_KEY);
         List<String> savedEvents = (List<String>) data.get(SAVED_EVENTS_KEY);
         Log.d(DEBUG_TAG, data.get(BIRTH_DATE_KEY).toString());
-        Date birthDate = ((Timestamp) data.get(BIRTH_DATE_KEY)).toDate();
+
+        //Date birthDate = ((Timestamp) data.get(BIRTH_DATE_KEY)).toDate();
+        Date birthDate = Date.from(Instant.now());
         boolean notifications = (boolean) data.get(NOTIFICATIONS_KEY);
 
-        return new User(new DatabaseService(), uuid, username, email, firstName, lastName, friends, ownedEvents, savedEvents, birthDate, notifications);
+        return new User(new DatabaseService(), uuid, username, email, firstName, lastName, friends, ownedEvents, savedEvents, birthDate, notifications, null);
     }
 
     @Override

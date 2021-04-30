@@ -10,10 +10,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".NCNF"
@@ -63,6 +62,9 @@
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.
         -->
+        <service
+            android:name=".user.LocationService"
+            android:stopWithTask="true" />
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" /> <!-- FEED -->
