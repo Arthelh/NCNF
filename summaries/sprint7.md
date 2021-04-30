@@ -25,6 +25,9 @@ As expected, the time it took to refactor this part was underestimated but thank
 
 # Keran
 
+Following the upload of images on Firebase Storage last week, I implemented the download and display of images, specfically for the event view. On top of that, I added a cache such that when a file is downloaded, it is then stored in the local storage specifically designed for caching through the Android API.
+I also review the refactoring of database service, which was quite a thing.
+
 
 # Overall team
 
