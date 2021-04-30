@@ -15,6 +15,8 @@ determined and then implemented. Next week I might be able to request a PR with 
 
 # Emmanuelle 
 
+This week I continued working on the feature that shows friend group participants where everyone is located. This took a little longer than expected especially since I wasn't exactly sure how to link it to the database. My goal is to finish this by the weekend. 
+
 
 # Jérémie
 
