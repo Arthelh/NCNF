@@ -11,7 +11,7 @@ determined and then implemented. Next week I might be able to request a PR with 
 
 
 # Eloi 
-
+With Jérémie, we work on refactoring/re-designing the database service. I spent a lot of time coding new tests for this in order to get a good coverage. Now it's much cleaner than before and easier to use. I'm glad we managed to finish it this week so we can move forward for the next following weeks and the others can fully implement features that require DB usage. Beside that, I also started refactoring the private/public event classes to apply changes we discussed about last week. There is still a lot to do for this task but it will be done next week for sure.
 
 # Emmanuelle 
 
