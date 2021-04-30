@@ -25,8 +25,8 @@ import com.ncnf.event.PublicEvent;
 import com.ncnf.main.MainActivity;
 import com.ncnf.settings.SettingsActivity;
 
-import org.junit.After;
 import org.hamcrest.Matcher;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -61,9 +61,10 @@ public final class MapFragmentTest {
             new Venue("UniL", 46.5211f, 6.5802f));
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private final ActivityScenarioRule activityRule = new ActivityScenarioRule<>(MainActivity.class);
 
     @Rule
-    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(MainActivity.class));
+    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(activityRule);
 
     @BindValue
     public EventDB eventDB = Mockito.mock(EventDB.class);
@@ -191,5 +192,4 @@ public final class MapFragmentTest {
             assertTrue(((MaterialSearchBar) view).isSearchOpened());
         });
     }
-
 }

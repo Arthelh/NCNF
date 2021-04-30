@@ -10,6 +10,7 @@ import com.ncnf.event.update.EventNewsActivity;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.main.MainActivity;
 import com.ncnf.user.UserProfileActivity;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -61,7 +62,11 @@ public final class HomeFragmentTest {
     @Test
     public void friendsActivityOpensTest() {
         onView(withId(R.id.homeFriendsButton)).perform(click());
-        Intents.intended(hasComponent(FriendsActivity.class.getName()));
+        onView(withId(android.R.id.button2)).perform(click());
+        onView(withId(R.id.homeFriendsButton)).perform(click());
+        onView(withId(android.R.id.button1)).check(matches(isClickable())).perform(click());
+        Intents.intended(hasComponent(LoginActivity.class.getName()));
+        Intents.intended(hasExtra(NEXT_ACTIVITY_EXTRA_KEY, FriendsActivity.class));
     }
 
     @Test

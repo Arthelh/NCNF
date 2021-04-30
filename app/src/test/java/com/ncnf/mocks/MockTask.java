@@ -27,7 +27,7 @@ public class MockTask<D> extends Task<D> {
     public MockTask(D result, Exception exception, boolean isSuccessful) {
         this.result = result;
         this.exception = exception;
-        this.isSuccessful = false;
+        this.isSuccessful = isSuccessful;
     }
 
     @Override

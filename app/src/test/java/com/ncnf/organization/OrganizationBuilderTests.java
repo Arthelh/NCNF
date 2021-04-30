@@ -1,13 +1,9 @@
 package com.ncnf.organization;
 
-import android.provider.ContactsContract;
-import android.util.Log;
-
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
+import com.ncnf.database.builder.OrganizationBuilder;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -17,13 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import static com.ncnf.Utils.ADDRESS_KEY;
 import static com.ncnf.Utils.ADMIN_KEY;
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
 import static com.ncnf.Utils.LOCATION_KEY;
 import static com.ncnf.Utils.NAME_KEY;
 import static com.ncnf.Utils.ORGANIZED_EVENTS_KEY;
@@ -32,14 +24,12 @@ import static com.ncnf.Utils.UUID_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
 
 public class OrganizationBuilderTests {
 
     private final DatabaseService db = Mockito.mock(DatabaseService.class);
 
-    private final OrganizationBuilder builder = new OrganizationBuilder(db);
+    private final OrganizationBuilder builder = new OrganizationBuilder();
 
     private final Map<String, Object> data = new HashMap<>();
     private UUID uuid = UUID.randomUUID();
@@ -68,12 +58,12 @@ public class OrganizationBuilderTests {
         data.put(PHONE_NB_KEY, phoneNb);
         data.put(ORGANIZED_EVENTS_KEY, events);
 
-        assertEquals(builder.build(data), null);
+        assertEquals(builder.toObject(uuid.toString(), data), null);
         data.put(ADMIN_KEY, admins);
-        Organization org = builder.build(data);
+        Organization org = builder.toObject(uuid.toString(), data);
         Organization org2 = new Organization(uuid, name, location, address, phoneNb, admins, events);
         assertTrue(org != null);
-        assertTrue(org.getEvents().contains(event1));
+        assertTrue(org.getEventIds().contains(event1));
         assertTrue(org.getName().equals(name));
 
         assertEquals(org, org2);
@@ -81,62 +71,10 @@ public class OrganizationBuilderTests {
 
     @Test
     public void buildOnErrorTest() {
-        String errorMessage = "Error Test";
-        DatabaseResponse response = new DatabaseResponse(false, null, new Exception(errorMessage));
-        when(db.getData(anyString())).thenReturn(CompletableFuture.completedFuture(response));
+        Organization org = new Organization(uuid, name, location, address, phoneNb, admins, events);
+        Map<String, Object> map = builder.toMap(org);
+        Organization org2 = builder.toObject(uuid.toString(), map);
 
-        CompletableFuture<DatabaseResponse> query = builder.loadFromDB(uuid.toString());
-        try {
-            assertFalse(query.get().isSuccessful());
-            assertEquals(errorMessage, query.get().getException().getMessage());
-        } catch (Exception e) {
-            Assert.fail("Something went wrong with the future");
-        }
-    }
-
-    @Test
-    public void buildOnMissingDataTest(){
-        //Admins missing
-        data.put(UUID_KEY, uuid.toString());
-        data.put(NAME_KEY, name);
-        data.put(LOCATION_KEY, location);
-        data.put(ADDRESS_KEY, address);
-        data.put(PHONE_NB_KEY, phoneNb);
-        data.put(ORGANIZED_EVENTS_KEY, events);
-        DatabaseResponse response = new DatabaseResponse(true, data,null);
-        when(db.getData(anyString())).thenReturn(CompletableFuture.completedFuture(response));
-        CompletableFuture<DatabaseResponse> query = builder.loadFromDB(uuid.toString());
-        try {
-            DatabaseResponse databaseResponse = query.get();
-            assertEquals(databaseResponse.getResult(), null);
-        } catch(Exception e){
-           Assert.fail("Something went wrong with the future");
-        }
-    }
-
-    @Test
-    public void buildWorksTest(){
-        data.put(UUID_KEY, uuid.toString());
-        data.put(NAME_KEY, name);
-        data.put(LOCATION_KEY, location);
-        data.put(ADDRESS_KEY, address);
-        data.put(PHONE_NB_KEY, phoneNb);
-        data.put(ADMIN_KEY, admins);
-        data.put(ORGANIZED_EVENTS_KEY, events);
-        DatabaseResponse response = new DatabaseResponse(true, data,null);
-        when(db.getData(anyString())).thenReturn(CompletableFuture.completedFuture(response));
-        CompletableFuture<DatabaseResponse> query = builder.loadFromDB(uuid.toString());
-        try {
-            Organization org = (Organization) query.get().getResult();
-            assertEquals(org.getName(), name);
-            assertEquals(org.getUuid(), uuid);
-            assertEquals(location, org.getLocation());
-            assertEquals(org.getEvents().get(0), event1);
-            assertEquals(org.getAdminIds().get(0), admin1);
-            assertEquals(phoneNb, org.getPhoneNumber());
-            assertEquals(address, org.getAddress());
-        } catch(Exception e){
-            Assert.fail("Something went wrong with the future");
-        }
+        assertEquals(org, org2);
     }
 }

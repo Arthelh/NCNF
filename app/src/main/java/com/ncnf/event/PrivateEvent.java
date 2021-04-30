@@ -1,7 +1,8 @@
 package com.ncnf.event;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.DatabaseResponse;
 import com.ncnf.database.DatabaseService;
 
 import java.util.ArrayList;
@@ -45,10 +46,9 @@ public class PrivateEvent extends Event {
         PrivateEvent otherEvent = (PrivateEvent) o;
         return getDate().compareTo(otherEvent.getDate());
     }
-    public CompletableFuture<DatabaseResponse> store(DatabaseService db){
-        String[] fields = {INVITED_KEY};
-        Object[] objects = {this.invited};
-        return super.store(db, fields, objects);
+
+    public CompletableFuture<Boolean> store(@NonNull DatabaseService db){
+        return db.setDocument(EVENTS_COLLECTION_KEY + this.getUuid(), this);
     }
 
 }

@@ -12,23 +12,30 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.ncnf.R;
 import com.ncnf.Utils;
+import com.ncnf.event.Event;
+import com.ncnf.feed.ui.EventAdapter;
+import com.ncnf.utilities.InputValidator;
 
-public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.UserViewHolder> {
+import java.util.List;
+
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
+
+    private final List<User> users;
+    private final UserAdapter.OnItemClickListener listener;
 
     public interface OnItemClickListener {
         void onItemClick(User item);
     }
 
-    private final UserAdapter.OnItemClickListener listener;
-
-    public UserAdapter(FirestoreRecyclerOptions<User> options, UserAdapter.OnItemClickListener listener) {
-        super(options);
+    public UserAdapter(List<User> users, OnItemClickListener listener) {
+        this.users = users;
         this.listener = listener;
     }
 
-    @Override
-    protected void onBindViewHolder(@NonNull UserAdapter.UserViewHolder holder, int position, @NonNull User user) {
-        holder.bind(user, listener);
+    public void setUsers(List<User> newUsers) {
+        this.users.clear();
+        this.users.addAll(newUsers);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -36,6 +43,16 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.User
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_card_view, parent, false);
         return new UserViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
+        holder.bind(users.get(position), listener);
+    }
+
+    @Override
+    public int getItemCount() {
+        return users.size();
     }
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {
@@ -52,12 +69,12 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User, UserAdapter.User
         }
 
         public void bind(final User u, final UserAdapter.OnItemClickListener listener) {
-            String firstNameText = (String) u.getUserData().getOrDefault(Utils.FIRST_NAME_KEY, "empty");
-            if(firstNameText == "") firstNameText = "empty";
-            String lastNameText = (String) u.getUserData().getOrDefault(Utils.LAST_NAME_KEY, "empty");
-            if(lastNameText == "") lastNameText = "empty";
-            String usernameText = (String) u.getUserData().getOrDefault("@"+Utils.LAST_NAME_KEY, "@empty");
-            if(usernameText == "") usernameText = "empty";
+            String firstNameText = u.getFirstName();
+            if(InputValidator.isStringEmpty(firstNameText)) firstNameText = "empty";
+            String lastNameText = u.getLastName();
+            if(InputValidator.isStringEmpty(lastNameText)) lastNameText = "empty";
+            String usernameText = u.getUsername();
+            if(InputValidator.isStringEmpty(usernameText)) usernameText = "empty";
             
             String concatNameText = firstNameText + " " + lastNameText;
             name.setText(concatNameText);
