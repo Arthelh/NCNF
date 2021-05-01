@@ -2,6 +2,7 @@ package com.ncnf.database;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.database.builder.GroupBuilder;
 import com.ncnf.event.Event;
 import com.ncnf.event.Group;
 import com.ncnf.event.Social;
@@ -40,7 +41,8 @@ import static org.junit.Assert.assertEquals;
 public class SocialBuilderTest {
 
     private DatabaseService db;
-    private EventBuilder eventBuilder;
+    private EventBuilder eventBuilder = new EventBuilder();
+    private GroupBuilder groupbuilder = new GroupBuilder();
 
     Map<String, Object> publicEvent;
     Map<String, Object> privateEvent;
@@ -64,7 +66,6 @@ public class SocialBuilderTest {
     @Before
     public void setup() {
         db = Mockito.mock(DatabaseService.class);
-        eventBuilder = new EventBuilder();
         publicEvent = new HashMap<>();
         privateEvent = new HashMap<>();
     }
@@ -96,7 +97,6 @@ public class SocialBuilderTest {
         assertEquals(event.getDate(), date);
         assertEquals(event.getLocation(), location);
         assertEquals(event.getAddress(), address);
-        assertEquals(event.getVisibility().toString(), "PUBLIC");
         assertEquals(event.getType().toString(), type);
         assertEquals(event.getAttendees().get(0), attendees.get(0));
         assertEquals(event.getDescription(), description);
@@ -126,14 +126,13 @@ public class SocialBuilderTest {
 
         privateEvent.put(INVITED_KEY, invited);
 
-        Group event = (Group) eventBuilder.toObject(uuid, privateEvent);
+        Group event = (Group) groupbuilder.toObject(uuid, privateEvent);
 
         assertEquals(event.getUuid().toString(), uuid);
         assertEquals(event.getName(), name);
         assertEquals(event.getDate(), date);
         assertEquals(event.getLocation(), location);
         assertEquals(event.getAddress(), address);
-        assertEquals(event.getVisibility().toString(), "PRIVATE");
         assertEquals(event.getType().toString(), type);
         assertEquals(event.getAttendees().get(0), attendees.get(0));
         assertEquals(event.getDescription(), description);
@@ -149,9 +148,9 @@ public class SocialBuilderTest {
         UUID uuid = UUID.randomUUID();
 
 
-        Group event = new Group(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
-        Map<String, Object> map = eventBuilder.toMap(event);
-        assertEquals(eventBuilder.toObject(uuid.toString(), map), event);
+        Group group = new Group(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
+        Map<String, Object> map = groupbuilder.toMap(group);
+        assertEquals(groupbuilder.toObject(uuid.toString(), map), group);
 
     }
 

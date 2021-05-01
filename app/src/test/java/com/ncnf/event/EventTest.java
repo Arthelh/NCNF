@@ -78,7 +78,6 @@ public class EventTest {
         assertEquals(event.getNumOfAttendees(), 0);
         assertEquals(event.getAttendees().size(), 0);
 
-        assertEquals(event.getVisibility(), Social.Visibility.PUBLIC);
     }
 
     @Test
@@ -104,7 +103,6 @@ public class EventTest {
         assertEquals(event.getTags().size(), 1);
         assertEquals(event.getTags().get(0), tag);
 
-        assertEquals(event.getVisibility(), Social.Visibility.PUBLIC);
     }
 
     @Test
@@ -184,7 +182,6 @@ public class EventTest {
 
         Event event = new Event("ownerId", name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
 //        assertEquals(event.getImageName(), "swan_lake");
-        assertEquals(event.getVisibility(), Social.Visibility.valueOf("PUBLIC"));
     }
 
     @Test

@@ -238,7 +238,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.get()).thenReturn(task);
 
-       CompletableFuture<List<Social>> res = service.getCollection("/events", Social.class);
+       CompletableFuture<List<Event>> res = service.getCollection("/events", Event.class);
 
         try {
             assertEquals(event, res.get().get(0));
@@ -284,7 +284,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.orderBy(anyString())).thenReturn(query);
 
-        CompletableFuture<List<Social>> future = service.withFieldLike("/events", "field", "value", Social.class);
+        CompletableFuture<List<Event>> future = service.withFieldLike("/events", "field", "value", Event.class);
 
         try {
             assertEquals(event, future.get().get(0));
@@ -333,7 +333,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.whereArrayContains(anyString(), anyString())).thenReturn(query);
 
-        CompletableFuture<List<Social>> future = service.whereArrayContains("/events", "field", "value", Social.class);
+        CompletableFuture<List<Event>> future = service.whereArrayContains("/events", "field", "value", Event.class);
 
         try {
             assertEquals(event, future.get().get(0));
@@ -380,7 +380,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.whereEqualTo(anyString(), anyString())).thenReturn(query);
 
-        CompletableFuture<List<Social>> future = service.whereEqualTo("/events", "field", "value", Social.class);
+        CompletableFuture<List<Event>> future = service.whereEqualTo("/events", "field", "value", Event.class);
 
         try {
             assertEquals(event, future.get().get(0));

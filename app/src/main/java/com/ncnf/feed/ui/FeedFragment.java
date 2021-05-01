@@ -31,7 +31,7 @@ public class FeedFragment extends Fragment {
 
     private RecyclerView.LayoutManager lManager;
     private EventAdapter adapter;
-    private List<Event> eventList;
+    private List<Social> eventList;
     private static final String CHANNEL_NAME = "events_to_be_shown";
 
     public FeedFragment(EventDB eventDB){
@@ -40,7 +40,7 @@ public class FeedFragment extends Fragment {
         this.eventList = eventDB.toList();
     }
 
-    public FeedFragment(List<Event> eventList){
+    public FeedFragment(List<Social> eventList){
         super();
 
         Objects.requireNonNull(eventList);

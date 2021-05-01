@@ -1,5 +1,7 @@
 package com.ncnf.event;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.GeoPoint;
@@ -48,7 +50,7 @@ public class Group extends Social {
     }
 
     public CompletableFuture<Boolean> store(@NonNull DatabaseService db){
-        return db.setDocument(EVENTS_COLLECTION_KEY + this.getUuid(), this);
+        return db.setDocument(GROUPS_COLLECTION_KEY + this.getUuid(), this);
     }
 
 }

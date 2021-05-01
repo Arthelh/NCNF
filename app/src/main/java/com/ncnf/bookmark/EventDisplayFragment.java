@@ -74,6 +74,7 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
     private void getEventList(View view){
         if(user != null){
             CompletableFuture listEvent;
+            Log.d(DEBUG_TAG, "let's go");
             if(eventCollection == SAVED_EVENTS_KEY){
                 listEvent = user.getSavedEvents();
             } else {
@@ -81,6 +82,7 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
             }
 
             listEvent.thenAccept(events -> {
+                Log.d(DEBUG_TAG, Integer.toString(((List)events).size()));
                 if(events != null){
                     this.adapter.setSocials((List)events);
                 }

@@ -22,9 +22,13 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.R;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventActivity;
+import com.ncnf.event.Social;
 import com.ncnf.feed.ui.FeedFragment;
 
+import java.util.List;
+
 import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.Utils.UUID_KEY;
 
 public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, ClusterManager.OnClusterItemClickListener<NCNFMarker>, ClusterManager.OnClusterItemInfoWindowClickListener<NCNFMarker> {
 
@@ -52,11 +56,11 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
     public void onClusterItemInfoWindowClick(NCNFMarker item) {
         if (item.isEvent()) {
 
-            List<Event> events = item.getEventList();
+            List<Social> events = item.getEventList();
 
             if (events.size() == 1) { //When the marker represents only one event
 
-                Event e = events.get(0);
+                Social e = events.get(0);
                 Intent intent = new Intent(context, EventActivity.class);
                 intent.putExtra(UUID_KEY, e.getUuid().toString());
                 context.startActivity(intent);

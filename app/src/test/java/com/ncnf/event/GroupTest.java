@@ -72,7 +72,6 @@ public class GroupTest {
         assertEquals(event.getAttendees().size(), 0);
         assertEquals(event.getInvited().size(), 0);
 
-        assertEquals(event.getVisibility(), Social.Visibility.PRIVATE);
     }
 
     @Test
@@ -96,7 +95,6 @@ public class GroupTest {
         assertEquals(event.getInvited().size(), 1);
         assertEquals(event.getInvited().get(0), "Invited1");
 
-        assertEquals(event.getVisibility(), Social.Visibility.PRIVATE);
     }
 
     @Test

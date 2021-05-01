@@ -277,7 +277,7 @@ public class UserTests {
         User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false, new ArrayList<>());
         when(db.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
-        CompletableFuture<Boolean> future = user.addSavedEvent(privateEvent);
+        CompletableFuture<Boolean> future = user.addParticipatingGroup(privateEvent);
         try {
             assertTrue(future.get());
         } catch(Exception e){
@@ -302,7 +302,7 @@ public class UserTests {
     public void getOwnedEventsWorksOnEmptyList(){
         User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false, new ArrayList<>());
 
-        CompletableFuture<List<Social>> future = user.getOwnedGroups();
+        CompletableFuture<List<Group>> future = user.getOwnedGroups();
         try {
             assertTrue(future.get().isEmpty());
         } catch(Exception e){
@@ -313,16 +313,14 @@ public class UserTests {
     @Test
     public void getOwnedEventsWorks(){
         User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), Arrays.asList(ownerID, ownerID), new ArrayList<>(), null, false, new ArrayList<>());
-        CompletableFuture<List<Social>> events = CompletableFuture.completedFuture(Arrays.asList(publicEvent, privateEvent));
+        CompletableFuture<List<Social>> events = CompletableFuture.completedFuture(Arrays.asList(privateEvent));
         when(db.whereIn(anyString(), anyString(), anyList(), any())).thenReturn(events);
 
-        CompletableFuture<List<Social>> future = user.getOwnedGroups();
+        CompletableFuture<List<Group>> future = user.getOwnedGroups();
         try {
-            assertTrue(future.get().size() == 2);
-            assertEquals(publicEvent, future.get().get(0));
+            assertTrue(future.get().size() == 1);
+            assertEquals(privateEvent, future.get().get(0));
             assertEquals(future.get().get(0).getOwnerId(), ownerID);
-            assertEquals(privateEvent, future.get().get(1));
-            assertEquals(future.get().get(1).getOwnerId(), ownerID);
         } catch(Exception e){
             Assert.fail("Something went wrong with the future");
         }
@@ -332,7 +330,7 @@ public class UserTests {
     public void getSavedEventsWorksOnEmptyList(){
         User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false, new ArrayList<>());
 
-        CompletableFuture<List<Social>> future = user.getSavedEvents();
+        CompletableFuture<List<Event>> future = user.getSavedEvents();
         try {
             assertTrue(future.get().isEmpty());
         } catch(Exception e){
@@ -346,7 +344,7 @@ public class UserTests {
         CompletableFuture<List<Social>> events = CompletableFuture.completedFuture(Arrays.asList(publicEvent));
         when(db.whereIn(anyString(), anyString(), anyList(), any())).thenReturn(events);
 
-        CompletableFuture<List<Social>> future = user.getSavedEvents();
+        CompletableFuture<List<Event>> future = user.getSavedEvents();
         try {
             assertTrue(future.get().size() == 1);
             assertEquals(publicEvent, future.get().get(0));
@@ -360,7 +358,7 @@ public class UserTests {
     public void createEventFailsFailsOnWrongCredentials(){
         User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false, Arrays.asList(ownerID));
 
-        CompletableFuture<Boolean> future = user.createGroup(publicEvent);
+        CompletableFuture<Boolean> future = user.createGroup(privateEvent);
         try {
             assertFalse(future.get());
         } catch(Exception e){
@@ -369,14 +367,14 @@ public class UserTests {
     }
 
     @Test
-    public void createEventFailsFails(){
+    public void createEventFails(){
         User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false, Arrays.asList(ownerID));
         CompletableFuture<Boolean> failingFuture = new CompletableFuture<>();
         failingFuture.completeExceptionally(new IllegalStateException());
         when(this.db.setDocument(anyString(), anyObject())).thenReturn(failingFuture);
         when(this.db.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
-        CompletableFuture<Boolean> future = user.createGroup(publicEvent);
+        CompletableFuture<Boolean> future = user.createGroup(privateEvent);
         try {
             assertFalse(future.get());
         } catch(Exception e){
@@ -385,21 +383,7 @@ public class UserTests {
     }
 
     @Test
-    public void createEventFailsWorksForPublicEvents(){
-        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false, Arrays.asList(ownerID));
-        when(this.db.setDocument(anyString(), anyObject())).thenReturn(CompletableFuture.completedFuture(true));
-        when(this.db.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
-
-        CompletableFuture<Boolean> future = user.createGroup(publicEvent);
-        try {
-            assertTrue(future.get());
-        } catch(Exception e){
-            Assert.fail("Something went wrong with the future");
-        }
-    }
-
-    @Test
-    public void createEventFailsWorksForPrivateEvents(){
+    public void createEventFailsWorks(){
         User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false, Arrays.asList(ownerID));
         when(this.db.setDocument(anyString(), anyObject())).thenReturn(CompletableFuture.completedFuture(true));
         when(this.db.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));

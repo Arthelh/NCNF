@@ -1,5 +1,7 @@
 package com.ncnf.user;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Group;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
 import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.GROUPS_COLLECTION_KEY;
@@ -178,6 +181,7 @@ public class User {
             this.lastName = user.getLastName();
             this.friendsIds = user.getFriendsIds();
             this.ownedGroupsIds = user.getOwnedGroupsIds();
+            this.participatingGroupsIds = user.getParticipatingGroupsIds();
             this.savedEventsIds = user.getSavedEventsIds();
             this.birthDate = user.getBirthDate();
             this.notifications = user.getNotifications();
@@ -211,6 +215,7 @@ public class User {
     }
 
     public CompletableFuture<Boolean> addOwnedGroup(Group group){
+
         if(this.ownedGroupsIds.add(group.getUuid().toString())){
             return this.db.updateArrayField(USERS_COLLECTION_KEY + uuid, OWNED_GROUPS_KEY, group.getUuid().toString())
                     .thenCompose(task -> addParticipatingGroup(group));
@@ -234,7 +239,9 @@ public class User {
     }
 
     public CompletableFuture<List<Group>> getParticipatingGroups(){
+
         if(this.participatingGroupsIds.isEmpty()){
+
             return CompletableFuture.completedFuture(new ArrayList<>());
         }
         return this.db.whereIn(GROUPS_COLLECTION_KEY, UUID_KEY, this.ownedGroupsIds, Group.class);
@@ -255,7 +262,10 @@ public class User {
         }
 
         return group.store(this.db)
-                .thenCompose(task -> this.addOwnedGroup(group))
+                .thenCompose(task -> {
+                    return this.addOwnedGroup(group);
+
+                })
                 .exceptionally(exception -> false); // TODO: handle exception
     }
 

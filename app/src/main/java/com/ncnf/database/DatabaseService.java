@@ -1,5 +1,8 @@
 package com.ncnf.database;
 
+import android.util.DebugUtils;
+import android.util.Log;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
@@ -8,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ncnf.database.builder.DatabaseObjectBuilder;
 import com.ncnf.database.builder.EventBuilder;
+import com.ncnf.database.builder.GroupBuilder;
 import com.ncnf.database.builder.UserBuilder;
 import com.ncnf.event.Group;
 import com.ncnf.event.Event;
@@ -22,6 +26,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+
+import static com.ncnf.Utils.DEBUG_TAG;
 
 public class DatabaseService implements DatabaseServiceInterface {
 
@@ -41,9 +47,8 @@ public class DatabaseService implements DatabaseServiceInterface {
 
     private void initRegistry(){
         registry.put(User.class, new UserBuilder());
-        registry.put(Social.class, new EventBuilder());
         registry.put(Event.class, new EventBuilder());
-        registry.put(Group.class, new EventBuilder());
+        registry.put(Group.class, new GroupBuilder());
     }
 
     @Override
@@ -203,6 +208,8 @@ public class DatabaseService implements DatabaseServiceInterface {
             futureResponse.complete(new ArrayList<>());
             return futureResponse;
         }
+        
+        Log.d(DEBUG_TAG, "wooooow");
 
         List<CompletableFuture<List<R>>> futures = values
                 .stream()

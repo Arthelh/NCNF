@@ -200,16 +200,16 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
 
                         //TODO: for now some fields aren't used and it only creates group -> should be extended afterward
                         DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());
-                        Group event = new Group(user.getUuid(),
+                        Group group = new Group(user.getUuid(),
                                 eventName.getText().toString(),
                                 date.getDate(), getLocationFromAddress(eventAddress.getText().toString()),
                                 eventAddress.getText().toString(),
                                 eventDescription.getText().toString(),
                                 eventType
                         );
-                        if(event != null) {
+                        if(group != null) {
 
-                            user.createGroup(event).thenAccept(task -> nextStep()).exceptionally(exception -> {
+                            user.createGroup(group).thenAccept(task -> nextStep()).exceptionally(exception -> {
                                 failToCreateEvent(exception.getMessage());
                                 return null;
                             });
