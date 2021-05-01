@@ -1,23 +1,31 @@
 package com.ncnf.user;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,13 +39,17 @@ import com.ncnf.database.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static android.content.ContentValues.TAG;
 import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EMAIL_KEY;
+import static com.ncnf.Utils.FIRST_NAME_KEY;
+import static com.ncnf.Utils.LOCATION_KEY;
 import static com.ncnf.Utils.USERS_COLLECTION_KEY;
 import static com.ncnf.Utils.USER_LOCATION_KEY;
 
@@ -45,26 +57,49 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     private User user;
 
+    private AppCompatImageButton findUserButton;
+
     private GoogleMap mMap;
     private MapView mapView;
 
-    private List<User> friends;
+    private List<String> friendsUUID;
     private List<Marker> markers;
 
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private FusedLocationProviderClient myFusedLocationClient;
 
+    private Handler handler = new Handler();
+    private Runnable runnable;
+    private static final int LOCATION_UPDATE_INTERVAL = 3000;
+
+    // for testing
     private static final String uuid = "MSpKLkyyrrN3PC5KmxkoD05Vy1m2";
+    private static final String uuid2 = "xsohP7PYdDQZ69STCpznOZt0Zfg2";
 
     private Marker marker;
-    private Marker marker2;
 
     private DatabaseService dbs;
 
+    private LatLngBounds bounds;
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_tracker);
+
+        dbs = new DatabaseService();
+
+        dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, new GeoPoint(46.5201852, 6.5637122));
+        dbs.updateField(USERS_COLLECTION_KEY + uuid2, USER_LOCATION_KEY, new GeoPoint(46.516981, 6.57144331));
+
+        friendsUUID = new ArrayList<>();
+        markers = new ArrayList<>();
+
+        friendsUUID.add(uuid);
+        friendsUUID.add(uuid2);
+
+        findUserButton = findViewById(R.id.find_user_button);
 
         user = CurrentUserModule.getCurrentUser();
         user.loadUserFromDB();
@@ -78,8 +113,72 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             mMap = googleMap;
             onMapReady(mMap);
             getLastKnownLocation();
+
+            findUserButton.setOnClickListener(v -> {
+                if(user.getLoc() != null) {
+                    setMapCamera(user.getLoc());
+                }
+            });
         });
 
+
+    }
+
+    public void addFriend(String uuid) {
+        if(!friendsUUID.contains(uuid)) {
+            friendsUUID.add(uuid);
+        }
+    }
+
+    private void startLocationUpdates() {
+        handler.postDelayed(runnable = new Runnable() {
+            @Override
+            public void run() {
+                getUserLocations();
+                handler.postDelayed(runnable, LOCATION_UPDATE_INTERVAL);
+            }
+        }, LOCATION_UPDATE_INTERVAL);
+    }
+
+    private void stopLocationUpdates(){
+        handler.removeCallbacks(runnable);
+    }
+
+    private void getUserLocations() {
+        for(int i = 0; i < friendsUUID.size(); ++i) {
+
+            String userId = friendsUUID.get(i);
+            CompletableFuture<GeoPoint> field = dbs.getField(USERS_COLLECTION_KEY + userId, USER_LOCATION_KEY);
+            int finalI = i;
+            field.thenAccept(point -> {
+                if(finalI >= markers.size()) {
+                    markers.add(mMap.addMarker(new MarkerOptions().position(new LatLng(point.getLatitude(), point.getLongitude()))));
+                    CompletableFuture<String> name = dbs.getField(USERS_COLLECTION_KEY + userId, FIRST_NAME_KEY);
+                    name.thenAccept(s -> {
+                        if(s != null) {
+                            markers.get(finalI).setTitle(s);
+                        }
+                    });
+                }
+                else {
+                    markers.get(finalI).setPosition(new LatLng(point.getLatitude(), point.getLongitude()));
+                }
+            });
+        }
+
+        marker.setPosition(new LatLng(user.getLoc().getLatitude(), user.getLoc().getLongitude()));
+    }
+
+    private void setMapCamera(GeoPoint point) {
+
+        double zoom = .05;
+
+        bounds = new LatLngBounds(
+                new LatLng(point.getLatitude() - zoom, point.getLongitude() - zoom),
+                new LatLng(point.getLatitude() + zoom, point.getLongitude() + zoom)
+        );
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0));
     }
 
     private void getLastKnownLocation() {
@@ -91,32 +190,28 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            Log.d(TAG, "permissions wrong");
             return;
         }
-        myFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                // Got last known location. In some rare situations this can be null.
-                if (location != null) {
-                    GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+        myFusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            // Got last known location. In some rare situations this can be null.
+            if (location != null) {
+                GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
 
-                    user.setLoc(geoPoint);
+                user.setLoc(geoPoint);
 
-                    if (marker == null) {
-                        marker = mMap.addMarker(new MarkerOptions().position(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude())));
-                    } else {
-                        marker.setPosition(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude()));
-                    }
-                    saveUserLocation();
-
-                    CompletableFuture<GeoPoint> field = dbs.getField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY);
-                    field.thenAccept(point -> {
-                        mMap.addMarker(new MarkerOptions().position(new LatLng(point.getLatitude(), point.getLongitude())));
-                        startLocationService();
-                    });
-
+                if (marker == null) {
+                    marker = mMap.addMarker(new MarkerOptions().position(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude())));
+                    marker.setTitle(user.getFirstName());
+                } else {
+                    marker.setPosition(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude()));
                 }
+                startLocationService();
+                setMapCamera(geoPoint);
+                saveUserLocation();
+
             }
+            Log.d(TAG, "location null");
         });
     }
 
@@ -164,16 +259,6 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         return false;
     }
 
-    private void getUserLocation(User u) {
-        if(u != null) {
-            u.loadUserFromDB();
-        }
-    }
-
-    private void setMarkers() {
-
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -197,7 +282,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     @Override
     public void onMapReady(GoogleMap map) {
-
+        startLocationUpdates();
     }
 
     @Override
@@ -210,6 +295,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     protected void onDestroy() {
         mapView.onDestroy();
         super.onDestroy();
+        stopLocationUpdates();
     }
 
     @Override
@@ -217,6 +303,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
 }
 
 

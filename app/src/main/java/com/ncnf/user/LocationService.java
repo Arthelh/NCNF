@@ -110,11 +110,23 @@ public class LocationService extends Service {
 
                         if (location != null) {
                             User user = CurrentUserModule.getCurrentUser();
-                            user.loadUserFromDB().thenAccept(user1 -> {
-                                GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-                                saveUserLocation(geoPoint, user1.getUuid());
-                                user1.setLoc(geoPoint);
-                            });
+
+                            if(user != null) {
+
+                                user.loadUserFromDB().thenAccept(user1 -> {
+                                    if (user1 != null) {
+                                        GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                                        saveUserLocation(geoPoint, user1.getUuid());
+                                        user1.setLoc(geoPoint);
+                                    } else {
+                                        stopSelf();
+                                    }
+                                });
+                            }
+                            else {
+                                stopSelf();
+                            }
+
                         }
                     }
                 },
