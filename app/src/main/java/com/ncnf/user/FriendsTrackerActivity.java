@@ -45,6 +45,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 import static android.content.ContentValues.TAG;
 import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EMAIL_KEY;
@@ -53,9 +57,11 @@ import static com.ncnf.Utils.LOCATION_KEY;
 import static com.ncnf.Utils.USERS_COLLECTION_KEY;
 import static com.ncnf.Utils.USER_LOCATION_KEY;
 
+@AndroidEntryPoint
 public class FriendsTrackerActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private User user;
+    @Inject
+    public User user;
 
     private AppCompatImageButton findUserButton;
 
@@ -69,8 +75,12 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     private FusedLocationProviderClient myFusedLocationClient;
 
     private Handler handler = new Handler();
+    private Handler handler2 = new Handler();
     private Runnable runnable;
+    private Runnable runnable2;
     private static final int LOCATION_UPDATE_INTERVAL = 3000;
+
+    private int counter;
 
     // for testing
     private static final String uuid = "MSpKLkyyrrN3PC5KmxkoD05Vy1m2";
@@ -78,7 +88,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     private Marker marker;
 
-    private DatabaseService dbs;
+    public DatabaseService dbs;
 
     private LatLngBounds bounds;
 
@@ -90,20 +100,21 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
         dbs = new DatabaseService();
 
-        dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, new GeoPoint(46.5201852, 6.5637122));
-        dbs.updateField(USERS_COLLECTION_KEY + uuid2, USER_LOCATION_KEY, new GeoPoint(46.516981, 6.57144331));
+        //dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, new GeoPoint(46.5201852, 6.5637122));
+        //dbs.updateField(USERS_COLLECTION_KEY + uuid2, USER_LOCATION_KEY, new GeoPoint(46.516981, 6.57144331));
+
+        counter = 0;
 
         friendsUUID = new ArrayList<>();
         markers = new ArrayList<>();
 
         friendsUUID.add(uuid);
-        friendsUUID.add(uuid2);
+        //friendsUUID.add(uuid2);
 
         findUserButton = findViewById(R.id.find_user_button);
 
-        user = CurrentUserModule.getCurrentUser();
+        //user = CurrentUserModule.getCurrentUser();
         user.loadUserFromDB();
-        dbs = new DatabaseService();
 
         myFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -114,6 +125,8 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             onMapReady(mMap);
             getLastKnownLocation();
 
+            //changeUserLocs();
+
             findUserButton.setOnClickListener(v -> {
                 if(user.getLoc() != null) {
                     setMapCamera(user.getLoc());
@@ -122,12 +135,6 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         });
 
 
-    }
-
-    public void addFriend(String uuid) {
-        if(!friendsUUID.contains(uuid)) {
-            friendsUUID.add(uuid);
-        }
     }
 
     private void startLocationUpdates() {
@@ -140,8 +147,24 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         }, LOCATION_UPDATE_INTERVAL);
     }
 
+    // ONLY FOR TESTING / DEMOS
+    private void changeUserLocs() {
+        handler2.postDelayed(runnable2 = new Runnable() {
+            @Override
+            public void run() {
+                dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, new GeoPoint(46.51612823811807 + counter*0.0005, 6.560711384991796)).thenAccept(aBoolean -> {
+                    dbs.updateField(USERS_COLLECTION_KEY + uuid2, USER_LOCATION_KEY, new GeoPoint(46.51612823811807, 6.560711384991796+ counter*0.0005)).thenAccept(aBoolean1 -> {
+                        counter += 1;
+                    });
+                });
+                handler2.postDelayed(runnable2, 2*LOCATION_UPDATE_INTERVAL);
+            }
+        }, 2*LOCATION_UPDATE_INTERVAL);
+    }
+
     private void stopLocationUpdates(){
         handler.removeCallbacks(runnable);
+        //handler2.removeCallbacks(runnable2);
     }
 
     private void getUserLocations() {
@@ -165,8 +188,13 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
                 }
             });
         }
-
-        marker.setPosition(new LatLng(user.getLoc().getLatitude(), user.getLoc().getLongitude()));
+        if(marker == null) {
+            marker = mMap.addMarker(new MarkerOptions().position(new LatLng(user.getLoc().getLatitude(), user.getLoc().getLongitude())));
+            marker.setTitle(user.getFirstName());
+        }
+        else {
+            marker.setPosition(new LatLng(user.getLoc().getLatitude(), user.getLoc().getLongitude()));
+        }
     }
 
     private void setMapCamera(GeoPoint point) {
@@ -190,7 +218,6 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            Log.d(TAG, "permissions wrong");
             return;
         }
         myFusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
