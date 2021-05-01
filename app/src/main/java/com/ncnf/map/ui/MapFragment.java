@@ -105,8 +105,6 @@ public class MapFragment extends Fragment{
             map_ready = true;
         });
 
-        getView().findViewById(R.id.map_zoomin_button).setOnClickListener(this::zoomIn);
-        getView().findViewById(R.id.map_zoomout_button).setOnClickListener(this::zoomOut);
         getView().findViewById(R.id.map_settings_button).setOnClickListener(this::start_settings);
         getView().findViewById(R.id.map_switch_button).setOnClickListener(this::switchMarkers);
         getView().findViewById(R.id.map_location_button).setOnClickListener(this::returnToLocation);
@@ -118,14 +116,6 @@ public class MapFragment extends Fragment{
         mapView.onResume();
         if (map_ready)
             mapHandler.update_markers();
-    }
-
-    public void zoomOut(View view) {
-        mMap.moveCamera(CameraUpdateFactory.zoomOut());
-    }
-
-    public void zoomIn(View view) {
-        mMap.moveCamera(CameraUpdateFactory.zoomIn());
     }
 
     public void start_settings(View view){
