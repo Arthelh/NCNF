@@ -23,30 +23,30 @@ public class EventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event);
 
         String event_uid = getIntent().getStringExtra(UUID_KEY);
-        Event event = db.getEvent(event_uid);
-        if (event == null) {
+        Social social = db.getEvent(event_uid);
+        if (social == null) {
             finish();
             return;
         }
 
-        // Change with event UUID
+        // Change with social UUID
         ImageView imageView = findViewById(R.id.eventImage);
-        FileStore file = new CacheFileStore(this, Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
+        FileStore file = new CacheFileStore(this, Social.IMAGE_PATH, String.format(Social.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
         file.downloadImage(imageView);
 
         TextView name = findViewById(R.id.eventName);
-        name.setText(event.getName());
+        name.setText(social.getName());
 
         TextView date = findViewById(R.id.eventDate);
-        date.setText("Event takes place on : " + new DateAdapter(event.getDate()).toString());
+        date.setText("Social takes place on : " + new DateAdapter(social.getDate()).toString());
 
         TextView loc = findViewById(R.id.eventLocation);
-        loc.setText("Event held at : " + event.getAddress());
+        loc.setText("Social held at : " + social.getAddress());
 
         TextView desc = findViewById(R.id.eventDescription);
-        desc.setText(event.getDescription());
+        desc.setText(social.getDescription());
 
         TextView owner = findViewById(R.id.eventOwner);
-        owner.setText("Event hosted by " + event.getOwnerId());
+        owner.setText("Social hosted by " + social.getOwnerId());
     }
 }

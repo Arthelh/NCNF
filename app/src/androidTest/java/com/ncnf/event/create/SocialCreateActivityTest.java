@@ -54,7 +54,7 @@ import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
 @UninstallModules(CurrentUserModule.class)
-public class EventCreateActivityTest {
+public class SocialCreateActivityTest {
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private static final User mockUser = Mockito.mock(User.class);
@@ -108,7 +108,7 @@ public class EventCreateActivityTest {
     @Test
     public void eventFormValidatesCorrectInput() {
         when(user.getUuid()).thenReturn("ownerId");
-        when(user.createEvent(anyObject())).thenReturn(response);
+        when(user.createGroup(anyObject())).thenReturn(response);
 
         onView(withId(R.id.set_event_name)).perform(scrollTo(), replaceText("Conference"));
         onView(withId(R.id.set_event_description)).perform(scrollTo(), replaceText("Math are fun!"));
@@ -133,7 +133,7 @@ public class EventCreateActivityTest {
         onView(withId(R.id.validate_event)).perform(click());
 
         verify(user).getUuid();
-        verify(user).createEvent(anyObject());
+        verify(user).createGroup(anyObject());
         intended(hasComponent(MainActivity.class.getName()));
     }
 

@@ -1,33 +1,29 @@
 package com.ncnf.event;
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.organizer.PublicOrganizer;
-import com.ncnf.utilities.DateAdapter;
-import com.ncnf.utilities.Location;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
-import java.util.UUID;
 
 import static org.junit.Assert.*;
-public class EventCalculatorTest {
+public class SocialCalculatorTest {
 
     String name = "Jane Doe";
     Date date = new Date(2021, 03, 11);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    Event.Type type = Event.Type.Conference;
-    String description = "Event description goes here";
+    Social.Type type = Social.Type.Conference;
+    String description = "Social description goes here";
     String ownerId = "00";
 
     @Test
     public void eventRelevanceCalculatorWorks() {
 
-        PublicEvent event1 = new PublicEvent(ownerId, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
-        PublicEvent event2 = new PublicEvent(ownerId, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
-        PublicEvent event3 = new PublicEvent(ownerId, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        Event event1 = new Event(ownerId, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        Event event2 = new Event(ownerId, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        Event event3 = new Event(ownerId, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
 
         event1.addTag(new Tag("\uD83D\uDCF1", "Technology"));
         event1.addTag(new Tag("\uD83D\uDCF1", "Conference"));
@@ -39,7 +35,7 @@ public class EventCalculatorTest {
 
         event3.addTag(new Tag("\uD83D\uDCF1", "Art"));
 
-        List<Event> l = new ArrayList<>();
+        List<Social> l = new ArrayList<>();
         l.add(event1);
         l.add(event2);
         l.add(event3);

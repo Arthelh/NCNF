@@ -34,7 +34,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
-public class EventNewsActivityTest {
+public class SocialNewsActivityTest {
 
     private final Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventNewsActivity.class);
 

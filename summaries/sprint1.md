@@ -2,14 +2,14 @@
 
 # Beltan (Scrum Master)
 
-I implemented the view of the interactive map that will show position and nearby events.
+I implemented the view of the interactive map that will show position and nearby socials.
 My time estimate was fairly accurate, 4h estimated v 5h actual. 
 
 My tasks are well laid out for next week and I have a good view of the next steps I'll be implementing in the interactive map.
 
 # David
 
-I implemented a feed to display events, with the ability to click on an item of the feed to display it in more details.
+I implemented a feed to display socials, with the ability to click on an item of the feed to display it in more details.
 
 Using the RecyclerView took some time to get right, UI testing remains minimal and must be made more robust.
 
@@ -36,7 +36,7 @@ Next time, I'll try to clear and test everything I wrote because I did not expec
 
 # Keran
 
-The goal was to test the interactive map, which consists of a Google Map and markers loaded from a database. A button can be pressed to switch between venues and events on the map.
+The goal was to test the interactive map, which consists of a Google Map and markers loaded from a database. A button can be pressed to switch between venues and socials on the map.
 
 The challenges of testing this feature was first the dependency to external data and the testing of UI elements.
 To solve the first problem, I implemented the Hilt library will help inject dependencies in activities for example. The advantage of Hilt is that the dependency can be replaced in the test to have mock data. Mockito is used in our case.

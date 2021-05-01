@@ -14,12 +14,12 @@ Surprisingly it took less time to do my tasks than what was expected for the tes
 
 # David
 
-This week I implemented the ability to chose an event picture from the library. I also cleaned up the EventAdapter for the event's feed. I've also started working on the feature to search other users in the database.
+This week I implemented the ability to chose an social picture from the library. I also cleaned up the EventAdapter for the social's feed. I've also started working on the feature to search other users in the database.
 
 The first two tasks only took a couple of hourse, but the third one has already taken much more time than expected
 
 # Eloi (scrum master)
-This week, I've completed the bookmark, linked it to the database and extended it to owned events (already had saved events). To do so I had to rethink about the front end and getting a clean interface took more time than expected. But at the end, the result is quite good I think.
+This week, I've completed the bookmark, linked it to the database and extended it to owned socials (already had saved socials). To do so I had to rethink about the front end and getting a clean interface took more time than expected. But at the end, the result is quite good I think.
 
 
 # Emmanuelle
@@ -40,7 +40,7 @@ My time estimates were pretty close to the actual time spent on this tasks.
 
 I worked on implementing a notification system in our app. The first step was to let the user subscribe/unsubscribe to notifications by using a setting in the profile. We store the preference and a token in the database. Thanks to Firebase, the work was straightforward. The whole feature could be tested at a high coverage, thanks to dependency injection.
 
-The second part was to let an organizer publish an update and notify the user. Publishing is done, but notifying the users requires a backend, which is not free in Firebase. Nevertheless, the feature is working, but not integrating because an organizer cannot edit an event for now.
+The second part was to let an organizer publish an update and notify the user. Publishing is done, but notifying the users requires a backend, which is not free in Firebase. Nevertheless, the feature is working, but not integrating because an organizer cannot edit an social for now.
 
 I also reviewed 2 pull requests.
 

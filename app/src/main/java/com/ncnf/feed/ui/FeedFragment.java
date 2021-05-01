@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
-import com.ncnf.event.Event;
+import com.ncnf.event.Social;
 import com.ncnf.event.EventActivity;
 import com.ncnf.event.EventDB;
 
@@ -71,7 +71,7 @@ public class FeedFragment extends Fragment {
         recycler.setAdapter(adapter);
     }
 
-    private void onEventClick(Event e) {
+    private void onEventClick(Social e) {
         Intent intent = new Intent(getActivity(), EventActivity.class);
         intent.putExtra(UUID_KEY, e.getUuid().toString());
         startActivity(intent);

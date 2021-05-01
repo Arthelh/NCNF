@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ncnf.R;
-import com.ncnf.event.Event;
+import com.ncnf.event.Social;
 import com.ncnf.event.EventActivity;
 import com.ncnf.feed.ui.EventAdapter;
 import com.ncnf.user.User;
@@ -35,7 +35,7 @@ import static com.ncnf.Utils.UUID_KEY;
 @AndroidEntryPoint
 public class EventDisplayFragment extends Fragment implements EventAdapter.OnEventListener{
 
-    private List<Event> eventsToDisplay;
+    private List<Social> eventsToDisplay;
     private EventAdapter adapter;
     private RecyclerView.LayoutManager lManager;
     private final String eventCollection;
@@ -73,26 +73,26 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
 
     private void getEventList(View view){
         if(user != null){
-            CompletableFuture<List<Event>> listEvent;
+            CompletableFuture listEvent;
             if(eventCollection == SAVED_EVENTS_KEY){
                 listEvent = user.getSavedEvents();
             } else {
-                listEvent = user.getOwnedEvents();
+                listEvent = user.getParticipatingGroups();
             }
 
             listEvent.thenAccept(events -> {
                 if(events != null){
-                    this.adapter.setEvents(events);
+                    this.adapter.setSocials((List)events);
                 }
             });
         }
     }
 
     @Override
-    public void onEventClick(Event event) {
+    public void onEventClick(Social social) {
         Intent intent = new Intent(getActivity(), EventActivity.class);
-        intent.putExtra(UUID_KEY, event.getUuid().toString());
-        Log.d(DEBUG_TAG, "Going on event activity");
+        intent.putExtra(UUID_KEY, social.getUuid().toString());
+        Log.d(DEBUG_TAG, "Going on social activity");
         startActivity(intent);
     }
 }

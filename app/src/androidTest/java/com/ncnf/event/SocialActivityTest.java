@@ -5,7 +5,6 @@ import android.content.Intent;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.ncnf.utilities.DateAdapter;
@@ -26,10 +25,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class EventActivityTest {
+public class SocialActivityTest {
 
     private EventDB db = new EventDB();
-    private Event event1 = db.getEvent(EventDB.uuid1.toString());
+    private Social social1 = db.getEvent(EventDB.uuid1.toString());
 
     @Before
     public void setup(){
@@ -41,7 +40,7 @@ public class EventActivityTest {
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
         intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.eventName)).check(matches(withText(containsString(event1.getName()))));
+            onView(withId(R.id.eventName)).check(matches(withText(containsString(social1.getName()))));
         }
     }
 
@@ -50,7 +49,7 @@ public class EventActivityTest {
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
         intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.eventLocation)).check(matches(withText(containsString(event1.getAddress()))));
+            onView(withId(R.id.eventLocation)).check(matches(withText(containsString(social1.getAddress()))));
         }
     }
 
@@ -59,7 +58,7 @@ public class EventActivityTest {
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
         intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.eventDescription)).check(matches(withText(containsString(event1.getDescription()))));
+            onView(withId(R.id.eventDescription)).check(matches(withText(containsString(social1.getDescription()))));
         }
     }
 
@@ -68,7 +67,7 @@ public class EventActivityTest {
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
         intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
-            DateAdapter adapter = new DateAdapter(event1.getDate());
+            DateAdapter adapter = new DateAdapter(social1.getDate());
             onView(withId(R.id.eventDate)).check(matches(withText(containsString(adapter.toString()))));
         }
     }
@@ -78,7 +77,7 @@ public class EventActivityTest {
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
         intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.eventOwner)).check(matches(withText(containsString(event1.getOwnerId()))));
+            onView(withId(R.id.eventOwner)).check(matches(withText(containsString(social1.getOwnerId()))));
         }
     }
 

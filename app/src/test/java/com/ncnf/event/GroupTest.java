@@ -21,27 +21,27 @@ import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class PrivateEventTest {
+public class GroupTest {
 
     String name = "Jane Doe";
     Date date = new Date(2021, 03, 11);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    Event.Type type = Event.Type.Conference;
-    String description = "Event description goes here";
+    Social.Type type = Social.Type.Conference;
+    String description = "Social description goes here";
     String ownerId = "00";
     UUID uuid = UUID.randomUUID();
     List<String> attendees = new ArrayList<>();
     List<String> invited = new ArrayList<>();
 
     DatabaseService db;
-    PrivateEvent mainEvent;
+    Group mainEvent;
     CompletableFuture<Boolean> response;
 
     @Before
     public void setup(){
         db = Mockito.mock(DatabaseService.class);
-        mainEvent = new PrivateEvent(ownerId,name, date, geoPoint,address,description, type);
+        mainEvent = new Group(ownerId,name, date, geoPoint,address,description, type);
         response = CompletableFuture.completedFuture(true);
     }
 
@@ -61,7 +61,7 @@ public class PrivateEventTest {
 
     @Test
     public void privateEventGeneratesCorrectly() {
-        PrivateEvent event = new PrivateEvent(ownerId,name, date, geoPoint,address,description, type);
+        Group event = new Group(ownerId,name, date, geoPoint,address,description, type);
         assertEquals(event.getOwnerId(), ownerId);
         assertEquals(event.getDate(), date);
         assertEquals(event.getName(), name);
@@ -72,7 +72,7 @@ public class PrivateEventTest {
         assertEquals(event.getAttendees().size(), 0);
         assertEquals(event.getInvited().size(), 0);
 
-        assertEquals(event.getVisibility(), Event.Visibility.PRIVATE);
+        assertEquals(event.getVisibility(), Social.Visibility.PRIVATE);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class PrivateEventTest {
         attendees.add("Attendee1");
         invited.add("Invited1");
 
-        PrivateEvent event = new PrivateEvent(ownerId, uuid, name, date, geoPoint, address, type, attendees, description, invited);
+        Group event = new Group(ownerId, uuid, name, date, geoPoint, address, type, attendees, description, invited);
         assertEquals(event.getUuid(), uuid);
         assertEquals(event.getOwnerId(), ownerId);
         assertEquals(event.getDate(), date);
@@ -96,12 +96,12 @@ public class PrivateEventTest {
         assertEquals(event.getInvited().size(), 1);
         assertEquals(event.getInvited().get(0), "Invited1");
 
-        assertEquals(event.getVisibility(), Event.Visibility.PRIVATE);
+        assertEquals(event.getVisibility(), Social.Visibility.PRIVATE);
     }
 
     @Test
     public void inviteWorks() {
-        PrivateEvent event = new PrivateEvent("00",name, date, geoPoint,address,description, type);
+        Group event = new Group("00",name, date, geoPoint,address,description, type);
         event.invite("Sarah");
         assertEquals(event.getInvited().size(), 1);
         assertEquals(event.getInvited().get(0), "Sarah");
@@ -109,24 +109,24 @@ public class PrivateEventTest {
 
     @Test
     public void compareToWorks() {
-        PrivateEvent event = new PrivateEvent("00",name, date, geoPoint,address,description, type);
+        Group event = new Group("00",name, date, geoPoint,address,description, type);
         Date date2 = new Date(2021, 03, 30);
-        PrivateEvent event2 = new PrivateEvent("00",name, date2, geoPoint,address,description, type);
+        Group event2 = new Group("00",name, date2, geoPoint,address,description, type);
 
         assertEquals(event.compareTo(event2), -1);
     }
 
     @Test
     public void setType(){
-        PrivateEvent event = new PrivateEvent("00",name, date, geoPoint,address,description, type);
+        Group event = new Group("00",name, date, geoPoint,address,description, type);
         assertEquals(type, event.getType());
-        event.setType(Event.Type.Movie);
-        assertEquals(Event.Type.Movie, event.getType());
+        event.setType(Social.Type.Movie);
+        assertEquals(Social.Type.Movie, event.getType());
     }
 
     @Test
     public void setAddress(){
-        PrivateEvent event = new PrivateEvent("00",name, date, geoPoint,address,description, type);
+        Group event = new Group("00",name, date, geoPoint,address,description, type);
         assertEquals(address, event.getAddress());
         event.setAddress("this is the new address");
         assertEquals("this is the new address", event.getAddress());

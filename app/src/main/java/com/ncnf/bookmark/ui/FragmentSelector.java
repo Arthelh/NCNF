@@ -35,7 +35,7 @@ public class FragmentSelector extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if(position == 1){
-            return new EventDisplayFragment(OWNED_EVENTS_KEY);
+            return new EventDisplayFragment(OWNED_GROUPS_KEY);
         }
         return new EventDisplayFragment(SAVED_EVENTS_KEY);
     }

@@ -6,7 +6,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.event.Event;
-import com.ncnf.event.PublicEvent;
+import com.ncnf.event.Social;
 import com.ncnf.event.EventActivity;
 import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
@@ -34,7 +34,6 @@ import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
@@ -42,9 +41,9 @@ import static org.mockito.Mockito.when;
 public class BookMarkActivityTest {
 
     private static final User mockUser = Mockito.mock(User.class);
-    List<Event> list = new ArrayList<>();
-    private final Event event = new PublicEvent("EPFL", "EPFL event", new Date(2021, 03, 11), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0, "test@email.com");
-    private CompletableFuture<List<Event>> events;
+    List<Social> list = new ArrayList<>();
+    private final Social social = new Event("EPFL", "EPFL social", new Date(2021, 03, 11), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Social description goes here", Social.Type.Conference, 0, 0, "test@email.com");
+    private CompletableFuture<List<Social>> events;
 
     @BindValue
     public User user = mockUser;
@@ -56,11 +55,11 @@ public class BookMarkActivityTest {
     @Before
     public void setup(){
         for(int i = 0; i < 8; ++i){
-            list.add(event);
+            list.add(social);
         }
         events =  CompletableFuture.completedFuture(list);
         when(user.getSavedEvents()).thenReturn(events);
-        when(user.getOwnedEvents()).thenReturn(events);
+        when(user.getOwnedGroups()).thenReturn(events);
 
         Intents.init();
     }

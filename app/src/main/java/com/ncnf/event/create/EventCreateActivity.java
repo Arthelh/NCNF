@@ -30,7 +30,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.event.Event;
-import com.ncnf.event.PublicEvent;
+import com.ncnf.event.Group;
+import com.ncnf.event.Social;
 import com.ncnf.main.MainActivity;
 import com.ncnf.user.User;
 import com.ncnf.utilities.DateAdapter;
@@ -63,7 +64,7 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
     @Inject
     public User user;
 
-    private Event.Type eventType;
+    private Social.Type eventType;
     private LocalDate eventDate = LocalDate.now();
     private LocalTime eventTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
     private int selYear, selMonth, selDay, selHour, selMin;
@@ -160,7 +161,7 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
 
         Spinner spinner = (Spinner) findViewById(R.id.select_event_type);
         spinner.setOnItemSelectedListener(EventCreateActivity.this);
-        List<String> options = Stream.of(Event.Type.values()).map(Event.Type::name).collect(Collectors.toList());
+        List<String> options = Stream.of(Social.Type.values()).map(Social.Type::name).collect(Collectors.toList());
 
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(EventCreateActivity.this, android.R.layout.simple_spinner_item, options);
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -191,24 +192,24 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
                         // TODO: might change with the new event class
                         // File upload must happened after the event is saved, such that the image path
                         // contains the event's UUID
-                        FileStore file = new FileStore(Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
+                        FileStore file = new FileStore(Social.IMAGE_PATH, String.format(Social.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
                         pictureView.setDrawingCacheEnabled(true);
                         pictureView.buildDrawingCache();
                         Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
                         file.uploadImage(bitmap);
 
-                        //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
+                        //TODO: for now some fields aren't used and it only creates group -> should be extended afterward
                         DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());
-                        PublicEvent event = new PublicEvent(user.getUuid(),
+                        Group event = new Group(user.getUuid(),
                                 eventName.getText().toString(),
                                 date.getDate(), getLocationFromAddress(eventAddress.getText().toString()),
                                 eventAddress.getText().toString(),
                                 eventDescription.getText().toString(),
-                                eventType, minAgeVal, priceVal, eventEmail.getText().toString()
+                                eventType
                         );
                         if(event != null) {
 
-                            user.createEvent(event).thenAccept(task -> nextStep()).exceptionally(exception -> {
+                            user.createGroup(event).thenAccept(task -> nextStep()).exceptionally(exception -> {
                                 failToCreateEvent(exception.getMessage());
                                 return null;
                             });
@@ -289,7 +290,7 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
     private boolean checkAllFieldsAreFilledAndCorrect() {
 
         EditText[] fields = new EditText[] {eventName, eventDescription, eventEmail, eventAddress};
-        boolean interm = Arrays.asList(fields).stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != Event.Type.NOTHING;
+        boolean interm = Arrays.asList(fields).stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != Social.Type.NOTHING;
         if(!interm) {
             return false;
         }
@@ -321,7 +322,7 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
-        eventType = Event.Type.valueOf(item);
+        eventType = Social.Type.valueOf(item);
     }
 
     @Override

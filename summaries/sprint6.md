@@ -4,9 +4,9 @@
 
 For this week I modified the markers on the map. I have three tasks to do: The first one is to make that when there are multiple markers
 very close to each other, instead of having many markers overlapping we have a circle instead with a number showing how many markers are in
-this area. This is already done and merged. The Second is to have it so that when there are multiple events at the exact same place it only creates
-one marker with the information of all events it represents and the third is to have it so that when you click on a marker you can access the event
-page of the event(s) it represents. Task 2 is still underway and I still have to work on task 3.
+this area. This is already done and merged. The Second is to have it so that when there are multiple socials at the exact same place it only creates
+one marker with the information of all socials it represents and the third is to have it so that when you click on a marker you can access the social
+page of the social(s) it represents. Task 2 is still underway and I still have to work on task 3.
 
 Overall I'm a bit behind on this week due to other workload and I'll have to catch up this weekend
 
@@ -14,12 +14,12 @@ Overall I'm a bit behind on this week due to other workload and I'll have to cat
 As I spent way too many hours last week on the project, I had a lot of work to catch up with, so I didn't make any progress. 
 
 # Eloi 
-This week, I had to refactor the Private/Public event classes. We change our event model to Groups/Events and dropped the abstract class we made. As for Jérémie, this change impacted a lot of files, especially the test files. For that reason, I won't have a PR before the meeting but hopefully this week-end. Also managed to help Jérémie with the Database Service.
+This week, I had to refactor the Private/Public social classes. We change our social model to Groups/Events and dropped the abstract class we made. As for Jérémie, this change impacted a lot of files, especially the test files. For that reason, I won't have a PR before the meeting but hopefully this week-end. Also managed to help Jérémie with the Database Service.
 
 
 # Emmanuelle (scrum master)
 
-This week, I redid the UI for the event creation now that we know exactly what fields we want to put into it, and then I started working on the activity to track the location of your friends. I did not run into any major issues and I will be continuing the friend tracking activity next week. 
+This week, I redid the UI for the social creation now that we know exactly what fields we want to put into it, and then I started working on the activity to track the location of your friends. I did not run into any major issues and I will be continuing the friend tracking activity next week.
 
 
 # Jérémie
@@ -31,7 +31,7 @@ This took me a lot of time already and I not close to be done. But this is looki
 
 # Keran
 
-I mainly worked on file upload. We chose to use Firestore to store the images for our app (for example event banner or profile image). I implemented a class to interact with Firestore and upload an image. For now, this is used to upload the selected image when creating an event. I then display the image from the store using Glide. However, this will change as the next steps is to implement image caching, so the way images are fetched will be revisited.
+I mainly worked on file upload. We chose to use Firestore to store the images for our app (for example social banner or profile image). I implemented a class to interact with Firestore and upload an image. For now, this is used to upload the selected image when creating an social. I then display the image from the store using Glide. However, this will change as the next steps is to implement image caching, so the way images are fetched will be revisited.
 
 I also helped Jeremie on the refactoring of our database service.
 

@@ -10,7 +10,7 @@ About my time estimates, this week I think they were fair.
 
 # David
 
-This week I started to look for a way to get a recommendation system for events. After some research I settled on google analytics with bigQuery and Tenserflow. I had to subdivide the initial spring task as it turned out being much more complex than expected. My estimates were well below the actual time this is going to take, at least another week probably.
+This week I started to look for a way to get a recommendation system for socials. After some research I settled on google analytics with bigQuery and Tenserflow. I had to subdivide the initial spring task as it turned out being much more complex than expected. My estimates were well below the actual time this is going to take, at least another week probably.
 
 
 # Eloi
@@ -20,7 +20,7 @@ This week, I manage to create the Database service in order to properly separate
 
 # Emmanuelle
 
-This week, I worked on filtering the event feed by tags and sorting it by date or by relevance, and on connecting the feed view which was still linked with placeholder event activities to the actual event activity. I didn't run into any major difficulties, and it took me the expected time. Next week, I will implement tests for this part and merge it with the main branch.
+This week, I worked on filtering the social feed by tags and sorting it by date or by relevance, and on connecting the feed view which was still linked with placeholder social activities to the actual social activity. I didn't run into any major difficulties, and it took me the expected time. Next week, I will implement tests for this part and merge it with the main branch.
 
 # Jérémie (scrum master)
 
@@ -36,7 +36,7 @@ I initially planned to work on a notification service, but we finally decided th
 
 This week, the main task was to test and merge the Authentication and Database modules in order to build the rest of the application on top of it. The integration of Firebase services is now properly modularized and the Database can be used for our basic entities (Users, Events). This completes two high priority user stories.
 
-Another goal was to finish the map user story, specifically the navigation and the selection of the radius we want events to be seen. This has been done and tested, completing another user story.
+Another goal was to finish the map user story, specifically the navigation and the selection of the radius we want socials to be seen. This has been done and tested, completing another user story.
 
 For the remaining user stories in the Sprint Backlog, the work is in progress but not done yet. These will require one more week to finish implementation and testing.
 

@@ -3,9 +3,9 @@ package com.ncnf.database;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.event.Event;
+import com.ncnf.event.Group;
+import com.ncnf.event.Social;
 import com.ncnf.database.builder.EventBuilder;
-import com.ncnf.event.PrivateEvent;
-import com.ncnf.event.PublicEvent;
 import com.ncnf.event.Tag;
 
 import org.junit.Before;
@@ -37,7 +37,7 @@ import static com.ncnf.Utils.UUID_KEY;
 import static com.ncnf.Utils.VISIBILITY_KEY;
 import static org.junit.Assert.assertEquals;
 
-public class EventBuilderTest {
+public class SocialBuilderTest {
 
     private DatabaseService db;
     private EventBuilder eventBuilder;
@@ -89,7 +89,7 @@ public class EventBuilderTest {
         publicEvent.put(TAGS_LIST_KEY, tags);
 
 
-        PublicEvent event = (PublicEvent) eventBuilder.toObject(uuid, publicEvent);
+        Event event = (Event) eventBuilder.toObject(uuid, publicEvent);
 
         assertEquals(event.getUuid().toString(), uuid);
         assertEquals(event.getName(), name);
@@ -126,7 +126,7 @@ public class EventBuilderTest {
 
         privateEvent.put(INVITED_KEY, invited);
 
-        PrivateEvent event = (PrivateEvent) eventBuilder.toObject(uuid, privateEvent);
+        Group event = (Group) eventBuilder.toObject(uuid, privateEvent);
 
         assertEquals(event.getUuid().toString(), uuid);
         assertEquals(event.getName(), name);
@@ -145,11 +145,11 @@ public class EventBuilderTest {
     @Test
     public void privateToMapWorks() {
 
-        Event.Type type = Event.Type.Movie;
+        Social.Type type = Social.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
 
-        PrivateEvent event = new PrivateEvent(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
+        Group event = new Group(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
         Map<String, Object> map = eventBuilder.toMap(event);
         assertEquals(eventBuilder.toObject(uuid.toString(), map), event);
 
@@ -158,11 +158,11 @@ public class EventBuilderTest {
     @Test
     public void publicToMapWorks() {
 
-        Event.Type type = Event.Type.Movie;
+        Social.Type type = Social.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
 
-        PublicEvent event = new PublicEvent(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags, email);
+        Event event = new Event(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags, email);
         Map<String, Object> map = eventBuilder.toMap(event);
         assertEquals(eventBuilder.toObject(uuid.toString(), map), event);
 

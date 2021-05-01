@@ -11,26 +11,23 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ncnf.database.builder.EventBuilder;
 import com.ncnf.event.Event;
-import com.ncnf.event.PublicEvent;
+import com.ncnf.event.Social;
 import com.ncnf.mocks.MockTask;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
 import static com.ncnf.Utils.NAME_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
@@ -44,15 +41,15 @@ public class DatabaseServiceTest {
 
     private FirebaseFirestore db;
     private static DatabaseService service;
-    private static Event event;
+    private static Social social;
     private static Task task;
 
     String name = "Jane Doe";
     Date date = new Date(2021, 03, 11);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    Event.Type type = Event.Type.Conference;
-    String description = "Event description goes here";
+    Social.Type type = Social.Type.Conference;
+    String description = "Social description goes here";
     String ownerID = "00";
 
     @Before
@@ -60,8 +57,8 @@ public class DatabaseServiceTest {
         db = Mockito.mock(FirebaseFirestore.class, Mockito.RETURNS_DEEP_STUBS);
         service = new DatabaseService(db);
 
-        event = new PublicEvent(ownerID, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
-        task = new MockTask<Event>(event, null);
+        social = new Event(ownerID, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        task = new MockTask<Social>(social, null);
     }
 
     @Test
@@ -109,7 +106,7 @@ public class DatabaseServiceTest {
 
     @Test
     public void updateFieldFails(){
-        task = new MockTask(event, new IllegalArgumentException(), false);
+        task = new MockTask(social, new IllegalArgumentException(), false);
         when(db.document(anyString()).update((FieldPath) anyObject(), anyObject())).thenReturn(task);
 
         CompletableFuture<Boolean> future = service.updateField("path", NAME_KEY, name);
@@ -119,7 +116,7 @@ public class DatabaseServiceTest {
 
     @Test
     public void getDocumentWorks(){
-        PublicEvent event = new PublicEvent(UUID.randomUUID().toString(), name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        Event event = new Event(UUID.randomUUID().toString(), name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
         Map<String, Object> data = new EventBuilder().toMap(event);
 
         DocumentSnapshot document = Mockito.mock(DocumentSnapshot.class);
@@ -127,7 +124,7 @@ public class DatabaseServiceTest {
         task = new MockTask(document, null, true);
         when(db.document(anyString()).get()).thenReturn(task);
 
-        CompletableFuture<PublicEvent> future = service.getDocument("path", PublicEvent.class);
+        CompletableFuture<Event> future = service.getDocument("path", Event.class);
 
         try{
             assertEquals(future.get(), event);
@@ -145,7 +142,7 @@ public class DatabaseServiceTest {
         task = new MockTask(document, new IllegalArgumentException(), false);
         when(db.document(anyString()).get()).thenReturn(task);
 
-        CompletableFuture<Event> future = service.getDocument("path", Event.class);
+        CompletableFuture<Social> future = service.getDocument("path", Social.class);
 
         assertTrue(future.isCompletedExceptionally());
     }
@@ -154,7 +151,7 @@ public class DatabaseServiceTest {
     public void setDocumentWorks() {
         when(db.document(anyString()).set(anyObject())).thenReturn(task);
 
-        CompletableFuture<Boolean> future = service.setDocument("/events", event);
+        CompletableFuture<Boolean> future = service.setDocument("/events", social);
 
         try {
             assertTrue(future.get());
@@ -169,7 +166,7 @@ public class DatabaseServiceTest {
         task = new MockTask(document, new IllegalArgumentException(), false);
         when(db.document(anyString()).set(anyObject())).thenReturn(task);
 
-        CompletableFuture<Boolean> future = service.setDocument("/events", event);
+        CompletableFuture<Boolean> future = service.setDocument("/events", social);
 
         assertTrue(future.isCompletedExceptionally());
     }
@@ -226,7 +223,7 @@ public class DatabaseServiceTest {
     public void getCollectionWorks(){
 
         String uuid = UUID.randomUUID().toString();
-        PublicEvent event = new PublicEvent(uuid, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        Event event = new Event(uuid, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
         Map<String, Object> data = new EventBuilder().toMap(event);
 
         QueryDocumentSnapshot document = Mockito.mock(QueryDocumentSnapshot.class);
@@ -241,7 +238,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.get()).thenReturn(task);
 
-       CompletableFuture<List<Event>> res = service.getCollection("/events", Event.class);
+       CompletableFuture<List<Social>> res = service.getCollection("/events", Social.class);
 
         try {
             assertEquals(event, res.get().get(0));
@@ -258,7 +255,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.get()).thenReturn(task);
 
-        CompletableFuture<List<Event>> future = service.getCollection("/events", Event.class);
+        CompletableFuture<List<Social>> future = service.getCollection("/events", Social.class);
 
         assertTrue(future.isCompletedExceptionally());
     }
@@ -266,7 +263,7 @@ public class DatabaseServiceTest {
     @Test
     public void withFieldLikeWorks(){
         String uuid = UUID.randomUUID().toString();
-        PublicEvent event = new PublicEvent(uuid, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        Event event = new Event(uuid, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
         Map<String, Object> data = new EventBuilder().toMap(event);
 
         QueryDocumentSnapshot document = Mockito.mock(QueryDocumentSnapshot.class);
@@ -287,7 +284,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.orderBy(anyString())).thenReturn(query);
 
-        CompletableFuture<List<Event>> future = service.withFieldLike("/events", "field", "value", Event.class);
+        CompletableFuture<List<Social>> future = service.withFieldLike("/events", "field", "value", Social.class);
 
         try {
             assertEquals(event, future.get().get(0));
@@ -309,7 +306,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.orderBy(anyString())).thenReturn(query);
 
-        CompletableFuture<List<Event>> future = service.withFieldLike("/events", "field", "value", Event.class);
+        CompletableFuture<List<Social>> future = service.withFieldLike("/events", "field", "value", Social.class);
 
         assertTrue(future.isCompletedExceptionally());
     }
@@ -317,7 +314,7 @@ public class DatabaseServiceTest {
     @Test
     public void whereArrayContains(){
         String uuid = UUID.randomUUID().toString();
-        PublicEvent event = new PublicEvent(uuid, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        Event event = new Event(uuid, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
         Map<String, Object> data = new EventBuilder().toMap(event);
 
         QueryDocumentSnapshot document = Mockito.mock(QueryDocumentSnapshot.class);
@@ -336,7 +333,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.whereArrayContains(anyString(), anyString())).thenReturn(query);
 
-        CompletableFuture<List<Event>> future = service.whereArrayContains("/events", "field", "value", Event.class);
+        CompletableFuture<List<Social>> future = service.whereArrayContains("/events", "field", "value", Social.class);
 
         try {
             assertEquals(event, future.get().get(0));
@@ -356,7 +353,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.whereArrayContains(anyString(), anyString())).thenReturn(query);
 
-        CompletableFuture<List<Event>> future = service.whereArrayContains("/events", "field", "value", Event.class);
+        CompletableFuture<List<Social>> future = service.whereArrayContains("/events", "field", "value", Social.class);
 
         assertTrue(future.isCompletedExceptionally());
     }
@@ -364,7 +361,7 @@ public class DatabaseServiceTest {
     @Test
     public void whereEqualTo(){
         String uuid = UUID.randomUUID().toString();
-        PublicEvent event = new PublicEvent(uuid, name, date, geoPoint,address,description, type, 0, 0L, "test@email.com");
+        Event event = new Event(uuid, name, date, geoPoint,address,description, type, 0, 0L, "test@email.com");
         Map<String, Object> data = new EventBuilder().toMap(event);
 
         QueryDocumentSnapshot document = Mockito.mock(QueryDocumentSnapshot.class);
@@ -383,7 +380,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.whereEqualTo(anyString(), anyString())).thenReturn(query);
 
-        CompletableFuture<List<Event>> future = service.whereEqualTo("/events", "field", "value", Event.class);
+        CompletableFuture<List<Social>> future = service.whereEqualTo("/events", "field", "value", Social.class);
 
         try {
             assertEquals(event, future.get().get(0));
@@ -403,7 +400,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.whereEqualTo(anyString(), anyString())).thenReturn(query);
 
-        CompletableFuture<List<Event>> future = service.whereEqualTo("/events", "field", "value", Event.class);
+        CompletableFuture<List<Social>> future = service.whereEqualTo("/events", "field", "value", Social.class);
 
         assertTrue(future.isCompletedExceptionally());
     }
@@ -411,13 +408,13 @@ public class DatabaseServiceTest {
     /*
     @Test
     public void whereInWorks(){
-        CompletableFuture future = CompletableFuture.completedFuture(Arrays.asList(event));
+        CompletableFuture future = CompletableFuture.completedFuture(Arrays.asList(social));
         when(service.whereEqualTo(anyString(), anyString(), any(), any())).thenReturn(future);
 
-        CompletableFuture<List<Event>> listFuture = service.whereIn("/events", "field", Arrays.asList("value"), Event.class);
+        CompletableFuture<List<Social>> listFuture = service.whereIn("/events", "field", Arrays.asList("value"), Social.class);
 
         try {
-            assertEquals(listFuture.get().get(0), event);
+            assertEquals(listFuture.get().get(0), social);
         } catch (Exception e){
             Assert.fail("The future did not complete correctly !");
         }
@@ -426,9 +423,9 @@ public class DatabaseServiceTest {
 
     @Test
     public void whereInFailsOnEmpty(){
-        CompletableFuture<List<Event>> future = service.whereIn("path", "path", null, Event.class);
+        CompletableFuture<List<Social>> future = service.whereIn("path", "path", null, Social.class);
         assertTrue(future.isCompletedExceptionally());
-        future = service.whereIn("path", "path", new ArrayList<>(), Event.class);
+        future = service.whereIn("path", "path", new ArrayList<>(), Social.class);
 
         try {
             assertTrue(future.get().isEmpty());

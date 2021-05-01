@@ -24,10 +24,7 @@ import com.ncnf.event.Event;
 import com.ncnf.event.EventActivity;
 import com.ncnf.feed.ui.FeedFragment;
 
-import java.util.List;
-
 import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.UUID_KEY;
 
 public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, ClusterManager.OnClusterItemClickListener<NCNFMarker>, ClusterManager.OnClusterItemInfoWindowClickListener<NCNFMarker> {
 
