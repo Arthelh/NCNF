@@ -50,19 +50,7 @@
         app:layout_constraintStart_toEndOf="@+id/map" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/map_zoomin_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/zoom_in"
-        app:layout_constraintBottom_toTopOf="@+id/map_switch_button"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/map_zoomout_button"
+        android:id="@+id/map_settings_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -70,32 +58,47 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="10dp"
         android:layout_toEndOf="@id/map_settings_button"
-        android:text="@string/zoom_out"
+        android:text="@string/map_settings_button"
         app:layout_constraintBottom_toTopOf="@+id/map_switch_button"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/map_settings_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_toEndOf="@id/map_zoomin_button"
-        android:text="@string/settings"
-        app:layout_constraintBottom_toTopOf="@+id/map_switch_button"
-        app:layout_constraintEnd_toStartOf="@+id/map_zoomin_button"
-        app:layout_constraintStart_toEndOf="@+id/map_zoomout_button" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/map_location_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="16dp"
         android:src="@android:drawable/ic_menu_compass"
-        app:layout_constraintBottom_toTopOf="@+id/map_zoomin_button"
-        app:layout_constraintEnd_toEndOf="@id/map_zoomin_button"
+        app:layout_constraintBottom_toTopOf="@+id/map_switch_button"
+        app:layout_constraintEnd_toEndOf="parent"
         style="@style/Theme.NCNF.BlueButton"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/map_feed_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="20dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/map_feed_button"
+            android:text="@string/map_feed_button"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:visibility="invisible"
+            android:elevation="5dp"/>
+        <FrameLayout
+            android:id="@+id/map_feed_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="48dp"
+            app:layout_constraintBottom_toTopOf="@id/map_feed_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

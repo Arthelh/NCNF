@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
     android:orientation="horizontal"
-    android:padding="10dp"
-    >
+    android:id="@+id/marker_info_window"
+    android:padding="10dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFF"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/test_title"
+            android:id="@+id/marker_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/marker_image"
+            android:textAlignment="center"
             android:ellipsize="end"
             android:maxLines="10"
             android:textColor="#000"
@@ -26,13 +29,27 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/test_snippet"
+            android:id="@+id/marker_snippet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/marker_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/marker_image"
             android:ellipsize="end"
             android:maxLines="10"
             android:textColor="#000"
             android:textSize="14sp" />
-    </LinearLayout>
+
+        <ImageView
+            android:id="@+id/marker_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_keyboard_arrow_right_black_36dp"
+            android:contentDescription="@string/map_marker_arrow" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
