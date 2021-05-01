@@ -74,7 +74,6 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
     private void getEventList(View view){
         if(user != null){
             CompletableFuture listEvent;
-            Log.d(DEBUG_TAG, "let's go");
             if(eventCollection == SAVED_EVENTS_KEY){
                 listEvent = user.getSavedEvents();
             } else {
