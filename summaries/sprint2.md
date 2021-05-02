@@ -15,17 +15,17 @@ Except for that however my estimates were quite close to the time I ended up inv
 # David
 
 I added a the user interface for creating events. This includes name, description, an image, website, etc. There were no particular issues beside sanitizing the user input. The solution I settled on was to add a utility class that offers static methods that perform input verification. This can be expanded on and reused in other parts of th projects.
-It took way more time to build the social creation UI, Keran created the tests and overall this task took 3 to 4 times the expected time for completion
+It took way more time to build the event creation UI, Keran created the tests and overall this task took 3 to 4 times the expected time for completion
 
 # Eloi
 
-I extended to Event class for Database Support : added method to load an Event from the Database, update a particular field et store an social on the database. Took more time than expected because of merging every Event class previously made. I also coded a first version of the "Saved a feature social" which took the expected time. It's very basic for now : press on a button to save social and the id of the button is added to a saved_event array list of the user.
+I extended to Event class for Database Support : added method to load an Event from the Database, update a particular field et store an event on the database. Took more time than expected because of merging every Event class previously made. I also coded a first version of the "Saved a feature event" which took the expected time. It's very basic for now : press on a button to save event and the id of the button is added to a saved_event array list of the user.
 
 # Emmanuelle
 
 I first finished writing tests for the code that I wrote last week. Then, I merged my branch with the main branch and launched a pull request. Finally, I started working on a way to cache Event entities.
 
-The merge took a lot longer than I expected since I ran into quite a few issues. Also, my estimate for the caching of social entities was off, and therefore I am not finished yet. For next week, I hope to estimate better.
+The merge took a lot longer than I expected since I ran into quite a few issues. Also, my estimate for the caching of event entities was off, and therefore I am not finished yet. For next week, I hope to estimate better.
 
 # Jérémie
 
@@ -35,7 +35,7 @@ The estimates for my tasks were way off since I had to do more work than expecte
 
 # Keran (scrum master)
 
-I tested the creation of an social which was implemented by David. The testing was split into two tasks. First, the input validator for the fields was unit tested because this task was extracted in a class that can be used to validate any field. Then an instrumented test checks that a user can successfully create an social or see the appropriate errors in the form.
+I tested the creation of an event which was implemented by David. The testing was split into two tasks. First, the input validator for the fields was unit tested because this task was extracted in a class that can be used to validate any field. Then an instrumented test checks that a user can successfully create an event or see the appropriate errors in the form.
 
 The challenges were the use of Expresso to fill in form, especially for date picker and spinner, and the refactor of the input validator to separate the logic part of the UI one.
 
@@ -43,4 +43,4 @@ The challenges were the use of Expresso to fill in form, especially for date pic
 
 Great progresses were made to have a common conception of the basic entities: events, public and private users such that everyone can work on a common basis. However, it is still a work in progress that must finalized next week. Another challenge tackled by the team is the implementation of the Firebase database and authentification. This work spans a few weeks to be fully working.
 
-Another part of the team works on concrete feature that can be seen on the end product (e.g map features, social creation). Efforts need to be made to better estimate the work load and split the work into feasible task, but the learning curve is steep ! The organization get better every day thanks to the standup meeting and constant communication.
+Another part of the team works on concrete feature that can be seen on the end product (e.g map features, event creation). Efforts need to be made to better estimate the work load and split the work into feasible task, but the learning curve is steep ! The organization get better every day thanks to the standup meeting and constant communication.
