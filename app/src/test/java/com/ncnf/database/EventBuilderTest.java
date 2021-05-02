@@ -38,9 +38,8 @@ import static com.ncnf.Utils.UUID_KEY;
 import static com.ncnf.Utils.VISIBILITY_KEY;
 import static org.junit.Assert.assertEquals;
 
-public class SocialBuilderTest {
+public class EventBuilderTest {
 
-    private DatabaseService db;
     private EventBuilder eventBuilder = new EventBuilder();
     private GroupBuilder groupbuilder = new GroupBuilder();
 
@@ -65,7 +64,6 @@ public class SocialBuilderTest {
 
     @Before
     public void setup() {
-        db = Mockito.mock(DatabaseService.class);
         publicEvent = new HashMap<>();
         privateEvent = new HashMap<>();
     }
