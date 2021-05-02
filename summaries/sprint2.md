@@ -3,7 +3,7 @@
 # Beltan
 
 I continued the implementation of the map, namely the ToolBar and a setting that allows for a maximum distance to which
-socials are shown to be chosen. I ran into many issues for the ToolBar, apparently related to the Places API from Google.
+events are shown to be chosen. I ran into many issues for the ToolBar, apparently related to the Places API from Google.
 I have not yet managed to resolve those issues.
 The settings I have implemented without too many issues. A couple arose but I managed to resolve them.
 
@@ -14,7 +14,7 @@ Except for that however my estimates were quite close to the time I ended up inv
 
 # David
 
-I added a the user interface for creating socials. This includes name, description, an image, website, etc. There were no particular issues beside sanitizing the user input. The solution I settled on was to add a utility class that offers static methods that perform input verification. This can be expanded on and reused in other parts of th projects.
+I added a the user interface for creating events. This includes name, description, an image, website, etc. There were no particular issues beside sanitizing the user input. The solution I settled on was to add a utility class that offers static methods that perform input verification. This can be expanded on and reused in other parts of th projects.
 It took way more time to build the social creation UI, Keran created the tests and overall this task took 3 to 4 times the expected time for completion
 
 # Eloi
@@ -41,6 +41,6 @@ The challenges were the use of Expresso to fill in form, especially for date pic
 
 # Overall team
 
-Great progresses were made to have a common conception of the basic entities: socials, public and private users such that everyone can work on a common basis. However, it is still a work in progress that must finalized next week. Another challenge tackled by the team is the implementation of the Firebase database and authentification. This work spans a few weeks to be fully working.
+Great progresses were made to have a common conception of the basic entities: events, public and private users such that everyone can work on a common basis. However, it is still a work in progress that must finalized next week. Another challenge tackled by the team is the implementation of the Firebase database and authentification. This work spans a few weeks to be fully working.
 
 Another part of the team works on concrete feature that can be seen on the end product (e.g map features, social creation). Efforts need to be made to better estimate the work load and split the work into feasible task, but the learning curve is steep ! The organization get better every day thanks to the standup meeting and constant communication.
