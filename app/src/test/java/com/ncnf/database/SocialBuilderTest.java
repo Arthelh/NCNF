@@ -40,7 +40,6 @@ import static org.junit.Assert.assertEquals;
 
 public class SocialBuilderTest {
 
-    private DatabaseService db;
     private EventBuilder eventBuilder = new EventBuilder();
     private GroupBuilder groupbuilder = new GroupBuilder();
 
@@ -65,7 +64,6 @@ public class SocialBuilderTest {
 
     @Before
     public void setup() {
-        db = Mockito.mock(DatabaseService.class);
         publicEvent = new HashMap<>();
         privateEvent = new HashMap<>();
     }
@@ -90,7 +88,7 @@ public class SocialBuilderTest {
         publicEvent.put(TAGS_LIST_KEY, tags);
 
 
-        Event event = (Event) eventBuilder.toObject(uuid, publicEvent);
+        Event event = eventBuilder.toObject(uuid, publicEvent);
 
         assertEquals(event.getUuid().toString(), uuid);
         assertEquals(event.getName(), name);
@@ -104,13 +102,11 @@ public class SocialBuilderTest {
         assertEquals(event.getMinAge(), minAge);
         assertEquals(event.getPrice(), price, 0);
         assertEquals(event.getEmail(), email);
-
     }
 
 
     @Test
     public void loadPrivate() {
-
         privateEvent.put(OWNER_KEY, ownerId);
         privateEvent.put(UUID_KEY, this.uuid);
         privateEvent.put(NAME_KEY, this.name);
@@ -143,7 +139,6 @@ public class SocialBuilderTest {
 
     @Test
     public void privateToMapWorks() {
-
         Social.Type type = Social.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
@@ -156,7 +151,6 @@ public class SocialBuilderTest {
 
     @Test
     public void publicToMapWorks() {
-
         Social.Type type = Social.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
