@@ -1,6 +1,5 @@
 package com.ncnf.database;
 
-import android.util.DebugUtils;
 import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
@@ -13,9 +12,8 @@ import com.ncnf.database.builder.DatabaseObjectBuilder;
 import com.ncnf.database.builder.EventBuilder;
 import com.ncnf.database.builder.GroupBuilder;
 import com.ncnf.database.builder.UserBuilder;
-import com.ncnf.event.Group;
 import com.ncnf.event.Event;
-import com.ncnf.event.Social;
+import com.ncnf.event.Group;
 import com.ncnf.user.User;
 
 import java.util.ArrayList;

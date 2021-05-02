@@ -88,7 +88,7 @@ public class EventBuilderTest {
         publicEvent.put(TAGS_LIST_KEY, tags);
 
 
-        Event event = (Event) eventBuilder.toObject(uuid, publicEvent);
+        Event event = eventBuilder.toObject(uuid, publicEvent);
 
         assertEquals(event.getUuid().toString(), uuid);
         assertEquals(event.getName(), name);
@@ -102,13 +102,11 @@ public class EventBuilderTest {
         assertEquals(event.getMinAge(), minAge);
         assertEquals(event.getPrice(), price, 0);
         assertEquals(event.getEmail(), email);
-
     }
 
 
     @Test
     public void loadPrivate() {
-
         privateEvent.put(OWNER_KEY, ownerId);
         privateEvent.put(UUID_KEY, this.uuid);
         privateEvent.put(NAME_KEY, this.name);
@@ -141,7 +139,6 @@ public class EventBuilderTest {
 
     @Test
     public void privateToMapWorks() {
-
         Social.Type type = Social.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
@@ -154,7 +151,6 @@ public class EventBuilderTest {
 
     @Test
     public void publicToMapWorks() {
-
         Social.Type type = Social.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
