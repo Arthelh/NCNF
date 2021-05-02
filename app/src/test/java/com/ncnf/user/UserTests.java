@@ -429,7 +429,7 @@ public class UserTests {
 
     @Test
     public void getParticipatingGroupsWorks(){
-        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), false, null);
+        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), new ArrayList<>(), false, null);
         CompletableFuture<List<Social>> future = CompletableFuture.completedFuture(Arrays.asList(group));
         when(db.whereIn(anyString(), anyString(), anyList(), any())).thenReturn(future);
         try{
