@@ -46,7 +46,7 @@ public class UserBuilder extends DatabaseObjectBuilder<User>{
             Date birthDate = ((Timestamp) data.get(BIRTH_DATE_KEY)).toDate();
             boolean notifications = (boolean) data.get(NOTIFICATIONS_KEY);
 
-            return new User(db, uuid, username, email, firstName, lastName, friends, ownedGroups, participatingGroups, birthDate, notifications, savedEvents);
+            return new User(db, uuid, username, email, firstName, lastName, friends, ownedGroups, participatingGroups, savedEvents, notifications, birthDate);
         } catch (Exception e){
             return null;
         }
