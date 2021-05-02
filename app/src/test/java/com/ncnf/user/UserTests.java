@@ -429,11 +429,12 @@ public class UserTests {
 
     @Test
     public void getParticipatingGroupsWorks(){
-        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), false, null);
-        CompletableFuture<List<Social>> future = CompletableFuture.completedFuture(Arrays.asList(group));
-        when(db.whereIn(anyString(), anyString(), anyList(), any())).thenReturn(future);
+        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), new ArrayList<>(), false, null);
+        when(db.whereIn(anyString(), anyString(), anyList(), any())).thenReturn(CompletableFuture.completedFuture(Arrays.asList(group)));
+
+        CompletableFuture<List<Group>> query = user.getParticipatingGroups();
         try{
-            assertEquals(future.get().get(0), group);
+            assertEquals(query.get().get(0), group);
         } catch(Exception e){
             Assert.fail("Something went wrong with the future");
         }
