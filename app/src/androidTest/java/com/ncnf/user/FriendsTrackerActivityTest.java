@@ -18,7 +18,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 
 import java.util.Date;
 import java.util.concurrent.CompletableFuture;
@@ -47,38 +50,36 @@ import static org.mockito.Mockito.when;
 @UninstallModules(CurrentUserModule.class)
 public class FriendsTrackerActivityTest {
 
-    private static final User mockUser = Mockito.mock(User.class);
-    private static final DatabaseService mockDBs = Mockito.mock(DatabaseService.class);
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+
+    @InjectMocks
     private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(FriendsTrackerActivity.class);
 
-    private static final String uuid = "MSpKLkyyrrN3PC5KmxkoD05Vy1m2";
+    private static final String userId = "MSpKLkyyrrN3PC5KmxkoD05Vy1m2";
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);
 
     @BindValue
-    public User user = mockUser;
+    public User user = Mockito.mock(User.class);
 
-    @BindValue
-    public DatabaseService dbs = mockDBs;
+    @Spy
+    private DatabaseService dbs;
 
-    @BeforeClass
-    public static void setupClass() {
-        when(mockUser.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(mockUser));
-        when(mockUser.getEmail()).thenReturn("john@doe.ch");
-        when(mockUser.getFirstName()).thenReturn("John");
-        when(mockUser.getUuid()).thenReturn("0");
-        when(mockUser.getLoc()).thenReturn(new GeoPoint(0, 0));
-
-        when(mockDBs.getField(USERS_COLLECTION_KEY + uuid, LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(new GeoPoint(0.05,0.05)));
-        when(mockDBs.getField(USERS_COLLECTION_KEY + uuid, FIRST_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("Jane"));
-    }
 
     @Before
     public void setup(){
         Intents.init();
+
+        when(user.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user));
+        when(user.getEmail()).thenReturn("john@doe.ch");
+        when(user.getFirstName()).thenReturn("John");
+        when(user.getUuid()).thenReturn("0");
+        when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
+
+        when(dbs.getField(USERS_COLLECTION_KEY + userId, USER_LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(new GeoPoint(0.05,0.05)));
+        when(dbs.getField(USERS_COLLECTION_KEY + userId, FIRST_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("Jane"));
     }
 
     @After
@@ -94,13 +95,5 @@ public class FriendsTrackerActivityTest {
 
         assertTrue("User marker exists", marker.waitForExists(2000));
     }
-
-    @Test
-    public void findsOtherUser() {
-
-        UiDevice device = UiDevice.getInstance(getInstrumentation());
-        UiObject marker = device.findObject(new UiSelector().descriptionContains("Marie"));
-
-        assertTrue("User marker exist", marker.waitForExists(10000));
-    }
+    
 }

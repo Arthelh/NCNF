@@ -88,7 +88,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     private Marker marker;
 
-    public DatabaseService dbs;
+    private DatabaseService dbs;
 
     private LatLngBounds bounds;
 
@@ -125,7 +125,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             onMapReady(mMap);
             getLastKnownLocation();
 
-            //changeUserLocs();
+            changeUserLocs();
 
             findUserButton.setOnClickListener(v -> {
                 if(user.getLoc() != null) {
@@ -164,7 +164,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     private void stopLocationUpdates(){
         handler.removeCallbacks(runnable);
-        //handler2.removeCallbacks(runnable2);
+        handler2.removeCallbacks(runnable2);
     }
 
     private void getUserLocations() {
