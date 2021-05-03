@@ -73,7 +73,6 @@ public class FriendsTrackerActivityTest {
         Intents.init();
 
         dbs = Mockito.mock(DatabaseService.class);
-
         when(user.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user));
         when(user.getEmail()).thenReturn("john@doe.ch");
         when(user.getFirstName()).thenReturn("John");
@@ -98,4 +97,13 @@ public class FriendsTrackerActivityTest {
         assertTrue("User marker exists", marker.waitForExists(2000));
     }
 
+    @Test
+    public void findsOtherUser() {
+        dbs = Mockito.mock(DatabaseService.class);
+
+        UiDevice device = UiDevice.getInstance(getInstrumentation());
+        UiObject marker = device.findObject(new UiSelector().descriptionContains("Marie"));
+
+        assertTrue("User marker exist", marker.waitForExists(10000));
+    }
 }
