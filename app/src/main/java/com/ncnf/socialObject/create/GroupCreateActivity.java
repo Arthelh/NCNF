@@ -1,4 +1,4 @@
-package com.ncnf.event.create;
+package com.ncnf.socialObject.create;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -29,8 +29,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
-import com.ncnf.event.Group;
-import com.ncnf.event.SocialObject;
+import com.ncnf.socialObject.Group;
+import com.ncnf.socialObject.SocialObject;
 import com.ncnf.main.MainActivity;
 import com.ncnf.user.User;
 import com.ncnf.utilities.DateAdapter;

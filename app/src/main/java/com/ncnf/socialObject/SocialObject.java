@@ -1,4 +1,4 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseService;

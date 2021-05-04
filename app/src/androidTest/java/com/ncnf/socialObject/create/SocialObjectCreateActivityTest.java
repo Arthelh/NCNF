@@ -1,4 +1,4 @@
-package com.ncnf.event.create;
+package com.ncnf.socialObject.create;
 
 import android.widget.DatePicker;
 import android.widget.TimePicker;
