@@ -26,6 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
     private LocalDate minDate = Settings.getMinDate();
     private LocalDate maxDate = Settings.getMaxDate();
     private TextView distanceTextView, minDateTextView, maxDateTextView;
+    private MaterialButtonToggleGroup toggleGroup;
     private int selYear, selMonth, selDay;
 
     @Override
@@ -42,7 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
         distanceSeekBar.setProgress(distanceSeekBarValue);
         distanceSeekBar.setOnSeekBarChangeListener(createOnSeekBarChangeListener());
 
-        MaterialButtonToggleGroup toggleGroup = findViewById(R.id.settingsToggleGroup);
+        toggleGroup = findViewById(R.id.settingsToggleGroup);
         toggleGroup.addOnButtonCheckedListener(createOnButtonCheckedListener());
 
         Button maxDateSelection = findViewById(R.id.settingsMaxDateButton);
@@ -54,41 +55,9 @@ public class SettingsActivity extends AppCompatActivity {
         minDateSelection.setFocusable(false);
         maxDateSelection.setFocusable(false);
 
-        minDateSelection.setOnClickListener(view -> {
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, (view1, year, month, dayOfMonth) -> {
-                selYear = year;
-                selMonth = month;
-                selDay = dayOfMonth;
-                minDate = LocalDate.of(selYear, Month.of(selMonth+1), dayOfMonth);
-                minDateTextView.setText(minDate.toString());
-                if (minDate.isAfter(maxDate)){
-                    maxDate = minDate;
-                    maxDateTextView.setText(maxDate.toString());
-                }
-                toggleGroup.setSelectionRequired(false);
-                toggleGroup.uncheck(toggleGroup.getCheckedButtonId());
-            }, minDate.getYear(), minDate.getMonthValue() - 1, minDate.getDayOfMonth());
-            datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            datePickerDialog.show();
-        });
+        minDateSelection.setOnClickListener(createDateOnClickListener(true));
 
-        maxDateSelection.setOnClickListener(view -> {
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, (view1, year, month, dayOfMonth) -> {
-                selYear = year;
-                selMonth = month;
-                selDay = dayOfMonth;
-                maxDate = LocalDate.of(selYear, Month.of(selMonth+1), dayOfMonth);
-                maxDateTextView.setText(maxDate.toString());
-                if (maxDate.isBefore(minDate)){
-                    minDate = maxDate;
-                    minDateTextView.setText(minDate.toString());
-                }
-                toggleGroup.setSelectionRequired(false);
-                toggleGroup.uncheck(toggleGroup.getCheckedButtonId());
-            }, maxDate.getYear(), maxDate.getMonthValue() - 1, maxDate.getDayOfMonth());
-            datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            datePickerDialog.show();
-        });
+        maxDateSelection.setOnClickListener(createDateOnClickListener(false));
     }
 
     private void setText(){
@@ -157,5 +126,44 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
         };
+    }
+
+    private View.OnClickListener createDateOnClickListener(boolean isMin){
+        DatePickerDialog.OnDateSetListener oDSL = (view1, year, month, dayOfMonth) -> {
+            selYear = year;
+            selMonth = month;
+            selDay = dayOfMonth;
+            if (isMin) {
+                minDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth);
+                minDateTextView.setText(minDate.toString());
+                if (minDate.isAfter(maxDate)){
+                    maxDate = minDate;
+                    maxDateTextView.setText(maxDate.toString());
+                }
+            } else {
+                maxDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth);
+                maxDateTextView.setText(maxDate.toString());
+                if (maxDate.isBefore(minDate)){
+                    minDate = maxDate;
+                    minDateTextView.setText(minDate.toString());
+                }
+            }
+            toggleGroup.setSelectionRequired(false);
+            toggleGroup.uncheck(toggleGroup.getCheckedButtonId());
+        };
+        if (isMin){
+            return view -> {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, oDSL, minDate.getYear(), minDate.getMonthValue() - 1, minDate.getDayOfMonth());
+                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                datePickerDialog.show();
+            };
+        } else {
+            return view -> {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, oDSL, maxDate.getYear(), maxDate.getMonthValue() - 1, maxDate.getDayOfMonth());
+                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                datePickerDialog.show();
+            };
+        }
+
     }
 }
