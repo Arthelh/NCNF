@@ -19,6 +19,7 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
+import com.ncnf.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -143,7 +144,7 @@ public class SearchBarHandler {
                     Log.i("Place fetching", "Place found: " + place.getName());
                     LatLng placeLatLng = place.getLatLng();
                     if (placeLatLng != null) {
-                        mapHandler.setUserPosition(placeLatLng);
+                        Settings.setUserPosition(placeLatLng);
                         mapHandler.update_markers();
                     }
                 }).addOnFailureListener(e -> {

@@ -31,6 +31,7 @@ import com.ncnf.event.EventDB;
 import com.ncnf.map.MapHandler;
 import com.ncnf.map.SearchBarHandler;
 import com.ncnf.map.VenueProvider;
+import com.ncnf.settings.Settings;
 import com.ncnf.settings.SettingsActivity;
 
 import javax.inject.Inject;
@@ -133,7 +134,7 @@ public class MapFragment extends Fragment{
                 Location gpsLocation = task.getResult();
                 if (gpsLocation != null) {
                     LatLng userLocation = new LatLng(gpsLocation.getLatitude(), gpsLocation.getLongitude());
-                    mapHandler.setUserPosition(userLocation);
+                    Settings.setUserPosition(userLocation);
                     mapHandler.update_markers();
                 }
             });
