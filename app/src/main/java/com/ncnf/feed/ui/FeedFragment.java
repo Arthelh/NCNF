@@ -102,7 +102,6 @@ public class FeedFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.event_menu, menu);
 
-
         MenuItem searchItem = menu.findItem(R.id.action_filterEventsByTag);
         SearchView searchView = (SearchView) searchItem.getActionView();
 

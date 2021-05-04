@@ -54,6 +54,9 @@ public class EventRelevanceCalculator {
             }
         }
 
+        if (m.isEmpty())
+            return new ArrayList<>(events);
+
         List<Integer> occurrences = new ArrayList<>(new HashSet<>(m.values()));
         Collections.sort(occurrences, Collections.reverseOrder());
         for (Integer i : occurrences) {

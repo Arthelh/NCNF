@@ -68,7 +68,7 @@ public class FeedFragmentTest {
     @Test
     public void eventActivityOpens(){
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.eventName)).check(matches(withText("EPFL event")));
+        onView(withId(R.id.eventName)).check(matches(withText("TestGeoCluster")));
     }
 
     @Test
@@ -76,6 +76,6 @@ public class FeedFragmentTest {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText("Sort by relevance")).perform(click());
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.eventName)).check(matches(withText("La flute enchantée")));
+        onView(withId(R.id.eventName)).check(matches(withText("TestGeoCluster")));
     }
 }
