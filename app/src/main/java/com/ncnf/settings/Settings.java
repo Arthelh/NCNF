@@ -32,7 +32,11 @@ public class Settings {
      * @param minDate The minimum Date in java.util.Date
      */
     public static void setMinDate(LocalDate minDate){
+        if (minDate.isBefore(LocalDate.now()))
+            return; //Can't set minimum date earlier than today
         Settings.minDate = minDate;
+        if (Settings.maxDate.isBefore(minDate))
+            setMaxDate(minDate);
     }
 
     /**
@@ -40,7 +44,11 @@ public class Settings {
      * @param maxDate The max Date in java.util.Date
      */
     public static void setMaxDate(LocalDate maxDate){
+        if (minDate.isBefore(LocalDate.now()))
+            return; //Can't set maximum date earlier than today
         Settings.maxDate = maxDate;
+        if (getMinDate().isAfter(maxDate))
+            setMinDate(maxDate);
     }
 
     /**
@@ -48,7 +56,7 @@ public class Settings {
      * @return The minimum date
      */
     public static LocalDate getMinDate() {
-        return minDate;
+        return LocalDate.from(minDate);
     }
 
     /**
@@ -56,6 +64,6 @@ public class Settings {
      * @return The maximum date
      */
     public static LocalDate getMaxDate() {
-        return maxDate;
+        return LocalDate.from(maxDate);
     }
 }
