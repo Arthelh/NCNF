@@ -1,4 +1,4 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import androidx.annotation.NonNull;
 
@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import static com.ncnf.Utils.*;
 
-public class Event extends Social {
+public class Event extends SocialObject {
 
     private static final int MIN_AGE = 0;
     private static final int MAX_AGE = 125;

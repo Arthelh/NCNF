@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.ncnf.bookmark.EventDisplayFragment;
+import com.ncnf.bookmark.SocialObjDisplayFragment;
 
 import static com.ncnf.Utils.*;
 
@@ -35,9 +35,9 @@ public class FragmentSelector extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if(position == 1){
-            return new EventDisplayFragment(OWNED_GROUPS_KEY);
+            return new SocialObjDisplayFragment(PARTICIPATING_GROUPS_KEY);
         }
-        return new EventDisplayFragment(SAVED_EVENTS_KEY);
+        return new SocialObjDisplayFragment(SAVED_EVENTS_KEY);
     }
 
     @Override

@@ -3,15 +3,14 @@ package com.ncnf.database;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.builder.GroupBuilder;
-import com.ncnf.event.Event;
-import com.ncnf.event.Group;
-import com.ncnf.event.Social;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.Group;
+import com.ncnf.socialObject.SocialObject;
 import com.ncnf.database.builder.EventBuilder;
-import com.ncnf.event.Tag;
+import com.ncnf.socialObject.Tag;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -139,7 +138,7 @@ public class EventBuilderTest {
 
     @Test
     public void privateToMapWorks() {
-        Social.Type type = Social.Type.Movie;
+        SocialObject.Type type = SocialObject.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
 
@@ -151,7 +150,7 @@ public class EventBuilderTest {
 
     @Test
     public void publicToMapWorks() {
-        Social.Type type = Social.Type.Movie;
+        SocialObject.Type type = SocialObject.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
 

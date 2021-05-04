@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ncnf.R;
-import com.ncnf.event.EventDB;
+import com.ncnf.socialObject.EventDB;
 import com.ncnf.feed.ui.FeedFragment;
 import com.ncnf.home.ui.HomeFragment;
 import com.ncnf.map.ui.MapFragment;

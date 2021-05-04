@@ -9,15 +9,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ncnf.R;
-import com.ncnf.event.Social;
-import com.ncnf.event.EventActivity;
-import com.ncnf.feed.ui.EventAdapter;
+import com.ncnf.socialObject.SocialObject;
+import com.ncnf.socialObject.SocialObjActivity;
+import com.ncnf.feed.ui.SocialObjAdapter;
 import com.ncnf.user.User;
 
 import java.util.ArrayList;
@@ -28,23 +27,22 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.SAVED_EVENTS_KEY;
 import static com.ncnf.Utils.UUID_KEY;
 
 @AndroidEntryPoint
-public class EventDisplayFragment extends Fragment implements EventAdapter.OnEventListener{
+public class SocialObjDisplayFragment extends Fragment implements SocialObjAdapter.OnSocialObjListener {
 
-    private List<Social> eventsToDisplay;
-    private EventAdapter adapter;
+    private List<SocialObject> objToDisplay;
+    private SocialObjAdapter adapter;
     private RecyclerView.LayoutManager lManager;
-    private final String eventCollection;
+    private final String collection;
 
     @Inject
     public User user;
 
-    public EventDisplayFragment(String eventCollection){
-        this.eventCollection = eventCollection;
+    public SocialObjDisplayFragment(String collection){
+        this.collection = collection;
     }
 
     @Nullable
@@ -57,14 +55,14 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        eventsToDisplay = new ArrayList<>();
+        objToDisplay = new ArrayList<>();
         RecyclerView recycler = (RecyclerView) view.findViewById(R.id.SavedEventsRecyclerView);
         // Use LinearLayout as the layout manager
         lManager = new LinearLayoutManager(getActivity());
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter
-        adapter = new EventAdapter(eventsToDisplay, this::onEventClick, EventAdapter.SortingMethod.DATE);
+        adapter = new SocialObjAdapter(objToDisplay, this::onSocialObjectClick, SocialObjAdapter.SortingMethod.DATE);
         recycler.setAdapter(adapter);
         getEventList(view.findViewById(R.id.SavedEventsRecyclerView));
 
@@ -73,27 +71,25 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnEve
 
     private void getEventList(View view){
         if(user != null){
-            CompletableFuture listEvent;
-            if(eventCollection == SAVED_EVENTS_KEY){
-                listEvent = user.getSavedEvents();
+            CompletableFuture list;
+            if(collection == SAVED_EVENTS_KEY){
+                list = user.getSavedEvents();
             } else {
-                listEvent = user.getParticipatingGroups();
+                list = user.getParticipatingGroups();
             }
 
-            listEvent.thenAccept(events -> {
-                Log.d(DEBUG_TAG, Integer.toString(((List)events).size()));
-                if(events != null){
-                    this.adapter.setSocials((List)events);
+            list.thenAccept(objects -> {
+                if(objects != null){
+                    this.adapter.setSocialObjects((List)objects);
                 }
             });
         }
     }
 
     @Override
-    public void onEventClick(Social social) {
-        Intent intent = new Intent(getActivity(), EventActivity.class);
-        intent.putExtra(UUID_KEY, social.getUuid().toString());
-        Log.d(DEBUG_TAG, "Going on social activity");
+    public void onSocialObjectClick(SocialObject socialObject) {
+        Intent intent = new Intent(getActivity(), SocialObjActivity.class);
+        intent.putExtra(UUID_KEY, socialObject.getUuid().toString());
         startActivity(intent);
     }
 }

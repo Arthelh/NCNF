@@ -54,7 +54,7 @@ import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
 @UninstallModules(CurrentUserModule.class)
-public class SocialCreateActivityTest {
+public class SocialObjectCreateActivityTest {
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private static final User mockUser = Mockito.mock(User.class);
@@ -65,7 +65,7 @@ public class SocialCreateActivityTest {
     CompletableFuture<Boolean> response = CompletableFuture.completedFuture(true);
 
     @Rule
-    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(EventCreateActivity.class));
+    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(GroupCreateActivity.class));
 
     @Before
     public void setup(){

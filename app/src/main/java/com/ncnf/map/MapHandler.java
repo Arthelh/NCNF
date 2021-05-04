@@ -10,8 +10,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
-import com.ncnf.event.Social;
-import com.ncnf.event.EventDB;
+import com.ncnf.socialObject.SocialObject;
+import com.ncnf.socialObject.EventDB;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -103,9 +103,9 @@ public class MapHandler {
     }
 
     private void addEventMarkers(){
-        List<Social> socials = queryEvents();
-        Map<LatLng, List<Social>> eventMap = new HashMap<>();
-        for (Social p : socials) {
+        List<SocialObject> socialObjects = queryEvents();
+        Map<LatLng, List<SocialObject>> eventMap = new HashMap<>();
+        for (SocialObject p : socialObjects) {
             LatLng event_position = new LatLng(p.getLocation().getLatitude(), p.getLocation().getLongitude());
             if (MapUtilities.position_in_range(event_position, userPosition)){
                 if (!eventMap.containsKey(event_position)){
@@ -116,9 +116,9 @@ public class MapHandler {
         }
         Set<LatLng> keys = eventMap.keySet();
         for (LatLng k : keys){
-            List<Social> list = eventMap.get(k);
+            List<SocialObject> list = eventMap.get(k);
             StringBuilder desc = new StringBuilder();
-            for (Social p : list){
+            for (SocialObject p : list){
                 desc.append(p.getName()).append("\n");
             }
             String description = desc.toString();
@@ -136,7 +136,7 @@ public class MapHandler {
         }
     }
 
-    private List<Social> queryEvents(){
+    private List<SocialObject> queryEvents(){
         return Collections.unmodifiableList(eventDB.toList());
     }
 }

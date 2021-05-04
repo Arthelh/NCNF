@@ -1,4 +1,4 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import android.content.Intent;
 
@@ -25,10 +25,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class SocialActivityTest {
+public class SocialObjectActivityTest {
 
     private EventDB db = new EventDB();
-    private Social social1 = db.getEvent(EventDB.uuid1.toString());
+    private SocialObject socialObject1 = db.getSocialObj(EventDB.uuid1.toString());
 
     @Before
     public void setup(){
@@ -37,47 +37,47 @@ public class SocialActivityTest {
 
     @Test
     public void test_name(){
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), SocialObjActivity.class);
         intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
-        try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.eventName)).check(matches(withText(containsString(social1.getName()))));
+        try (ActivityScenario<SocialObjActivity> scenario = ActivityScenario.launch(intent)) {
+            onView(withId(R.id.eventName)).check(matches(withText(containsString(socialObject1.getName()))));
         }
     }
 
     @Test
     public void test_address(){
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), SocialObjActivity.class);
         intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
-        try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.eventLocation)).check(matches(withText(containsString(social1.getAddress()))));
+        try (ActivityScenario<SocialObjActivity> scenario = ActivityScenario.launch(intent)) {
+            onView(withId(R.id.eventLocation)).check(matches(withText(containsString(socialObject1.getAddress()))));
         }
     }
 
     @Test
     public void test_desc(){
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), SocialObjActivity.class);
         intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
-        try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.eventDescription)).check(matches(withText(containsString(social1.getDescription()))));
+        try (ActivityScenario<SocialObjActivity> scenario = ActivityScenario.launch(intent)) {
+            onView(withId(R.id.eventDescription)).check(matches(withText(containsString(socialObject1.getDescription()))));
         }
     }
 
     @Test
     public void test_date(){
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), SocialObjActivity.class);
         intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
-        try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
-            DateAdapter adapter = new DateAdapter(social1.getDate());
+        try (ActivityScenario<SocialObjActivity> scenario = ActivityScenario.launch(intent)) {
+            DateAdapter adapter = new DateAdapter(socialObject1.getDate());
             onView(withId(R.id.eventDate)).check(matches(withText(containsString(adapter.toString()))));
         }
     }
 
     @Test
     public void test_owner(){
-        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), SocialObjActivity.class);
         intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
-        try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.eventOwner)).check(matches(withText(containsString(social1.getOwnerId()))));
+        try (ActivityScenario<SocialObjActivity> scenario = ActivityScenario.launch(intent)) {
+            onView(withId(R.id.eventOwner)).check(matches(withText(containsString(socialObject1.getOwnerId()))));
         }
     }
 

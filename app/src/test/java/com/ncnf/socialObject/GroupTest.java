@@ -1,4 +1,4 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseService;
@@ -27,8 +27,8 @@ public class GroupTest {
     Date date = new Date(2021, 03, 11);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    Social.Type type = Social.Type.Conference;
-    String description = "Social description goes here";
+    SocialObject.Type type = SocialObject.Type.Conference;
+    String description = "SocialObject description goes here";
     String ownerId = "00";
     UUID uuid = UUID.randomUUID();
     List<String> attendees = new ArrayList<>();
@@ -118,8 +118,8 @@ public class GroupTest {
     public void setType(){
         Group event = new Group("00",name, date, geoPoint,address,description, type);
         assertEquals(type, event.getType());
-        event.setType(Social.Type.Movie);
-        assertEquals(Social.Type.Movie, event.getType());
+        event.setType(SocialObject.Type.Movie);
+        assertEquals(SocialObject.Type.Movie, event.getType());
     }
 
     @Test

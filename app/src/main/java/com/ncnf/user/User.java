@@ -2,8 +2,8 @@ package com.ncnf.user;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.event.Group;
-import com.ncnf.event.Event;
+import com.ncnf.socialObject.Group;
+import com.ncnf.socialObject.Event;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,13 +13,13 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
-import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.GROUPS_COLLECTION_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_TOKEN_KEY;
 import static com.ncnf.Utils.OWNED_GROUPS_KEY;
 import static com.ncnf.Utils.PARTICIPATING_GROUPS_KEY;
 import static com.ncnf.Utils.SAVED_EVENTS_KEY;
+import static com.ncnf.Utils.USERNAME_KEY;
 import static com.ncnf.Utils.USERS_COLLECTION_KEY;
 import static com.ncnf.Utils.UUID_KEY;
 import static com.ncnf.utilities.InputValidator.isStringEmpty;
@@ -197,7 +197,7 @@ public class User {
 
 
     public CompletableFuture<List<User>> getAllUsersLike(String username){
-        return this.db.withFieldLike(USERS_COLLECTION_KEY, FIRST_NAME_KEY, username, User.class); // TODO : change to USERNAME_KEY
+        return this.db.withFieldLike(USERS_COLLECTION_KEY, USERNAME_KEY, username, User.class);
     }
 
     public CompletableFuture<Boolean> addSavedEvent(Event event){

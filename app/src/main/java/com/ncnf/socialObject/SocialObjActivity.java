@@ -1,4 +1,4 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -13,7 +13,7 @@ import com.ncnf.storage.FileStore;
 
 import static com.ncnf.Utils.UUID_KEY;
 
-public class EventActivity extends AppCompatActivity {
+public class SocialObjActivity extends AppCompatActivity {
 
     private static final EventDB db = new EventDB();
 
@@ -23,30 +23,30 @@ public class EventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event);
 
         String event_uid = getIntent().getStringExtra(UUID_KEY);
-        Social social = db.getEvent(event_uid);
-        if (social == null) {
+        SocialObject socialObject = db.getSocialObj(event_uid);
+        if (socialObject == null) {
             finish();
             return;
         }
 
-        // Change with social UUID
+        // Change with socialObject UUID
         ImageView imageView = findViewById(R.id.eventImage);
-        FileStore file = new CacheFileStore(this, Social.IMAGE_PATH, String.format(Social.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
+        FileStore file = new CacheFileStore(this, SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
         file.downloadImage(imageView);
 
         TextView name = findViewById(R.id.eventName);
-        name.setText(social.getName());
+        name.setText(socialObject.getName());
 
         TextView date = findViewById(R.id.eventDate);
-        date.setText("Social takes place on : " + new DateAdapter(social.getDate()).toString());
+        date.setText("SocialObject takes place on : " + new DateAdapter(socialObject.getDate()).toString());
 
         TextView loc = findViewById(R.id.eventLocation);
-        loc.setText("Social held at : " + social.getAddress());
+        loc.setText("SocialObject held at : " + socialObject.getAddress());
 
         TextView desc = findViewById(R.id.eventDescription);
-        desc.setText(social.getDescription());
+        desc.setText(socialObject.getDescription());
 
         TextView owner = findViewById(R.id.eventOwner);
-        owner.setText("Social hosted by " + social.getOwnerId());
+        owner.setText("SocialObject hosted by " + socialObject.getOwnerId());
     }
 }

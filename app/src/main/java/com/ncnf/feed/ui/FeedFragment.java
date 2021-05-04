@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
-import com.ncnf.event.Social;
-import com.ncnf.event.EventActivity;
-import com.ncnf.event.EventDB;
+import com.ncnf.socialObject.SocialObject;
+import com.ncnf.socialObject.SocialObjActivity;
+import com.ncnf.socialObject.EventDB;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,8 +30,8 @@ import static com.ncnf.Utils.UUID_KEY;
 public class FeedFragment extends Fragment {
 
     private RecyclerView.LayoutManager lManager;
-    private EventAdapter adapter;
-    private List<Social> eventList;
+    private SocialObjAdapter adapter;
+    private List<SocialObject> eventList;
     private static final String CHANNEL_NAME = "events_to_be_shown";
 
     public FeedFragment(EventDB eventDB){
@@ -40,7 +40,7 @@ public class FeedFragment extends Fragment {
         this.eventList = eventDB.toList();
     }
 
-    public FeedFragment(List<Social> eventList){
+    public FeedFragment(List<SocialObject> eventList){
         super();
 
         Objects.requireNonNull(eventList);
@@ -67,12 +67,12 @@ public class FeedFragment extends Fragment {
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter
-        adapter = new EventAdapter(eventList, this::onEventClick, EventAdapter.SortingMethod.DATE);
+        adapter = new SocialObjAdapter(eventList, this::onEventClick, SocialObjAdapter.SortingMethod.DATE);
         recycler.setAdapter(adapter);
     }
 
-    private void onEventClick(Social e) {
-        Intent intent = new Intent(getActivity(), EventActivity.class);
+    private void onEventClick(SocialObject e) {
+        Intent intent = new Intent(getActivity(), SocialObjActivity.class);
         intent.putExtra(UUID_KEY, e.getUuid().toString());
         startActivity(intent);
     }
@@ -104,10 +104,10 @@ public class FeedFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.dateOrder :
-                adapter.orderBy(EventAdapter.SortingMethod.DATE);
+                adapter.orderBy(SocialObjAdapter.SortingMethod.DATE);
                 break;
             case R.id.relevanceOrder :
-                adapter.orderBy(EventAdapter.SortingMethod.RELEVANCE);
+                adapter.orderBy(SocialObjAdapter.SortingMethod.RELEVANCE);
                 break;
         }
         return true;

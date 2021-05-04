@@ -1,4 +1,4 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseService;
@@ -29,8 +29,8 @@ public class EventTest {
     Date date = new Date(2021, 03, 11);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    Social.Type type = Social.Type.Conference;
-    String description = "Social description goes here";
+    SocialObject.Type type = SocialObject.Type.Conference;
+    String description = "SocialObject description goes here";
     String ownerID = "00";
     UUID uuid = UUID.randomUUID();
     List<String> attendees = new ArrayList<>();

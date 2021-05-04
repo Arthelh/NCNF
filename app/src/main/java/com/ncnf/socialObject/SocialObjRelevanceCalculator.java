@@ -1,4 +1,4 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,22 +7,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class EventRelevanceCalculator {
+public class SocialObjRelevanceCalculator {
 
     private final List<Event> events = new ArrayList<>();
-    private final List<Social> sortedList;
+    private final List<SocialObject> sortedList;
 
-    public EventRelevanceCalculator(List<Social> l) {
+    public SocialObjRelevanceCalculator(List<SocialObject> l) {
 
-        for (Social e : l) {
+        for (SocialObject e : l) {
             if (e != null)
                 this.events.add((Event) e);
         }
         sortedList = new ArrayList<>(sortedList());
     }
 
-    private List<Social> sortedList() {
-        List<Social> l = new ArrayList<>();
+    private List<SocialObject> sortedList() {
+        List<SocialObject> l = new ArrayList<>();
         Map<Tag, Integer> m = new HashMap<>();
 
         for (Event e : events) {
@@ -68,7 +68,7 @@ public class EventRelevanceCalculator {
         return l;
     }
 
-    public List<Social> getSortedList() {
+    public List<SocialObject> getSortedList() {
         return sortedList;
     }
 

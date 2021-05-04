@@ -1,6 +1,4 @@
-package com.ncnf.event;
-
-import android.util.Log;
+package com.ncnf.socialObject;
 
 import androidx.annotation.NonNull;
 
@@ -15,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 import static com.ncnf.Utils.*;
 
 
-public class Group extends Social {
+public class Group extends SocialObject {
 
     private final List<String> invited;
 

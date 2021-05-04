@@ -2,8 +2,8 @@ package com.ncnf.database.builder;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.event.Group;
-import com.ncnf.event.Social;
+import com.ncnf.socialObject.Group;
+import com.ncnf.socialObject.SocialObject;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ public class GroupBuilder extends DatabaseObjectBuilder<Group>{
         GeoPoint location = (GeoPoint) data.get(LOCATION_KEY);
         String address = data.get(ADDRESS_KEY).toString();
         String typeStr = data.get(TYPE_KEY).toString();
-        Social.Type type = Social.Type.valueOf(typeStr);
+        SocialObject.Type type = SocialObject.Type.valueOf(typeStr);
         List<String> attendees = (List<String>) data.get(ATTENDEES_KEY);
         String description = (String) data.get(DESCRIPTION_KEY);
         List<String> invited = (List<String>) data.get(INVITED_KEY);

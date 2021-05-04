@@ -2,9 +2,9 @@ package com.ncnf.user;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.event.Event;
-import com.ncnf.event.Group;
-import com.ncnf.event.Social;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.Group;
+import com.ncnf.socialObject.SocialObject;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class UserTests {
     GeoPoint geoPoint = new GeoPoint(0,0);
     String address = "address";
     String description = "description";
-    Social.Type type = Social.Type.Movie;
+    SocialObject.Type type = SocialObject.Type.Movie;
     Event event = new Event(ownerID, name, date, geoPoint, address, description, type, 0 , 0, "test@email.com");
     Group group = new Group(ownerID, name, date, geoPoint, address, description, type);
     CompletableFuture<Boolean> response = CompletableFuture.completedFuture(true);
@@ -319,7 +319,7 @@ public class UserTests {
     @Test
     public void getOwnedEventsWorks(){
         User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), Arrays.asList(ownerID, ownerID), new ArrayList<>(), new ArrayList<>(), false, null);
-        CompletableFuture<List<Social>> events = CompletableFuture.completedFuture(Arrays.asList(group));
+        CompletableFuture<List<SocialObject>> events = CompletableFuture.completedFuture(Arrays.asList(group));
         when(db.whereIn(anyString(), anyString(), anyList(), any())).thenReturn(events);
 
         CompletableFuture<List<Group>> future = user.getOwnedGroups();
@@ -347,7 +347,7 @@ public class UserTests {
     @Test
     public void getSavedEventsWorks(){
         User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), Arrays.asList(ownerID), false, null);
-        CompletableFuture<List<Social>> events = CompletableFuture.completedFuture(Arrays.asList(event));
+        CompletableFuture<List<SocialObject>> events = CompletableFuture.completedFuture(Arrays.asList(event));
         when(db.whereIn(anyString(), anyString(), anyList(), any())).thenReturn(events);
 
         CompletableFuture<List<Event>> future = user.getSavedEvents();

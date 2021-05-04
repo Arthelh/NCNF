@@ -1,7 +1,5 @@
 package com.ncnf.database;
 
-import android.util.Log;
-
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
@@ -12,8 +10,8 @@ import com.ncnf.database.builder.DatabaseObjectBuilder;
 import com.ncnf.database.builder.EventBuilder;
 import com.ncnf.database.builder.GroupBuilder;
 import com.ncnf.database.builder.UserBuilder;
-import com.ncnf.event.Event;
-import com.ncnf.event.Group;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.Group;
 import com.ncnf.user.User;
 
 import java.util.ArrayList;
@@ -25,7 +23,8 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
+import static com.ncnf.Utils.NEWS_KEY;
 
 public class DatabaseService implements DatabaseServiceInterface {
 
@@ -207,8 +206,6 @@ public class DatabaseService implements DatabaseServiceInterface {
             return futureResponse;
         }
         
-        Log.d(DEBUG_TAG, "wooooow");
-
         List<CompletableFuture<List<R>>> futures = values
                 .stream()
                 .map(value -> this.whereEqualTo(collectionPath, field, value, type))
@@ -244,7 +241,9 @@ public class DatabaseService implements DatabaseServiceInterface {
         return this.updateField(documentPath, arrayField, FieldValue.arrayRemove(value));
     }
 
-
-
+    @Override
+    public CompletableFuture<Boolean> addNews(String uuid, String value) {
+        return this.updateArrayField(EVENTS_COLLECTION_KEY + uuid, NEWS_KEY, value);
+    }
 }
 

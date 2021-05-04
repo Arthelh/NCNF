@@ -1,4 +1,4 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 import com.google.firebase.firestore.GeoPoint;
 
 import org.junit.Test;
@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Date;
 
 import static org.junit.Assert.*;
-public class SocialCalculatorTest {
+public class SocialObjectCalculatorTest {
 
     String name = "Jane Doe";
     Date date = new Date(2021, 03, 11);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    Social.Type type = Social.Type.Conference;
-    String description = "Social description goes here";
+    SocialObject.Type type = SocialObject.Type.Conference;
+    String description = "SocialObject description goes here";
     String ownerId = "00";
 
     @Test
@@ -35,12 +35,12 @@ public class SocialCalculatorTest {
 
         event3.addTag(new Tag("\uD83D\uDCF1", "Art"));
 
-        List<Social> l = new ArrayList<>();
+        List<SocialObject> l = new ArrayList<>();
         l.add(event1);
         l.add(event2);
         l.add(event3);
 
-        EventRelevanceCalculator rc = new EventRelevanceCalculator(l);
+        SocialObjRelevanceCalculator rc = new SocialObjRelevanceCalculator(l);
 
         assertTrue(rc.getSortedList().get(0).equals(event2) || rc.getSortedList().get(1).equals(event2));
         assertTrue(rc.getSortedList().get(0).equals(event3) || rc.getSortedList().get(1).equals(event3));

@@ -2,12 +2,10 @@ package com.ncnf.database.builder;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.event.Event;
-import com.ncnf.event.Group;
-import com.ncnf.event.Social;
-import com.ncnf.event.Tag;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.SocialObject;
+import com.ncnf.socialObject.Tag;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +17,6 @@ import static com.ncnf.Utils.ATTENDEES_KEY;
 import static com.ncnf.Utils.DATE_KEY;
 import static com.ncnf.Utils.DESCRIPTION_KEY;
 import static com.ncnf.Utils.EMAIL_KEY;
-import static com.ncnf.Utils.INVITED_KEY;
 import static com.ncnf.Utils.LOCATION_KEY;
 import static com.ncnf.Utils.MIN_AGE_KEY;
 import static com.ncnf.Utils.NAME_KEY;
@@ -28,12 +25,11 @@ import static com.ncnf.Utils.PRICE_KEY;
 import static com.ncnf.Utils.TAGS_LIST_KEY;
 import static com.ncnf.Utils.TYPE_KEY;
 import static com.ncnf.Utils.UUID_KEY;
-import static com.ncnf.Utils.VISIBILITY_KEY;
 
 public class EventBuilder extends DatabaseObjectBuilder<Event> {
 
     @Override
-    public Event toObject(String uuid, Map<String, Object> data) {
+    public Event toObject(String uuid, Map<String, Object> data){
         String ownerId = data.get(OWNER_KEY).toString();
         String uuidStr = data.get(UUID_KEY).toString();
         String name = (String) data.get(NAME_KEY);
@@ -41,7 +37,7 @@ public class EventBuilder extends DatabaseObjectBuilder<Event> {
         GeoPoint location = (GeoPoint) data.get(LOCATION_KEY);
         String address = data.get(ADDRESS_KEY).toString();
         String typeStr = data.get(TYPE_KEY).toString();
-        Social.Type type = Social.Type.valueOf(typeStr);
+        SocialObject.Type type = SocialObject.Type.valueOf(typeStr);
         List<String> attendees = (List<String>) data.get(ATTENDEES_KEY);
         String description = (String) data.get(DESCRIPTION_KEY);
 
