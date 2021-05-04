@@ -108,7 +108,7 @@ public final class MapFragmentTest {
         );
         // Venues are shown
         marker = device.findObject(new UiSelector().descriptionContains("UniL"));
-        assertTrue("Venue markers exist", marker.waitForExists(1000));
+        assertTrue("Venue markers exist", marker.waitForExists(10000));
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
