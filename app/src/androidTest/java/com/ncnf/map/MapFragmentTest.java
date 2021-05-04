@@ -86,7 +86,7 @@ public final class MapFragmentTest {
 
     @Test
     public void test_settings() {
-        onView(withId(R.id.map_settings_button)).perform(click());
+        onView(withId(R.id.menu_settings)).perform(click());
         Intents.intended(hasComponent(SettingsActivity.class.getName()));
     }
 
@@ -131,7 +131,7 @@ public final class MapFragmentTest {
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Carmen"));
         assertTrue("Events markers exist", marker.waitForExists(1000));
 
-        onView(withId(R.id.map_settings_button)).perform(click());
+        onView(withId(R.id.menu_settings)).perform(click());
         onView(withId(R.id.distanceSeekBar)).perform(new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
@@ -161,7 +161,7 @@ public final class MapFragmentTest {
         marker = device.findObject(new UiSelector().descriptionContains("UniL"));
         assertTrue("Venue markers exist", marker.waitForExists(1000));
 
-        onView(withId(R.id.map_settings_button)).perform(click());
+        onView(withId(R.id.menu_settings)).perform(click());
         onView(withId(R.id.distanceSeekBar)).perform(new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
