@@ -188,5 +188,7 @@ public class MapHandler {
         protected boolean shouldRenderAsCluster(@NonNull Cluster<T> cluster) {
             return cluster.getSize() > 1;
         }
+
+
     }
 }

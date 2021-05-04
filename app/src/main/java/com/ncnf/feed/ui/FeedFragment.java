@@ -2,6 +2,7 @@ package com.ncnf.feed.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,13 +18,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
+import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventActivity;
-import com.ncnf.event.EventDB;
+import com.ncnf.settings.Settings;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
+import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.UUID_KEY;
 
 
@@ -31,13 +36,11 @@ public class FeedFragment extends Fragment {
 
     private RecyclerView.LayoutManager lManager;
     private EventAdapter adapter;
-    private List<Event> eventList;
+    private List<Event> eventList = new ArrayList<>();
     private static final String CHANNEL_NAME = "events_to_be_shown";
 
-    public FeedFragment(EventDB eventDB){
+    public FeedFragment(){
         super();
-        
-        this.eventList = eventDB.toList();
     }
 
     public FeedFragment(List<Event> eventList){
@@ -67,8 +70,26 @@ public class FeedFragment extends Fragment {
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter
-        adapter = new EventAdapter(eventList, this::onEventClick, EventAdapter.SortingMethod.DATE);
-        recycler.setAdapter(adapter);
+        if (eventList.isEmpty()){
+            final List<Event> result = new ArrayList<>();
+
+            CompletableFuture<List<Event>> completableFuture = new DatabaseService().eventGeoQuery(Settings.userPosition, Settings.getCurrent_max_distance() * 1000);
+            completableFuture.thenAccept(eventList -> {
+
+                result.addAll(eventList);
+                adapter = new EventAdapter(result, this::onEventClick, EventAdapter.SortingMethod.DATE);
+                recycler.setAdapter(adapter);
+
+            }).exceptionally(e -> {
+
+                Log.d(DEBUG_TAG, e.getMessage());
+                return null;
+
+            });
+        } else {
+            adapter = new EventAdapter(eventList, this::onEventClick, EventAdapter.SortingMethod.DATE);
+            recycler.setAdapter(adapter);
+        }
     }
 
     private void onEventClick(Event e) {

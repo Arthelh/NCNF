@@ -39,11 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        EventDB eventDB = new EventDB();
-
         if(savedInstanceState == null){
             this.homeFragment = new HomeFragment();
-            this.feedFragment = new FeedFragment(eventDB);
+            this.feedFragment = new FeedFragment();
             this.mapFragment = new MapFragment();
             this.activeFragment = this.homeFragment;
         }
