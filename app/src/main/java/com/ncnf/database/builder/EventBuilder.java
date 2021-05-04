@@ -1,5 +1,7 @@
 package com.ncnf.database.builder;
 
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.event.Event;
@@ -19,8 +21,11 @@ import static com.ncnf.Utils.ATTENDEES_KEY;
 import static com.ncnf.Utils.DATE_KEY;
 import static com.ncnf.Utils.DESCRIPTION_KEY;
 import static com.ncnf.Utils.EMAIL_KEY;
+import static com.ncnf.Utils.GEOHASH_KEY;
 import static com.ncnf.Utils.INVITED_KEY;
+import static com.ncnf.Utils.LAT_KEY;
 import static com.ncnf.Utils.LOCATION_KEY;
+import static com.ncnf.Utils.LNG_KEY;
 import static com.ncnf.Utils.MIN_AGE_KEY;
 import static com.ncnf.Utils.NAME_KEY;
 import static com.ncnf.Utils.OWNER_KEY;
@@ -79,6 +84,14 @@ public class EventBuilder extends DatabaseObjectBuilder<Event> {
         map.put(ATTENDEES_KEY, event.getAttendees());
         map.put(DESCRIPTION_KEY, event.getDescription());
         map.put(OWNER_KEY, event.getOwnerId());
+
+        //Store GeoHash, Lat and Lng in map
+        double lat = event.getLocation().getLatitude();
+        double lng = event.getLocation().getLongitude();
+        String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lng));
+        map.put(GEOHASH_KEY, hash);
+        map.put(LAT_KEY, lat);
+        map.put(LNG_KEY, lng);
 
         if (event.getVisibility() == Event.Visibility.PRIVATE) {
             PrivateEvent privateEvent = (PrivateEvent) event;

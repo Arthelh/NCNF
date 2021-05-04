@@ -1,10 +1,19 @@
 package com.ncnf.database;
 
+import androidx.annotation.NonNull;
+
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQueryBounds;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ncnf.database.builder.DatabaseObjectBuilder;
 import com.ncnf.database.builder.EventBuilder;
@@ -14,6 +23,7 @@ import com.ncnf.event.PrivateEvent;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.user.User;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +32,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+
+import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
+import static com.ncnf.Utils.GEOHASH_KEY;
+import static com.ncnf.Utils.LAT_KEY;
+import static com.ncnf.Utils.LNG_KEY;
 
 public class DatabaseService implements DatabaseServiceInterface {
 
@@ -239,7 +254,41 @@ public class DatabaseService implements DatabaseServiceInterface {
         return this.updateField(documentPath, arrayField, FieldValue.arrayRemove(value));
     }
 
+    public CompletableFuture<List<Event>> eventGeoQuery(LatLng location, double radius){
+        radius = (radius < 1000) ? radius * 1000 : radius; //Check if radius is still in km, convert to m
 
+        List<GeoQueryBounds> bounds = GeoFireUtils.getGeoHashQueryBounds(new GeoLocation(location.latitude, location.longitude), radius);
+        final List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+        for (GeoQueryBounds b : bounds){
+            Query q = db.collection(EVENTS_COLLECTION_KEY)
+                    .orderBy(GEOHASH_KEY)
+                    .startAt(b.startHash)
+                    .endAt(b.endHash);
+            tasks.add(q.get());
+        }
+
+        CompletableFuture<List<Event>> futureResponse = new CompletableFuture<>();
+
+        Tasks.whenAllComplete(tasks)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<DocumentSnapshot> matchingDocs = new ArrayList<>();
+                        List<Event> result = new ArrayList<>();
+                        for (Task<QuerySnapshot> t : tasks) {
+                            QuerySnapshot snap = t.getResult();
+                            matchingDocs.addAll(snap.getDocuments());
+                        }
+                        for (DocumentSnapshot doc : matchingDocs){
+                            result.add((Event) registry.get(Event.class).toObject(doc.getId(), doc.getData()));
+                        }
+                        futureResponse.complete(result);
+                    } else {
+                        futureResponse.completeExceptionally(task.getException());
+                    }
+                });
+
+        return futureResponse;
+    }
 
 }
 

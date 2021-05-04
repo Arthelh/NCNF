@@ -1,6 +1,7 @@
 package com.ncnf.map;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.fragment.app.FragmentManager;
 
@@ -13,6 +14,7 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.event.Event;
 import com.ncnf.event.EventDB;
+import com.ncnf.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
+import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
 
 public class MapHandler {
@@ -107,6 +111,8 @@ public class MapHandler {
 
     private void addEventMarkers(){
         List<Event> events = queryEvents();
+        if (events == null)
+            return;
         Map<LatLng, List<Event>> eventMap = new HashMap<>();
         for (Event p : events) {
             LatLng event_position = new LatLng(p.getLocation().getLatitude(), p.getLocation().getLongitude());
@@ -141,15 +147,21 @@ public class MapHandler {
 
     private List<Event> queryEvents(){
         final List<Event> result = new ArrayList<>();
-        databaseService.getCollection(EVENTS_COLLECTION_KEY, Event.class).whenComplete((output, exception) -> {
-            if (exception != null){
-                System.err.println("Error retrieving events: " + exception.toString());
-            } else {
-                result.addAll(output);
-            }
+        CompletableFuture<List<Event>> completableFuture = databaseService.eventGeoQuery(userPosition, Settings.getCurrent_max_distance() * 1000);
+        completableFuture.thenAccept(eventList -> {
+            result.addAll(eventList);
+            Log.d(DEBUG_TAG, Integer.toString(result.size()));
+        }).exceptionally(e ->
+        {
+            Log.d(DEBUG_TAG, e.getMessage());
+            return null;
         });
-        if (result.isEmpty())
-            return Collections.unmodifiableList(new EventDB().toList());
+        //Additional check in range as geoqueries sometimes have false positives (https://cloud.google.com/firestore/docs/solutions/geoqueries#javaandroid_1)
+        for (Event e : result){
+            LatLng eventPosition = new LatLng(e.getLocation().getLatitude(), e.getLocation().getLongitude());
+            if (!MapUtilities.position_in_range(eventPosition, userPosition))
+                result.remove(e);
+        }
         return Collections.unmodifiableList(result);
     }
 }
