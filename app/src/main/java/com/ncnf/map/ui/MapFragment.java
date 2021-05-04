@@ -46,8 +46,6 @@ public class MapFragment extends Fragment{
     private MapHandler mapHandler;
     private SearchBarHandler searchBarHandler;
 
-    private final EventDB eventDB;
-
     //Toolbar and location services for it
     private MaterialSearchBar materialSearchBar;
     private PlacesClient placesClient;
@@ -59,11 +57,6 @@ public class MapFragment extends Fragment{
 
     @Inject
     VenueProvider venueProvider;
-
-    public MapFragment(EventDB eventDB){
-        super();
-        this.eventDB = eventDB;
-    }
 
     @Nullable
     @Override
@@ -94,7 +87,7 @@ public class MapFragment extends Fragment{
         mapView.getMapAsync(googleMap -> {
             mMap = googleMap;
 
-            mapHandler = new MapHandler(getActivity(), mMap, eventDB, venueProvider, getChildFragmentManager());
+            mapHandler = new MapHandler(getActivity(), mMap, venueProvider, getChildFragmentManager());
             searchBarHandler = new SearchBarHandler(getActivity(), materialSearchBar, mapHandler);
 
             mapHandler.show_markers();
