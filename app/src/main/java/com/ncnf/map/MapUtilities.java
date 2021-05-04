@@ -1,13 +1,10 @@
 package com.ncnf.map;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -30,7 +27,7 @@ public class MapUtilities {
                 (target_position.longitude * Math.cos(Math.toRadians(target_position.latitude))
                         - current_position.longitude * Math.cos(Math.toRadians(current_position.latitude))));
         double delta_distance = Math.sqrt(delta_lat_km * delta_lat_km + delta_long_km * delta_long_km);
-        return (delta_distance < Settings.getCurrent_max_distance());
+        return (delta_distance < Settings.getCurrentMaxDistance());
     }
 
     // This method comes from https://stackoverflow.com/questions/42365658/custom-marker-in-google-maps-in-android-with-vector-asset-icon

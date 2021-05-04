@@ -28,7 +28,6 @@ public class MapHandler {
     private final VenueProvider venueProvider;
 
     private LatLng userPosition;
-    private Marker userMarker;
     private ClusterManager<NCNFMarker> clusterManager;
 
     // Indicate whether Events or Venues are shown. If false -> venues are shown
@@ -74,9 +73,6 @@ public class MapHandler {
     }
 
     public void show_markers(){
-        // Add a marker near EPFL and move the camera
-        MarkerOptions position_marker = new MarkerOptions().position(userPosition).title("Your Position").icon(MapUtilities.bitmapDescriptorFromVector(context));
-        userMarker = mMap.addMarker(position_marker);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
 
         if (eventsShown){
@@ -90,7 +86,6 @@ public class MapHandler {
     //Removes all markers from the map and recreates them according to current position
     public void update_markers(){
         clusterManager.clearItems();
-        userMarker.remove();
         show_markers();
     }
 

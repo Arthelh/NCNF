@@ -9,6 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
+import com.ncnf.settings.ui.SettingsActivity;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
@@ -65,12 +66,12 @@ public class SettingsActivityTest {
 
     @Test
     public void test_discard(){
-        int initial = Settings.getCurrent_max_distance();
+        int initial = Settings.getCurrentMaxDistance();
         int progress = 49;
         onView(withId(R.id.distanceSeekBar)).perform(setProgress(progress));
         onView(withId(R.id.discardButton)).perform(click());
 
-        assertThat(Settings.getCurrent_max_distance(), is(initial));
+        assertThat(Settings.getCurrentMaxDistance(), is(initial));
     }
 
     @Test
@@ -80,7 +81,7 @@ public class SettingsActivityTest {
         onView(withId(R.id.distanceSeekBar)).perform(setProgress(progress));
         onView(withId(R.id.validateButton)).perform(click());
 
-        assertThat(Settings.getCurrent_max_distance(), is(adjusted_progress));
+        assertThat(Settings.getCurrentMaxDistance(), is(adjusted_progress));
     }
 
 

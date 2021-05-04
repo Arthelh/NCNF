@@ -23,7 +23,7 @@ import com.ncnf.event.Event;
 import com.ncnf.event.EventDB;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.main.MainActivity;
-import com.ncnf.settings.SettingsActivity;
+import com.ncnf.settings.ui.SettingsActivity;
 
 import org.hamcrest.Matcher;
 import org.junit.After;

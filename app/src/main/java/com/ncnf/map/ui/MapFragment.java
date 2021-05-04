@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
@@ -31,7 +30,7 @@ import com.ncnf.event.EventDB;
 import com.ncnf.map.MapHandler;
 import com.ncnf.map.SearchBarHandler;
 import com.ncnf.map.VenueProvider;
-import com.ncnf.settings.SettingsActivity;
+import com.ncnf.settings.ui.SettingsActivity;
 
 import javax.inject.Inject;
 
@@ -105,7 +104,6 @@ public class MapFragment extends Fragment{
             map_ready = true;
         });
 
-        getView().findViewById(R.id.map_settings_button).setOnClickListener(this::start_settings);
         getView().findViewById(R.id.map_switch_button).setOnClickListener(this::switchMarkers);
         getView().findViewById(R.id.map_location_button).setOnClickListener(this::returnToLocation);
     }
@@ -118,17 +116,13 @@ public class MapFragment extends Fragment{
             mapHandler.update_markers();
     }
 
-    public void start_settings(View view){
-        Intent intent = new Intent(getActivity(), SettingsActivity.class);
-        startActivity(intent);
-    }
-
     public void switchMarkers(View view) {
         mapHandler.switchMarkers(mMap);
     }
 
     public void returnToLocation(View view) {
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
             fusedLocationProviderClient.getLastLocation().addOnCompleteListener(task -> {
                 Location gpsLocation = task.getResult();
                 if (gpsLocation != null) {

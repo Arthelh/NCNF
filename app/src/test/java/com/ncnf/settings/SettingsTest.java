@@ -16,8 +16,8 @@ public class SettingsTest {
     public void test_set_and_get_distance(){
         //assertThat(Settings.getCurrent_max_distance(), is(25));
         int new_value = 50;
-        Settings.setCurrent_max_distance(new_value);
-        assertThat(Settings.getCurrent_max_distance(), is(new_value));
+        Settings.setCurrentMaxDistance(new_value);
+        assertThat(Settings.getCurrentMaxDistance(), is(new_value));
     }
 
 }
