@@ -1,12 +1,9 @@
 package com.ncnf.database;
 
-import androidx.annotation.NonNull;
-
 import com.firebase.geofire.GeoFireUtils;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQueryBounds;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -23,7 +20,6 @@ import com.ncnf.event.PrivateEvent;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.user.User;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,8 +31,6 @@ import javax.inject.Inject;
 
 import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
 import static com.ncnf.Utils.GEOHASH_KEY;
-import static com.ncnf.Utils.LAT_KEY;
-import static com.ncnf.Utils.LNG_KEY;
 
 public class DatabaseService implements DatabaseServiceInterface {
 

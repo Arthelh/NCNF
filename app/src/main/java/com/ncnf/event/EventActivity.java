@@ -13,13 +13,15 @@ import com.ncnf.storage.CacheFileStore;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.storage.FileStore;
 
+import javax.inject.Inject;
+
 import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
 import static com.ncnf.Utils.UUID_KEY;
 
 public class EventActivity extends AppCompatActivity {
 
-    private static final DatabaseService db = new DatabaseService();
+    private static DatabaseService db = new DatabaseService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -76,15 +76,15 @@ public class BookMarkActivityTest {
         Intents.release();
     }
 
-//    @Test
-//    public void eventFormValidatesEmptyInput() throws InterruptedException {
-//        onView(withId(R.id.bookmark_view_pager)).perform(swipeLeft());
-//        onView(withId(R.id.bookmark_view_pager)).perform(swipeRight());
-//
-//        //Wait to be sure that events have been loaded
-//        Thread.sleep(5000);
-//
-//        onView(withId(R.id.bookmark_view_pager)).perform(click());
-//        Intents.intended(hasComponent(EventActivity.class.getName()));
-//    }
+    @Test
+    public void eventFormValidatesEmptyInput() throws InterruptedException {
+        onView(withId(R.id.bookmark_view_pager)).perform(swipeLeft());
+        onView(withId(R.id.bookmark_view_pager)).perform(swipeRight());
+
+        //Wait to be sure that events have been loaded
+        Thread.sleep(5000);
+
+        onView(withId(R.id.bookmark_view_pager)).perform(click());
+        Intents.intended(hasComponent(EventActivity.class.getName()));
+    }
 }
