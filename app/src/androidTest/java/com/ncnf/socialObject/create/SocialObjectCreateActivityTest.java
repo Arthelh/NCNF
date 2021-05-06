@@ -1,4 +1,4 @@
-package com.ncnf.event.create;
+package com.ncnf.socialObject.create;
 
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -54,7 +54,7 @@ import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
 @UninstallModules(CurrentUserModule.class)
-public class EventCreateActivityTest {
+public class SocialObjectCreateActivityTest {
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private static final User mockUser = Mockito.mock(User.class);
@@ -65,7 +65,7 @@ public class EventCreateActivityTest {
     CompletableFuture<Boolean> response = CompletableFuture.completedFuture(true);
 
     @Rule
-    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(EventCreateActivity.class));
+    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(GroupCreateActivity.class));
 
     @Before
     public void setup(){
@@ -108,7 +108,7 @@ public class EventCreateActivityTest {
     @Test
     public void eventFormValidatesCorrectInput() {
         when(user.getUuid()).thenReturn("ownerId");
-        when(user.createEvent(anyObject())).thenReturn(response);
+        when(user.createGroup(anyObject())).thenReturn(response);
 
         onView(withId(R.id.set_event_name)).perform(scrollTo(), replaceText("Conference"));
         onView(withId(R.id.set_event_description)).perform(scrollTo(), replaceText("Math are fun!"));
@@ -133,7 +133,7 @@ public class EventCreateActivityTest {
         onView(withId(R.id.validate_event)).perform(click());
 
         verify(user).getUuid();
-        verify(user).createEvent(anyObject());
+        verify(user).createGroup(anyObject());
         intended(hasComponent(MainActivity.class.getName()));
     }
 

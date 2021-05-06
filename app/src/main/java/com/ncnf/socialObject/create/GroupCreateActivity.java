@@ -1,4 +1,4 @@
-package com.ncnf.event.create;
+package com.ncnf.socialObject.create;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -29,8 +29,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
-import com.ncnf.event.Event;
-import com.ncnf.event.PublicEvent;
+import com.ncnf.socialObject.Group;
+import com.ncnf.socialObject.SocialObject;
 import com.ncnf.main.MainActivity;
 import com.ncnf.user.User;
 import com.ncnf.utilities.DateAdapter;
@@ -58,12 +58,12 @@ import static com.ncnf.Utils.POPUP_POSITIVE_BUTTON;
 import static com.ncnf.Utils.POPUP_TITLE;
 
 @AndroidEntryPoint
-public class EventCreateActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class GroupCreateActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     @Inject
     public User user;
 
-    private Event.Type eventType;
+    private SocialObject.Type eventType;
     private LocalDate eventDate = LocalDate.now();
     private LocalTime eventTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
     private int selYear, selMonth, selDay, selHour, selMin;
@@ -109,7 +109,7 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
             selMonth = calendar.get(Calendar.MONTH);
             selDay = calendar.get(Calendar.DATE);
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(EventCreateActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, (view1, year, month, dayOfMonth) -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(GroupCreateActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, (view1, year, month, dayOfMonth) -> {
                 selYear = year;
                 selMonth = month;
                 selDay = dayOfMonth;
@@ -127,7 +127,7 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
         timeSelection.setFocusable(false);
 
         timeSelection.setOnClickListener(view -> {
-            TimePickerDialog timePickerDialog = new TimePickerDialog(EventCreateActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, (view12, hourOfDay, minute) -> {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(GroupCreateActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, (view12, hourOfDay, minute) -> {
                 selHour = hourOfDay;
                 selMin = minute;
                 eventTime = LocalTime.of(selHour, selMin);
@@ -159,10 +159,10 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
         // Select event type
 
         Spinner spinner = (Spinner) findViewById(R.id.select_event_type);
-        spinner.setOnItemSelectedListener(EventCreateActivity.this);
-        List<String> options = Stream.of(Event.Type.values()).map(Event.Type::name).collect(Collectors.toList());
+        spinner.setOnItemSelectedListener(GroupCreateActivity.this);
+        List<String> options = Stream.of(SocialObject.Type.values()).map(SocialObject.Type::name).collect(Collectors.toList());
 
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(EventCreateActivity.this, android.R.layout.simple_spinner_item, options);
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(GroupCreateActivity.this, android.R.layout.simple_spinner_item, options);
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(typeAdapter);
 
@@ -191,24 +191,24 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
                         // TODO: might change with the new event class
                         // File upload must happened after the event is saved, such that the image path
                         // contains the event's UUID
-                        FileStore file = new FileStore(Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
+                        FileStore file = new FileStore(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
                         pictureView.setDrawingCacheEnabled(true);
                         pictureView.buildDrawingCache();
                         Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
                         file.uploadImage(bitmap);
 
-                        //TODO: for now some fields aren't used and it only creates private event -> should be extended afterward
+                        //TODO: for now some fields aren't used and it only creates group -> should be extended afterward
                         DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());
-                        PublicEvent event = new PublicEvent(user.getUuid(),
+                        Group group = new Group(user.getUuid(),
                                 eventName.getText().toString(),
                                 date.getDate(), getLocationFromAddress(eventAddress.getText().toString()),
                                 eventAddress.getText().toString(),
                                 eventDescription.getText().toString(),
-                                eventType, minAgeVal, priceVal, eventEmail.getText().toString()
+                                eventType
                         );
-                        if(event != null) {
+                        if(group != null) {
 
-                            user.createEvent(event).thenAccept(task -> nextStep()).exceptionally(exception -> {
+                            user.createGroup(group).thenAccept(task -> nextStep()).exceptionally(exception -> {
                                 failToCreateEvent(exception.getMessage());
                                 return null;
                             });
@@ -289,7 +289,7 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
     private boolean checkAllFieldsAreFilledAndCorrect() {
 
         EditText[] fields = new EditText[] {eventName, eventDescription, eventEmail, eventAddress};
-        boolean interm = Arrays.asList(fields).stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != Event.Type.NOTHING;
+        boolean interm = Arrays.asList(fields).stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != SocialObject.Type.NOTHING;
         if(!interm) {
             return false;
         }
@@ -321,7 +321,7 @@ public class EventCreateActivity extends AppCompatActivity implements AdapterVie
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
-        eventType = Event.Type.valueOf(item);
+        eventType = SocialObject.Type.valueOf(item);
     }
 
     @Override

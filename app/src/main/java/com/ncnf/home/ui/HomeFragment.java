@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
-import com.ncnf.event.create.EventCreateActivity;
-import com.ncnf.event.update.EventNewsActivity;
+import com.ncnf.socialObject.create.GroupCreateActivity;
+import com.ncnf.socialObject.update.EventNewsActivity;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.user.UserProfileActivity;
 
@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void goToEventCreation(View view){
-        goToActivity(EventCreateActivity.class);
+        goToActivity(GroupCreateActivity.class);
     }
 
     private void goToActivity(Class<?> activity){

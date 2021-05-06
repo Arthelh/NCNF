@@ -2,13 +2,11 @@ package com.ncnf.map;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,13 +18,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.R;
-import com.ncnf.event.Event;
-import com.ncnf.event.EventActivity;
+import com.ncnf.socialObject.SocialObjActivity;
+import com.ncnf.socialObject.SocialObject;
 import com.ncnf.feed.ui.FeedFragment;
 
 import java.util.List;
 
-import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.UUID_KEY;
 
 public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, ClusterManager.OnClusterItemClickListener<NCNFMarker>, ClusterManager.OnClusterItemInfoWindowClickListener<NCNFMarker> {
@@ -55,18 +52,18 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
     public void onClusterItemInfoWindowClick(NCNFMarker item) {
         if (item.isEvent()) {
 
-            List<Event> events = item.getEventList();
+            List<SocialObject> socialObjects = item.getEventList();
 
-            if (events.size() == 1) { //When the marker represents only one event
+            if (socialObjects.size() == 1) { //When the marker represents only one event
 
-                Event e = events.get(0);
-                Intent intent = new Intent(context, EventActivity.class);
+                SocialObject e = socialObjects.get(0);
+                Intent intent = new Intent(context, SocialObjActivity.class);
                 intent.putExtra(UUID_KEY, e.getUuid().toString());
                 context.startActivity(intent);
 
             } else {
 
-                Fragment feedFragment = new FeedFragment(events);
+                Fragment feedFragment = new FeedFragment(socialObjects);
                 ConstraintLayout feedContainer = globalWindow.findViewById(R.id.map_feed_container);
                 FrameLayout feedFrame = globalWindow.findViewById(R.id.map_feed_fragment);
                 Button feedButton = globalWindow.findViewById(R.id.map_feed_button);

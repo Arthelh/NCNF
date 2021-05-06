@@ -5,8 +5,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
-import com.ncnf.event.create.EventCreateActivity;
-import com.ncnf.event.update.EventNewsActivity;
+import com.ncnf.socialObject.create.GroupCreateActivity;
+import com.ncnf.socialObject.update.EventNewsActivity;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.main.MainActivity;
 import com.ncnf.user.UserProfileActivity;
@@ -77,7 +77,7 @@ public final class HomeFragmentTest {
         onView(withId(android.R.id.button1)).check(matches(isClickable()));
         onView(withId(android.R.id.button1)).perform(click());
         Intents.intended(hasComponent(LoginActivity.class.getName()));
-        Intents.intended(hasExtra(NEXT_ACTIVITY_EXTRA_KEY, EventCreateActivity.class));
+        Intents.intended(hasExtra(NEXT_ACTIVITY_EXTRA_KEY, GroupCreateActivity.class));
     }
 
     @Test

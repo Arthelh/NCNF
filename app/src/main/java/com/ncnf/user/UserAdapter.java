@@ -8,12 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.ncnf.R;
-import com.ncnf.Utils;
-import com.ncnf.event.Event;
-import com.ncnf.feed.ui.EventAdapter;
 import com.ncnf.utilities.InputValidator;
 
 import java.util.List;
