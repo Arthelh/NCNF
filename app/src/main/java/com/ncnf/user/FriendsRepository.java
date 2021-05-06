@@ -21,7 +21,7 @@ import static com.ncnf.Utils.USERS_COLLECTION_KEY;
     - pending_requests => Array<String> uuid: array of users uuid to which the user sent a request
     - awaiting_requests => Array<String> uuid: array of users uuid requesting the user
  */
-public class Friends {
+public class FriendsRepository {
 
     /*
         TODO: Some requests needs to be written with a transaction in case of failure.
@@ -31,7 +31,13 @@ public class Friends {
     private final String uuid;
     private final String path;
 
-    Friends(DatabaseService db, String uuid) {
+    public FriendsRepository(String uuid) {
+        this.db = new DatabaseService();
+        this.uuid = uuid;
+        this.path = USERS_COLLECTION_KEY + uuid;
+    }
+
+    public FriendsRepository(DatabaseService db, String uuid) {
         this.db = db;
         this.uuid = uuid;
         this.path = USERS_COLLECTION_KEY + uuid;

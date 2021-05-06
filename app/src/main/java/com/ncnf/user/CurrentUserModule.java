@@ -29,6 +29,11 @@ public class CurrentUserModule {
         return currentUser;
     }
 
+    @Provides
+    public static FirebaseUser getFirebaseUser() {
+        return currentUser();
+    }
+
     public static void signOut() {
         FirebaseAuth.getInstance().signOut();
         currentUser = null;

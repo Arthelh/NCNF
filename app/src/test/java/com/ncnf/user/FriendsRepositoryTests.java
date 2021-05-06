@@ -27,13 +27,13 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class FriendsTests {
+public class FriendsRepositoryTests {
 
     private final static String uuid = "my_uuid";
     private final static String other_uuid = "other_uuid";
 
     private final DatabaseService mockDatabase = Mockito.mock(DatabaseService.class);
-    private final Friends friends = new Friends(mockDatabase, uuid);
+    private final FriendsRepository friends = new FriendsRepository(mockDatabase, uuid);
 
     private List<User> users;
 
