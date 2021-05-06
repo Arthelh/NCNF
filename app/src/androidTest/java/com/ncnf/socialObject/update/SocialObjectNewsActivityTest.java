@@ -1,4 +1,4 @@
-package com.ncnf.event.update;
+package com.ncnf.socialObject.update;
 
 import android.content.Intent;
 
@@ -34,7 +34,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
-public class EventNewsActivityTest {
+public class SocialObjectNewsActivityTest {
 
     private final Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventNewsActivity.class);
 

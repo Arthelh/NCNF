@@ -1,9 +1,10 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -11,14 +12,10 @@ import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.Utils.*;
 
-public abstract class Event implements Comparable {
+public abstract class SocialObject implements Comparable {
 
     public static final String IMAGE_PATH = "/events/images";
     public static final String IMAGE_NAME = "banner_%s";
-
-    public enum Visibility {
-        PUBLIC, PRIVATE
-    }
 
     public enum Type {
         NOTHING, Movie, Museum, Conference, Opera, OTHER
@@ -29,7 +26,6 @@ public abstract class Event implements Comparable {
 
     private UUID uuid;
     private String ownerId;
-    private Visibility visibility;
     private String name;
     private Date date;
     private Type type;
@@ -39,11 +35,11 @@ public abstract class Event implements Comparable {
     private GeoPoint location;
     private String address;
 
-    public Event(String ownerId, String name, Date date, GeoPoint location, String address, Type type, Visibility visibility, String description) {
-        this(ownerId, UUID.randomUUID(), name, date, location, address, type, visibility, new ArrayList<>(), description);
+    public SocialObject(String ownerId, String name, Date date, GeoPoint location, String address, Type type, String description) {
+        this(ownerId, UUID.randomUUID(), name, date, location, address, type, new ArrayList<>(), description);
     }
 
-    public Event(String ownerId, UUID id, String name, Date date, GeoPoint location, String address, Type type, Visibility visibility, List<String> attendees, String description) {
+    public SocialObject(String ownerId, UUID id, String name, Date date, GeoPoint location, String address, Type type, List<String> attendees, String description) {
         this.uuid = id;
         this.path = EVENTS_COLLECTION_KEY + uuid;
         this.ownerId = ownerId;
@@ -52,7 +48,6 @@ public abstract class Event implements Comparable {
         this.location = location;
         this.address = address;
         this.type = type;
-        this.visibility = visibility;
         this.attendees = attendees;
         this.numOfAttendees = attendees.size();
         this.description = description;
@@ -82,12 +77,8 @@ public abstract class Event implements Comparable {
         return type;
     }
 
-    public Visibility getVisibility() {
-        return visibility;
-    }
-
     public List<String> getAttendees() {
-        return attendees;
+        return Collections.unmodifiableList(attendees);
     }
 
     public int getNumOfAttendees() {
@@ -142,6 +133,6 @@ public abstract class Event implements Comparable {
     abstract public CompletableFuture<Boolean> store(DatabaseService db);
 
     public static CompletableFuture<Boolean> addNews(DatabaseService db, String uuid, String value) {
-       return db.updateArrayField(EVENTS_COLLECTION_KEY + uuid, NEWS_KEY, value);
+        return db.updateArrayField(EVENTS_COLLECTION_KEY + uuid, NEWS_KEY, value);
     }
 }

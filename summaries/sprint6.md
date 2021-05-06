@@ -19,7 +19,7 @@ This week, I had to refactor the Private/Public event classes. We change our eve
 
 # Emmanuelle (scrum master)
 
-This week, I redid the UI for the event creation now that we know exactly what fields we want to put into it, and then I started working on the activity to track the location of your friends. I did not run into any major issues and I will be continuing the friend tracking activity next week. 
+This week, I redid the UI for the event creation now that we know exactly what fields we want to put into it, and then I started working on the activity to track the location of your friends. I did not run into any major issues and I will be continuing the friend tracking activity next week.
 
 
 # Jérémie
