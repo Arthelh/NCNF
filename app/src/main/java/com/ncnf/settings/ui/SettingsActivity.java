@@ -13,12 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.ncnf.R;
-import com.ncnf.event.create.EventCreateActivity;
 import com.ncnf.settings.Settings;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Calendar;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -60,7 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
         maxDateSelection.setOnClickListener(createDateOnClickListener(false));
     }
 
-    private void setText(){
+    private void setText() {
         String textViewText = getString(R.string.settings_distance_slider) + distanceSeekBarValue + " km";
         distanceTextView.setText(textViewText);
 
@@ -71,7 +69,7 @@ public class SettingsActivity extends AppCompatActivity {
         accept.setText(getString(R.string.settings_accept_button));
     }
 
-    public void validate(View view){
+    public void validate(View view) {
         //Set all changes in
         Settings.setCurrentMaxDistance(distanceSeekBarValue);
         Settings.setMinDate(minDate);
@@ -79,15 +77,15 @@ public class SettingsActivity extends AppCompatActivity {
         finish();
     }
 
-    public void discard(View view){
+    public void discard(View view) {
         finish();
     }
 
-    private MaterialButtonToggleGroup.OnButtonCheckedListener createOnButtonCheckedListener(){
+    private MaterialButtonToggleGroup.OnButtonCheckedListener createOnButtonCheckedListener() {
         MaterialButtonToggleGroup.OnButtonCheckedListener oBCL = (group, checkedId, isChecked) -> {
-            if (isChecked){
+            if (isChecked) {
                 group.setSelectionRequired(true);
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.settingsToggleToday:
                         minDate = LocalDate.now();
                         maxDate = minDate;
@@ -107,7 +105,7 @@ public class SettingsActivity extends AppCompatActivity {
         return oBCL;
     }
 
-    private SeekBar.OnSeekBarChangeListener createOnSeekBarChangeListener(){
+    private SeekBar.OnSeekBarChangeListener createOnSeekBarChangeListener() {
         return new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -128,7 +126,7 @@ public class SettingsActivity extends AppCompatActivity {
         };
     }
 
-    private View.OnClickListener createDateOnClickListener(boolean isMin){
+    private View.OnClickListener createDateOnClickListener(boolean isMin) {
         DatePickerDialog.OnDateSetListener oDSL = (view1, year, month, dayOfMonth) -> {
             selYear = year;
             selMonth = month;
@@ -136,14 +134,14 @@ public class SettingsActivity extends AppCompatActivity {
             if (isMin) {
                 minDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth);
                 minDateTextView.setText(minDate.toString());
-                if (minDate.isAfter(maxDate)){
+                if (minDate.isAfter(maxDate)) {
                     maxDate = minDate;
                     maxDateTextView.setText(maxDate.toString());
                 }
             } else {
                 maxDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth);
                 maxDateTextView.setText(maxDate.toString());
-                if (maxDate.isBefore(minDate)){
+                if (maxDate.isBefore(minDate)) {
                     minDate = maxDate;
                     minDateTextView.setText(minDate.toString());
                 }
@@ -151,7 +149,7 @@ public class SettingsActivity extends AppCompatActivity {
             toggleGroup.setSelectionRequired(false);
             toggleGroup.uncheck(toggleGroup.getCheckedButtonId());
         };
-        if (isMin){
+        if (isMin) {
             return view -> {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, oDSL, minDate.getYear(), minDate.getMonthValue() - 1, minDate.getDayOfMonth());
                 datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
