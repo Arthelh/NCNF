@@ -8,10 +8,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ncnf.database.builder.DatabaseObjectBuilder;
 import com.ncnf.database.builder.EventBuilder;
+import com.ncnf.database.builder.GroupBuilder;
 import com.ncnf.database.builder.UserBuilder;
-import com.ncnf.event.Event;
-import com.ncnf.event.PrivateEvent;
-import com.ncnf.event.PublicEvent;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.Group;
 import com.ncnf.user.User;
 
 import java.util.ArrayList;
@@ -42,8 +42,7 @@ public class DatabaseService implements DatabaseServiceInterface {
     private void initRegistry(){
         registry.put(User.class, new UserBuilder());
         registry.put(Event.class, new EventBuilder());
-        registry.put(PublicEvent.class, new EventBuilder());
-        registry.put(PrivateEvent.class, new EventBuilder());
+        registry.put(Group.class, new GroupBuilder());
     }
 
     @Override
@@ -203,7 +202,7 @@ public class DatabaseService implements DatabaseServiceInterface {
             futureResponse.complete(new ArrayList<>());
             return futureResponse;
         }
-
+        
         List<CompletableFuture<List<R>>> futures = values
                 .stream()
                 .map(value -> this.whereEqualTo(collectionPath, field, value, type))
@@ -238,8 +237,5 @@ public class DatabaseService implements DatabaseServiceInterface {
     public CompletableFuture<Boolean> removeArrayField(String documentPath, String arrayField, Object value){
         return this.updateField(documentPath, arrayField, FieldValue.arrayRemove(value));
     }
-
-
-
 }
 

@@ -1,4 +1,4 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseService;
@@ -23,14 +23,14 @@ import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class PublicEventTest {
+public class EventTest {
 
     String name = "Jane Doe";
     Date date = new Date(2021, 03, 11);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    Event.Type type = Event.Type.Conference;
-    String description = "Event description goes here";
+    SocialObject.Type type = SocialObject.Type.Conference;
+    String description = "SocialObject description goes here";
     String ownerID = "00";
     UUID uuid = UUID.randomUUID();
     List<String> attendees = new ArrayList<>();
@@ -39,14 +39,14 @@ public class PublicEventTest {
     List<Tag> tags = new ArrayList<>();
 
     DatabaseService db;
-    PublicEvent mainEvent;
+    Event mainEvent;
     CompletableFuture<Boolean> response;
     CompletableFuture<Boolean> response2;
 
     @Before
     public void setup(){
         db = Mockito.mock(DatabaseService.class);
-        mainEvent = new PublicEvent(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, tags, "test@email.com");
+        mainEvent = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, tags, "test@email.com");
         response = CompletableFuture.completedFuture(true);
     }
 
@@ -66,7 +66,7 @@ public class PublicEventTest {
     @Test
     public void publicEventGeneratesCorrectly() {
 
-        PublicEvent event = new PublicEvent(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
+        Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
         assertEquals(event.getOwnerId(), ownerID);
         assertEquals(event.getDate(), date);
         assertEquals(event.getName(), name);
@@ -78,7 +78,6 @@ public class PublicEventTest {
         assertEquals(event.getNumOfAttendees(), 0);
         assertEquals(event.getAttendees().size(), 0);
 
-        assertEquals(event.getVisibility(), Event.Visibility.PUBLIC);
     }
 
     @Test
@@ -88,7 +87,7 @@ public class PublicEventTest {
         tags.add(tag);
 
 
-        PublicEvent event = new PublicEvent(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, tags, "test@email.com");
+        Event event = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, tags, "test@email.com");
         assertEquals(event.getUuid(), uuid);
         assertEquals(event.getOwnerId(), ownerID);
         assertEquals(event.getDate(), date);
@@ -104,30 +103,29 @@ public class PublicEventTest {
         assertEquals(event.getTags().size(), 1);
         assertEquals(event.getTags().get(0), tag);
 
-        assertEquals(event.getVisibility(), Event.Visibility.PUBLIC);
     }
 
     @Test
     public void publicEventRejectsOnInvalidAge() {
-        assertThrows(IllegalArgumentException.class, () -> new PublicEvent(ownerID,name, date, geoPoint,address,description, type, -1, 0, "test@email.com"));
+        assertThrows(IllegalArgumentException.class, () -> new Event(ownerID,name, date, geoPoint,address,description, type, -1, 0, "test@email.com"));
     }
 
     @Test
     public void setMinAgeRejectsOnInvalidAge() {
-        PublicEvent event = new PublicEvent(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
+        Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
         assertThrows(IllegalArgumentException.class, () -> event.setMinAge(-1));
     }
 
     @Test
     public void setMinAgeWorks() {
-        PublicEvent event = new PublicEvent(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
+        Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
         event.setMinAge(18);
         assertEquals(event.getMinAge(), 18);
     }
 
     @Test
     public void addTagWorks() {
-        PublicEvent event = new PublicEvent(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
+        Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
         Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
         event.addTag(tag);
         assertTrue(event.getTags().contains(tag));
@@ -140,7 +138,7 @@ public class PublicEventTest {
         Tag tag2 = new Tag("\uD83C\uDFB8", "Folk Music");
         list.add(tag);
         list.add(tag2);
-        PublicEvent event = new PublicEvent(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
+        Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
         event.setTags(list);
 
         List<Tag> result = event.getTags();
@@ -153,7 +151,7 @@ public class PublicEventTest {
 
     @Test
     public void basicSettersWork() {
-        PublicEvent event = new PublicEvent(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
+        Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
         List<String> attendees = new ArrayList<>();
         Date newDate = new Date(2021, 3, 12);
         GeoPoint newGeoPoint = new GeoPoint(1., 1.);
@@ -182,14 +180,13 @@ public class PublicEventTest {
     @Test
     public void gettersWork() {
 
-        PublicEvent event = new PublicEvent("ownerId", name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        Event event = new Event("ownerId", name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
 //        assertEquals(event.getImageName(), "swan_lake");
-        assertEquals(event.getVisibility(), Event.Visibility.valueOf("PUBLIC"));
     }
 
     @Test
     public void filterTagsWorks() {
-        PublicEvent event = new PublicEvent("ownerId", name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
+        Event event = new Event("ownerId", name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
         Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
         Tag tag2 = new Tag("\uD83C\uDFB8", "Folk Music");
         event.addTag(tag);
@@ -201,9 +198,9 @@ public class PublicEventTest {
 
     @Test
     public void compareToWorks() {
-        PublicEvent event = new PublicEvent("ownerId", name, date, geoPoint, address, description, type, 0, 0, "test@email.com");
+        Event event = new Event("ownerId", name, date, geoPoint, address, description, type, 0, 0, "test@email.com");
         Date date2 = new Date(2021, 03, 30);
-        PublicEvent event2 = new PublicEvent("ownerId", name, date2, geoPoint, address, description, type, 0, 0, "test@email.com");
+        Event event2 = new Event("ownerId", name, date2, geoPoint, address, description, type, 0, 0, "test@email.com");
 
         assertEquals(event.compareTo(event2), -1);
     }

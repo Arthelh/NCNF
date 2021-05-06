@@ -18,8 +18,8 @@ import org.junit.rules.RuleChain;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -55,8 +55,7 @@ public class FriendsActivityTest {
 
     @BindValue
     public FriendsRepository mockFriendsRepository = friendsRepository;
-
-    private static final User u1 = new User(databaseService,"1", "johnny", "john@bar.com","John",  "Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false);
+    private static final User u1 = new User(databaseService, "1", "johnny", "john@bar.com","John",  "Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, new Date());
     private static final List<User> users = Collections.singletonList(u1);
 
     @BeforeClass
