@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
@@ -27,7 +26,7 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
-import com.ncnf.event.EventDB;
+import com.ncnf.socialObject.EventDB;
 import com.ncnf.map.MapHandler;
 import com.ncnf.map.SearchBarHandler;
 import com.ncnf.map.VenueProvider;

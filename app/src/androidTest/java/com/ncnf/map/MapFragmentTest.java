@@ -20,9 +20,9 @@ import com.google.firebase.firestore.GeoPoint;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.event.Event;
-import com.ncnf.event.EventDB;
-import com.ncnf.event.PublicEvent;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.SocialObject;
+import com.ncnf.socialObject.EventDB;
 import com.ncnf.main.MainActivity;
 import com.ncnf.settings.Settings;
 import com.ncnf.settings.SettingsActivity;
@@ -57,12 +57,13 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
 public final class MapFragmentTest {
 
-    List<Event> TEST_EVENTS = Collections.singletonList(new PublicEvent("lol", "TestGeo", new Date(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", Event.Type.Conference, 0, 0, "email@test.com"));
-    CompletableFuture<List<Event>> TEST_COMP_FUTURE = new CompletableFuture<>();
+    CompletableFuture<List<SocialObject>> TEST_COMP_FUTURE = new CompletableFuture<>();
+    List<SocialObject> TEST_SocialObjects = Collections.singletonList(new Event("lol", "TestGeo", new Date(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com"));
     List<Venue> TEST_VENUES = Arrays.asList(new Venue("EPFL", 46.5191f, 6.5668f),
             new Venue("UniL", 46.5211f, 6.5802f));
 
@@ -81,10 +82,11 @@ public final class MapFragmentTest {
     @Before
     public void setup() {
         Intents.init();
-        TEST_COMP_FUTURE.complete(TEST_EVENTS);
-        Mockito.when(eventDB.toList()).thenReturn(TEST_EVENTS);
-        Mockito.when(db.eventGeoQuery(Settings.userPosition, Settings.getCurrent_max_distance() * 1000)).thenReturn(TEST_COMP_FUTURE);
-        Mockito.when(venueProvider.getAll()).thenReturn(TEST_VENUES);
+
+        TEST_COMP_FUTURE.complete(TEST_SocialObjects);
+        when(db.eventGeoQuery(Settings.userPosition, Settings.getCurrent_max_distance() * 1000)).thenReturn(TEST_COMP_FUTURE);
+        when(venueProvider.getAll()).thenReturn(TEST_VENUES);
+
         onView(withId(R.id.navigation_map)).perform(click());
     }
 

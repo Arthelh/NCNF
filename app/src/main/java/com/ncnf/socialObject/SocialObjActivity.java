@@ -1,4 +1,4 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +19,7 @@ import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
 import static com.ncnf.Utils.UUID_KEY;
 
-public class EventActivity extends AppCompatActivity {
+public class SocialObjActivity extends AppCompatActivity {
 
     private static DatabaseService db = new DatabaseService();
 

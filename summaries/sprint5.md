@@ -2,7 +2,7 @@
 
 # Beltan
 
-This week I changed the source of the events for the map, a thing that I did in the first week, to have it use the real event class that is used throughout the project. I also modified the source of the events,
+This week I changed the source of the events for the map, a thing that I did in the first week, to have it use the real socialObject class that is used throughout the project. I also modified the source of the events,
 that was before a placeholder class, to have it be the same source as the feed. I still have work to do for next week as I have not finished all my tasks.
 
 # David (scrum master)

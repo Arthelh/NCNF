@@ -19,9 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.event.Event;
-import com.ncnf.event.EventActivity;
 import com.ncnf.settings.Settings;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.SocialObject;
+import com.ncnf.socialObject.SocialObjActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,19 +32,19 @@ import java.util.concurrent.CompletableFuture;
 import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.UUID_KEY;
 
-
 public class FeedFragment extends Fragment {
 
     private RecyclerView.LayoutManager lManager;
-    private EventAdapter adapter;
-    private List<Event> eventList = new ArrayList<>();
+    private SocialObjAdapter adapter;
+    private List<SocialObject> eventList;
+
     private static final String CHANNEL_NAME = "events_to_be_shown";
 
     public FeedFragment(){
         super();
     }
 
-    public FeedFragment(List<Event> eventList){
+    public FeedFragment(List<SocialObject> eventList){
         super();
 
         Objects.requireNonNull(eventList);
@@ -71,13 +72,13 @@ public class FeedFragment extends Fragment {
 
         // Set the custom adapter
         if (eventList.isEmpty()){
-            final List<Event> result = new ArrayList<>();
+            final List<SocialObject> result = new ArrayList<>();
 
             CompletableFuture<List<Event>> completableFuture = new DatabaseService().eventGeoQuery(Settings.userPosition, Settings.getCurrent_max_distance() * 1000);
             completableFuture.thenAccept(eventList -> {
 
                 result.addAll(eventList);
-                adapter = new EventAdapter(result, this::onEventClick, EventAdapter.SortingMethod.DATE);
+                adapter = new SocialObjAdapter(result, this::onEventClick, SocialObjAdapter.SortingMethod.DATE);
                 recycler.setAdapter(adapter);
 
             }).exceptionally(e -> {
@@ -87,13 +88,13 @@ public class FeedFragment extends Fragment {
 
             });
         } else {
-            adapter = new EventAdapter(eventList, this::onEventClick, EventAdapter.SortingMethod.DATE);
+            adapter = new SocialObjAdapter(eventList, this::onEventClick, SocialObjAdapter.SortingMethod.DATE);
             recycler.setAdapter(adapter);
         }
     }
 
-    private void onEventClick(Event e) {
-        Intent intent = new Intent(getActivity(), EventActivity.class);
+    private void onEventClick(SocialObject e) {
+        Intent intent = new Intent(getActivity(), SocialObjActivity.class);
         intent.putExtra(UUID_KEY, e.getUuid().toString());
         startActivity(intent);
     }
@@ -124,10 +125,10 @@ public class FeedFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.dateOrder :
-                adapter.orderBy(EventAdapter.SortingMethod.DATE);
+                adapter.orderBy(SocialObjAdapter.SortingMethod.DATE);
                 break;
             case R.id.relevanceOrder :
-                adapter.orderBy(EventAdapter.SortingMethod.RELEVANCE);
+                adapter.orderBy(SocialObjAdapter.SortingMethod.RELEVANCE);
                 break;
         }
         return true;

@@ -1,11 +1,10 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import android.content.Intent;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.google.firebase.firestore.GeoPoint;
@@ -42,13 +41,18 @@ import dagger.hilt.android.testing.HiltAndroidTest;
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4.class)
-public class EventActivityTest {
+public class SocialObjectActivityTest {
 
+<<<<<<< HEAD:app/src/androidTest/java/com/ncnf/event/EventActivityTest.java
     @BindValue
     public DatabaseService db = Mockito.mock(DatabaseService.class);
 
     private final Event event = new PublicEvent("EPFL", "EPFL event", new Date(2021, 03, 11), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0, "test@email.com");
     private final CompletableFuture<Event> eventC = new CompletableFuture<>();
+=======
+    private EventDB db = new EventDB();
+    private SocialObject socialObject1 = db.getSocialObj(EventDB.uuid1.toString());
+>>>>>>> main:app/src/androidTest/java/com/ncnf/socialObject/SocialObjectActivityTest.java
 
     @Before
     public void setup(){
@@ -60,47 +64,82 @@ public class EventActivityTest {
 
     @Test
     public void test_name(){
+<<<<<<< HEAD:app/src/androidTest/java/com/ncnf/event/EventActivityTest.java
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
         intent.putExtra(UUID_KEY, event.getUuid().toString());
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
             onView(withId(R.id.eventName)).check(matches(withText(containsString(event.getName()))));
+=======
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), SocialObjActivity.class);
+        intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
+        try (ActivityScenario<SocialObjActivity> scenario = ActivityScenario.launch(intent)) {
+            onView(withId(R.id.eventName)).check(matches(withText(containsString(socialObject1.getName()))));
+>>>>>>> main:app/src/androidTest/java/com/ncnf/socialObject/SocialObjectActivityTest.java
         }
     }
 
     @Test
     public void test_address(){
+<<<<<<< HEAD:app/src/androidTest/java/com/ncnf/event/EventActivityTest.java
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
         intent.putExtra(UUID_KEY, event.getUuid().toString());
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
             onView(withId(R.id.eventLocation)).check(matches(withText(containsString(event.getAddress()))));
+=======
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), SocialObjActivity.class);
+        intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
+        try (ActivityScenario<SocialObjActivity> scenario = ActivityScenario.launch(intent)) {
+            onView(withId(R.id.eventLocation)).check(matches(withText(containsString(socialObject1.getAddress()))));
+>>>>>>> main:app/src/androidTest/java/com/ncnf/socialObject/SocialObjectActivityTest.java
         }
     }
 
     @Test
     public void test_desc(){
+<<<<<<< HEAD:app/src/androidTest/java/com/ncnf/event/EventActivityTest.java
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
         intent.putExtra(UUID_KEY, event.getUuid().toString());
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
             onView(withId(R.id.eventDescription)).check(matches(withText(containsString(event.getDescription()))));
+=======
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), SocialObjActivity.class);
+        intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
+        try (ActivityScenario<SocialObjActivity> scenario = ActivityScenario.launch(intent)) {
+            onView(withId(R.id.eventDescription)).check(matches(withText(containsString(socialObject1.getDescription()))));
+>>>>>>> main:app/src/androidTest/java/com/ncnf/socialObject/SocialObjectActivityTest.java
         }
     }
 
     @Test
     public void test_date(){
+<<<<<<< HEAD:app/src/androidTest/java/com/ncnf/event/EventActivityTest.java
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
         intent.putExtra(UUID_KEY, event.getUuid().toString());
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
             DateAdapter adapter = new DateAdapter(event.getDate());
+=======
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), SocialObjActivity.class);
+        intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
+        try (ActivityScenario<SocialObjActivity> scenario = ActivityScenario.launch(intent)) {
+            DateAdapter adapter = new DateAdapter(socialObject1.getDate());
+>>>>>>> main:app/src/androidTest/java/com/ncnf/socialObject/SocialObjectActivityTest.java
             onView(withId(R.id.eventDate)).check(matches(withText(containsString(adapter.toString()))));
         }
     }
 
     @Test
     public void test_owner(){
+<<<<<<< HEAD:app/src/androidTest/java/com/ncnf/event/EventActivityTest.java
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), EventActivity.class);
         intent.putExtra(UUID_KEY, event.getUuid().toString());
         try (ActivityScenario<EventActivity> scenario = ActivityScenario.launch(intent)) {
             onView(withId(R.id.eventOwner)).check(matches(withText(containsString(event.getOwnerId()))));
+=======
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), SocialObjActivity.class);
+        intent.putExtra(UUID_KEY, EventDB.uuid1.toString());
+        try (ActivityScenario<SocialObjActivity> scenario = ActivityScenario.launch(intent)) {
+            onView(withId(R.id.eventOwner)).check(matches(withText(containsString(socialObject1.getOwnerId()))));
+>>>>>>> main:app/src/androidTest/java/com/ncnf/socialObject/SocialObjectActivityTest.java
         }
     }
 

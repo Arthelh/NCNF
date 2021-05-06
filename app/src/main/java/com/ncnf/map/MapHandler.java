@@ -16,10 +16,11 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+
 import com.ncnf.database.DatabaseService;
-import com.ncnf.event.Event;
-import com.ncnf.event.EventDB;
 import com.ncnf.settings.Settings;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.SocialObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -188,7 +189,6 @@ public class MapHandler {
         protected boolean shouldRenderAsCluster(@NonNull Cluster<T> cluster) {
             return cluster.getSize() > 1;
         }
-
 
     }
 }

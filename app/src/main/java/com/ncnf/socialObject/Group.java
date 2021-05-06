@@ -1,4 +1,4 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import androidx.annotation.NonNull;
 
@@ -13,17 +13,17 @@ import java.util.concurrent.CompletableFuture;
 import static com.ncnf.Utils.*;
 
 
-public class PrivateEvent extends Event {
+public class Group extends SocialObject {
 
     private final List<String> invited;
 
-    public PrivateEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type) {
-        super(ownerId, name, date, location, address, type, Event.Visibility.PRIVATE, description);
+    public Group(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type) {
+        super(ownerId, name, date, location, address, type, description);
         invited = new ArrayList<>();
     }
 
-    public PrivateEvent(String ownerId, UUID id, String name, Date date, GeoPoint location, String address, Type type, List<String> attendees, String description, List<String> invited) {
-        super(ownerId, id, name, date, location, address, type, Event.Visibility.PRIVATE,attendees, description);
+    public Group(String ownerId, UUID id, String name, Date date, GeoPoint location, String address, Type type, List<String> attendees, String description, List<String> invited) {
+        super(ownerId, id, name, date, location, address, type, attendees, description);
         this.invited = invited;
     }
 
@@ -37,18 +37,18 @@ public class PrivateEvent extends Event {
 
     @Override
     public boolean equals(Object o) {
-        PrivateEvent p = (PrivateEvent) o;
+        Group p = (Group) o;
         return p.getUuid().equals(getUuid());
     }
 
     @Override
     public int compareTo(Object o) {
-        PrivateEvent otherEvent = (PrivateEvent) o;
+        Group otherEvent = (Group) o;
         return getDate().compareTo(otherEvent.getDate());
     }
 
     public CompletableFuture<Boolean> store(@NonNull DatabaseService db){
-        return db.setDocument(EVENTS_COLLECTION_KEY + this.getUuid(), this);
+        return db.setDocument(GROUPS_COLLECTION_KEY + this.getUuid(), this);
     }
 
 }

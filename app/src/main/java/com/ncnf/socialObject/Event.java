@@ -1,4 +1,4 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import androidx.annotation.NonNull;
 
@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import static com.ncnf.Utils.*;
 
-public class PublicEvent extends Event {
+public class Event extends SocialObject {
 
     private static final int MIN_AGE = 0;
     private static final int MAX_AGE = 125;
@@ -22,8 +22,8 @@ public class PublicEvent extends Event {
     private int minAge;
     private String email;
 
-    public PublicEvent(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type, int minAge, double price, String email) {
-        super(ownerId, name, date, location, address, type, Event.Visibility.PUBLIC, description);
+    public Event(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type, int minAge, double price, String email) {
+        super(ownerId, name, date, location, address, type, description);
 
         checkConstraints(minAge, price);
 
@@ -33,8 +33,8 @@ public class PublicEvent extends Event {
         this.email = email;
     }
 
-    public PublicEvent(String ownerId, UUID uuid, String name, Date date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<Tag> tags, String email) {
-        super(ownerId, uuid, name, date, location, address, type, Visibility.PUBLIC, attendees, description);
+    public Event(String ownerId, UUID uuid, String name, Date date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<Tag> tags, String email) {
+        super(ownerId, uuid, name, date, location, address, type, attendees, description);
 
         checkConstraints(minAge, price);
 
@@ -91,13 +91,13 @@ public class PublicEvent extends Event {
 
     @Override
     public int compareTo(Object o) {
-        PublicEvent otherEvent = (PublicEvent) o;
+        Event otherEvent = (Event) o;
         return getDate().compareTo(otherEvent.getDate());
     }
 
     @Override
     public boolean equals(Object o) {
-        PublicEvent p = (PublicEvent) o;
+        Event p = (Event) o;
         return p.getUuid().equals(getUuid());
     }
 

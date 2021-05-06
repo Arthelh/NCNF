@@ -1,34 +1,31 @@
-package com.ncnf.event;
+package com.ncnf.socialObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
-public class EventRelevanceCalculator {
+public class SocialObjRelevanceCalculator {
 
-    private final List<PublicEvent> events = new ArrayList<>();
-    private final List<Event> sortedList;
+    private final List<Event> events = new ArrayList<>();
+    private final List<SocialObject> sortedList;
 
-    public EventRelevanceCalculator(List<Event> l) {
+    public SocialObjRelevanceCalculator(List<SocialObject> l) {
 
-        for (Event e : l) {
+        for (SocialObject e : l) {
             if (e != null)
-                this.events.add((PublicEvent) e);
+                this.events.add((Event) e);
         }
         sortedList = new ArrayList<>(sortedList());
     }
 
-    private List<Event> sortedList() {
-        List<Event> l = new ArrayList<>();
+    private List<SocialObject> sortedList() {
+        List<SocialObject> l = new ArrayList<>();
         Map<Tag, Integer> m = new HashMap<>();
 
-        for (PublicEvent e : events) {
+        for (Event e : events) {
             List<Tag> tags = e.getTags();
 
             if (!tags.isEmpty()) {
@@ -38,7 +35,7 @@ public class EventRelevanceCalculator {
                 for (int i = 0; i < tags.size(); ++i) {
                     int thisTagOcc = 0;
                     Tag thisTag = tags.get(i);
-                    for (PublicEvent e2 : events) {
+                    for (Event e2 : events) {
                         if (!e2.equals(e) && e2.getTags().contains(thisTag)) {
                             thisTagOcc += 1;
                         }
@@ -62,7 +59,7 @@ public class EventRelevanceCalculator {
         for (Integer i : occurrences) {
             for (Tag t : m.keySet()) {
                 if (m.get(t).equals(i)) {
-                    for (PublicEvent e : events) {
+                    for (Event e : events) {
                         if (e.getTags().contains(t) && !l.contains(e)) {
                             l.add(e);
                         }
@@ -74,7 +71,7 @@ public class EventRelevanceCalculator {
         return l;
     }
 
-    public List<Event> getSortedList() {
+    public List<SocialObject> getSortedList() {
         return sortedList;
     }
 
