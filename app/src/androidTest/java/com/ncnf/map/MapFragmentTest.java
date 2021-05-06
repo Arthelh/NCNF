@@ -19,9 +19,9 @@ import androidx.test.uiautomator.Until;
 import com.google.firebase.firestore.GeoPoint;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
-import com.ncnf.event.Event;
-import com.ncnf.event.EventDB;
-import com.ncnf.event.PublicEvent;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.SocialObject;
+import com.ncnf.socialObject.EventDB;
 import com.ncnf.main.MainActivity;
 import com.ncnf.settings.ui.SettingsActivity;
 
@@ -56,7 +56,7 @@ import static org.junit.Assert.assertTrue;
 @HiltAndroidTest
 public final class MapFragmentTest {
 
-    List<Event> TEST_EVENTS = Collections.singletonList(new PublicEvent("lol", "Carmen", new Date(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", Event.Type.Conference, 0, 0, "email@test.com"));
+    List<SocialObject> TEST_SocialObjects = Collections.singletonList(new Event("lol", "Carmen", new Date(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com"));
     List<Venue> TEST_VENUES = Arrays.asList(new Venue("EPFL", 46.5191f, 6.5668f),
             new Venue("UniL", 46.5211f, 6.5802f));
 
@@ -74,7 +74,7 @@ public final class MapFragmentTest {
     @Before
     public void setup() {
         Intents.init();
-        Mockito.when(eventDB.toList()).thenReturn(TEST_EVENTS);
+        Mockito.when(eventDB.toList()).thenReturn(TEST_SocialObjects);
         Mockito.when(venueProvider.getAll()).thenReturn(TEST_VENUES);
         onView(withId(R.id.navigation_map)).perform(click());
     }

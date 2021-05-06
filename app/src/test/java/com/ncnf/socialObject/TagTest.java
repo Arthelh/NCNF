@@ -1,16 +1,5 @@
-package com.ncnf.event;
-import com.ncnf.organizer.PublicOrganizer;
+package com.ncnf.socialObject;
 
-
-
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
-import java.util.UUID;
-
-import static org.junit.Assert.*;
 
 import org.junit.Test;
 

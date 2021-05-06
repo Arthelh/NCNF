@@ -62,15 +62,15 @@
             android:name="com.google.android.wearable.standalone"
             android:value="true" /> <!-- FEED -->
         <activity
-            android:name=".event.create.EventCreateActivity"
+            android:name=".socialObject.create.GroupCreateActivity"
             android:label="@string/title_event_creation"
             android:parentActivityName=".main.MainActivity" />
         <activity
-            android:name=".event.update.EventNewsActivity"
+            android:name=".socialObject.update.EventNewsActivity"
             android:label="Publish a news"
             android:parentActivityName=".main.MainActivity" />
         <activity
-            android:name=".event.EventActivity"
+            android:name=".socialObject.SocialObjActivity"
             android:parentActivityName=".main.MainActivity" /> <!-- LANDING PAGE -->
         <activity android:name=".main.MainActivity">
             <intent-filter>

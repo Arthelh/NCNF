@@ -26,7 +26,7 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
-import com.ncnf.event.EventDB;
+import com.ncnf.socialObject.EventDB;
 import com.ncnf.map.MapHandler;
 import com.ncnf.map.SearchBarHandler;
 import com.ncnf.map.VenueProvider;

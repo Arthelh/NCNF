@@ -21,7 +21,7 @@
         android:layout_width="411dp"
         android:layout_height="734dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friends_tabs" />
+        app:layout_constraintTop_toBottomOf="@+id/bookmark_tabs" />
 </androidx.constraintlayout.widget.ConstraintLayout>
