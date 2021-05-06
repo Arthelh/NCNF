@@ -36,6 +36,4 @@ public interface DatabaseServiceInterface {
     <T, R> CompletableFuture<List<R>> whereEqualTo(String collectionPath, String field, T value, Class<R> type);
 
     <T, R> CompletableFuture<List<R>> whereIn(String path, String field, List<T> values, Class<R> type);
-
-    CompletableFuture<Boolean> addNews(String uuid, String value);
 }

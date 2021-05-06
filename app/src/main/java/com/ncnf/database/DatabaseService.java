@@ -23,9 +23,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
-import static com.ncnf.Utils.NEWS_KEY;
-
 public class DatabaseService implements DatabaseServiceInterface {
 
     private final FirebaseFirestore db;
@@ -239,11 +236,6 @@ public class DatabaseService implements DatabaseServiceInterface {
     @Override
     public CompletableFuture<Boolean> removeArrayField(String documentPath, String arrayField, Object value){
         return this.updateField(documentPath, arrayField, FieldValue.arrayRemove(value));
-    }
-
-    @Override
-    public CompletableFuture<Boolean> addNews(String uuid, String value) {
-        return this.updateArrayField(EVENTS_COLLECTION_KEY + uuid, NEWS_KEY, value);
     }
 }
 

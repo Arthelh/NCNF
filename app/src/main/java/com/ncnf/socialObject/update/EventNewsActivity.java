@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
+import com.ncnf.socialObject.SocialObject;
 import com.ncnf.utilities.InputValidator;
 
 import javax.inject.Inject;
@@ -38,7 +39,7 @@ public class EventNewsActivity extends AppCompatActivity {
         publishButton.setOnClickListener(view -> {
             if (InputValidator.verifyGenericInput(textField)) {
                 textField.setEnabled(false);
-                    db.addNews(uuid, textField.getText().toString()).thenAccept(res -> {
+                    SocialObject.addNews(db, uuid, textField.getText().toString()).thenAccept(res -> {
                     Snackbar bar = Snackbar.make(findViewById(R.id.eventNewsRoot), "News published !", LENGTH_LONG);
                     textField.setText("");
                     bar.show();

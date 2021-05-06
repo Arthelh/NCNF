@@ -131,4 +131,8 @@ public abstract class SocialObject implements Comparable {
     }
 
     abstract public CompletableFuture<Boolean> store(DatabaseService db);
+
+    public static CompletableFuture<Boolean> addNews(DatabaseService db, String uuid, String value) {
+        return db.updateArrayField(EVENTS_COLLECTION_KEY + uuid, NEWS_KEY, value);
+    }
 }
