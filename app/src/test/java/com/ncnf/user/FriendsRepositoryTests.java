@@ -33,7 +33,7 @@ public class FriendsRepositoryTests {
     private final static String other_uuid = "other_uuid";
 
     private final DatabaseService mockDatabase = Mockito.mock(DatabaseService.class);
-    private final FriendsRepository friends = new FriendsRepository(mockDatabase, uuid);
+    private final FriendsRepository friends = new FriendsRepository(mockDatabase);
 
     private List<User> users;
 
@@ -48,7 +48,7 @@ public class FriendsRepositoryTests {
     public void requestSuccessfullyUpdateTwoUsers() {
         when(mockDatabase.updateArrayField(anyString(), anyString(), anyObject())).thenReturn(CompletableFuture.completedFuture(true));
 
-        CompletableFuture<Boolean> res = friends.request(other_uuid);
+        CompletableFuture<Boolean> res = friends.request(uuid, other_uuid);
 
         verify(mockDatabase).updateArrayField(USERS_COLLECTION_KEY + uuid, PENDING_REQUESTS_KEY, other_uuid);
         verify(mockDatabase).updateArrayField(USERS_COLLECTION_KEY + other_uuid, AWAITING_REQUESTS_KEY, uuid);
@@ -64,7 +64,7 @@ public class FriendsRepositoryTests {
     public void requestFailsToUpdateTwoUsers() {
         when(mockDatabase.updateArrayField(anyString(), anyString(), anyObject())).thenReturn(CompletableFuture.completedFuture(false));
 
-        CompletableFuture<Boolean> res = friends.request(other_uuid);
+        CompletableFuture<Boolean> res = friends.request(uuid, other_uuid);
 
         try {
             assertFalse(res.get());
@@ -78,7 +78,7 @@ public class FriendsRepositoryTests {
         CompletableFuture<List<User>> future = CompletableFuture.completedFuture(users);
         when(mockDatabase.whereArrayContains(anyString(), anyString(), anyObject(), eq(User.class))).thenReturn(future);
 
-        CompletableFuture<List<User>> res = friends.awaitingRequests();
+        CompletableFuture<List<User>> res = friends.awaitingRequests(uuid);
 
         verify(mockDatabase).whereArrayContains(USERS_COLLECTION_KEY, PENDING_REQUESTS_KEY, uuid, User.class);
 
@@ -95,7 +95,7 @@ public class FriendsRepositoryTests {
         CompletableFuture<List<User>> future = CompletableFuture.completedFuture(users);
         when(mockDatabase.whereArrayContains(anyString(), anyString(), anyObject(), eq(User.class))).thenReturn(future);
 
-        CompletableFuture<List<User>> res = friends.pendingRequests();
+        CompletableFuture<List<User>> res = friends.pendingRequests(uuid);
 
         verify(mockDatabase).whereArrayContains(USERS_COLLECTION_KEY, AWAITING_REQUESTS_KEY, uuid, User.class);
 
@@ -111,7 +111,7 @@ public class FriendsRepositoryTests {
         when(mockDatabase.removeArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
         when(mockDatabase.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
-        CompletableFuture<Boolean> res = friends.updateRequest(true, other_uuid);
+        CompletableFuture<Boolean> res = friends.updateRequest(true, uuid, other_uuid);
 
         verify(mockDatabase).removeArrayField(USERS_COLLECTION_KEY + uuid, AWAITING_REQUESTS_KEY, other_uuid);
         verify(mockDatabase).removeArrayField(USERS_COLLECTION_KEY + other_uuid, PENDING_REQUESTS_KEY, uuid);
@@ -130,7 +130,7 @@ public class FriendsRepositoryTests {
         when(mockDatabase.removeArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(false));
         when(mockDatabase.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(false));
 
-        CompletableFuture<Boolean> res = friends.updateRequest(true, other_uuid);
+        CompletableFuture<Boolean> res = friends.updateRequest(true, uuid, other_uuid);
 
         try {
             assertFalse(res.get());
@@ -143,7 +143,7 @@ public class FriendsRepositoryTests {
     public void declineRequestIsSuccessful() {
         when(mockDatabase.removeArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
-        CompletableFuture<Boolean> res = friends.updateRequest(false, other_uuid);
+        CompletableFuture<Boolean> res = friends.updateRequest(false, uuid, other_uuid);
 
         try {
             assertTrue(res.get());
@@ -157,7 +157,7 @@ public class FriendsRepositoryTests {
         CompletableFuture<List<User>> future = CompletableFuture.completedFuture(users);
         when(mockDatabase.whereArrayContains(anyString(), anyString(), anyString(), eq(User.class))).thenReturn(future);
 
-        CompletableFuture<List<User>> res = friends.getFriends();
+        CompletableFuture<List<User>> res = friends.getFriends(uuid);
         
         try {
             assertThat(res.get(), is(users));

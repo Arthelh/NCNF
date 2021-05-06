@@ -27,6 +27,9 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class FriendsRequestsFragment extends Fragment {
 
     @Inject
+    public FriendsRepository friendsRepository;
+
+    @Inject
     public FirebaseUser user;
 
     private RecyclerView recycler;
@@ -41,16 +44,14 @@ public class FriendsRequestsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FriendsRepository friends = new FriendsRepository(user.getUid());
-
         //Handle recyclerView
         recycler = getView().findViewById(R.id.friends_requests_recycler_view);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.hasFixedSize();
-        adapter = new FriendsRequestAdapter(new ArrayList<>(), this::displayUser, friends);
+        adapter = new FriendsRequestAdapter(new ArrayList<>(), this::displayUser, friendsRepository, user.getUid());
         recycler.setAdapter(adapter);
 
-        friends.awaitingRequests().thenAccept(users -> {
+        friendsRepository.awaitingRequests(user.getUid()).thenAccept(users -> {
             adapter.setUsers(users);
         }).exceptionally(exception -> {
             return null; // TODO : handle exception
