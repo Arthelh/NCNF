@@ -4,17 +4,17 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/home_selector"
         android:title="@string/navigation_menu_home" />
 
     <item
         android:id="@+id/navigation_map"
-        android:icon="@android:drawable/ic_menu_compass"
+        android:icon="@drawable/map_selector"
         android:title="@string/navigation_menu_map" />
 
 
     <item
         android:id="@+id/navigation_feed"
-        android:icon="@android:drawable/ic_menu_agenda"
+        android:icon="@drawable/feed_selector"
         android:title="@string/navigation_menu_feed" />
 </menu>

@@ -107,7 +107,7 @@ public class MapFragment extends Fragment{
 
         getView().findViewById(R.id.map_settings_button).setOnClickListener(this::start_settings);
         getView().findViewById(R.id.map_switch_button).setOnClickListener(this::switchMarkers);
-        getView().findViewById(R.id.map_location_button).setOnClickListener(this::returnToLocation);
+        getView().findViewById(R.id.map_gps_button).setOnClickListener(this::returnToLocation);
     }
 
     @Override
