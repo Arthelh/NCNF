@@ -1,6 +1,7 @@
 package com.ncnf.friends.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,10 +52,12 @@ public class AddFriendFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        FriendsActivity parentActivity = (FriendsActivity)getActivity();
+
         //Handle recyclerView
         recycler = getView().findViewById(R.id.add_friend_recycler_view);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new UserAdapter(new ArrayList<>(), this::displayUser);
+        adapter = new UserAdapter(new ArrayList<>(), parentActivity::showPublicProfileFragment);
         recycler.setAdapter(adapter);
         recycler.hasFixedSize();
 
@@ -83,8 +86,10 @@ public class AddFriendFragment extends Fragment {
     //Search the database for a user with the given name
     private void searchUserWithName(String name){
         user.loadUserFromDB().thenCompose(user1 -> user.getAllUsersLike(name)).thenAccept(users -> {
+            Log.d(Utils.DEBUG_TAG, "Size = " + users.size());
             adapter.setUsers(users);
         }).exceptionally(exception -> {
+            Log.d(Utils.DEBUG_TAG, exception.getMessage());
             return null; // TODO : handle exception
         });
 

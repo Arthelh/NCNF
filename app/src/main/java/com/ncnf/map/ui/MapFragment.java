@@ -44,7 +44,7 @@ public class MapFragment extends Fragment{
     private MapHandler mapHandler;
     private SearchBarHandler searchBarHandler;
 
-    private final EventDB eventDB;
+    private final EventDB eventDB = new EventDB();
 
     //Toolbar and location services for it
     private MaterialSearchBar materialSearchBar;
@@ -58,15 +58,13 @@ public class MapFragment extends Fragment{
     @Inject
     VenueProvider venueProvider;
 
-    public MapFragment(EventDB eventDB){
+    public MapFragment(){
         super();
-        this.eventDB = eventDB;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {

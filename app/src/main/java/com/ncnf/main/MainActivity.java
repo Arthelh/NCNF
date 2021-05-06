@@ -41,12 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
         EventDB eventDB = new EventDB();
 
-        if(savedInstanceState == null){
-            this.homeFragment = new HomeFragment();
-            this.feedFragment = new FeedFragment(eventDB);
-            this.mapFragment = new MapFragment(eventDB);
-            this.activeFragment = this.homeFragment;
-        }
+        this.homeFragment = new HomeFragment();
+        this.feedFragment = new FeedFragment(eventDB);
+        this.mapFragment = new MapFragment();
+        this.activeFragment = this.homeFragment;
+
 
         fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, feedFragment).hide(feedFragment).commit();
         fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, mapFragment).hide(mapFragment).commit();
@@ -81,23 +80,23 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        fragmentManager.putFragment(outState, HOME_FRAGMENT, homeFragment);
-        fragmentManager.putFragment(outState, MAP_FRAGMENT, mapFragment);
-        fragmentManager.putFragment(outState, FEED_FRAGMENT, feedFragment);
-        fragmentManager.putFragment(outState, ACTIVE_FRAGMENT, activeFragment);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        this.homeFragment = fragmentManager.getFragment(savedInstanceState, HOME_FRAGMENT);
-        this.mapFragment = fragmentManager.getFragment(savedInstanceState, MAP_FRAGMENT);
-        this.feedFragment = fragmentManager.getFragment(savedInstanceState, FEED_FRAGMENT);
-        this.activeFragment = fragmentManager.getFragment(savedInstanceState, ACTIVE_FRAGMENT);
-    }
+//    @Override
+//    protected void onSaveInstanceState(@NonNull Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//
+//        fragmentManager.putFragment(outState, HOME_FRAGMENT, homeFragment);
+//        fragmentManager.putFragment(outState, MAP_FRAGMENT, mapFragment);
+//        fragmentManager.putFragment(outState, FEED_FRAGMENT, feedFragment);
+//        fragmentManager.putFragment(outState, ACTIVE_FRAGMENT, activeFragment);
+//    }
+//
+//    @Override
+//    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//
+//        this.homeFragment = fragmentManager.getFragment(savedInstanceState, HOME_FRAGMENT);
+//        this.mapFragment = fragmentManager.getFragment(savedInstanceState, MAP_FRAGMENT);
+//        this.feedFragment = fragmentManager.getFragment(savedInstanceState, FEED_FRAGMENT);
+//        this.activeFragment = fragmentManager.getFragment(savedInstanceState, ACTIVE_FRAGMENT);
+//    }
 }

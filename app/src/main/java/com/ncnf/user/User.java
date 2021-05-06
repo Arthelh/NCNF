@@ -1,5 +1,7 @@
 package com.ncnf.user;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.socialObject.Group;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+import static com.ncnf.Utils.DEBUG_TAG;
 import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
 import static com.ncnf.Utils.GROUPS_COLLECTION_KEY;
 import static com.ncnf.Utils.NOTIFICATIONS_KEY;
@@ -182,6 +185,7 @@ public class User {
             return this;
         }).exceptionally(exception -> {
             // TODO : handle exception
+            Log.d(DEBUG_TAG, exception.getMessage());
             return null;
         });
     }

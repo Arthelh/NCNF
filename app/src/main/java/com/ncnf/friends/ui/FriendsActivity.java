@@ -1,69 +1,65 @@
 package com.ncnf.friends.ui;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.fragment.app.FragmentManager;
 
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.android.material.button.MaterialButton;
 import com.ncnf.R;
+import com.ncnf.user.User;
+import com.ncnf.views.fragments.PublicProfileFragment;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class FriendsActivity extends AppCompatActivity {
 
+    private final FragmentManager fragmentManager = getSupportFragmentManager();
+    private Fragment activeFragment;
+    private Fragment friendsFragment;
+    private Fragment addFriendFragment;
+    private Fragment userProfileFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
 
-        FragmentSelector fragmentSelector = new FragmentSelector(this);
-        ViewPager2 viewPager = findViewById(R.id.friends_view_pager);
-        viewPager.setAdapter(fragmentSelector);
+        this.friendsFragment = new FriendsFragment();
+        this.addFriendFragment = new AddFriendFragment();
+        this.activeFragment = this.friendsFragment;
 
-        TabLayout tabs = findViewById(R.id.friends_tabs);
-        new TabLayoutMediator(tabs, viewPager,
-                (tab, position) -> tab.setText(fragmentSelector.getPageTitle(position))
-        ).attach();
+        fragmentManager.beginTransaction().add(R.id.friends_fragment_container, friendsFragment).hide(friendsFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.friends_fragment_container, addFriendFragment).hide(addFriendFragment).commit();
+
+        findViewById(R.id.friends_switch_button).setOnClickListener(this::onButtonClicked);
+
+        fragmentManager.beginTransaction().show(activeFragment).commit();
     }
 
-    private static class FragmentSelector extends FragmentStateAdapter {
+    private void onButtonClicked(View view) {
+        MaterialButton addButton = (MaterialButton) view;
 
-        private final String[] TAB_TITLES = new String[]{"Friends", "Add a friend"};
-        private final int itemCount = 2;
-
-        public FragmentSelector(FragmentActivity activity) {
-            super(activity);
+        if(activeFragment instanceof FriendsFragment){
+            addButton.setIcon(getDrawable(R.drawable.ic_baseline_format_list_bulleted_24));
+            fragmentManager.beginTransaction().hide(activeFragment).show(addFriendFragment).commit();
+            this.activeFragment = addFriendFragment;
+        } else if(activeFragment instanceof AddFriendFragment){
+            addButton.setIcon(getDrawable(R.drawable.ic_baseline_add_24));
+            fragmentManager.beginTransaction().hide(activeFragment).show(friendsFragment).commit();
+            this.activeFragment = friendsFragment;
         }
+    }
 
-        //By default, we will return saved events if an error occurs
-
-        public CharSequence getPageTitle(int position) {
-            if(position == 1){
-                return TAB_TITLES[position];
-            }
-            return TAB_TITLES[0];
-        }
-
-        @NonNull
-        @Override
-        public Fragment createFragment(int position) {
-            if(position == 1){
-                return new AddFriendFragment();
-            }
-            return new FriendsFragment();
-        }
-
-        @Override
-        public int getItemCount() {
-            return itemCount;
-        }
+    protected void showPublicProfileFragment(User user){
+        Toast.makeText(this, "TEST_PROFILE_DISPLAY", Toast.LENGTH_LONG).show();
+        this.userProfileFragment = new PublicProfileFragment(user);
+        fragmentManager.beginTransaction().replace(R.id.friends_fragment_container, userProfileFragment).commit();
+        this.activeFragment = userProfileFragment;
     }
 
 }

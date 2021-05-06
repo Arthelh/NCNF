@@ -21,6 +21,7 @@ import com.ncnf.socialObject.SocialObject;
 import com.ncnf.socialObject.SocialObjActivity;
 import com.ncnf.socialObject.EventDB;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,12 +32,17 @@ public class FeedFragment extends Fragment {
 
     private RecyclerView.LayoutManager lManager;
     private SocialObjAdapter adapter;
-    private List<SocialObject> eventList;
+    private List<SocialObject> eventList = new ArrayList<>();
     private static final String CHANNEL_NAME = "events_to_be_shown";
+
+
+    public FeedFragment(){
+        super();
+    }
 
     public FeedFragment(EventDB eventDB){
         super();
-        
+
         this.eventList = eventDB.toList();
     }
 
@@ -46,6 +52,8 @@ public class FeedFragment extends Fragment {
         Objects.requireNonNull(eventList);
         this.eventList = eventList;
     }
+
+
 
     @Nullable
     @Override

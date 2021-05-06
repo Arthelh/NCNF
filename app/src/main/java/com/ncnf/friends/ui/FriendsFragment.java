@@ -49,11 +49,13 @@ public class FriendsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        FriendsActivity parentActivity = (FriendsActivity)getActivity();
         //Handle recyclerView
         recycler = getView().findViewById(R.id.friends_recycler_view);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.hasFixedSize();
-        adapter = new UserAdapter(new ArrayList<>(), this::displayUser);
+        adapter = new UserAdapter(new ArrayList<>(), parentActivity::showPublicProfileFragment);
         recycler.setAdapter(adapter);
 
         this.user.loadUserFromDB().thenCompose(user1 -> user.getFriends()).thenAccept(users -> {
