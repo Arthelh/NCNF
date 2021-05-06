@@ -165,7 +165,7 @@ public class MapHandler {
     private void queryAndAddEvents(){
         final List<SocialObject> result = new ArrayList<>();
 
-        CompletableFuture<List<Event>> completableFuture = databaseService.eventGeoQuery(Settings.userPosition, Settings.getCurrent_max_distance() * 1000);
+        CompletableFuture<List<SocialObject>> completableFuture = databaseService.eventGeoQuery(Settings.userPosition, Settings.getCurrent_max_distance() * 1000);
         completableFuture.thenAccept(eventList -> {
 
             result.addAll(eventList);
