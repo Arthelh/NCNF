@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
+import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.SocialObject;
 
 import java.util.Collections;

@@ -36,7 +36,7 @@ public class FeedFragment extends Fragment {
 
     private RecyclerView.LayoutManager lManager;
     private SocialObjAdapter adapter;
-    private List<SocialObject> eventList;
+    private List<SocialObject> eventList = new ArrayList<>();
 
     private static final String CHANNEL_NAME = "events_to_be_shown";
 

@@ -18,6 +18,7 @@ import com.ncnf.database.builder.GroupBuilder;
 import com.ncnf.database.builder.UserBuilder;
 import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.Group;
+import com.ncnf.socialObject.SocialObject;
 import com.ncnf.user.User;
 
 import java.util.ArrayList;
@@ -247,7 +248,7 @@ public class DatabaseService implements DatabaseServiceInterface {
         return this.updateField(documentPath, arrayField, FieldValue.arrayRemove(value));
     }
 
-    public CompletableFuture<List<Event>> eventGeoQuery(LatLng location, double radius){
+    public CompletableFuture<List<SocialObject>> eventGeoQuery(LatLng location, double radius){
         radius = (radius < 1000) ? radius * 1000 : radius; //Check if radius is still in km, convert to m
 
         List<GeoQueryBounds> bounds = GeoFireUtils.getGeoHashQueryBounds(new GeoLocation(location.latitude, location.longitude), radius);
@@ -260,13 +261,13 @@ public class DatabaseService implements DatabaseServiceInterface {
             tasks.add(q.get());
         }
 
-        CompletableFuture<List<Event>> futureResponse = new CompletableFuture<>();
+        CompletableFuture<List<SocialObject>> futureResponse = new CompletableFuture<>();
 
         Tasks.whenAllComplete(tasks)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         List<DocumentSnapshot> matchingDocs = new ArrayList<>();
-                        List<Event> result = new ArrayList<>();
+                        List<SocialObject> result = new ArrayList<>();
                         for (Task<QuerySnapshot> t : tasks) {
                             QuerySnapshot snap = t.getResult();
                             matchingDocs.addAll(snap.getDocuments());
