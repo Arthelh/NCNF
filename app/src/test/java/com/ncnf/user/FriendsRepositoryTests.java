@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -39,8 +40,8 @@ public class FriendsRepositoryTests {
 
     @Before
     public void setup() {
-        User u1 = new User(mockDatabase, "u1", "John", "john@bar.com","John",  "Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false);
-        User u2 = new User(mockDatabase, "u2", "Albert", "albert@bar.com","Albert",  "Dupont", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false);
+        User u1 = new User(mockDatabase, "u1", "John", "john@bar.com","John",  "Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, new Date());
+        User u2 = new User(mockDatabase, "u2", "Albert", "albert@bar.com","Albert",  "Dupont", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, new Date());
         users = Arrays.asList(u1, u2);
     }
 
