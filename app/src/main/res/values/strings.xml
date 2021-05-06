@@ -101,4 +101,8 @@
     <string name="home_friends_button">Friends</string>
     <string name="home_events_news_button">Events news</string>
 
+    <!-- Friends Requests -->
+    <string name="friends_requests_accept">Accept</string>
+    <string name="friends_requests_decline">Decline</string>
+
 </resources>
