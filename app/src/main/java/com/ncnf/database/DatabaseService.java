@@ -28,12 +28,12 @@ public class DatabaseService implements DatabaseServiceInterface {
     private final FirebaseFirestore db;
     private final Map<Class, DatabaseObjectBuilder> registry = new HashMap<>();
 
-    @Inject
     public DatabaseService(){
         this.db = FirebaseFirestore.getInstance();
         initRegistry();
     }
 
+    @Inject
     protected DatabaseService(FirebaseFirestore db)  {
         this.db = db;
         initRegistry();

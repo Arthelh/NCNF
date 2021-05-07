@@ -186,16 +186,6 @@ public class User {
         });
     }
 
-
-    public CompletableFuture<List<User>> getFriends(){
-        if(this.friendsIds.isEmpty()){
-            return CompletableFuture.completedFuture(new ArrayList<>());
-        }
-
-        return this.db.whereIn(USERS_COLLECTION_KEY, UUID_KEY, this.friendsIds, User.class);
-    }
-
-
     public CompletableFuture<List<User>> getAllUsersLike(String username){
         return this.db.withFieldLike(USERS_COLLECTION_KEY, USERNAME_KEY, username, User.class);
     }
