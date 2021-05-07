@@ -12,6 +12,7 @@ This week I kept working on the Organizations UI. I ran into some trouble with n
 
 
 # Eloi (Scrum Master)
+This week, I finished my task of last week which was refactoring the event classes. Last week, I didn't do it as I did the DB refactoring.
 
 
 # Emmanuelle
