@@ -23,7 +23,7 @@ import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.SocialObject;
 import com.ncnf.socialObject.EventDB;
 import com.ncnf.main.MainActivity;
-import com.ncnf.settings.SettingsActivity;
+import com.ncnf.settings.ui.SettingsActivity;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -86,7 +86,7 @@ public final class MapFragmentTest {
 
     @Test
     public void test_settings() {
-        onView(withId(R.id.map_settings_button)).perform(click());
+        onView(withId(R.id.menu_settings)).perform(click());
         Intents.intended(hasComponent(SettingsActivity.class.getName()));
     }
 
@@ -107,8 +107,8 @@ public final class MapFragmentTest {
                 device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 1000)
         );
         // Venues are shown
-        marker = device.findObject(new UiSelector().descriptionContains("EPFL"));
-        assertTrue("Venue markers exist", marker.waitForExists(1000));
+        marker = device.findObject(new UiSelector().descriptionContains("UniL"));
+        assertTrue("Venue markers exist", marker.waitForExists(10000));
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
@@ -131,7 +131,7 @@ public final class MapFragmentTest {
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Carmen"));
         assertTrue("Events markers exist", marker.waitForExists(1000));
 
-        onView(withId(R.id.map_settings_button)).perform(click());
+        onView(withId(R.id.menu_settings)).perform(click());
         onView(withId(R.id.distanceSeekBar)).perform(new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
@@ -161,7 +161,7 @@ public final class MapFragmentTest {
         marker = device.findObject(new UiSelector().descriptionContains("UniL"));
         assertTrue("Venue markers exist", marker.waitForExists(1000));
 
-        onView(withId(R.id.map_settings_button)).perform(click());
+        onView(withId(R.id.menu_settings)).perform(click());
         onView(withId(R.id.distanceSeekBar)).perform(new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
