@@ -8,6 +8,8 @@ My time estimates this week were quite off. I ended up spending much more time t
 
 # David
 
+This week I kept working on the Organizations UI. I ran into some trouble with navigating between views with the FragmentStateManagers hierarchy and underlaying activity. I also had trouble perforing the query that would retrive and update organizations. I hope I'll be done by next week's sprint. 
+
 
 # Eloi (Scrum Master)
 
