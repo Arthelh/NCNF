@@ -46,7 +46,7 @@ public class SocialObjectActivityTest {
     @BindValue
     public DatabaseService db = Mockito.mock(DatabaseService.class);
 
-    private final SocialObject event = new Event("EPFL", "EPFL event", new Date(2021, 03, 11), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "Event description goes here", Event.Type.Conference, 0, 0, "test@email.com");
+    private final SocialObject event = new Event("hg0aavb0Fce6EgX3HrTW05rKSww1", "TestGeo", new Date(2021, 03, 11), new GeoPoint(46.518689, 6.568067), "Renens", "TestGeo", Event.Type.Conference, 0, 0, "test@email.com");
     private final CompletableFuture<SocialObject> eventC = new CompletableFuture<>();
 
 

@@ -31,7 +31,6 @@ import static org.hamcrest.Matchers.allOf;
 public class FeedFragmentTest {
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    EventDB db = new EventDB();
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(MainActivity.class));
