@@ -14,6 +14,7 @@ My time estimates this week were quite off. I ended up spending much more time t
 
 # Emmanuelle
 
+This week I continued working on the activity that tracks a user's friends. Since there are a lot of resources about this type of feature on the Internet, it was not that difficult. However, testing it was very difficult, and I still haven't been able to find a good way to test the UI features. I'll keep working on that next week. My time estimate was off, because I did not expect the testing to be that difficult.
 
 # Jérémie
 
