@@ -74,7 +74,7 @@ public class FeedFragment extends Fragment {
         if (eventList.isEmpty()){
             final List<SocialObject> result = new ArrayList<>();
 
-            CompletableFuture<List<SocialObject>> completableFuture = new DatabaseService().eventGeoQuery(Settings.userPosition, Settings.getCurrent_max_distance() * 1000);
+            CompletableFuture<List<SocialObject>> completableFuture = new DatabaseService().eventGeoQuery(Settings.userPosition, Settings.getCurrentMaxDistance() * 1000);
             completableFuture.thenAccept(eventList -> {
 
                 result.addAll(eventList);
