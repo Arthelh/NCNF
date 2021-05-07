@@ -25,9 +25,9 @@ This week, I worked on the UI for a public profile and I refactored a bit the Fr
 
 I wasn't able to PR this week since I had tests to refactor but this will be done this weekend.
 
-
 # Keran
 
+I reworked the FriendsRepository which is responsible for the queries related to friends management. I adatpted it to our new Database API. I then created and adapted existing views to actually use the FriendsRepository. In the end, the app displays the list of friends, let you search for user and accept or decline requests. I could not merge the PR because both Jérémie and I worked on the same view and we need to decide on a final design for the FriendsActivity.
 
 # Overall team
 Good job this week. Finishing both DB and Event refactoring means we can finally go forward and finish implementing core features. We also started changing the UI in order to not get to much work at the end of the semester.
