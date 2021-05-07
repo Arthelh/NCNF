@@ -17,6 +17,10 @@ My time estimates this week were quite off. I ended up spending much more time t
 
 # Jérémie
 
+This week, I worked on the UI for a public profile and I refactored a bit the FriendsActivity in order to have a clean UI. I had issues with fragments and how they are displayed thus I spent more time than excpected on this particular task. I could no address the other one which was to clearup the events displayed and make cards out of them. This will be the fisrt task I'll do next week.
+
+I wasn't able to PR this week since I had tests to refactor but this will be done this weekend.
+
 
 # Keran
 
