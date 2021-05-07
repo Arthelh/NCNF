@@ -3,12 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".friends.ui.FriendsFragment"
-    android:id="@+id/friendsFragmentRoot">
+    tools:context=".friends.ui.FriendsRequestsFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/friends_recycler_view"
+        android:id="@+id/friends_requests_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>

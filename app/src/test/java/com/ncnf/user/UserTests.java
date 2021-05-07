@@ -30,7 +30,6 @@ import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -226,35 +225,6 @@ public class UserTests {
         CompletableFuture<User> loaded = user.loadUserFromDB();
         try {
             assertEquals(loaded.get(), null);
-        } catch(Exception e){
-            Assert.fail("Something went wrong with the future");
-        }
-    }
-
-    @Test
-    public void getFriendsWorksOnEmptyList(){
-        User user = new User(this.db, "1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null);
-        CompletableFuture<List<User>> future = user.getFriends();
-        try {
-            assertTrue(future.get().isEmpty());
-        } catch(Exception e){
-            Assert.fail("Something went wrong with the future");
-        }
-    }
-
-    @Test
-    public void getFriendsWorks(){
-        User user = new User(this.db, "1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null);
-        User user2 = new User(this.db, "0000000000", "", "foo@bar.com","",  "", Arrays.asList(user.getUuid()), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null);
-
-        CompletableFuture<List<User>> future = CompletableFuture.completedFuture(Arrays.asList(user));
-
-        when(db.whereIn(anyString(), anyString(), anyList(), any())).thenReturn(future);
-
-        CompletableFuture<List<User>> query = user2.getFriends();
-        try {
-            assertTrue(query.get().size() == 1);
-            assertEquals(query.get().get(0), user);
         } catch(Exception e){
             Assert.fail("Something went wrong with the future");
         }

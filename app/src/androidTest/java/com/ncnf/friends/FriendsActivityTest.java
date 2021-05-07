@@ -1,16 +1,15 @@
 package com.ncnf.friends;
 
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.friends.ui.FriendsActivity;
-import com.ncnf.user.CurrentUserModule;
+import com.ncnf.user.FirebaseUserModule;
+import com.ncnf.user.FriendsRepository;
 import com.ncnf.user.User;
-import com.ncnf.utilities.FirestoreModule;
 
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -19,6 +18,8 @@ import org.junit.rules.RuleChain;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -29,51 +30,48 @@ import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.pressKey;
-import static androidx.test.espresso.action.ViewActions.swipeLeft;
-import static androidx.test.espresso.action.ViewActions.swipeRight;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
-@UninstallModules({FirestoreModule.class, CurrentUserModule.class})
+@UninstallModules({FirebaseUserModule.class})
 public class FriendsActivityTest {
-
-    public static FirebaseFirestore mockDatabaseReference = Mockito.mock(FirebaseFirestore.class);
-    public static CollectionReference mockDbRef = Mockito.mock(CollectionReference.class, Mockito.RETURNS_DEEP_STUBS);
-    public static Query mockQuery = Mockito.mock(Query.class);
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(FriendsActivity.class);
-    private static final User mockUser = Mockito.mock(User.class);
-    private static final DatabaseService db = Mockito.mock(DatabaseService.class);
 
-    private User u1 = new User(db,"1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null);
+    private static final FriendsRepository friendsRepository = Mockito.mock(FriendsRepository.class);
+    private static final DatabaseService databaseService = Mockito.mock(DatabaseService.class);
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);
 
     @BindValue
-    public FirebaseFirestore databaseReference = mockDatabaseReference;
+    public FirebaseUser firebaseUser = Mockito.mock(FirebaseUser.class);
 
     @BindValue
-    public User user = mockUser;
+    public FriendsRepository mockFriendsRepository = friendsRepository;
+    private static final User u1 = new User(databaseService, "1", "johnny", "john@bar.com","John",  "Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, new Date());
+    private static final List<User> users = Collections.singletonList(u1);
 
     @BeforeClass
     public static void setup() {
-        when(mockDatabaseReference.collection(anyString())).thenReturn(mockDbRef);
+        when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        when(friendsRepository.awaitingRequests(anyString())).thenReturn(CompletableFuture.completedFuture(users));
     }
 
     @Test
-    public void friendsPageViewerTest(){
-        when(mockUser.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user));
-        when(mockUser.getFriends()).thenReturn(CompletableFuture.completedFuture(List.of(u1)));
-
-        onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
-
-        onView(withId(R.id.friends_view_pager)).perform(swipeRight());
+    public void friendsAreDisplayedAndClickable() {
+        onView(withId(R.id.friends_recycler_view)).perform(RecyclerViewActions.actionOnItem(
+                hasDescendant(withText("John Smith")), click()
+        ));
+        // TODO: check that it go user profile when it is implemented
+        onView(withId(com.google.android.material.R.id.snackbar_text))
+                .check(matches(withText("DISPLAY_USER_PROFILE")));
     }
 
 //    @Test
@@ -102,6 +100,4 @@ public class FriendsActivityTest {
 //    }
 
 }
-
-
 
