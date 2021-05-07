@@ -10,13 +10,10 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-
 import com.ncnf.database.DatabaseService;
 import com.ncnf.settings.Settings;
 import com.ncnf.socialObject.Event;
@@ -38,7 +35,6 @@ public class MapHandler {
     private final DatabaseService databaseService;
     private final VenueProvider venueProvider;
 
-    private Marker userMarker;
     private ClusterManager<NCNFMarker> clusterManager;
 
     //Event cache to avoid querying every time we switch from organizers to events
@@ -101,9 +97,7 @@ public class MapHandler {
      * Displays the markers on the map according to current settings
      */
     public void show_markers(){
-        // Add a marker near EPFL and move the camera
-        MarkerOptions position_marker = new MarkerOptions().position(Settings.userPosition).title("Your Position").icon(MapUtilities.bitmapDescriptorFromVector(context));
-        userMarker = mMap.addMarker(position_marker);
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(Settings.userPosition));
 
         if (eventsShown){
@@ -120,7 +114,6 @@ public class MapHandler {
      */
     public void update_markers(){
         clusterManager.clearItems();
-        userMarker.remove();
         show_markers();
         clusterManager.cluster();
     }
@@ -165,7 +158,7 @@ public class MapHandler {
     private void queryAndAddEvents(){
         final List<SocialObject> result = new ArrayList<>();
 
-        CompletableFuture<List<SocialObject>> completableFuture = databaseService.eventGeoQuery(Settings.userPosition, Settings.getCurrent_max_distance() * 1000);
+        CompletableFuture<List<SocialObject>> completableFuture = databaseService.eventGeoQuery(Settings.userPosition, Settings.getCurrentMaxDistance() * 1000);
         completableFuture.thenAccept(eventList -> {
 
             result.addAll(eventList);

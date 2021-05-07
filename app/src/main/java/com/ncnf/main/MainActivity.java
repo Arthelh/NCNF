@@ -1,6 +1,9 @@
 package com.ncnf.main;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +16,7 @@ import com.ncnf.socialObject.EventDB;
 import com.ncnf.feed.ui.FeedFragment;
 import com.ncnf.home.ui.HomeFragment;
 import com.ncnf.map.ui.MapFragment;
+import com.ncnf.settings.ui.SettingsActivity;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -97,5 +101,21 @@ public class MainActivity extends AppCompatActivity {
         this.mapFragment = fragmentManager.getFragment(savedInstanceState, MAP_FRAGMENT);
         this.feedFragment = fragmentManager.getFragment(savedInstanceState, FEED_FRAGMENT);
         this.activeFragment = fragmentManager.getFragment(savedInstanceState, ACTIVE_FRAGMENT);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_settings){
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
