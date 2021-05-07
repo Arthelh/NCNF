@@ -30,3 +30,4 @@ I wasn't able to PR this week since I had tests to refactor but this will be don
 
 
 # Overall team
+Good job this week. Finishing both DB and Event refactoring means we can finally go forward and finish implementing core features. We also started changing the UI in order to not get to much work at the end of the semester.
