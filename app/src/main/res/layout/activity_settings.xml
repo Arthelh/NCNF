@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".settings.SettingsActivity">
+    tools:context=".settings.ui.SettingsActivity">
 
     <SeekBar
         android:id="@+id/distanceSeekBar"
@@ -58,5 +58,101 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/settingsToggleGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:singleSelection="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/settingsToggleText">
+
+        <Button
+            android:id="@+id/settingsToggleToday"
+            android:text="Today"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+        <Button
+            android:id="@+id/settingsToggleTomorrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tomorrow"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+        <Button
+            android:id="@+id/settingsToggleWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This Week"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <TextView
+        android:id="@+id/settingsMinDateView"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:hint="Minimum Date"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingsSettersText" />
+
+    <Button
+        android:id="@+id/settingsMinDateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:layout_marginEnd="32dp"
+        android:text="Set Min Date"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/settingsMinDateView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/settingsMinDateView" />
+
+    <TextView
+        android:id="@+id/settingsMaxDateView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:hint="Maximum Date"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingsMinDateView" />
+
+    <Button
+        android:id="@+id/settingsMaxDateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:text="Set Max Date"
+        app:layout_constraintBottom_toBottomOf="@id/settingsMaxDateView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/settingsMaxDateView" />
+
+    <TextView
+        android:id="@+id/settingsToggleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Show events for"
+        app:layout_constraintTop_toBottomOf="@+id/distanceSeekBar"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/settingsSettersText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Or between"
+        app:layout_constraintTop_toBottomOf="@+id/settingsToggleGroup"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
