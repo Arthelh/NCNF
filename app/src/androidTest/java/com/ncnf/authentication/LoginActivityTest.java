@@ -122,27 +122,6 @@ public class LoginActivityTest {
 
         onView(withId(android.R.id.button1)).check(matches(isClickable()));
     }
-
-//    @Test HARDCORE TO TEST WITH DAGGER
-//    public void signInFragmentSuccessfulLoginTest(){
-//        Exception exception = new Exception(successfulLogin);
-//        CompletableFuture<AuthenticationResponse> future = new CompletableFuture<>();
-//        future.complete(new AuthenticationResponse(true, null, exception));
-//
-//        when(mockedAuth.logIn(anyString(), anyString())).thenReturn(future);
-//
-//        Intents.init();
-//
-//        onView(withId(R.id.signInEmail)).perform(typeText(validEmail), closeSoftKeyboard());
-//        onView(withId(R.id.signInPassword)).perform(typeText(validPassword), closeSoftKeyboard());
-//        onView(withId(R.id.signInLoginButton)).perform(click());
-//
-//        verify(mockedAuth).logIn(anyString(), anyString());
-//
-//        Intents.intended(hasComponent(UserProfileActivity.class.getName()));
-//
-//        Intents.release();
-//    }
     
     @Test
     public void signUpFragmentEmptyInputTest(){

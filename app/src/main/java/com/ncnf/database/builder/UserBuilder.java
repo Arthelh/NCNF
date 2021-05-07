@@ -43,6 +43,7 @@ public class UserBuilder extends DatabaseObjectBuilder<User>{
         List<String> savedEvents = (List<String>) data.getOrDefault(SAVED_EVENTS_KEY, new ArrayList<>());
         Date birthDate = ((Timestamp) data.getOrDefault(BIRTH_DATE_KEY, Timestamp.now())).toDate(); // TODO : change
         boolean notifications = (boolean) data.getOrDefault(NOTIFICATIONS_KEY, false);
+
         return new User(db, uuid, username, email, firstName, lastName, friends, ownedGroups, participatingGroups, savedEvents, notifications, birthDate);
     }
 

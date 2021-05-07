@@ -289,7 +289,7 @@ public class DatabaseServiceTest {
         try {
             assertEquals(event, future.get().get(0));
         } catch (ExecutionException | InterruptedException e) {
-            Assert.fail("The future did not complete correctly !");
+            Assert.fail();
         }
     }
 

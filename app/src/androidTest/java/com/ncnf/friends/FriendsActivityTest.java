@@ -8,6 +8,7 @@ import com.google.firebase.firestore.Query;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.friends.ui.FriendsActivity;
+import com.ncnf.repositories.UsersRepository;
 import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
 import com.ncnf.utilities.FirestoreModule;
@@ -19,6 +20,7 @@ import org.junit.rules.RuleChain;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -44,10 +46,10 @@ public class FriendsActivityTest {
     public static FirebaseFirestore mockDatabaseReference = Mockito.mock(FirebaseFirestore.class);
     public static CollectionReference mockDbRef = Mockito.mock(CollectionReference.class, Mockito.RETURNS_DEEP_STUBS);
     public static Query mockQuery = Mockito.mock(Query.class);
-
+    private static final User mockUser = Mockito.mock(User.class);
+    private static final UsersRepository mockUserRepo = Mockito.mock(UsersRepository.class);
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(FriendsActivity.class);
-    private static final User mockUser = Mockito.mock(User.class);
     private static final DatabaseService db = Mockito.mock(DatabaseService.class);
 
     private User u1 = new User(db,"1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null);
@@ -61,6 +63,9 @@ public class FriendsActivityTest {
     @BindValue
     public User user = mockUser;
 
+    @BindValue
+    public UsersRepository usersRepository = mockUserRepo;
+
     @BeforeClass
     public static void setup() {
         when(mockDatabaseReference.collection(anyString())).thenReturn(mockDbRef);
@@ -68,8 +73,18 @@ public class FriendsActivityTest {
 
     @Test
     public void friendsPageViewerTest(){
-        when(mockUser.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user));
-        when(mockUser.getFriends()).thenReturn(CompletableFuture.completedFuture(List.of(u1)));
+        CompletableFuture<User> futureUser = new CompletableFuture<>();
+        futureUser.complete(user);
+        CompletableFuture<List<User>> futureFriends = new CompletableFuture<>();
+        futureFriends.complete(Collections.singletonList(u1));
+
+
+        when(usersRepository.loadUser(anyString())).thenReturn(futureUser);
+        when(user.getFriends()).thenReturn(futureFriends);
+        when(user.getAllUsersLike(anyString())).thenReturn(futureFriends);
+
+        onView(withId(R.id.friends_switch_button)).perform(click());
+//        onView(withId(R.id.friends_switch_button)).perform(click());
 
 //        onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
 //

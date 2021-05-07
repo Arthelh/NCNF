@@ -22,6 +22,7 @@ import com.google.firebase.firestore.Query;
 import com.ncnf.R;
 import com.ncnf.Utils;
 import com.ncnf.database.builder.UserBuilder;
+import com.ncnf.repositories.UsersRepository;
 import com.ncnf.user.User;
 import com.ncnf.user.UserAdapter;
 
@@ -37,6 +38,9 @@ public class FriendsFragment extends Fragment {
     @Inject
     public User user;
 
+    @Inject
+    public UsersRepository userRepo;
+
     private RecyclerView recycler;
     private UserAdapter adapter;
 
@@ -49,7 +53,6 @@ public class FriendsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         FriendsActivity parentActivity = (FriendsActivity)getActivity();
         //Handle recyclerView
         recycler = getView().findViewById(R.id.friends_recycler_view);
@@ -58,11 +61,17 @@ public class FriendsFragment extends Fragment {
         adapter = new UserAdapter(new ArrayList<>(), parentActivity::showPublicProfileFragment);
         recycler.setAdapter(adapter);
 
-        this.user.loadUserFromDB().thenCompose(user1 -> user.getFriends()).thenAccept(users -> {
-            adapter.setUsers(users);
+        this.userRepo.loadUser(user.getUuid()).thenAccept(user1 -> {
+            user1.getFriends().thenAccept(users -> adapter.setUsers(users));
         }).exceptionally(exception -> {
-            return null; // TODO : handle exception
+            return null;
         });
+
+//        this.user.loadUserFromDB().thenCompose(user1 -> user.getFriends()).thenAccept(users -> {
+//            adapter.setUsers(users);
+//        }).exceptionally(exception -> {
+//            return null; // TODO : handle exception
+//        });
     }
 
     private void displayUser(User user){

@@ -1,11 +1,14 @@
 package com.ncnf.database;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.ncnf.Utils;
 import com.ncnf.database.builder.DatabaseObjectBuilder;
 import com.ncnf.database.builder.EventBuilder;
 import com.ncnf.database.builder.GroupBuilder;
