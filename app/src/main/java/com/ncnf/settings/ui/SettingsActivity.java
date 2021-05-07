@@ -59,7 +59,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void setText() {
-        String textViewText = getString(R.string.settings_distance_slider) + distanceSeekBarValue + " km";
+        String textViewText = getString(R.string.settings_distance_slider) + distanceSeekBarValue + getString(R.string.settings_km);
         distanceTextView.setText(textViewText);
 
         Button discard = findViewById(R.id.discardButton);
@@ -110,7 +110,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 distanceSeekBarValue = progress + 1;
-                String textViewText = getString(R.string.settings_distance_slider) + distanceSeekBarValue + " km";
+                String textViewText = getString(R.string.settings_distance_slider) + distanceSeekBarValue + getString(R.string.settings_km);
                 distanceTextView.setText(textViewText);
             }
 
