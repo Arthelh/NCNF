@@ -7,7 +7,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.ncnf.bookmark.SocialObjDisplayFragment;
 
-import static com.ncnf.Utils.*;
+import static com.ncnf.utilities.StringCodes.PARTICIPATING_GROUPS_KEY;
+import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

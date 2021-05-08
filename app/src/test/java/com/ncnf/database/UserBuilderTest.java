@@ -15,16 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ncnf.Utils.BIRTH_DATE_KEY;
-import static com.ncnf.Utils.EMAIL_KEY;
-import static com.ncnf.Utils.FIRST_NAME_KEY;
-import static com.ncnf.Utils.FRIENDS_KEY;
-import static com.ncnf.Utils.LAST_NAME_KEY;
-import static com.ncnf.Utils.NOTIFICATIONS_KEY;
-import static com.ncnf.Utils.OWNED_GROUPS_KEY;
-import static com.ncnf.Utils.PARTICIPATING_GROUPS_KEY;
-import static com.ncnf.Utils.SAVED_EVENTS_KEY;
-import static com.ncnf.Utils.USERNAME_KEY;
+import static com.ncnf.utilities.StringCodes.*;
 import static org.junit.Assert.assertEquals;
 
 public class UserBuilderTest {

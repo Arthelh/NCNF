@@ -1,7 +1,6 @@
 package com.ncnf.settings;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Settings {
 

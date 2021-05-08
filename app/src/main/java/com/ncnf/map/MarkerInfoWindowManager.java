@@ -18,13 +18,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.R;
+import com.ncnf.feed.ui.FeedFragment;
 import com.ncnf.socialObject.SocialObjActivity;
 import com.ncnf.socialObject.SocialObject;
-import com.ncnf.feed.ui.FeedFragment;
 
 import java.util.List;
 
-import static com.ncnf.Utils.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, ClusterManager.OnClusterItemClickListener<NCNFMarker>, ClusterManager.OnClusterItemInfoWindowClickListener<NCNFMarker> {
 

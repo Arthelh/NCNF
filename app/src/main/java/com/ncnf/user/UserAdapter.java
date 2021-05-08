@@ -65,11 +65,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         public void bind(final User u, final UserAdapter.OnItemClickListener listener) {
             String firstNameText = u.getFirstName();
-            if(InputValidator.isStringEmpty(firstNameText)) firstNameText = "empty";
+            if(InputValidator.isInvalidString(firstNameText)) firstNameText = "empty";
             String lastNameText = u.getLastName();
-            if(InputValidator.isStringEmpty(lastNameText)) lastNameText = "empty";
+            if(InputValidator.isInvalidString(lastNameText)) lastNameText = "empty";
             String usernameText = u.getUsername();
-            if(InputValidator.isStringEmpty(usernameText)) usernameText = "empty";
+            if(InputValidator.isInvalidString(usernameText)) usernameText = "empty";
             
             String concatNameText = firstNameText + " " + lastNameText;
             name.setText(concatNameText);

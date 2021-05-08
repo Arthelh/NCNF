@@ -1,13 +1,14 @@
 package com.ncnf.socialObject;
+
 import com.google.firebase.firestore.GeoPoint;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 public class SocialObjectCalculatorTest {
 
     String name = "Jane Doe";

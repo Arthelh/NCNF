@@ -19,11 +19,11 @@ import androidx.test.uiautomator.Until;
 import com.google.firebase.firestore.GeoPoint;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
-import com.ncnf.socialObject.Event;
-import com.ncnf.socialObject.SocialObject;
-import com.ncnf.socialObject.EventDB;
 import com.ncnf.main.MainActivity;
 import com.ncnf.settings.ui.SettingsActivity;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.EventDB;
+import com.ncnf.socialObject.SocialObject;
 
 import org.hamcrest.Matcher;
 import org.junit.After;

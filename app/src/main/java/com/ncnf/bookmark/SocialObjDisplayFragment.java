@@ -2,6 +2,9 @@ package com.ncnf.bookmark;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,14 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.ncnf.R;
-import com.ncnf.socialObject.SocialObject;
-import com.ncnf.socialObject.SocialObjActivity;
 import com.ncnf.feed.ui.SocialObjAdapter;
+import com.ncnf.socialObject.SocialObjActivity;
+import com.ncnf.socialObject.SocialObject;
 import com.ncnf.user.User;
 
 import java.util.ArrayList;
@@ -27,8 +26,10 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.ncnf.Utils.SAVED_EVENTS_KEY;
-import static com.ncnf.Utils.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
+
+
 
 @AndroidEntryPoint
 public class SocialObjDisplayFragment extends Fragment implements SocialObjAdapter.OnSocialObjListener {

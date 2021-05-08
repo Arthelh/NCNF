@@ -7,8 +7,8 @@ import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.Group;
-import com.ncnf.socialObject.SocialObject;
 import com.ncnf.socialObject.SocialObjActivity;
+import com.ncnf.socialObject.SocialObject;
 import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
 

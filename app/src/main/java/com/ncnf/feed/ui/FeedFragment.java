@@ -17,14 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
-import com.ncnf.socialObject.SocialObject;
-import com.ncnf.socialObject.SocialObjActivity;
 import com.ncnf.socialObject.EventDB;
+import com.ncnf.socialObject.SocialObjActivity;
+import com.ncnf.socialObject.SocialObject;
 
 import java.util.List;
 import java.util.Objects;
 
-import static com.ncnf.Utils.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 
 public class FeedFragment extends Fragment {
@@ -36,7 +36,7 @@ public class FeedFragment extends Fragment {
 
     public FeedFragment(EventDB eventDB){
         super();
-        
+
         this.eventList = eventDB.toList();
     }
 

@@ -12,11 +12,11 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ncnf.R;
-import com.ncnf.socialObject.EventDB;
 import com.ncnf.feed.ui.FeedFragment;
 import com.ncnf.home.ui.HomeFragment;
 import com.ncnf.map.ui.MapFragment;
 import com.ncnf.settings.ui.SettingsActivity;
+import com.ncnf.socialObject.EventDB;
 
 import dagger.hilt.android.AndroidEntryPoint;
 

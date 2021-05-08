@@ -7,11 +7,9 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
-import com.ncnf.socialObject.SocialObject;
 import com.ncnf.socialObject.EventDB;
+import com.ncnf.socialObject.SocialObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
