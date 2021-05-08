@@ -5,7 +5,7 @@
     android:id="@+id/EventPage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".socialObject.EventActivity">
+    tools:context=".socialObject.SocialObjActivity">
 
     <TextView
         android:id="@+id/eventDate"
@@ -63,10 +63,23 @@
     <ImageView
         android:id="@+id/eventImage"
         android:layout_width="wrap_content"
-        android:layout_height="195dp"
+        android:layout_height="0dp"
         android:layout_marginTop="-5dp"
+        android:layout_marginBottom="329dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_calendar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="159dp"
+        android:text="@string/add_to_calendar_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

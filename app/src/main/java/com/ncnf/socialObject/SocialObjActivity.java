@@ -1,6 +1,9 @@
 package com.ncnf.socialObject;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +19,7 @@ import static com.ncnf.utilities.StringCodes.UUID_KEY;
 public class SocialObjActivity extends AppCompatActivity {
 
     private static final EventDB db = new EventDB();
+    private SocialObject socialObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +27,24 @@ public class SocialObjActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event);
 
         String event_uid = getIntent().getStringExtra(UUID_KEY);
-        SocialObject socialObject = db.getSocialObj(event_uid);
+        socialObject = db.getSocialObj(event_uid);
         if (socialObject == null) {
             finish();
-            return;
         }
+        initView();
+        Button addToCalendar = findViewById(R.id.button_calendar);
+        addToCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent calendarIntent = Add2Calendar.createCalendarIntent(socialObject);
+                if (calendarIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(calendarIntent);
+                }
+            }
+        });
+    }
 
+    private void initView(){
         // Change with socialObject UUID
         ImageView imageView = findViewById(R.id.eventImage);
         FileStore file = new CacheFileStore(this, SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
