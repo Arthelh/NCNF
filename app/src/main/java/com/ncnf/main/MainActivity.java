@@ -1,6 +1,9 @@
 package com.ncnf.main;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +16,7 @@ import com.ncnf.socialObject.EventDB;
 import com.ncnf.feed.ui.FeedFragment;
 import com.ncnf.home.ui.HomeFragment;
 import com.ncnf.map.ui.MapFragment;
+import com.ncnf.settings.ui.SettingsActivity;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -80,23 +84,39 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-//    @Override
-//    protected void onSaveInstanceState(@NonNull Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//
-//        fragmentManager.putFragment(outState, HOME_FRAGMENT, homeFragment);
-//        fragmentManager.putFragment(outState, MAP_FRAGMENT, mapFragment);
-//        fragmentManager.putFragment(outState, FEED_FRAGMENT, feedFragment);
-//        fragmentManager.putFragment(outState, ACTIVE_FRAGMENT, activeFragment);
-//    }
-//
-//    @Override
-//    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//
-//        this.homeFragment = fragmentManager.getFragment(savedInstanceState, HOME_FRAGMENT);
-//        this.mapFragment = fragmentManager.getFragment(savedInstanceState, MAP_FRAGMENT);
-//        this.feedFragment = fragmentManager.getFragment(savedInstanceState, FEED_FRAGMENT);
-//        this.activeFragment = fragmentManager.getFragment(savedInstanceState, ACTIVE_FRAGMENT);
-//    }
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        fragmentManager.putFragment(outState, HOME_FRAGMENT, homeFragment);
+        fragmentManager.putFragment(outState, MAP_FRAGMENT, mapFragment);
+        fragmentManager.putFragment(outState, FEED_FRAGMENT, feedFragment);
+        fragmentManager.putFragment(outState, ACTIVE_FRAGMENT, activeFragment);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        this.homeFragment = fragmentManager.getFragment(savedInstanceState, HOME_FRAGMENT);
+        this.mapFragment = fragmentManager.getFragment(savedInstanceState, MAP_FRAGMENT);
+        this.feedFragment = fragmentManager.getFragment(savedInstanceState, FEED_FRAGMENT);
+        this.activeFragment = fragmentManager.getFragment(savedInstanceState, ACTIVE_FRAGMENT);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_settings){
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
