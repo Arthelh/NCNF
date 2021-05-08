@@ -50,7 +50,7 @@ public class Organization {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.adminIds = adminIds;
-        this.eventIds = eventIds;
+        this.eventIds = events;
     }
 
     public boolean checkAdminIds(List<String> l){

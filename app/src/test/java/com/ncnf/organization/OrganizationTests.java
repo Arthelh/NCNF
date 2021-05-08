@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
@@ -97,7 +98,7 @@ public class OrganizationTests {
         assertTrue(!org.addAdmin(null) && org.getAdminIds().size() == 1 && !org.getAdminIds().contains(null));
 
         assertThrows(IllegalStateException.class, () -> {
-           org.deleteAdmin(admin1);
+            org.deleteAdmin(admin1);
         });
     }
 
