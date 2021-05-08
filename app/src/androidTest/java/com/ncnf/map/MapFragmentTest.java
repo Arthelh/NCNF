@@ -20,13 +20,11 @@ import com.google.firebase.firestore.GeoPoint;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.socialObject.Event;
-import com.ncnf.socialObject.SocialObject;
-import com.ncnf.socialObject.EventDB;
 import com.ncnf.main.MainActivity;
 import com.ncnf.settings.Settings;
 import com.ncnf.settings.ui.SettingsActivity;
-
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.SocialObject;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -35,9 +33,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -75,7 +71,6 @@ public final class MapFragmentTest {
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(activityRule);
 
     @BindValue
-    public EventDB eventDB = Mockito.mock(EventDB.class);
     public DatabaseService db = Mockito.mock(DatabaseService.class);
     @BindValue
     public VenueProvider venueProvider = Mockito.mock(VenueProvider.class);
@@ -85,7 +80,7 @@ public final class MapFragmentTest {
         Intents.init();
 
         TEST_COMP_FUTURE.complete(TEST_SocialObjects);
-        when(db.eventGeoQuery(Settings.userPosition, Settings.getCurrentMaxDistance() * 1000)).thenReturn(TEST_COMP_FUTURE);
+        when(db.eventGeoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000)).thenReturn(TEST_COMP_FUTURE);
         when(venueProvider.getAll()).thenReturn(TEST_VENUES);
 
         onView(withId(R.id.navigation_map)).perform(click());

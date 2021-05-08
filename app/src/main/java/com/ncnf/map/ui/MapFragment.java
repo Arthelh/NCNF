@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -78,12 +79,12 @@ public class MapFragment extends Fragment{
         materialSearchBar = getView().findViewById(R.id.searchBarMap);
 
         // Initialize Google Map with the callback onMapReady
-        mapView = (MapView) getView().findViewById(R.id.map);
+        mapView = getView().findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(googleMap -> {
             mMap = googleMap;
 
-            mapHandler = new MapHandler(getActivity(), mMap, venueProvider, getChildFragmentManager());
+            mapHandler = new MapHandler((AppCompatActivity) getActivity(), mMap, venueProvider, getChildFragmentManager());
             searchBarHandler = new SearchBarHandler(getActivity(), materialSearchBar, mapHandler);
 
             mapHandler.show_markers();

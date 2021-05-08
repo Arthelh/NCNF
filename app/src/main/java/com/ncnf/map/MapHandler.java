@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,6 +16,7 @@ import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.ncnf.database.DatabaseService;
+import com.ncnf.map.ui.MarkerInfoWindowManager;
 import com.ncnf.settings.Settings;
 import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.SocialObject;
@@ -52,7 +54,7 @@ public class MapHandler {
      * @param venueProvider A provider for the organizers, or venues.
      * @param fragmentManager A children fragment manager from the MapFragment
      */
-    public MapHandler(Activity context, GoogleMap mMap, VenueProvider venueProvider, FragmentManager fragmentManager){
+    public MapHandler(AppCompatActivity context, GoogleMap mMap, VenueProvider venueProvider, FragmentManager fragmentManager){
         this.context = context;
         this.mMap = mMap;
         if (mMap != null) { //This is just for MapHandler Unit test
@@ -98,7 +100,7 @@ public class MapHandler {
      */
     public void show_markers(){
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(Settings.userPosition));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(Settings.getUserPosition()));
 
         if (eventsShown){
             queryAndAddEvents();
@@ -125,7 +127,7 @@ public class MapHandler {
             LatLng event_position = new LatLng(p.getLocation().getLatitude(), p.getLocation().getLongitude());
 
             //Additional check in range as geoqueries sometimes have false positives (https://cloud.google.com/firestore/docs/solutions/geoqueries#javaandroid_1)
-            if (MapUtilities.position_in_range(event_position, Settings.userPosition)){
+            if (MapUtilities.position_in_range(event_position, Settings.getUserPosition())){
                 if (!eventMap.containsKey(event_position)){
                     eventMap.put(event_position, new ArrayList<>());
                 }
@@ -149,7 +151,7 @@ public class MapHandler {
         List<Venue> venues = venueProvider.getAll();
         for (Venue p : venues) {
             LatLng venue_position = new LatLng(p.getLatitude(), p.getLongitude());
-            if (MapUtilities.position_in_range(venue_position, Settings.userPosition)){
+            if (MapUtilities.position_in_range(venue_position, Settings.getUserPosition())){
                 clusterManager.addItem(new NCNFMarker(venue_position, p.getName(), p.getName(), new ArrayList<>(), false));
             }
         }
@@ -158,7 +160,7 @@ public class MapHandler {
     private void queryAndAddEvents(){
         final List<SocialObject> result = new ArrayList<>();
 
-        CompletableFuture<List<SocialObject>> completableFuture = databaseService.eventGeoQuery(Settings.userPosition, Settings.getCurrentMaxDistance() * 1000);
+        CompletableFuture<List<SocialObject>> completableFuture = databaseService.eventGeoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000);
         completableFuture.thenAccept(eventList -> {
 
             result.addAll(eventList);

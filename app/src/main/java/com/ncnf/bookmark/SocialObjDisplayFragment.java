@@ -1,22 +1,27 @@
 package com.ncnf.bookmark;
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.FrameLayout;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
-import com.ncnf.socialObject.SocialObject;
-import com.ncnf.socialObject.SocialObjActivity;
 import com.ncnf.feed.ui.SocialObjAdapter;
+import com.ncnf.socialObject.SocialObject;
+import com.ncnf.socialObject.ui.SocialObjFragment;
 import com.ncnf.user.User;
 
 import java.util.ArrayList;
@@ -28,7 +33,6 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.ncnf.Utils.SAVED_EVENTS_KEY;
-import static com.ncnf.Utils.UUID_KEY;
 
 @AndroidEntryPoint
 public class SocialObjDisplayFragment extends Fragment implements SocialObjAdapter.OnSocialObjListener {
@@ -88,8 +92,39 @@ public class SocialObjDisplayFragment extends Fragment implements SocialObjAdapt
 
     @Override
     public void onSocialObjectClick(SocialObject socialObject) {
-        Intent intent = new Intent(getActivity(), SocialObjActivity.class);
-        intent.putExtra(UUID_KEY, socialObject.getUuid().toString());
-        startActivity(intent);
+        Fragment fragment = new SocialObjFragment(socialObject);
+        Window globalWindow = getActivity().getWindow();
+        FragmentManager fragmentManager = getChildFragmentManager();
+
+        ConstraintLayout feedContainer = globalWindow.findViewById(R.id.display_event_container);
+        FrameLayout feedFrame = globalWindow.findViewById(R.id.display_event_fragment);
+        Button feedButton = globalWindow.findViewById(R.id.display_event_button);
+
+        feedContainer.setBackgroundResource(R.drawable.main_background_gradient);
+        feedContainer.setVisibility(View.VISIBLE);
+        feedFrame.setVisibility(View.VISIBLE);
+        feedButton.setVisibility(View.VISIBLE);
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.display_event_fragment, fragment).commit();
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                destroyChildFragment(fragmentManager, fragment, feedContainer, this);
+            }
+        };
+
+        feedButton.setOnClickListener(v -> {
+            destroyChildFragment(fragmentManager, fragment, feedContainer, callback);
+        });
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(callback);
+    }
+
+    private void destroyChildFragment(FragmentManager fragmentManager, Fragment fragment, ConstraintLayout feedContainer, OnBackPressedCallback callback){
+        fragmentManager.beginTransaction().remove(fragment).commit();
+        feedContainer.setVisibility(View.GONE);
+        callback.setEnabled(false);
     }
 }
