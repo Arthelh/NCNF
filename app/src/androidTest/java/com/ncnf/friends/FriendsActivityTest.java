@@ -1,8 +1,5 @@
 package com.ncnf.friends;
 
-import android.view.KeyEvent;
-import android.widget.EditText;
-
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -14,7 +11,6 @@ import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
 import com.ncnf.utilities.FirestoreModule;
-import com.ncnf.utilities.RecyclerViewItemCountAssertion;
 
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -32,18 +28,9 @@ import dagger.hilt.android.testing.HiltAndroidTest;
 import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
-import static androidx.test.espresso.action.ViewActions.pressKey;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeRight;
-import static androidx.test.espresso.action.ViewActions.typeText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 

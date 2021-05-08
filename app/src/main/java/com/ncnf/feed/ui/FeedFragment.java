@@ -24,7 +24,7 @@ import com.ncnf.event.EventDB;
 import java.util.List;
 import java.util.Objects;
 
-import static com.ncnf.Utils.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 
 public class FeedFragment extends Fragment {
@@ -36,7 +36,7 @@ public class FeedFragment extends Fragment {
 
     public FeedFragment(EventDB eventDB){
         super();
-        
+
         this.eventList = eventDB.toList();
     }
 

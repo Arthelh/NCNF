@@ -17,25 +17,20 @@ import com.ncnf.mocks.MockTask;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
-import static com.ncnf.Utils.NAME_KEY;
+import static com.ncnf.utilities.StringCodes.NAME_KEY;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;

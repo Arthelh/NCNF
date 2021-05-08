@@ -2,13 +2,11 @@ package com.ncnf.map;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -26,8 +24,7 @@ import com.ncnf.feed.ui.FeedFragment;
 
 import java.util.List;
 
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, ClusterManager.OnClusterItemClickListener<NCNFMarker>, ClusterManager.OnClusterItemInfoWindowClickListener<NCNFMarker> {
 

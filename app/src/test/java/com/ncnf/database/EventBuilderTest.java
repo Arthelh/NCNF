@@ -2,8 +2,8 @@ package com.ncnf.database;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.event.Event;
 import com.ncnf.database.builder.EventBuilder;
+import com.ncnf.event.Event;
 import com.ncnf.event.PrivateEvent;
 import com.ncnf.event.PublicEvent;
 import com.ncnf.event.Tag;

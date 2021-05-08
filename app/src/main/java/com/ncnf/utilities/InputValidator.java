@@ -6,9 +6,8 @@ import android.widget.EditText;
 
 import androidx.core.util.PatternsCompat;
 
-import com.ncnf.Utils;
-
 import java.util.List;
+import java.util.Objects;
 
 public class InputValidator {
 
@@ -76,14 +75,18 @@ public class InputValidator {
     }
 
     public static boolean isValidPassword(String password){
-        return password.length() >= Utils.PASSWORD_MINIMUM_LENGTH;
+        return password.length() >= StringCodes.PASSWORD_MINIMUM_LENGTH;
     }
 
-    public static boolean isStringEmpty(String s){
+    public static boolean isInvalidString(String s){
         return s == null || s.length() == 0;
     }
 
-    public static boolean isArrayEmpty(List l){
+    public static boolean isInvalidArray(List l){
         return l == null || l.isEmpty();
+    }
+
+    public static boolean checkCompleteList(List<String> l){
+        return (l == null) || l.stream().anyMatch(Objects::isNull);
     }
 }

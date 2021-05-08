@@ -1,6 +1,6 @@
-package com.ncnf;
+package com.ncnf.utilities;
 
-public class Utils {
+public class StringCodes {
     /**
      * Global variables
      */

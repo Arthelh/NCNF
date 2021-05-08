@@ -8,10 +8,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ncnf.R;
 import com.ncnf.storage.CacheFileStore;
-import com.ncnf.utilities.DateAdapter;
 import com.ncnf.storage.FileStore;
+import com.ncnf.utilities.DateAdapter;
 
-import static com.ncnf.Utils.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 public class EventActivity extends AppCompatActivity {
 

@@ -8,12 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.ncnf.R;
-import com.ncnf.Utils;
-import com.ncnf.event.Event;
-import com.ncnf.feed.ui.EventAdapter;
 import com.ncnf.utilities.InputValidator;
 
 import java.util.List;
@@ -70,11 +65,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         public void bind(final User u, final UserAdapter.OnItemClickListener listener) {
             String firstNameText = u.getFirstName();
-            if(InputValidator.isStringEmpty(firstNameText)) firstNameText = "empty";
+            if(InputValidator.isInvalidString(firstNameText)) firstNameText = "empty";
             String lastNameText = u.getLastName();
-            if(InputValidator.isStringEmpty(lastNameText)) lastNameText = "empty";
+            if(InputValidator.isInvalidString(lastNameText)) lastNameText = "empty";
             String usernameText = u.getUsername();
-            if(InputValidator.isStringEmpty(usernameText)) usernameText = "empty";
+            if(InputValidator.isInvalidString(usernameText)) usernameText = "empty";
             
             String concatNameText = firstNameText + " " + lastNameText;
             name.setText(concatNameText);

@@ -1,13 +1,10 @@
 package com.ncnf.map;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;

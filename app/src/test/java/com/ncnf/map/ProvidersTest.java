@@ -1,12 +1,7 @@
 package com.ncnf.map;
 
-import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.event.Event;
-import com.ncnf.event.PublicEvent;
-
 import org.junit.Test;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;

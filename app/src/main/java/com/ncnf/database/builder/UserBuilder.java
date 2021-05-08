@@ -3,7 +3,6 @@ package com.ncnf.database.builder;
 import android.util.Log;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.user.User;
 
@@ -12,17 +11,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ncnf.Utils.BIRTH_DATE_KEY;
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.EMAIL_KEY;
-import static com.ncnf.Utils.FIRST_NAME_KEY;
-import static com.ncnf.Utils.FRIENDS_KEY;
-import static com.ncnf.Utils.LAST_NAME_KEY;
-import static com.ncnf.Utils.NOTIFICATIONS_KEY;
-import static com.ncnf.Utils.OWNED_EVENTS_KEY;
-import static com.ncnf.Utils.SAVED_EVENTS_KEY;
-import static com.ncnf.Utils.USERNAME_KEY;
-import static com.ncnf.Utils.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.BIRTH_DATE_KEY;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
+import static com.ncnf.utilities.StringCodes.FIRST_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.FRIENDS_KEY;
+import static com.ncnf.utilities.StringCodes.LAST_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_KEY;
+import static com.ncnf.utilities.StringCodes.OWNED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.USERNAME_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
+
 
 public class UserBuilder extends DatabaseObjectBuilder<User> {
 

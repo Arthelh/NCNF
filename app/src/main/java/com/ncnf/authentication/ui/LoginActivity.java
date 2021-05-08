@@ -9,7 +9,7 @@ import com.ncnf.R;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.ncnf.Utils.NEXT_ACTIVITY_EXTRA_KEY;
+import static com.ncnf.utilities.StringCodes.NEXT_ACTIVITY_EXTRA_KEY;
 
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {

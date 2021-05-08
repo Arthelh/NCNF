@@ -6,8 +6,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.event.Event;
-import com.ncnf.event.PublicEvent;
 import com.ncnf.event.EventActivity;
+import com.ncnf.event.PublicEvent;
 import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
 
@@ -34,7 +34,6 @@ import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest

@@ -14,21 +14,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.ncnf.Utils.ADDRESS_KEY;
-import static com.ncnf.Utils.ATTENDEES_KEY;
-import static com.ncnf.Utils.DATE_KEY;
-import static com.ncnf.Utils.DESCRIPTION_KEY;
-import static com.ncnf.Utils.EMAIL_KEY;
-import static com.ncnf.Utils.INVITED_KEY;
-import static com.ncnf.Utils.LOCATION_KEY;
-import static com.ncnf.Utils.MIN_AGE_KEY;
-import static com.ncnf.Utils.NAME_KEY;
-import static com.ncnf.Utils.OWNER_KEY;
-import static com.ncnf.Utils.PRICE_KEY;
-import static com.ncnf.Utils.TAGS_LIST_KEY;
-import static com.ncnf.Utils.TYPE_KEY;
-import static com.ncnf.Utils.UUID_KEY;
-import static com.ncnf.Utils.VISIBILITY_KEY;
+import static com.ncnf.utilities.StringCodes.ADDRESS_KEY;
+import static com.ncnf.utilities.StringCodes.ATTENDEES_KEY;
+import static com.ncnf.utilities.StringCodes.DATE_KEY;
+import static com.ncnf.utilities.StringCodes.DESCRIPTION_KEY;
+import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
+import static com.ncnf.utilities.StringCodes.INVITED_KEY;
+import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
+import static com.ncnf.utilities.StringCodes.MIN_AGE_KEY;
+import static com.ncnf.utilities.StringCodes.NAME_KEY;
+import static com.ncnf.utilities.StringCodes.OWNER_KEY;
+import static com.ncnf.utilities.StringCodes.PRICE_KEY;
+import static com.ncnf.utilities.StringCodes.TAGS_LIST_KEY;
+import static com.ncnf.utilities.StringCodes.TYPE_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.VISIBILITY_KEY;
+
 
 public class EventBuilder extends DatabaseObjectBuilder<Event> {
 

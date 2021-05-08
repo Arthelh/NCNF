@@ -5,25 +5,22 @@ import android.content.Intent;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.ncnf.utilities.DateAdapter;
 import com.ncnf.R;
-
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.ncnf.Utils.UUID_KEY;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
+import com.ncnf.utilities.DateAdapter;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
+import static org.hamcrest.Matchers.containsString;
 
 @RunWith(AndroidJUnit4.class)
 public class EventActivityTest {

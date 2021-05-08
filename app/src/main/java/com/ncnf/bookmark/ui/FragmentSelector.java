@@ -7,7 +7,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.ncnf.bookmark.EventDisplayFragment;
 
-import static com.ncnf.Utils.*;
+import static com.ncnf.utilities.StringCodes.OWNED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

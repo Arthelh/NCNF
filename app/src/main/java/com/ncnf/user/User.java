@@ -14,15 +14,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
-import static com.ncnf.Utils.FIRST_NAME_KEY;
-import static com.ncnf.Utils.NOTIFICATIONS_KEY;
-import static com.ncnf.Utils.NOTIFICATIONS_TOKEN_KEY;
-import static com.ncnf.Utils.OWNED_EVENTS_KEY;
-import static com.ncnf.Utils.SAVED_EVENTS_KEY;
-import static com.ncnf.Utils.USERS_COLLECTION_KEY;
-import static com.ncnf.Utils.UUID_KEY;
-import static com.ncnf.utilities.InputValidator.isStringEmpty;
+import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.FIRST_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_KEY;
+import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_TOKEN_KEY;
+import static com.ncnf.utilities.StringCodes.OWNED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 public class User {
 
@@ -43,7 +42,7 @@ public class User {
     private final IllegalStateException wrongCredentials = new IllegalStateException("User doesn't have the right credentials to perform current operation");
 
     public User(DatabaseService db, String uuid, String username, String email, String firstName, String lastName, List<String> friendsIds, List<String> ownedEventsIds, List<String> savedEventsIds, Date birthDate, boolean notifications) {
-        if(isStringEmpty(uuid) || isStringEmpty(email)){
+        if(InputValidator.isInvalidString(uuid) || InputValidator.isInvalidString(email)){
             throw new IllegalArgumentException();
         }
         this.db = db;

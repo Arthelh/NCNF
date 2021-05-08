@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import static com.ncnf.Utils.*;
+import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.NEWS_KEY;
 
 public abstract class Event implements Comparable {
 

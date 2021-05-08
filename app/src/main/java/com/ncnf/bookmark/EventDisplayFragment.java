@@ -2,17 +2,16 @@ package com.ncnf.bookmark;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.ncnf.R;
 import com.ncnf.event.Event;
@@ -28,9 +27,10 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.SAVED_EVENTS_KEY;
-import static com.ncnf.Utils.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
+
 
 @AndroidEntryPoint
 public class EventDisplayFragment extends Fragment implements EventAdapter.OnEventListener{

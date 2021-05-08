@@ -1,17 +1,14 @@
 package com.ncnf.event;
+
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.organizer.PublicOrganizer;
-import com.ncnf.utilities.DateAdapter;
-import com.ncnf.utilities.Location;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 public class EventCalculatorTest {
 
     String name = "Jane Doe";
