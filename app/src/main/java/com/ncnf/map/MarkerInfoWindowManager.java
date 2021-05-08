@@ -18,9 +18,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.R;
-import com.ncnf.event.Event;
-import com.ncnf.event.EventActivity;
 import com.ncnf.feed.ui.FeedFragment;
+import com.ncnf.socialObject.SocialObjActivity;
+import com.ncnf.socialObject.SocialObject;
 
 import java.util.List;
 
@@ -52,18 +52,18 @@ public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Clu
     public void onClusterItemInfoWindowClick(NCNFMarker item) {
         if (item.isEvent()) {
 
-            List<Event> events = item.getEventList();
+            List<SocialObject> socialObjects = item.getEventList();
 
-            if (events.size() == 1) { //When the marker represents only one event
+            if (socialObjects.size() == 1) { //When the marker represents only one event
 
-                Event e = events.get(0);
-                Intent intent = new Intent(context, EventActivity.class);
+                SocialObject e = socialObjects.get(0);
+                Intent intent = new Intent(context, SocialObjActivity.class);
                 intent.putExtra(UUID_KEY, e.getUuid().toString());
                 context.startActivity(intent);
 
             } else {
 
-                Fragment feedFragment = new FeedFragment(events);
+                Fragment feedFragment = new FeedFragment(socialObjects);
                 ConstraintLayout feedContainer = globalWindow.findViewById(R.id.map_feed_container);
                 FrameLayout feedFrame = globalWindow.findViewById(R.id.map_feed_fragment);
                 Button feedButton = globalWindow.findViewById(R.id.map_feed_button);

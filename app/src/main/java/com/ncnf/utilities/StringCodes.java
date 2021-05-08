@@ -19,7 +19,6 @@ public class StringCodes {
     public static final String BIRTH_DATE_KEY = "year_of_birth";
     public static final String EMAIL_KEY = "email";
     public static final String FRIENDS_KEY = "friends";
-    public static final String OWNED_EVENTS_KEY = "owned_events";
     public static final String SAVED_EVENTS_KEY = "saved_events";
     public static final String NOTIFICATIONS_KEY = "notifications";
     public static final String NOTIFICATIONS_TOKEN_KEY = "notifications_token";
@@ -46,7 +45,12 @@ public class StringCodes {
     public static final String ADDRESS_KEY = "address";
     public static final String NEWS_KEY = "news";
 
-
+    /**
+     * Keys related to groups
+     */
+    public static final String GROUPS_COLLECTION_KEY = "groups/";
+    public static final String OWNED_GROUPS_KEY = "owned_groups";
+    public static final String PARTICIPATING_GROUPS_KEY = "participating_groups";
     /**
      * Keys related to organizations
      */

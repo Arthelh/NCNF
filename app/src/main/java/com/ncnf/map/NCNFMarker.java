@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
-import com.ncnf.event.Event;
+import com.ncnf.socialObject.SocialObject;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,14 +15,14 @@ public class NCNFMarker implements ClusterItem {
     private final LatLng position;
     private final String title;
     private final String snippet;
-    private final List<Event> eventList;
+    private final List<SocialObject> eventList;
     private final boolean isEvent;
 
-    public NCNFMarker(float lat, float lon, String title, String snippet, List<Event> eventList, boolean isEvent){
+    public NCNFMarker(float lat, float lon, String title, String snippet, List<SocialObject> eventList, boolean isEvent){
         this(new LatLng(lat, lon), title, snippet, eventList, isEvent);
     }
 
-    public NCNFMarker(LatLng position, String title, String snippet, List<Event> eventList, boolean isEvent){
+    public NCNFMarker(LatLng position, String title, String snippet, List<SocialObject> eventList, boolean isEvent){
         this.position = position;
         this.title = title;
         this.snippet = snippet;
@@ -48,7 +48,7 @@ public class NCNFMarker implements ClusterItem {
         return snippet;
     }
 
-    public List<Event> getEventList() {return Collections.unmodifiableList(eventList);}
+    public List<SocialObject> getEventList() {return Collections.unmodifiableList(eventList);}
 
     public boolean isEvent(){
         return isEvent;

@@ -4,8 +4,8 @@ import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
-import com.ncnf.event.EventDB;
 import com.ncnf.main.MainActivity;
+import com.ncnf.socialObject.EventDB;
 
 import org.junit.Before;
 import org.junit.Rule;

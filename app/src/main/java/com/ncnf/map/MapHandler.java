@@ -7,11 +7,9 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
-import com.ncnf.event.Event;
-import com.ncnf.event.EventDB;
+import com.ncnf.socialObject.EventDB;
+import com.ncnf.socialObject.SocialObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +26,6 @@ public class MapHandler {
     private final VenueProvider venueProvider;
 
     private LatLng userPosition;
-    private Marker userMarker;
     private ClusterManager<NCNFMarker> clusterManager;
 
     // Indicate whether Events or Venues are shown. If false -> venues are shown
@@ -74,9 +71,6 @@ public class MapHandler {
     }
 
     public void show_markers(){
-        // Add a marker near EPFL and move the camera
-        MarkerOptions position_marker = new MarkerOptions().position(userPosition).title("Your Position").icon(MapUtilities.bitmapDescriptorFromVector(context));
-        userMarker = mMap.addMarker(position_marker);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
 
         if (eventsShown){
@@ -90,7 +84,6 @@ public class MapHandler {
     //Removes all markers from the map and recreates them according to current position
     public void update_markers(){
         clusterManager.clearItems();
-        userMarker.remove();
         show_markers();
     }
 
@@ -103,9 +96,9 @@ public class MapHandler {
     }
 
     private void addEventMarkers(){
-        List<Event> events = queryEvents();
-        Map<LatLng, List<Event>> eventMap = new HashMap<>();
-        for (Event p : events) {
+        List<SocialObject> socialObjects = queryEvents();
+        Map<LatLng, List<SocialObject>> eventMap = new HashMap<>();
+        for (SocialObject p : socialObjects) {
             LatLng event_position = new LatLng(p.getLocation().getLatitude(), p.getLocation().getLongitude());
             if (MapUtilities.position_in_range(event_position, userPosition)){
                 if (!eventMap.containsKey(event_position)){
@@ -116,9 +109,9 @@ public class MapHandler {
         }
         Set<LatLng> keys = eventMap.keySet();
         for (LatLng k : keys){
-            List<Event> list = eventMap.get(k);
+            List<SocialObject> list = eventMap.get(k);
             StringBuilder desc = new StringBuilder();
-            for (Event p : list){
+            for (SocialObject p : list){
                 desc.append(p.getName()).append("\n");
             }
             String description = desc.toString();
@@ -136,7 +129,7 @@ public class MapHandler {
         }
     }
 
-    private List<Event> queryEvents(){
+    private List<SocialObject> queryEvents(){
         return Collections.unmodifiableList(eventDB.toList());
     }
 }

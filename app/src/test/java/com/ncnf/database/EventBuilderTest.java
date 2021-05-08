@@ -3,14 +3,14 @@ package com.ncnf.database;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.builder.EventBuilder;
-import com.ncnf.event.Event;
-import com.ncnf.event.PrivateEvent;
-import com.ncnf.event.PublicEvent;
-import com.ncnf.event.Tag;
+import com.ncnf.database.builder.GroupBuilder;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.Group;
+import com.ncnf.socialObject.SocialObject;
+import com.ncnf.socialObject.Tag;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,27 +20,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.ncnf.Utils.ADDRESS_KEY;
-import static com.ncnf.Utils.ATTENDEES_KEY;
-import static com.ncnf.Utils.DATE_KEY;
-import static com.ncnf.Utils.DESCRIPTION_KEY;
-import static com.ncnf.Utils.EMAIL_KEY;
-import static com.ncnf.Utils.INVITED_KEY;
-import static com.ncnf.Utils.LOCATION_KEY;
-import static com.ncnf.Utils.MIN_AGE_KEY;
-import static com.ncnf.Utils.NAME_KEY;
-import static com.ncnf.Utils.OWNER_KEY;
-import static com.ncnf.Utils.PRICE_KEY;
-import static com.ncnf.Utils.TAGS_LIST_KEY;
-import static com.ncnf.Utils.TYPE_KEY;
-import static com.ncnf.Utils.UUID_KEY;
-import static com.ncnf.Utils.VISIBILITY_KEY;
+import static com.ncnf.utilities.StringCodes.ADDRESS_KEY;
+import static com.ncnf.utilities.StringCodes.ATTENDEES_KEY;
+import static com.ncnf.utilities.StringCodes.DATE_KEY;
+import static com.ncnf.utilities.StringCodes.DESCRIPTION_KEY;
+import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
+import static com.ncnf.utilities.StringCodes.INVITED_KEY;
+import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
+import static com.ncnf.utilities.StringCodes.MIN_AGE_KEY;
+import static com.ncnf.utilities.StringCodes.NAME_KEY;
+import static com.ncnf.utilities.StringCodes.OWNER_KEY;
+import static com.ncnf.utilities.StringCodes.PRICE_KEY;
+import static com.ncnf.utilities.StringCodes.TAGS_LIST_KEY;
+import static com.ncnf.utilities.StringCodes.TYPE_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.VISIBILITY_KEY;
 import static org.junit.Assert.assertEquals;
 
 public class EventBuilderTest {
 
-    private DatabaseService db;
-    private EventBuilder eventBuilder;
+    private EventBuilder eventBuilder = new EventBuilder();
+    private GroupBuilder groupbuilder = new GroupBuilder();
 
     Map<String, Object> publicEvent;
     Map<String, Object> privateEvent;
@@ -63,8 +63,6 @@ public class EventBuilderTest {
 
     @Before
     public void setup() {
-        db = Mockito.mock(DatabaseService.class);
-        eventBuilder = new EventBuilder();
         publicEvent = new HashMap<>();
         privateEvent = new HashMap<>();
     }
@@ -89,14 +87,13 @@ public class EventBuilderTest {
         publicEvent.put(TAGS_LIST_KEY, tags);
 
 
-        PublicEvent event = (PublicEvent) eventBuilder.toObject(uuid, publicEvent);
+        Event event = eventBuilder.toObject(uuid, publicEvent);
 
         assertEquals(event.getUuid().toString(), uuid);
         assertEquals(event.getName(), name);
         assertEquals(event.getDate(), date);
         assertEquals(event.getLocation(), location);
         assertEquals(event.getAddress(), address);
-        assertEquals(event.getVisibility().toString(), "PUBLIC");
         assertEquals(event.getType().toString(), type);
         assertEquals(event.getAttendees().get(0), attendees.get(0));
         assertEquals(event.getDescription(), description);
@@ -104,13 +101,11 @@ public class EventBuilderTest {
         assertEquals(event.getMinAge(), minAge);
         assertEquals(event.getPrice(), price, 0);
         assertEquals(event.getEmail(), email);
-
     }
 
 
     @Test
     public void loadPrivate() {
-
         privateEvent.put(OWNER_KEY, ownerId);
         privateEvent.put(UUID_KEY, this.uuid);
         privateEvent.put(NAME_KEY, this.name);
@@ -126,14 +121,13 @@ public class EventBuilderTest {
 
         privateEvent.put(INVITED_KEY, invited);
 
-        PrivateEvent event = (PrivateEvent) eventBuilder.toObject(uuid, privateEvent);
+        Group event = (Group) groupbuilder.toObject(uuid, privateEvent);
 
         assertEquals(event.getUuid().toString(), uuid);
         assertEquals(event.getName(), name);
         assertEquals(event.getDate(), date);
         assertEquals(event.getLocation(), location);
         assertEquals(event.getAddress(), address);
-        assertEquals(event.getVisibility().toString(), "PRIVATE");
         assertEquals(event.getType().toString(), type);
         assertEquals(event.getAttendees().get(0), attendees.get(0));
         assertEquals(event.getDescription(), description);
@@ -144,25 +138,23 @@ public class EventBuilderTest {
 
     @Test
     public void privateToMapWorks() {
-
-        Event.Type type = Event.Type.Movie;
+        SocialObject.Type type = SocialObject.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
 
-        PrivateEvent event = new PrivateEvent(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
-        Map<String, Object> map = eventBuilder.toMap(event);
-        assertEquals(eventBuilder.toObject(uuid.toString(), map), event);
+        Group group = new Group(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
+        Map<String, Object> map = groupbuilder.toMap(group);
+        assertEquals(groupbuilder.toObject(uuid.toString(), map), group);
 
     }
 
     @Test
     public void publicToMapWorks() {
-
-        Event.Type type = Event.Type.Movie;
+        SocialObject.Type type = SocialObject.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
 
-        PublicEvent event = new PublicEvent(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags, email);
+        Event event = new Event(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags, email);
         Map<String, Object> map = eventBuilder.toMap(event);
         assertEquals(eventBuilder.toObject(uuid.toString(), map), event);
 

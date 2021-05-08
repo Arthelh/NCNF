@@ -17,19 +17,19 @@ public class UtilitiesTest {
         LatLng chuv_position = new LatLng(46.5249f, 6.6424f); //5.8km from EPFL
         LatLng vevey_position = new LatLng(46.4628f, 6.8419f); //22.05km from EPFL
 
-        Settings.setCurrent_max_distance(5);
+        Settings.setCurrentMaxDistance(5);
         assertThat(MapUtilities.position_in_range(epfl_position, chuv_position), is(false));
         assertThat(MapUtilities.position_in_range(epfl_position, vevey_position), is(false));
 
-        Settings.setCurrent_max_distance(6);
+        Settings.setCurrentMaxDistance(6);
         assertThat(MapUtilities.position_in_range(epfl_position, chuv_position), is(true));
         assertThat(MapUtilities.position_in_range(epfl_position, vevey_position), is(false));
 
-        Settings.setCurrent_max_distance(22);
+        Settings.setCurrentMaxDistance(22);
         assertThat(MapUtilities.position_in_range(epfl_position, chuv_position), is(true));
         assertThat(MapUtilities.position_in_range(epfl_position, vevey_position), is(false));
 
-        Settings.setCurrent_max_distance(23);
+        Settings.setCurrentMaxDistance(23);
         assertThat(MapUtilities.position_in_range(epfl_position, chuv_position), is(true));
         assertThat(MapUtilities.position_in_range(epfl_position, vevey_position), is(true));
     }

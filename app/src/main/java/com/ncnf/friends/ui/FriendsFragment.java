@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,7 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
+import com.ncnf.user.FriendsRepository;
 import com.ncnf.user.User;
 import com.ncnf.user.UserAdapter;
 
@@ -22,11 +24,16 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG;
+
 @AndroidEntryPoint
 public class FriendsFragment extends Fragment {
 
     @Inject
-    public User user;
+    public FirebaseUser user;
+
+    @Inject
+    public FriendsRepository friendsRepository;
 
     private RecyclerView recycler;
     private UserAdapter adapter;
@@ -47,7 +54,7 @@ public class FriendsFragment extends Fragment {
         adapter = new UserAdapter(new ArrayList<>(), this::displayUser);
         recycler.setAdapter(adapter);
 
-        this.user.loadUserFromDB().thenCompose(user1 -> user.getFriends()).thenAccept(users -> {
+        friendsRepository.getFriends(user.getUid()).thenAccept(users -> {
             adapter.setUsers(users);
         }).exceptionally(exception -> {
             return null; // TODO : handle exception
@@ -55,6 +62,8 @@ public class FriendsFragment extends Fragment {
     }
 
     private void displayUser(User user){
-        Toast.makeText(getActivity(), "TEST_PROFILE_DISPLAY", Toast.LENGTH_LONG).show();
+        // TODO: Go to profile
+        // Also change the test
+        Snackbar.make(getActivity().findViewById(android.R.id.content), "DISPLAY_USER_PROFILE", LENGTH_LONG).show();
     }
 }

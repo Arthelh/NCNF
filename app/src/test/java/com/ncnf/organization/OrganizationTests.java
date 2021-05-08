@@ -75,10 +75,6 @@ public class OrganizationTests {
         org.setAdminIds(adminIds2);
         assertEquals(org.getAdminIds(), adminIds2);
 
-        assertEquals(org.getEventIds(), events);
-        List<String> events2 =  Arrays.asList(new String[]{"event"});
-        org.setEventIds(events2);
-        assertEquals(org.getEventIds(), events2);
     }
 
     @Test
