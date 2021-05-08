@@ -5,10 +5,10 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
-import com.ncnf.socialObject.create.GroupCreateActivity;
-import com.ncnf.socialObject.update.EventNewsActivity;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.main.MainActivity;
+import com.ncnf.socialObject.create.GroupCreateActivity;
+import com.ncnf.socialObject.update.EventNewsActivity;
 import com.ncnf.user.UserProfileActivity;
 
 import org.junit.After;
@@ -27,7 +27,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static com.ncnf.Utils.NEXT_ACTIVITY_EXTRA_KEY;
+import static com.ncnf.utilities.StringCodes.NEXT_ACTIVITY_EXTRA_KEY;
 
 @HiltAndroidTest
 public final class HomeFragmentTest {

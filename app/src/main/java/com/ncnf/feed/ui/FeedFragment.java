@@ -23,8 +23,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.ncnf.R;
+
 import com.ncnf.database.DatabaseService;
+import com.ncnf.map.MapUtilities;
 import com.ncnf.settings.Settings;
 import com.ncnf.socialObject.SocialObject;
 import com.ncnf.socialObject.ui.SocialObjFragment;
@@ -34,7 +37,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 
 public class FeedFragment extends Fragment {
 
@@ -172,7 +175,11 @@ public class FeedFragment extends Fragment {
         CompletableFuture<List<SocialObject>> completableFuture = new DatabaseService().eventGeoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000);
         completableFuture.thenAccept(eventList -> {
 
-            result.addAll(eventList);
+            for (SocialObject e : eventList){
+                LatLng eventPosition = new LatLng(e.getLocation().getLatitude(), e.getLocation().getLongitude());
+                if (MapUtilities.position_in_range(Settings.getUserPosition(), eventPosition))
+                    result.add(e);
+            }
             adapter = new SocialObjAdapter(result, this::onEventClick, SocialObjAdapter.SortingMethod.DATE);
             recycler.setAdapter(adapter);
 

@@ -69,9 +69,6 @@
             android:name=".socialObject.update.EventNewsActivity"
             android:label="Publish a news"
             android:parentActivityName=".main.MainActivity" />
-        <activity
-            android:name=".socialObject.SocialObjActivity"
-            android:parentActivityName=".main.MainActivity" /> <!-- LANDING PAGE -->
         <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

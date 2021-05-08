@@ -1,16 +1,6 @@
 package com.ncnf.map;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
-
-import androidx.core.content.ContextCompat;
-
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.ncnf.R;
 import com.ncnf.settings.Settings;
 
 public class MapUtilities {

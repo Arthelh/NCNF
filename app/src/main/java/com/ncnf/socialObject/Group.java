@@ -6,11 +6,12 @@ import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseService;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import static com.ncnf.Utils.*;
+
+import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 
 
 public class Group extends SocialObject {

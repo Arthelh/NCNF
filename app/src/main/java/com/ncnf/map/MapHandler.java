@@ -28,7 +28,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-import static com.ncnf.Utils.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
+
 
 public class MapHandler {
 
@@ -121,7 +122,6 @@ public class MapHandler {
     }
 
     private void addEventMarkers(List<SocialObject> events){
-        Log.d(DEBUG_TAG, "Adding event markers, event list size: " + events.size());
         Map<LatLng, List<SocialObject>> eventMap = new HashMap<>();
         for (SocialObject p : events) {
             LatLng event_position = new LatLng(p.getLocation().getLatitude(), p.getLocation().getLongitude());

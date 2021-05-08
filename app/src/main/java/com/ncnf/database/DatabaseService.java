@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
-import static com.ncnf.Utils.GEOHASH_KEY;
+import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.GEOHASH_KEY;
 
 public class DatabaseService implements DatabaseServiceInterface {
 

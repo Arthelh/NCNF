@@ -29,12 +29,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
+import com.ncnf.main.MainActivity;
 import com.ncnf.socialObject.Group;
 import com.ncnf.socialObject.SocialObject;
-import com.ncnf.main.MainActivity;
+import com.ncnf.storage.FileStore;
 import com.ncnf.user.User;
 import com.ncnf.utilities.DateAdapter;
-import com.ncnf.storage.FileStore;
 import com.ncnf.utilities.InputValidator;
 
 import java.text.DecimalFormat;
@@ -53,9 +53,9 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.POPUP_POSITIVE_BUTTON;
-import static com.ncnf.Utils.POPUP_TITLE;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.POPUP_POSITIVE_BUTTON;
+import static com.ncnf.utilities.StringCodes.POPUP_TITLE;
 
 @AndroidEntryPoint
 public class GroupCreateActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {

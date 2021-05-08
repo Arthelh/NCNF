@@ -11,16 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.SocialObjRelevanceCalculator;
+import com.ncnf.socialObject.SocialObject;
+import com.ncnf.utilities.DateAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.ncnf.socialObject.Event;
-import com.ncnf.socialObject.SocialObjRelevanceCalculator;
-import com.ncnf.socialObject.SocialObject;
-import com.ncnf.utilities.DateAdapter;
 
 public class SocialObjAdapter extends RecyclerView.Adapter<SocialObjAdapter.SocialObjViewHolder> implements Filterable {
     private List<SocialObject> socialObjects;

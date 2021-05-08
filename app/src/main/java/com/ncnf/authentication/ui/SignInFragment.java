@@ -2,7 +2,6 @@ package com.ncnf.authentication.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,12 +14,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
 import com.ncnf.authentication.AuthenticationService;
-import com.ncnf.user.UserProfileActivity;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -28,13 +25,12 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.ncnf.Utils.BADLY_FORMATTED_EMAIL_STRING;
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.EMPTY_FIELD_STRING;
-import static com.ncnf.Utils.NEXT_ACTIVITY_EXTRA_KEY;
-import static com.ncnf.Utils.POPUP_POSITIVE_BUTTON;
-import static com.ncnf.Utils.POPUP_TITLE;
 import static com.ncnf.utilities.InputValidator.verifyEmailInput;
+import static com.ncnf.utilities.StringCodes.BADLY_FORMATTED_EMAIL_STRING;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.EMPTY_FIELD_STRING;
+import static com.ncnf.utilities.StringCodes.POPUP_POSITIVE_BUTTON;
+import static com.ncnf.utilities.StringCodes.POPUP_TITLE;
 
 @AndroidEntryPoint
 public class SignInFragment extends Fragment {

@@ -2,7 +2,7 @@ package com.ncnf.utilities;
 
 import org.junit.Test;
 
-import static com.ncnf.utilities.InputValidator.isStringEmpty;
+import static com.ncnf.utilities.InputValidator.isInvalidString;
 import static com.ncnf.utilities.InputValidator.isValidPassword;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -80,7 +80,7 @@ public class InputValidatorTests {
 
     @Test
     public void emptyStringTest(){
-        assertTrue(isStringEmpty(""));
+        assertTrue(isInvalidString(""));
     }
 
     @Test

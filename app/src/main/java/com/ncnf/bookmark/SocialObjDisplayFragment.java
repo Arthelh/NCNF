@@ -32,7 +32,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.ncnf.Utils.SAVED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
 
 @AndroidEntryPoint
 public class SocialObjDisplayFragment extends Fragment implements SocialObjAdapter.OnSocialObjListener {
