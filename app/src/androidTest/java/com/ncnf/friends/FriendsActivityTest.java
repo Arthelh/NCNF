@@ -74,14 +74,15 @@ public class FriendsActivityTest {
     @Test
     public void friendsPageViewerTest(){
         CompletableFuture<User> futureUser = new CompletableFuture<>();
-        futureUser.complete(user);
+        futureUser.complete(mockUser);
         CompletableFuture<List<User>> futureFriends = new CompletableFuture<>();
         futureFriends.complete(Collections.singletonList(u1));
 
-
+        when(mockUser.loadUserFromDB()).thenReturn(futureUser);
         when(usersRepository.loadUser(anyString())).thenReturn(futureUser);
-        when(user.getFriends()).thenReturn(futureFriends);
-        when(user.getAllUsersLike(anyString())).thenReturn(futureFriends);
+        when(mockUser.getFriends()).thenReturn(futureFriends);
+        when(mockUser.getAllUsersLike(anyString())).thenReturn(futureFriends);
+        when(mockUser.getUuid()).thenReturn("");
 
         onView(withId(R.id.friends_switch_button)).perform(click());
 //        onView(withId(R.id.friends_switch_button)).perform(click());

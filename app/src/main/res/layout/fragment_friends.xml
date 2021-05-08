@@ -10,4 +10,14 @@
         android:id="@+id/friends_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:fontFamily="sans-serif-light"
+        android:text="No friends yet"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:visibility="gone"/>
 </FrameLayout>

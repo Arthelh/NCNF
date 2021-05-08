@@ -66,12 +66,7 @@ public class FriendsFragment extends Fragment {
         }).exceptionally(exception -> {
             return null;
         });
-
-//        this.user.loadUserFromDB().thenCompose(user1 -> user.getFriends()).thenAccept(users -> {
-//            adapter.setUsers(users);
-//        }).exceptionally(exception -> {
-//            return null; // TODO : handle exception
-//        });
+        
     }
 
     private void displayUser(User user){

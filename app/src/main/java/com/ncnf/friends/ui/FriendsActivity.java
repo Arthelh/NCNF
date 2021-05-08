@@ -38,7 +38,7 @@ public class FriendsActivity extends AppCompatActivity {
 
         findViewById(R.id.friends_switch_button).setOnClickListener(this::onButtonClicked);
 
-        fragmentManager.beginTransaction().show(activeFragment).commit();
+        showActiveFragment();
     }
 
     private void onButtonClicked(View view) {
@@ -59,7 +59,10 @@ public class FriendsActivity extends AppCompatActivity {
         Toast.makeText(this, "TEST_PROFILE_DISPLAY", Toast.LENGTH_LONG).show();
         this.userProfileFragment = new PublicProfileFragment(user);
         fragmentManager.beginTransaction().replace(R.id.friends_fragment_container, userProfileFragment).commit();
-        this.activeFragment = userProfileFragment;
+    }
+
+    protected void showActiveFragment(){
+        fragmentManager.beginTransaction().show(activeFragment).addToBackStack("active").commit();
     }
 
 }
