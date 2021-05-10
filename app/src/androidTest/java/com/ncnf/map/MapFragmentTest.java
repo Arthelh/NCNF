@@ -1,5 +1,6 @@
 package com.ncnf.map;
 
+import android.graphics.Rect;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -13,6 +14,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
+import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 
@@ -48,12 +50,17 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.contains;
+import static org.mockito.Matchers.matches;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
@@ -198,5 +205,40 @@ public final class MapFragmentTest {
             assertTrue(((MaterialSearchBar) view).isSuggestionsEnabled());
             assertTrue(((MaterialSearchBar) view).isSearchOpened());
         });
+    }
+
+    @Test
+    public final void testInfoWindow(){
+        UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+
+        UiObject marker = device.findObject(new UiSelector().descriptionContains("TestGeo"));
+        try {
+            marker.click();
+            Rect markerRect = marker.getBounds();
+            int x = markerRect.centerX();
+            int y = markerRect.centerY() - markerRect.height();
+            device.click(x, y);
+            Thread.sleep(2000);
+            UiObject backToMapButton = device.findObject(new UiSelector().textContains("Back to Map"));
+            assertTrue("Back to Map button exists", backToMapButton.waitForExists(2000));
+
+            UiObject eventCard = device.findObject(new UiSelector().textContains("TestGeo"));
+            assertTrue("Event Card exists", eventCard.waitForExists(2000));
+            eventCard.click();
+
+            UiObject backToFeedButton = device.findObject(new UiSelector().textContains("Back to Feed"));
+            assertTrue("Back to Feed button exists", backToFeedButton.waitForExists(2000));
+            backToFeedButton.click();
+
+            UiObject backToMapButtonRevisited = device.findObject(new UiSelector().textContains("Back to Map"));
+            assertTrue("Back to Map button exists again", backToMapButtonRevisited.waitForExists(2000));
+            backToMapButtonRevisited.click();
+
+            UiObject switchButton = device.findObject(new UiSelector().textContains("Switch"));
+            assertTrue("Switch button exists, back to map", switchButton.waitForExists(2000));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
