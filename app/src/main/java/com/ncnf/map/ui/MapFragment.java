@@ -76,15 +76,15 @@ public class MapFragment extends Fragment{
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
-        materialSearchBar = getView().findViewById(R.id.searchBarMap);
+        materialSearchBar = requireView().findViewById(R.id.searchBarMap);
 
         // Initialize Google Map with the callback onMapReady
-        mapView = getView().findViewById(R.id.map);
+        mapView = requireView().findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(googleMap -> {
             mMap = googleMap;
 
-            mapHandler = new MapHandler((AppCompatActivity) getActivity(), mMap, venueProvider, getChildFragmentManager());
+            mapHandler = new MapHandler((AppCompatActivity) requireActivity(), mMap, venueProvider, getChildFragmentManager());
             searchBarHandler = new SearchBarHandler(getActivity(), materialSearchBar, mapHandler);
 
             mapHandler.show_markers();

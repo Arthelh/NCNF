@@ -24,7 +24,7 @@ import com.ncnf.socialObject.ui.SocialObjFragment;
 
 import java.util.List;
 
-public class MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, ClusterManager.OnClusterItemClickListener<NCNFMarker>, ClusterManager.OnClusterItemInfoWindowClickListener<NCNFMarker> {
+public class  MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, ClusterManager.OnClusterItemClickListener<NCNFMarker>, ClusterManager.OnClusterItemInfoWindowClickListener<NCNFMarker> {
 
     private final AppCompatActivity context;
     private final View markerWindow;
