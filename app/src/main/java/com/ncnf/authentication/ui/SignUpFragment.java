@@ -101,7 +101,7 @@ public class SignUpFragment extends Fragment {
         futureResponse.thenCompose(res -> {
             Log.d(DEBUG_TAG, "Successful register for " + email);
             User user = CurrentUserModule.getCurrentUser();
-            Log.d(TAG, "UUID : " + user.getUuid());
+            Log.d(DEBUG_TAG, "UUID : " + user.getUuid());
             return user.saveUserToDB();
         }).thenRun(() -> {
             Intent intent = new Intent(getActivity(), activity);

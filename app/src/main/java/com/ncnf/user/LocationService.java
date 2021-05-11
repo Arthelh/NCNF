@@ -29,8 +29,8 @@ import com.ncnf.database.DatabaseService;
 import java.util.function.Consumer;
 
 import static android.content.ContentValues.TAG;
-import static com.ncnf.Utils.LOCATION_KEY;
-import static com.ncnf.Utils.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
+import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 
 /**
  * This class was done thanks to the youtube Tutorial by CodingWithMitch.

@@ -50,12 +50,10 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static android.content.ContentValues.TAG;
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.EMAIL_KEY;
-import static com.ncnf.Utils.FIRST_NAME_KEY;
-import static com.ncnf.Utils.LOCATION_KEY;
-import static com.ncnf.Utils.USERS_COLLECTION_KEY;
-import static com.ncnf.Utils.USER_LOCATION_KEY;
+import static com.ncnf.utilities.StringCodes.FIRST_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
+
 
 @AndroidEntryPoint
 public class FriendsTrackerActivity extends AppCompatActivity implements OnMapReadyCallback {

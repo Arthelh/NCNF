@@ -387,7 +387,7 @@ public class UserTests {
 
     @Test
     public void getParticipatingGroupsWorksOnEmptyList(){
-        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), false, null);
+        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), false, null, null);
         CompletableFuture<List<Group>> future = user.getParticipatingGroups();
         try{
             assertTrue(future.get().isEmpty());
@@ -399,7 +399,7 @@ public class UserTests {
 
     @Test
     public void getParticipatingGroupsWorks(){
-        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), new ArrayList<>(), false, null);
+        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), new ArrayList<>(), false, null, null);
         when(db.whereIn(anyString(), anyString(), anyList(), any())).thenReturn(CompletableFuture.completedFuture(Arrays.asList(group)));
 
         CompletableFuture<List<Group>> query = user.getParticipatingGroups();

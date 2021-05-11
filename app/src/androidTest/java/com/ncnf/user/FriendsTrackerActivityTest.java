@@ -19,11 +19,9 @@ import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 
-import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 import dagger.hilt.android.testing.BindValue;
@@ -33,17 +31,9 @@ import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static com.ncnf.Utils.FIRST_NAME_KEY;
-import static com.ncnf.Utils.LOCATION_KEY;
-import static com.ncnf.Utils.USERS_COLLECTION_KEY;
-import static com.ncnf.Utils.USER_LOCATION_KEY;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
@@ -55,8 +45,6 @@ public class FriendsTrackerActivityTest {
 
     @InjectMocks
     private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(FriendsTrackerActivity.class);
-
-    private static final String userId = "MSpKLkyyrrN3PC5KmxkoD05Vy1m2";
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);
@@ -79,8 +67,6 @@ public class FriendsTrackerActivityTest {
         when(user.getUuid()).thenReturn("0");
         when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
 
-        when(dbs.getField(USERS_COLLECTION_KEY + userId, USER_LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(new GeoPoint(0.05,0.05)));
-        when(dbs.getField(USERS_COLLECTION_KEY + userId, FIRST_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("Jane"));
     }
 
     @After
@@ -95,15 +81,5 @@ public class FriendsTrackerActivityTest {
         UiObject marker = device.findObject(new UiSelector().descriptionContains("John"));
 
         assertTrue("User marker exists", marker.waitForExists(2000));
-    }
-
-    @Test
-    public void findsOtherUser() {
-        dbs = Mockito.mock(DatabaseService.class);
-
-        UiDevice device = UiDevice.getInstance(getInstrumentation());
-        UiObject marker = device.findObject(new UiSelector().descriptionContains("Marie"));
-
-        assertTrue("User marker exist", marker.waitForExists(10000));
     }
 }
