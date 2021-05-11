@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 
 import static com.ncnf.Utils.AWAITING_REQUESTS_KEY;
+import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.FRIENDS_KEY;
 import static com.ncnf.Utils.PENDING_REQUESTS_KEY;
 import static com.ncnf.Utils.USERS_COLLECTION_KEY;
@@ -97,6 +98,23 @@ public class FriendsRepository {
     */
     public CompletableFuture<List<User>> getFriends(String uuid) {
         return db.whereArrayContains(USERS_COLLECTION_KEY, FRIENDS_KEY, uuid, User.class);
+    }
+
+    /*
+        Remove from friends
+     */
+    public CompletableFuture<Boolean> removeFriend(String my_uuid, String other_uuid) {
+        CompletableFuture<Boolean> u1 = db.removeArrayField(this.path + my_uuid, FRIENDS_KEY, other_uuid);
+        CompletableFuture<Boolean> u2 = db.removeArrayField(USERS_COLLECTION_KEY + other_uuid, FRIENDS_KEY, my_uuid);
+        return combine(u1, u2);
+    }
+
+
+    /*
+        Get list of users based on username
+     */
+    public CompletableFuture<List<User>> searchFriends(String username){
+        return db.withFieldLike(USERS_COLLECTION_KEY, FIRST_NAME_KEY, username, User.class); // TODO : change FIRSTNAMEKEY to USERNAME_KEY
     }
 
     private CompletableFuture<Boolean> combine(CompletableFuture<Boolean> u1, CompletableFuture<Boolean> u2) {
