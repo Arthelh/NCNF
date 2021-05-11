@@ -1,5 +1,8 @@
 package com.ncnf.settings;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.ncnf.socialObject.SocialObject;
+
 import java.time.LocalDate;
 
 public class Settings {
@@ -7,8 +10,9 @@ public class Settings {
     //Distance in km
     public final static int MAX_ACCEPTED_DISTANCE = 100;
     private static int currentMaxDistance = 25;
+    private static LatLng userPosition = new LatLng(46.526120f, 6.576330f);
     private static LocalDate minDate = LocalDate.now();
-    private static LocalDate maxDate = LocalDate.now().plusYears(2);
+    private static LocalDate maxDate = LocalDate.now().plusYears(2); //Arbitrary value
 
     /**
      * Sets the current maximum distance in km at which events and organizers will be shown
@@ -65,4 +69,13 @@ public class Settings {
     public static LocalDate getMaxDate() {
         return LocalDate.from(maxDate);
     }
+
+    public static void setUserPosition(LatLng userPosition) {
+        Settings.userPosition = new LatLng(userPosition.latitude, userPosition.longitude);
+    }
+
+    public static LatLng getUserPosition(){
+        return new LatLng(Settings.userPosition.latitude, Settings.userPosition.longitude);
+    }
+
 }

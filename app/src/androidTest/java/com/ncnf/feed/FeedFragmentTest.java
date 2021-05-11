@@ -5,7 +5,6 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
 import com.ncnf.main.MainActivity;
-import com.ncnf.socialObject.EventDB;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,7 +28,6 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 public class FeedFragmentTest {
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    EventDB db = new EventDB();
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(MainActivity.class));
@@ -48,7 +46,7 @@ public class FeedFragmentTest {
     @Test
     public void eventActivityOpens(){
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.eventName)).check(matches(withText("EPFL event")));
+        onView(withId(R.id.eventName)).check(matches(withText("TestGeoCluster")));
     }
 
     @Test
@@ -56,6 +54,14 @@ public class FeedFragmentTest {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText("Sort by relevance")).perform(click());
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.eventName)).check(matches(withText("La flute enchantée")));
+        onView(withId(R.id.eventName)).check(matches(withText("TestGeoCluster")));
+    }
+
+    @Test
+    public void eventFragmentCloses(){
+        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.eventName)).check(matches(withText("TestGeoCluster")));
+        onView(withId(R.id.feed_event_button)).perform(click());
+        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()));
     }
 }

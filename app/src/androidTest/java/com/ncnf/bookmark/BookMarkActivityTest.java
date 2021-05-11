@@ -1,13 +1,13 @@
 package com.ncnf.bookmark;
 
 import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.Group;
-import com.ncnf.socialObject.SocialObjActivity;
 import com.ncnf.socialObject.SocialObject;
 import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
@@ -33,7 +33,9 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeRight;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.mockito.Mockito.when;
 
@@ -42,6 +44,7 @@ import static org.mockito.Mockito.when;
 public class BookMarkActivityTest {
 
     private static final User mockUser = Mockito.mock(User.class);
+
     List<Event> events = new ArrayList<>();
     private final Event event = new Event("EPFL", "EPFL event", new Date(2021, 03, 11), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", SocialObject.Type.Conference, 0, 0, "test@email.com");
     private CompletableFuture<List<Event>> eventsFuture;
@@ -85,6 +88,7 @@ public class BookMarkActivityTest {
         Thread.sleep(5000);
 
         onView(withId(R.id.bookmark_view_pager)).perform(click());
-        Intents.intended(hasComponent(SocialObjActivity.class.getName()));
+        onView(withId(R.id.EventPage)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        //onView(withId(R.id.eventName)).check(matches(withText(contains(event.getName()))));
     }
 }
