@@ -2,24 +2,20 @@ package com.ncnf.user;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
 import com.ncnf.R;
-import com.ncnf.Utils;
 import com.ncnf.storage.CacheFileStore;
 import com.ncnf.storage.FileStore;
 import com.ncnf.utilities.InputValidator;
+import com.ncnf.utilities.StringCodes;
 
 import java.util.List;
 
@@ -102,11 +98,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         private void setTextFields(User u){
             String firstNameText = u.getFirstName();
-            if(InputValidator.isStringEmpty(firstNameText)) firstNameText = "empty";
+            if(InputValidator.isInvalidString(firstNameText)) firstNameText = "empty";
             String lastNameText = u.getLastName();
-            if(InputValidator.isStringEmpty(lastNameText)) lastNameText = "empty";
+            if(InputValidator.isInvalidString(lastNameText)) lastNameText = "empty";
             String usernameText = u.getUsername();
-            if(InputValidator.isStringEmpty(usernameText)) usernameText = "empty";
+
+            if(InputValidator.isInvalidString(usernameText)) usernameText = "empty";
 
             String concatNameText = firstNameText + " " + lastNameText;
             name.setText(concatNameText);
@@ -119,7 +116,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         private void setProfilePicture(User u){
 //            FileStore file = new CacheFileStore(context, Utils.USER_IMAGE_PATH, u.getUuid() + ".jpg");
-            FileStore file = new CacheFileStore(context, Utils.USER_IMAGE_PATH, "default.jpg"); // TODO : Change to actual PP
+            FileStore file = new CacheFileStore(context, StringCodes.USER_IMAGE_PATH, "default.jpg"); // TODO : Change to actual PP
             file.downloadImage(profilePicture);
             profilePictureText.setVisibility(View.INVISIBLE);
         }

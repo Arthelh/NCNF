@@ -1,5 +1,7 @@
 package com.ncnf.database.builder;
 
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.socialObject.Event;
@@ -11,26 +13,33 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
-import static com.ncnf.Utils.ADDRESS_KEY;
-import static com.ncnf.Utils.ATTENDEES_KEY;
-import static com.ncnf.Utils.DATE_KEY;
-import static com.ncnf.Utils.DESCRIPTION_KEY;
-import static com.ncnf.Utils.EMAIL_KEY;
-import static com.ncnf.Utils.LOCATION_KEY;
-import static com.ncnf.Utils.MIN_AGE_KEY;
-import static com.ncnf.Utils.NAME_KEY;
-import static com.ncnf.Utils.OWNER_KEY;
-import static com.ncnf.Utils.PRICE_KEY;
-import static com.ncnf.Utils.TAGS_LIST_KEY;
-import static com.ncnf.Utils.TYPE_KEY;
-import static com.ncnf.Utils.UUID_KEY;
+import static com.ncnf.utilities.StringCodes.ADDRESS_KEY;
+import static com.ncnf.utilities.StringCodes.ATTENDEES_KEY;
+import static com.ncnf.utilities.StringCodes.DATE_KEY;
+import static com.ncnf.utilities.StringCodes.DESCRIPTION_KEY;
+import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
+import static com.ncnf.utilities.StringCodes.GEOHASH_KEY;
+import static com.ncnf.utilities.StringCodes.LAT_KEY;
+import static com.ncnf.utilities.StringCodes.LNG_KEY;
+import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
+import static com.ncnf.utilities.StringCodes.MIN_AGE_KEY;
+import static com.ncnf.utilities.StringCodes.NAME_KEY;
+import static com.ncnf.utilities.StringCodes.OWNER_KEY;
+import static com.ncnf.utilities.StringCodes.PRICE_KEY;
+import static com.ncnf.utilities.StringCodes.TAGS_LIST_KEY;
+import static com.ncnf.utilities.StringCodes.TYPE_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
+
 
 public class EventBuilder extends DatabaseObjectBuilder<Event> {
 
     @Override
     public Event toObject(String uuid, Map<String, Object> data){
+        Objects.requireNonNull(data);
+
         String ownerId = data.getOrDefault(OWNER_KEY, "").toString();
         String uuidStr = data.getOrDefault(UUID_KEY, "").toString();
         String name = data.getOrDefault(NAME_KEY, "").toString();
@@ -67,6 +76,15 @@ public class EventBuilder extends DatabaseObjectBuilder<Event> {
         map.put(ATTENDEES_KEY, event.getAttendees());
         map.put(DESCRIPTION_KEY, event.getDescription());
         map.put(OWNER_KEY, event.getOwnerId());
+
+        //Store GeoHash, Lat and Lng in map
+        double lat = event.getLocation().getLatitude();
+        double lng = event.getLocation().getLongitude();
+        String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lng));
+        map.put(GEOHASH_KEY, hash);
+        map.put(LAT_KEY, lat);
+        map.put(LNG_KEY, lng);
+
         map.put(MIN_AGE_KEY, event.getMinAge());
         map.put(PRICE_KEY, event.getPrice());
         map.put(TAGS_LIST_KEY, event.getTags());

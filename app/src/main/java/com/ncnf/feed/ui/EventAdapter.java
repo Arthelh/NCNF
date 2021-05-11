@@ -11,20 +11,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.EventRelevanceCalculator;
+import com.ncnf.socialObject.SocialObject;
+import com.ncnf.utilities.DateAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.ncnf.socialObject.Event;
-import com.ncnf.socialObject.SocialObjRelevanceCalculator;
-import com.ncnf.socialObject.SocialObject;
-import com.ncnf.utilities.DateAdapter;
-
-public class SocialObjAdapter extends RecyclerView.Adapter<SocialObjAdapter.SocialObjViewHolder> implements Filterable {
-    private List<SocialObject> socialObjects;
-    private List<SocialObject> socialsFull;
+public class EventAdapter extends RecyclerView.Adapter<EventAdapter.SocialObjViewHolder> implements Filterable {
+    private List<Event> events;
+    private List<Event> eventsFull;
     private final OnSocialObjListener onSocialObjListener;
     private SortingMethod sortingMethod;
 
@@ -33,52 +32,52 @@ public class SocialObjAdapter extends RecyclerView.Adapter<SocialObjAdapter.Soci
     }
 
     public interface OnSocialObjListener {
-        void onSocialObjectClick(SocialObject socialObject);
+        void onEventClick(Event event);
     }
 
-    public SocialObjAdapter(List<SocialObject> items, OnSocialObjListener onSocialObjListener, SortingMethod sortingMethod) {
+    public EventAdapter(List<Event> items, OnSocialObjListener onSocialObjListener, SortingMethod sortingMethod) {
         //ensure proper copy of the List
 
         this.sortingMethod = SortingMethod.DATE;
 
         if (sortingMethod == SortingMethod.DATE) {
-            socialObjects = new LinkedList<>(items);
-            Collections.sort(socialObjects);
-            socialsFull = new LinkedList<>(items);
-            Collections.sort(socialsFull);
+            events = new LinkedList<>(items);
+            Collections.sort(events);
+            eventsFull = new LinkedList<>(items);
+            Collections.sort(eventsFull);
         } else {
-            SocialObjRelevanceCalculator e = new SocialObjRelevanceCalculator(items);
-            socialObjects = e.getSortedList();
-            this.socialsFull = new LinkedList<>(socialObjects);
+            EventRelevanceCalculator e = new EventRelevanceCalculator(items);
+            events = e.getSortedList();
+            this.eventsFull = new LinkedList<>(events);
         }
 
         this.onSocialObjListener = onSocialObjListener;
     }
 
-    public List<SocialObject> getSocialObjects() {
-        return Collections.unmodifiableList(socialObjects);
+    public List<SocialObject> getEvents() {
+        return Collections.unmodifiableList(events);
     }
 
-    public void setSocialObjects(List<SocialObject> socialObjects) {
-        this.socialObjects = socialObjects;
+    public void setEvents(List<Event> events) {
+        this.events = events;
         notifyDataSetChanged();
     }
 
     public void addEvent(Event Event) {
         // Add the Event at the beginning of the list
-        socialObjects.add(0, Event);
-        socialsFull.add(0, Event);
+        events.add(0, Event);
+        eventsFull.add(0, Event);
 
         orderBy(sortingMethod);
 
         // Notify the insertion so the view can be refreshed
-        notifyItemInserted(socialObjects.indexOf(Event));
+        notifyItemInserted(events.indexOf(Event));
     }
 
 
     @Override
     public int getItemCount() {
-        return socialObjects.size();
+        return events.size();
     }
 
     @Override
@@ -93,10 +92,10 @@ public class SocialObjAdapter extends RecyclerView.Adapter<SocialObjAdapter.Soci
             List<SocialObject> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(socialsFull);
+                filteredList.addAll(eventsFull);
             } else {
                 String input = constraint.toString().toLowerCase().trim();
-                for (SocialObject s : socialsFull) {
+                for (SocialObject s : eventsFull) {
                     if(s instanceof Event){
                         Event event = (Event) s;
                         if (event.filterTags(input)) {
@@ -115,8 +114,8 @@ public class SocialObjAdapter extends RecyclerView.Adapter<SocialObjAdapter.Soci
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            socialObjects.clear();
-            socialObjects.addAll((List) results.values);
+            events.clear();
+            events.addAll((List) results.values);
             notifyDataSetChanged();
         }
     };
@@ -135,9 +134,9 @@ public class SocialObjAdapter extends RecyclerView.Adapter<SocialObjAdapter.Soci
             //add timestamp
         }
 
-        public void bind(final SocialObject e, final OnSocialObjListener listener) {
+        public void bind(final Event e, final OnSocialObjListener listener) {
             socialObject.setText(e.getName());
-            itemView.setOnClickListener(v -> listener.onSocialObjectClick(e));
+            itemView.setOnClickListener(v -> listener.onEventClick(e));
         }
     }
 
@@ -152,25 +151,25 @@ public class SocialObjAdapter extends RecyclerView.Adapter<SocialObjAdapter.Soci
 
     @Override
     public void onBindViewHolder(@NonNull SocialObjViewHolder viewHolder, int position) {
-        SocialObject socialObject = socialObjects.get(position);
+        Event event = events.get(position);
 
-        viewHolder.socialObject.setText(socialObject.getName());
-        viewHolder.date.setText(new DateAdapter(socialObject.getDate()).toString());
-        viewHolder.description.setText(socialObject.getDescription());
+        viewHolder.socialObject.setText(event.getName());
+        viewHolder.date.setText(new DateAdapter(event.getDate()).toString());
+        viewHolder.description.setText(event.getDescription());
 
-        viewHolder.bind(socialObject, onSocialObjListener);
+        viewHolder.bind(event, onSocialObjListener);
     }
 
 
     public void orderBy(SortingMethod sortingMethod) {
         // RELEVANCE & DEFAULT CASE
         if (sortingMethod == SortingMethod.DATE) {
-            Collections.sort(socialObjects);
-            Collections.sort(socialsFull);
+            Collections.sort(events);
+            Collections.sort(eventsFull);
         } else {
-            SocialObjRelevanceCalculator e = new SocialObjRelevanceCalculator(socialObjects);
-            socialObjects = e.getSortedList();
-            this.socialsFull = new LinkedList<>(socialObjects);
+            EventRelevanceCalculator e = new EventRelevanceCalculator(events);
+            events = e.getSortedList();
+            this.eventsFull = new LinkedList<>(events);
         }
 
         // Notify the insertion so the view can be refreshed

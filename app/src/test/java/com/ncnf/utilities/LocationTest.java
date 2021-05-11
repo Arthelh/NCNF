@@ -1,8 +1,8 @@
 package com.ncnf.utilities;
-import org.junit.Test;
-import com.ncnf.utilities.Location;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class LocationTest {
 

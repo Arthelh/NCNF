@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static com.ncnf.Utils.NOTIFICATIONS_KEY;
-import static com.ncnf.Utils.NOTIFICATIONS_TOKEN_KEY;
-import static com.ncnf.Utils.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_KEY;
+import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_TOKEN_KEY;
+import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;

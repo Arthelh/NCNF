@@ -14,11 +14,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static com.ncnf.Utils.AWAITING_REQUESTS_KEY;
-import static com.ncnf.Utils.FIRST_NAME_KEY;
-import static com.ncnf.Utils.FRIENDS_KEY;
-import static com.ncnf.Utils.PENDING_REQUESTS_KEY;
-import static com.ncnf.Utils.USERS_COLLECTION_KEY;
+
+import static com.ncnf.utilities.StringCodes.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -12,7 +13,6 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ncnf.R;
-import com.ncnf.socialObject.EventDB;
 import com.ncnf.feed.ui.FeedFragment;
 import com.ncnf.home.ui.HomeFragment;
 import com.ncnf.map.ui.MapFragment;
@@ -43,13 +43,12 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        EventDB eventDB = new EventDB();
-
-        this.homeFragment = new HomeFragment();
-        this.feedFragment = new FeedFragment(eventDB);
-        this.mapFragment = new MapFragment();
-        this.activeFragment = this.homeFragment;
-
+        if(savedInstanceState == null){
+            this.homeFragment = new HomeFragment();
+            this.feedFragment = new FeedFragment();
+            this.mapFragment = new MapFragment();
+            this.activeFragment = this.homeFragment;
+        }
 
         fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, feedFragment).hide(feedFragment).commit();
         fragmentManager.beginTransaction().add(R.id.mainFragmentContainerView, mapFragment).hide(mapFragment).commit();
@@ -64,24 +63,35 @@ public class MainActivity extends AppCompatActivity {
 
 
     public final  BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
+        Fragment currentFragment = activeFragment;
         switch (item.getItemId()){
             case R.id.navigation_home:
                 fragmentManager.beginTransaction().hide(activeFragment).show(homeFragment).commit();
                 activeFragment = homeFragment;
-                return true;
+                break;
 
             case R.id.navigation_map:
                 fragmentManager.beginTransaction().hide(activeFragment).show(mapFragment).commit();
                 activeFragment = mapFragment;
-                return true;
+                break;
 
             case R.id.navigation_feed:
                 fragmentManager.beginTransaction().hide(activeFragment).show(feedFragment).commit();
                 activeFragment = feedFragment;
-                return true;
+                break;
             default:
                 return false;
         }
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                fragmentManager.beginTransaction().hide(activeFragment).show(currentFragment).commit();
+                activeFragment = currentFragment;
+                this.setEnabled(false);
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
+        return true;
     };
 
     @Override

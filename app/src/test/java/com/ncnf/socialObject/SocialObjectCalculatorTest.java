@@ -1,13 +1,14 @@
 package com.ncnf.socialObject;
+
 import com.google.firebase.firestore.GeoPoint;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 public class SocialObjectCalculatorTest {
 
     String name = "Jane Doe";
@@ -35,12 +36,12 @@ public class SocialObjectCalculatorTest {
 
         event3.addTag(new Tag("\uD83D\uDCF1", "Art"));
 
-        List<SocialObject> l = new ArrayList<>();
+        List<Event> l = new ArrayList<>();
         l.add(event1);
         l.add(event2);
         l.add(event3);
 
-        SocialObjRelevanceCalculator rc = new SocialObjRelevanceCalculator(l);
+        EventRelevanceCalculator rc = new EventRelevanceCalculator(l);
 
         assertTrue(rc.getSortedList().get(0).equals(event2) || rc.getSortedList().get(1).equals(event2));
         assertTrue(rc.getSortedList().get(0).equals(event3) || rc.getSortedList().get(1).equals(event3));

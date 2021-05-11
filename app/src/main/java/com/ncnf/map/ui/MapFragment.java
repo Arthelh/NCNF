@@ -1,7 +1,6 @@
 package com.ncnf.map.ui;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -13,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -26,11 +26,10 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
-import com.ncnf.socialObject.EventDB;
 import com.ncnf.map.MapHandler;
 import com.ncnf.map.SearchBarHandler;
 import com.ncnf.map.VenueProvider;
-import com.ncnf.settings.ui.SettingsActivity;
+import com.ncnf.settings.Settings;
 
 import javax.inject.Inject;
 
@@ -44,8 +43,6 @@ public class MapFragment extends Fragment{
     private MapHandler mapHandler;
     private SearchBarHandler searchBarHandler;
 
-    private final EventDB eventDB = new EventDB();
-
     //Toolbar and location services for it
     private MaterialSearchBar materialSearchBar;
     private PlacesClient placesClient;
@@ -57,10 +54,6 @@ public class MapFragment extends Fragment{
 
     @Inject
     VenueProvider venueProvider;
-
-    public MapFragment(){
-        super();
-    }
 
     @Nullable
     @Override
@@ -82,15 +75,15 @@ public class MapFragment extends Fragment{
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
-        materialSearchBar = getView().findViewById(R.id.searchBarMap);
+        materialSearchBar = requireView().findViewById(R.id.searchBarMap);
 
         // Initialize Google Map with the callback onMapReady
-        mapView = (MapView) getView().findViewById(R.id.map);
+        mapView = requireView().findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(googleMap -> {
             mMap = googleMap;
 
-            mapHandler = new MapHandler(getActivity(), mMap, eventDB, venueProvider, getChildFragmentManager());
+            mapHandler = new MapHandler((AppCompatActivity) requireActivity(), mMap, venueProvider, getChildFragmentManager());
             searchBarHandler = new SearchBarHandler(getActivity(), materialSearchBar, mapHandler);
 
             mapHandler.show_markers();
@@ -125,7 +118,7 @@ public class MapFragment extends Fragment{
                 Location gpsLocation = task.getResult();
                 if (gpsLocation != null) {
                     LatLng userLocation = new LatLng(gpsLocation.getLatitude(), gpsLocation.getLongitude());
-                    mapHandler.setUserPosition(userLocation);
+                    Settings.setUserPosition(userLocation);
                     mapHandler.update_markers();
                 }
             });
