@@ -15,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static com.ncnf.Utils.AWAITING_REQUESTS_KEY;
+import static com.ncnf.Utils.FIRST_NAME_KEY;
 import static com.ncnf.Utils.FRIENDS_KEY;
 import static com.ncnf.Utils.PENDING_REQUESTS_KEY;
 import static com.ncnf.Utils.USERS_COLLECTION_KEY;
@@ -69,6 +70,37 @@ public class FriendsRepositoryTests {
 
         try {
             assertFalse(res.get());
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly !");
+        }
+    }
+
+    @Test
+    public void removeFriendIsSuccessful(){
+        when(mockDatabase.removeArrayField(anyString(), anyString(), anyObject())).thenReturn(CompletableFuture.completedFuture(true));
+
+        CompletableFuture<Boolean> res = friends.removeFriend(uuid, other_uuid);
+
+        verify(mockDatabase).removeArrayField(USERS_COLLECTION_KEY + uuid, FRIENDS_KEY, other_uuid);
+        verify(mockDatabase).removeArrayField(USERS_COLLECTION_KEY + other_uuid, FRIENDS_KEY, uuid);
+
+        try {
+            assertTrue(res.get());
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly !");
+        }
+    }
+
+    @Test
+    public void searchFriendIsSuccessful(){
+        when(mockDatabase.withFieldLike(anyString(), anyString(), anyString(), eq(User.class))).thenReturn(CompletableFuture.completedFuture(users));
+
+        CompletableFuture<List<User>> res = friends.searchFriends("username");
+
+        verify(mockDatabase).withFieldLike(USERS_COLLECTION_KEY, FIRST_NAME_KEY, "username", User.class);
+
+        try {
+            assertThat(res.get(), is(users));
         } catch (ExecutionException | InterruptedException e) {
             Assert.fail("The future did not complete correctly !");
         }

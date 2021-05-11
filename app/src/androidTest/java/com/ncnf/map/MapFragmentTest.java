@@ -95,7 +95,7 @@ public final class MapFragmentTest {
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
         assertNotNull("Map with events is loaded",
-                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 1000)
+                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 5000)
         );
         // Events are shown
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Carmen"));
@@ -104,7 +104,7 @@ public final class MapFragmentTest {
         onView(withId(R.id.map_switch_button)).perform(click());
 
         assertNotNull("Map with venues is loaded",
-                device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 1000)
+                device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 5000)
         );
         // Venues are shown
         marker = device.findObject(new UiSelector().descriptionContains("UniL"));
@@ -125,11 +125,11 @@ public final class MapFragmentTest {
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
         assertNotNull("Map with events is loaded",
-                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 1000)
+                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 5000)
         );
         // Events are shown
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Carmen"));
-        assertTrue("Events markers exist", marker.waitForExists(1000));
+        assertTrue("Events markers exist", marker.waitForExists(5000));
 
         onView(withId(R.id.menu_settings)).perform(click());
         onView(withId(R.id.distanceSeekBar)).perform(new ViewAction() {
@@ -152,14 +152,14 @@ public final class MapFragmentTest {
         onView(withId(R.id.validateButton)).perform(click());
 
         marker = device.findObject(new UiSelector().descriptionContains("Carmen"));
-        assertFalse("Events markers exist", marker.waitForExists(1000));
+        assertFalse("Events markers exist", marker.waitForExists(5000));
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
         marker = device.findObject(new UiSelector().descriptionContains("EPFL"));
-        assertFalse("Venue markers exist", marker.waitForExists(1000));
+        assertFalse("Venue markers exist", marker.waitForExists(5000));
         marker = device.findObject(new UiSelector().descriptionContains("UniL"));
-        assertTrue("Venue markers exist", marker.waitForExists(1000));
+        assertTrue("Venue markers exist", marker.waitForExists(5000));
 
         onView(withId(R.id.menu_settings)).perform(click());
         onView(withId(R.id.distanceSeekBar)).perform(new ViewAction() {
