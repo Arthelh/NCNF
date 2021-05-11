@@ -7,7 +7,8 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
-import static com.ncnf.Utils.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
+
 
 public class UsersRepository {
 

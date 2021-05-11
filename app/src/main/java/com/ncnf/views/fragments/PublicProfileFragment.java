@@ -12,10 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
-import com.ncnf.Utils;
 import com.ncnf.storage.CacheFileStore;
 import com.ncnf.storage.FileStore;
 import com.ncnf.user.User;
+
+import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 
 public class PublicProfileFragment extends Fragment {
 
@@ -45,7 +46,7 @@ public class PublicProfileFragment extends Fragment {
         ImageView imageView = getView().findViewById(R.id.profile_picture);
         TextView imagePlaceHolder = getView().findViewById(R.id.profile_picture_placeholder);
 //        FileStore file = new CacheFileStore(getActivity(), Utils.USER_IMAGE_PATH, user.getUuid() + ".jpg");
-        FileStore file = new CacheFileStore(getActivity(), Utils.USER_IMAGE_PATH, "default.jpg"); // TODO : Change to actual PP
+        FileStore file = new CacheFileStore(getActivity(), USER_IMAGE_PATH, "default.jpg"); // TODO : Change to actual PP
         file.downloadImage(imageView);
         imagePlaceHolder.setVisibility(View.INVISIBLE);
 

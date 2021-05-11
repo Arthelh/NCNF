@@ -45,17 +45,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:background="@drawable/edit_text_shape"
+            android:autofillHints=""
+            android:drawableStart="@drawable/ic_email_black"
+            android:drawablePadding="5dp"
             android:ems="10"
             android:hint="@string/email_hint"
-            android:drawablePadding="5dp"
-            android:drawableStart="@drawable/ic_email_black"
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/exceptionSignIn"
-            android:autofillHints="" />
+            app:layout_constraintTop_toBottomOf="@+id/exceptionSignIn" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/signInLoginButton"
@@ -73,7 +72,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:autofillHints=""
-            android:background="@drawable/edit_text_shape"
             android:drawableLeft="@drawable/ic_key"
             android:drawablePadding="5dp"
             android:ems="10"
