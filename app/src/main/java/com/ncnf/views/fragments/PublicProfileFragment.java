@@ -28,8 +28,6 @@ public class PublicProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -46,19 +44,21 @@ public class PublicProfileFragment extends Fragment {
         // Change with event UUID
         ImageView imageView = getView().findViewById(R.id.profile_picture);
         TextView imagePlaceHolder = getView().findViewById(R.id.profile_picture_placeholder);
-        FileStore file = new CacheFileStore(getActivity(), Utils.USER_IMAGE_PATH, user.getUuid() + ".jpg");
-        try{
-            file.downloadImage(imageView);
-            imagePlaceHolder.setVisibility(View.INVISIBLE);
-        } catch (Exception e) {
-            imagePlaceHolder.setVisibility(View.VISIBLE);
-        }
+//        FileStore file = new CacheFileStore(getActivity(), Utils.USER_IMAGE_PATH, user.getUuid() + ".jpg");
+        FileStore file = new CacheFileStore(getActivity(), Utils.USER_IMAGE_PATH, "default.jpg"); // TODO : Change to actual PP
+        file.downloadImage(imageView);
+        imagePlaceHolder.setVisibility(View.INVISIBLE);
 
         TextView name = getView().findViewById(R.id.public_profile_name);
-        name.setText(user.getFirstName() + " " + user.getLastName());
+        name.setText(String.format("%s %s", user.getFirstName(), user.getLastName()));
 
         TextView username = getView().findViewById(R.id.public_profile_username);
-        name.setText(user.getUsername());
+        username.setText(user.getUsername());
 
+        TextView email = getView().findViewById(R.id.profile_email_placeholder);
+        email.setText(user.getEmail());
+
+        TextView birthDate = getView().findViewById(R.id.profile_birth_date_placeholder);
+        birthDate.setText(user.getBirthDate().toString());
     }
 }
