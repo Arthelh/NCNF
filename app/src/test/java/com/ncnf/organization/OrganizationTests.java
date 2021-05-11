@@ -76,10 +76,6 @@ public class OrganizationTests {
         org.setAdminIds(adminIds2);
         assertEquals(org.getAdminIds(), adminIds2);
 
-        assertEquals(org.getEventIds(), events);
-        List<String> events2 =  Arrays.asList(new String[]{"event"});
-        org.setEventIds(events2);
-        assertEquals(org.getEventIds(), events2);
     }
 
     @Test
@@ -102,7 +98,7 @@ public class OrganizationTests {
         assertTrue(!org.addAdmin(null) && org.getAdminIds().size() == 1 && !org.getAdminIds().contains(null));
 
         assertThrows(IllegalStateException.class, () -> {
-           org.deleteAdmin(admin1);
+            org.deleteAdmin(admin1);
         });
     }
 

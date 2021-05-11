@@ -5,10 +5,8 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.event.Event;
-import com.ncnf.event.PrivateEvent;
-import com.ncnf.event.PublicEvent;
-import com.ncnf.utilities.InputValidator;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.Group;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,15 +15,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-import static com.ncnf.Utils.EVENTS_COLLECTION_KEY;
-import static com.ncnf.Utils.FIRST_NAME_KEY;
-import static com.ncnf.Utils.NOTIFICATIONS_KEY;
-import static com.ncnf.Utils.NOTIFICATIONS_TOKEN_KEY;
-import static com.ncnf.Utils.OWNED_EVENTS_KEY;
-import static com.ncnf.Utils.SAVED_EVENTS_KEY;
-import static com.ncnf.Utils.USERS_COLLECTION_KEY;
-import static com.ncnf.Utils.UUID_KEY;
-import static com.ncnf.utilities.InputValidator.isStringEmpty;
+import static com.ncnf.utilities.InputValidator.isInvalidString;
+import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_KEY;
+import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_TOKEN_KEY;
+import static com.ncnf.utilities.StringCodes.OWNED_GROUPS_KEY;
+import static com.ncnf.utilities.StringCodes.PARTICIPATING_GROUPS_KEY;
+import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.USERNAME_KEY;
+import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 public class User {
 
@@ -37,7 +37,8 @@ public class User {
     private String firstName;
     private String lastName;
     private List<String> friendsIds;
-    private List<String> ownedEventsIds;
+    private List<String> ownedGroupsIds;
+    private List<String> participatingGroupsIds;
     private List<String> savedEventsIds;
     private Date birthDate;
     private boolean notifications;
@@ -46,8 +47,8 @@ public class User {
     
     private final IllegalStateException wrongCredentials = new IllegalStateException("User doesn't have the right credentials to perform current operation");
 
-    public User(DatabaseService db, String uuid, String username, String email, String firstName, String lastName, List<String> friendsIds, List<String> ownedEventsIds, List<String> savedEventsIds, Date birthDate, boolean notifications, GeoPoint loc) {
-        if(isStringEmpty(uuid) || isStringEmpty(email)){
+    public User(DatabaseService db, String uuid, String username, String email, String firstName, String lastName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> participatingGroups, List<String> savedEventsIds, boolean notifications, Date birthDate, GeoPoint loc) {
+        if(isInvalidString(uuid) || isInvalidString(email)){
             throw new IllegalArgumentException();
         }
         this.db = db;
@@ -57,19 +58,20 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.friendsIds = friendsIds;
-        this.ownedEventsIds = ownedEventsIds;
+        this.ownedGroupsIds = ownedGroupsIds;
         this.savedEventsIds = savedEventsIds;
         this.birthDate = birthDate;
         this.notifications = notifications;
+        this.participatingGroupsIds = participatingGroups;
         this.loc = loc;
     }
 
     public User(){
-        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), "",FirebaseAuth.getInstance().getCurrentUser().getEmail(),"",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, false, null);
+        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), "",FirebaseAuth.getInstance().getCurrentUser().getEmail(),"",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
     }
 
-    public User(String username, String email, String firstName, String lastName, List<String> friendsIds, List<String> ownedEventsIds, List<String> savedEventsIds, Date birthDate, boolean notifications, GeoPoint point) {
-        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), username, email, firstName, lastName, friendsIds, ownedEventsIds, savedEventsIds, birthDate, notifications, point);
+    public User(String username, String email, String firstName, String lastName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> savedEventsIds, Date birthDate, boolean notifications, GeoPoint loc) {
+        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), username, email, firstName, lastName, friendsIds, ownedGroupsIds, new ArrayList<>(), savedEventsIds, notifications, birthDate, loc);
     }
 
     public String getUuid(){
@@ -96,8 +98,12 @@ public class User {
         return Collections.unmodifiableList(friendsIds);
     }
 
-    public List<String> getOwnedEventsIds() {
-        return Collections.unmodifiableList(ownedEventsIds);
+    public List<String> getOwnedGroupsIds() {
+        return Collections.unmodifiableList(ownedGroupsIds);
+    }
+
+    public List<String> getParticipatingGroupsIds() {
+        return Collections.unmodifiableList(participatingGroupsIds);
     }
 
     public List<String> getSavedEventsIds() {
@@ -132,12 +138,17 @@ public class User {
 
     public void setLoc(GeoPoint loc) { this.loc = loc; }
 
-    public void setOwnedEventsIds(List<String> ownedEventsIds) {
-        this.ownedEventsIds = ownedEventsIds;
+    
+    public void setParticipatingGroupsIds(List<String> participatingGroupsIds) {
+        this.participatingGroupsIds = new ArrayList<>(participatingGroupsIds);
+    }
+
+    public void setOwnedGroupsIds(List<String> ownedGroupsIds) {
+        this.ownedGroupsIds = new ArrayList<>(ownedGroupsIds);
     }
 
     public void setSavedEventsIds(List<String> savedEventsIds) {
-        this.savedEventsIds = savedEventsIds;
+        this.savedEventsIds = new ArrayList<>(savedEventsIds);
     }
 
     public void setBirthDate(Date birthDate) {
@@ -172,7 +183,8 @@ public class User {
             this.firstName = user.getFirstName();
             this.lastName = user.getLastName();
             this.friendsIds = user.getFriendsIds();
-            this.ownedEventsIds = user.getOwnedEventsIds();
+            this.ownedGroupsIds = user.getOwnedGroupsIds();
+            this.participatingGroupsIds = user.getParticipatingGroupsIds();
             this.savedEventsIds = user.getSavedEventsIds();
             this.birthDate = user.getBirthDate();
             this.notifications = user.getNotifications();
@@ -185,45 +197,48 @@ public class User {
         });
     }
 
-
-    public CompletableFuture<List<User>> getFriends(){
-        if(this.friendsIds.isEmpty()){
-            return CompletableFuture.completedFuture(new ArrayList<>());
-        }
-
-        return this.db.whereIn(USERS_COLLECTION_KEY, UUID_KEY, this.friendsIds, User.class);
-    }
-
-
     public CompletableFuture<List<User>> getAllUsersLike(String username){
-        return this.db.withFieldLike(USERS_COLLECTION_KEY, FIRST_NAME_KEY, username, User.class); // TODO : change to USERNAME_KEY
+        return this.db.withFieldLike(USERS_COLLECTION_KEY, USERNAME_KEY, username, User.class);
     }
 
     public CompletableFuture<Boolean> addSavedEvent(Event event){
         if(this.savedEventsIds.add(event.getUuid().toString())){
-            return this.addEvent(event, SAVED_EVENTS_KEY);
+            return this.db.updateArrayField(USERS_COLLECTION_KEY + uuid, SAVED_EVENTS_KEY, event.getUuid().toString());
         }
         return CompletableFuture.completedFuture(false);
     }
 
-    public CompletableFuture<Boolean> addOwnedEvent(Event event){
-        if(this.ownedEventsIds.add(event.getUuid().toString())){
-            return this.addEvent(event, OWNED_EVENTS_KEY);
+    public CompletableFuture<Boolean> addOwnedGroup(Group group){
+
+        if(this.ownedGroupsIds.add(group.getUuid().toString())){
+            return this.db.updateArrayField(USERS_COLLECTION_KEY + uuid, OWNED_GROUPS_KEY, group.getUuid().toString())
+                    .thenCompose(task -> addParticipatingGroup(group));
         }
         return CompletableFuture.completedFuture(false);
     }
 
-    private CompletableFuture<Boolean> addEvent(Event event, String array){
-        return db.updateArrayField(USERS_COLLECTION_KEY + uuid, array, event.getUuid().toString());
+    public CompletableFuture<Boolean> addParticipatingGroup(Group group){
+        if(this.participatingGroupsIds.add(group.getUuid().toString())){
+            return this.db.updateArrayField(USERS_COLLECTION_KEY + uuid, PARTICIPATING_GROUPS_KEY, group.getUuid().toString());
+        }
+        return CompletableFuture.completedFuture(false);
     }
 
+    public CompletableFuture<List<Group>> getOwnedGroups(){
 
-    public CompletableFuture<List<Event>> getOwnedEvents(){
-
-        if(this.ownedEventsIds.isEmpty()){
+        if(this.ownedGroupsIds.isEmpty()){
             return CompletableFuture.completedFuture(new ArrayList<>());
         }
-        return this.getEvents(this.ownedEventsIds);
+        return this.db.whereIn(GROUPS_COLLECTION_KEY, UUID_KEY, this.ownedGroupsIds, Group.class);
+    }
+
+    public CompletableFuture<List<Group>> getParticipatingGroups(){
+
+        if(this.participatingGroupsIds.isEmpty()){
+
+            return CompletableFuture.completedFuture(new ArrayList<>());
+        }
+        return this.db.whereIn(GROUPS_COLLECTION_KEY, UUID_KEY, this.ownedGroupsIds, Group.class);
     }
 
     public CompletableFuture<List<Event>> getSavedEvents(){
@@ -231,31 +246,20 @@ public class User {
         if(this.savedEventsIds.isEmpty()){
             return CompletableFuture.completedFuture(new ArrayList<>());
         }
-        return this.getEvents(this.savedEventsIds);
-    }
-
-    private CompletableFuture<List<Event>> getEvents(List<String> eventIds){
-        return this.db.whereIn(EVENTS_COLLECTION_KEY, UUID_KEY, eventIds, Event.class);
+        return this.db.whereIn(EVENTS_COLLECTION_KEY, UUID_KEY, savedEventsIds, Event.class);
     }
 
     //TODO : for now it can store both type of events but won't be the case in the future
-    public CompletableFuture<Boolean> createEvent(Event event){
-        if(!event.getOwnerId().equals(this.uuid)){
+    public CompletableFuture<Boolean> createGroup(Group group){
+        if(!group.getOwnerId().equals(this.uuid)){
             return CompletableFuture.completedFuture(false);
         }
 
-        CompletableFuture<Boolean> storing;
+        return group.store(this.db)
+                .thenCompose(task -> {
+                    return this.addOwnedGroup(group);
 
-       if(event instanceof PublicEvent){
-           PublicEvent publicEvent = (PublicEvent) event;
-           storing = publicEvent.store(this.db);
-       } else {
-           PrivateEvent privateEvent = (PrivateEvent) event;
-           storing = privateEvent.store(this.db);
-       }
-
-        return storing
-                .thenCompose(task -> this.addOwnedEvent(event))
+                })
                 .exceptionally(exception -> false); // TODO: handle exception
     }
 

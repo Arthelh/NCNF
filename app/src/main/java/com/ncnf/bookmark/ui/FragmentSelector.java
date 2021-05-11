@@ -7,7 +7,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.ncnf.bookmark.EventDisplayFragment;
 
-import static com.ncnf.Utils.*;
+import static com.ncnf.utilities.StringCodes.PARTICIPATING_GROUPS_KEY;
+import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -35,7 +36,7 @@ public class FragmentSelector extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if(position == 1){
-            return new EventDisplayFragment(OWNED_EVENTS_KEY);
+            return new EventDisplayFragment(PARTICIPATING_GROUPS_KEY);
         }
         return new EventDisplayFragment(SAVED_EVENTS_KEY);
     }

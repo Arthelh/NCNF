@@ -27,17 +27,16 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static android.content.ContentValues.TAG;
-import static com.ncnf.Utils.BADLY_FORMATTED_EMAIL_STRING;
-import static com.ncnf.Utils.DEBUG_TAG;
-import static com.ncnf.Utils.EMPTY_FIELD_STRING;
-import static com.ncnf.Utils.EMPTY_STRING;
-import static com.ncnf.Utils.INVALID_PASSWORD_STRING;
-import static com.ncnf.Utils.PASSWORDS_DO_NOT_MATCH_STRING;
-import static com.ncnf.Utils.POPUP_POSITIVE_BUTTON;
-import static com.ncnf.Utils.POPUP_TITLE;
 import static com.ncnf.utilities.InputValidator.isValidPassword;
 import static com.ncnf.utilities.InputValidator.verifyEmailInput;
+import static com.ncnf.utilities.StringCodes.BADLY_FORMATTED_EMAIL_STRING;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.EMPTY_FIELD_STRING;
+import static com.ncnf.utilities.StringCodes.EMPTY_STRING;
+import static com.ncnf.utilities.StringCodes.INVALID_PASSWORD_STRING;
+import static com.ncnf.utilities.StringCodes.PASSWORDS_DO_NOT_MATCH_STRING;
+import static com.ncnf.utilities.StringCodes.POPUP_POSITIVE_BUTTON;
+import static com.ncnf.utilities.StringCodes.POPUP_TITLE;
 
 @AndroidEntryPoint
 public class SignUpFragment extends Fragment {

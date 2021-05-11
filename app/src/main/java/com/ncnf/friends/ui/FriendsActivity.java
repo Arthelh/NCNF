@@ -35,8 +35,8 @@ public class FriendsActivity extends AppCompatActivity {
 
     private static class FragmentSelector extends FragmentStateAdapter {
 
-        private final String[] TAB_TITLES = new String[]{"Friends", "Add a friend"};
-        private final int itemCount = 2;
+        private final String[] TAB_TITLES = new String[]{"Friends", "Add a friend", "My requests"};
+        private final int itemCount = TAB_TITLES.length;
 
         public FragmentSelector(FragmentActivity activity) {
             super(activity);
@@ -45,19 +45,18 @@ public class FriendsActivity extends AppCompatActivity {
         //By default, we will return saved events if an error occurs
 
         public CharSequence getPageTitle(int position) {
-            if(position == 1){
-                return TAB_TITLES[position];
-            }
-            return TAB_TITLES[0];
+            return TAB_TITLES[position];
         }
 
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            if(position == 1){
-                return new AddFriendFragment();
+            switch(position) {
+                case 0: return new FriendsFragment();
+                case 1: return new AddFriendFragment();
+                case 2:
+                default: return new FriendsRequestsFragment();
             }
-            return new FriendsFragment();
         }
 
         @Override

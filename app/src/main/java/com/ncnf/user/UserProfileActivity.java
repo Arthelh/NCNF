@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 
 @AndroidEntryPoint
 public class UserProfileActivity extends AppCompatActivity {
@@ -68,6 +70,7 @@ public class UserProfileActivity extends AppCompatActivity {
         this.user.loadUserFromDB().thenAccept(u -> {
             if (user != null) {
                 setupNotificationSwitch();
+                Log.d(DEBUG_TAG, Integer.toString(user.getParticipatingGroupsIds().size()));
 
                 firstName.setText(user.getFirstName());
                 lastName.setText(user.getLastName());
