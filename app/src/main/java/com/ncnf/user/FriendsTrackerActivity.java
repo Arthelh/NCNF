@@ -75,16 +75,16 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     private FusedLocationProviderClient myFusedLocationClient;
 
     private Handler handler = new Handler();
-    private Handler handler2 = new Handler();
+    // private Handler handler2 = new Handler();
     private Runnable runnable;
-    private Runnable runnable2;
+    // private Runnable runnable2;
     private static final int LOCATION_UPDATE_INTERVAL = 3000;
 
     private int counter;
 
     // for testing
-    private static final String uuid = "MSpKLkyyrrN3PC5KmxkoD05Vy1m2";
-    private static final String uuid2 = "xsohP7PYdDQZ69STCpznOZt0Zfg2";
+    //private static final String uuid = "MSpKLkyyrrN3PC5KmxkoD05Vy1m2";
+    //private static final String uuid2 = "xsohP7PYdDQZ69STCpznOZt0Zfg2";
 
     private Marker marker;
 
@@ -108,7 +108,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         friendsUUID = new ArrayList<>();
         markers = new ArrayList<>();
 
-        friendsUUID.add(uuid);
+        //friendsUUID.add(uuid);
         //friendsUUID.add(uuid2);
 
         findUserButton = findViewById(R.id.find_user_button);
@@ -125,7 +125,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             onMapReady(mMap);
             getLastKnownLocation();
 
-            changeUserLocs();
+            //changeUserLocs();
 
             findUserButton.setOnClickListener(v -> {
                 if(user.getLoc() != null) {
@@ -148,6 +148,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     }
 
     // ONLY FOR TESTING / DEMOS
+    /**
     private void changeUserLocs() {
         handler2.postDelayed(runnable2 = new Runnable() {
             @Override
@@ -161,10 +162,11 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             }
         }, 2*LOCATION_UPDATE_INTERVAL);
     }
+     **/
 
     private void stopLocationUpdates(){
         handler.removeCallbacks(runnable);
-        handler2.removeCallbacks(runnable2);
+        //handler2.removeCallbacks(runnable2);
     }
 
     private void getUserLocations() {
@@ -322,14 +324,10 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     protected void onDestroy() {
         mapView.onDestroy();
         super.onDestroy();
+        Log.d(TAG, "enters on destroy");
         stopLocationUpdates();
     }
 
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
 
 }
 
