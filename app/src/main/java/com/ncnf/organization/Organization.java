@@ -16,9 +16,6 @@ import java.util.stream.Collectors;
 
 import static com.ncnf.utilities.StringCodes.ORGANIZATIONS_COLLECTION_KEY;
 
-
-
-
 public class Organization {
 
     private final UUID uuid;

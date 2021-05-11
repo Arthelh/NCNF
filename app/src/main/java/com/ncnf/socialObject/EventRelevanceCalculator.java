@@ -7,22 +7,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class SocialObjRelevanceCalculator {
+public class EventRelevanceCalculator {
 
     private final List<Event> events = new ArrayList<>();
-    private final List<SocialObject> sortedList;
+    private final List<Event> sortedList;
 
-    public SocialObjRelevanceCalculator(List<SocialObject> l) {
+    public EventRelevanceCalculator(List<Event> l) {
 
-        for (SocialObject e : l) {
+        for (Event e : l) {
             if (e != null)
                 this.events.add((Event) e);
         }
         sortedList = new ArrayList<>(sortedList());
     }
 
-    private List<SocialObject> sortedList() {
-        List<SocialObject> l = new ArrayList<>();
+    private List<Event> sortedList() {
+        List<Event> l = new ArrayList<>();
         Map<Tag, Integer> m = new HashMap<>();
 
         for (Event e : events) {
@@ -71,7 +71,7 @@ public class SocialObjRelevanceCalculator {
         return l;
     }
 
-    public List<SocialObject> getSortedList() {
+    public List<Event> getSortedList() {
         return sortedList;
     }
 

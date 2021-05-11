@@ -248,32 +248,32 @@ public class DatabaseService implements DatabaseServiceInterface {
         return this.updateField(documentPath, arrayField, FieldValue.arrayRemove(value));
     }
 
-    public CompletableFuture<List<SocialObject>> eventGeoQuery(LatLng location, double radius){
+    public <T> CompletableFuture<List<T>> geoQuery(LatLng location, double radius, String path, Class<T> type){
         radius = (radius < 1000) ? radius * 1000 : radius; //Check if radius is still in km, convert to m
 
         List<GeoQueryBounds> bounds = GeoFireUtils.getGeoHashQueryBounds(new GeoLocation(location.latitude, location.longitude), radius);
         final List<Task<QuerySnapshot>> tasks = new ArrayList<>();
         for (GeoQueryBounds b : bounds){
-            Query q = db.collection(EVENTS_COLLECTION_KEY)
+            Query q = db.collection(path)
                     .orderBy(GEOHASH_KEY)
                     .startAt(b.startHash)
                     .endAt(b.endHash);
             tasks.add(q.get());
         }
 
-        CompletableFuture<List<SocialObject>> futureResponse = new CompletableFuture<>();
+        CompletableFuture<List<T>> futureResponse = new CompletableFuture<>();
 
         Tasks.whenAllComplete(tasks)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         List<DocumentSnapshot> matchingDocs = new ArrayList<>();
-                        List<SocialObject> result = new ArrayList<>();
+                        List<T> result = new ArrayList<>();
                         for (Task<QuerySnapshot> t : tasks) {
                             QuerySnapshot snap = t.getResult();
                             matchingDocs.addAll(snap.getDocuments());
                         }
                         for (DocumentSnapshot doc : matchingDocs){
-                            result.add((Event) registry.get(Event.class).toObject(doc.getId(), doc.getData()));
+                            result.add((T) registry.get(type).toObject(doc.getId(), doc.getData()));
                         }
                         futureResponse.complete(result);
                     } else {

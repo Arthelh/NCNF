@@ -19,8 +19,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.R;
 import com.ncnf.map.NCNFMarker;
+import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.SocialObject;
-import com.ncnf.socialObject.ui.SocialObjFragment;
+import com.ncnf.socialObject.ui.EventFragment;
 
 import java.util.List;
 
@@ -50,14 +51,14 @@ public class  MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Cl
     public void onClusterItemInfoWindowClick(NCNFMarker item) {
         if (item.isEvent()) {
 
-            List<SocialObject> socialObjects = item.getEventList();
+            List<Event> eventList = item.getEventList();
             Fragment fragment;
 
-            if (socialObjects.size() == 1) { //When the marker represents only one event
+            if (eventList.size() == 1) { //When the marker represents only one event
                 SocialObject e = item.getEventList().get(0);
-                fragment = new SocialObjFragment(e);
+                fragment = new EventFragment(e);
             } else {
-                fragment = new MapFeedFragment(socialObjects, globalWindow, fragmentManager);
+                fragment = new MapFeedFragment(eventList, globalWindow, fragmentManager);
             }
 
             ConstraintLayout feedContainer = globalWindow.findViewById(R.id.map_feed_container);

@@ -19,9 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
-import com.ncnf.feed.ui.SocialObjAdapter;
-import com.ncnf.socialObject.SocialObject;
-import com.ncnf.socialObject.ui.SocialObjFragment;
+import com.ncnf.feed.ui.EventAdapter;
+import com.ncnf.socialObject.Event;
+import com.ncnf.socialObject.ui.EventFragment;
 import com.ncnf.user.User;
 
 import java.util.ArrayList;
@@ -35,17 +35,17 @@ import dagger.hilt.android.AndroidEntryPoint;
 import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
 
 @AndroidEntryPoint
-public class SocialObjDisplayFragment extends Fragment implements SocialObjAdapter.OnSocialObjListener {
+public class EventDisplayFragment extends Fragment implements EventAdapter.OnSocialObjListener {
 
-    private List<SocialObject> objToDisplay;
-    private SocialObjAdapter adapter;
+    private List<Event> objToDisplay;
+    private EventAdapter adapter;
     private RecyclerView.LayoutManager lManager;
     private final String collection;
 
     @Inject
     public User user;
 
-    public SocialObjDisplayFragment(String collection){
+    public EventDisplayFragment(String collection){
         this.collection = collection;
     }
 
@@ -66,7 +66,7 @@ public class SocialObjDisplayFragment extends Fragment implements SocialObjAdapt
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter
-        adapter = new SocialObjAdapter(objToDisplay, this::onSocialObjectClick, SocialObjAdapter.SortingMethod.DATE);
+        adapter = new EventAdapter(objToDisplay, this::onEventClick, EventAdapter.SortingMethod.DATE);
         recycler.setAdapter(adapter);
         getEventList(view.findViewById(R.id.SavedEventsRecyclerView));
 
@@ -84,15 +84,15 @@ public class SocialObjDisplayFragment extends Fragment implements SocialObjAdapt
 
             list.thenAccept(objects -> {
                 if(objects != null){
-                    this.adapter.setSocialObjects((List)objects);
+                    this.adapter.setEvents((List)objects);
                 }
             });
         }
     }
 
     @Override
-    public void onSocialObjectClick(SocialObject socialObject) {
-        Fragment fragment = new SocialObjFragment(socialObject);
+    public void onEventClick(Event event) {
+        Fragment fragment = new EventFragment(event);
         Window globalWindow = getActivity().getWindow();
         FragmentManager fragmentManager = getChildFragmentManager();
 

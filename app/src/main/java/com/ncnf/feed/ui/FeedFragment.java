@@ -29,8 +29,9 @@ import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.map.MapUtilities;
 import com.ncnf.settings.Settings;
+import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.SocialObject;
-import com.ncnf.socialObject.ui.SocialObjFragment;
+import com.ncnf.socialObject.ui.EventFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +39,14 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
 
 public class FeedFragment extends Fragment {
 
     private RecyclerView.LayoutManager lManager;
     private RecyclerView recycler;
-    private SocialObjAdapter adapter;
-    private List<SocialObject> eventList = new ArrayList<>();
+    private EventAdapter adapter;
+    private List<Event> eventList = new ArrayList<>();
 
     private static final String CHANNEL_NAME = "events_to_be_shown";
 
@@ -52,7 +54,7 @@ public class FeedFragment extends Fragment {
         super();
     }
 
-    public FeedFragment(List<SocialObject> eventList){
+    public FeedFragment(List<Event> eventList){
         super();
 
         Objects.requireNonNull(eventList);
@@ -63,7 +65,7 @@ public class FeedFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (eventList.isEmpty())
-            actualise_events();
+            actualiseEvents();
     }
 
     @Nullable
@@ -87,15 +89,15 @@ public class FeedFragment extends Fragment {
 
         // Set the custom adapter
         if (eventList.isEmpty()){
-            actualise_events();
+            actualiseEvents();
         } else {
-            adapter = new SocialObjAdapter(eventList, this::onEventClick, SocialObjAdapter.SortingMethod.DATE);
+            adapter = new EventAdapter(eventList, e -> onEventClick(e), EventAdapter.SortingMethod.DATE);
             recycler.setAdapter(adapter);
         }
     }
 
     protected void onEventClick(SocialObject e) {
-        Fragment fragment = new SocialObjFragment(e);
+        Fragment fragment = new EventFragment(e);
         Window globalWindow = getActivity().getWindow();
         FragmentManager fragmentManager = getChildFragmentManager();
 
@@ -153,10 +155,10 @@ public class FeedFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.dateOrder :
-                adapter.orderBy(SocialObjAdapter.SortingMethod.DATE);
+                adapter.orderBy(EventAdapter.SortingMethod.DATE);
                 break;
             case R.id.relevanceOrder :
-                adapter.orderBy(SocialObjAdapter.SortingMethod.RELEVANCE);
+                adapter.orderBy(EventAdapter.SortingMethod.RELEVANCE);
                 break;
         }
         return true;
@@ -169,18 +171,18 @@ public class FeedFragment extends Fragment {
         callback.setEnabled(false);
     }
 
-    private void actualise_events(){
-        final List<SocialObject> result = new ArrayList<>();
+    private void actualiseEvents(){
+        final List<Event> result = new ArrayList<>();
 
-        CompletableFuture<List<SocialObject>> completableFuture = new DatabaseService().eventGeoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000);
+        CompletableFuture<List<Event>> completableFuture = new DatabaseService().geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, Event.class);
         completableFuture.thenAccept(eventList -> {
 
-            for (SocialObject e : eventList){
+            for (Event e : eventList){
                 LatLng eventPosition = new LatLng(e.getLocation().getLatitude(), e.getLocation().getLongitude());
                 if (MapUtilities.position_in_range(Settings.getUserPosition(), eventPosition))
                     result.add(e);
             }
-            adapter = new SocialObjAdapter(result, this::onEventClick, SocialObjAdapter.SortingMethod.DATE);
+            adapter = new EventAdapter(result, e -> onEventClick(e), EventAdapter.SortingMethod.DATE);
             recycler.setAdapter(adapter);
 
         }).exceptionally(e -> {

@@ -14,7 +14,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
-import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 
@@ -50,17 +49,14 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
-import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.contains;
-import static org.mockito.Matchers.matches;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
@@ -87,7 +83,7 @@ public final class MapFragmentTest {
         Intents.init();
 
         TEST_COMP_FUTURE.complete(TEST_SocialObjects);
-        when(db.eventGeoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000)).thenReturn(TEST_COMP_FUTURE);
+        when(db.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, SocialObject.class)).thenReturn(TEST_COMP_FUTURE);
         when(venueProvider.getAll()).thenReturn(TEST_VENUES);
 
         onView(withId(R.id.navigation_map)).perform(click());

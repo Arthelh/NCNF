@@ -13,8 +13,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.ncnf.R;
 import com.ncnf.feed.ui.FeedFragment;
+import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.SocialObject;
-import com.ncnf.socialObject.ui.SocialObjFragment;
+import com.ncnf.socialObject.ui.EventFragment;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class MapFeedFragment extends FeedFragment {
     private final Window globalWindow;
     private final FragmentManager fragmentManager;
 
-    protected MapFeedFragment(List<SocialObject> list, Window globalWindow, FragmentManager fragmentManager){
+    protected MapFeedFragment(List<Event> list, Window globalWindow, FragmentManager fragmentManager){
         super(list);
 
         this.globalWindow = globalWindow;
@@ -32,7 +33,7 @@ public class MapFeedFragment extends FeedFragment {
 
     @Override
     protected void onEventClick(SocialObject e){
-        Fragment fragment = new SocialObjFragment(e);
+        Fragment fragment = new EventFragment(e);
 
         ConstraintLayout feedContainer = globalWindow.findViewById(R.id.map_feed_container);
         FrameLayout feedFrame = globalWindow.findViewById(R.id.map_feed_fragment);

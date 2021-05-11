@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
 
 
 public class MapHandler {
@@ -121,9 +122,9 @@ public class MapHandler {
         clusterManager.cluster();
     }
 
-    private void addEventMarkers(List<SocialObject> events){
-        Map<LatLng, List<SocialObject>> eventMap = new HashMap<>();
-        for (SocialObject p : events) {
+    private void addEventMarkers(List<Event> events){
+        Map<LatLng, List<Event>> eventMap = new HashMap<>();
+        for (Event p : events) {
             LatLng event_position = new LatLng(p.getLocation().getLatitude(), p.getLocation().getLongitude());
 
             //Additional check in range as geoqueries sometimes have false positives (https://cloud.google.com/firestore/docs/solutions/geoqueries#javaandroid_1)
@@ -136,7 +137,7 @@ public class MapHandler {
         }
         Set<LatLng> keys = eventMap.keySet();
         for (LatLng k : keys){
-            List<SocialObject> list = eventMap.get(k);
+            List<Event> list = eventMap.get(k);
             StringBuilder desc = new StringBuilder();
             for (SocialObject p : list){
                 desc.append(p.getName()).append("\n");
@@ -158,9 +159,9 @@ public class MapHandler {
     }
 
     private void queryAndAddEvents(){
-        final List<SocialObject> result = new ArrayList<>();
+        final List<Event> result = new ArrayList<>();
 
-        CompletableFuture<List<SocialObject>> completableFuture = databaseService.eventGeoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000);
+        CompletableFuture<List<Event>> completableFuture = databaseService.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, Event.class);
         completableFuture.thenAccept(eventList -> {
 
             result.addAll(eventList);

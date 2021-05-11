@@ -18,11 +18,11 @@ import com.ncnf.storage.CacheFileStore;
 import com.ncnf.storage.FileStore;
 import com.ncnf.utilities.DateAdapter;
 
-public class SocialObjFragment extends Fragment {
+public class EventFragment extends Fragment {
 
     private SocialObject event;
 
-    public SocialObjFragment(SocialObject event){
+    public EventFragment(SocialObject event){
         this.event = event;
     }
 
