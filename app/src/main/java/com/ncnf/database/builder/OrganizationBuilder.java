@@ -1,17 +1,23 @@
-package com.ncnf.database.builders;
+package com.ncnf.database.builder;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.builder.DatabaseObjectBuilder;
-import com.ncnf.user.organization.Organization;
+import com.ncnf.organization.Organization;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.ncnf.utilities.StringCodes.*;
+import static com.ncnf.utilities.StringCodes.ADDRESS_KEY;
+import static com.ncnf.utilities.StringCodes.ADMIN_KEY;
+import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
+import static com.ncnf.utilities.StringCodes.NAME_KEY;
+import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.PHONE_NB_KEY;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
-public class OrganizationBuilder extends DatabaseObjectBuilder<Organization> {
+
+public class OrganizationBuilder extends DatabaseObjectBuilder<Organization>{
 
     @Override
     public Organization toObject(String uuid, Map<String, Object> data) {
@@ -23,9 +29,8 @@ public class OrganizationBuilder extends DatabaseObjectBuilder<Organization> {
             String phoneNb = data.get(PHONE_NB_KEY).toString();
             List<String> admin = (List<String>) data.get(ADMIN_KEY);
             List<String> events = (List<String>) data.get(ORGANIZED_EVENTS_KEY);
-            String email = data.get(ORGANIZATION_EMAIL).toString();
 
-            return new Organization(UUID.fromString(uuidStr), name, location, address, email, phoneNb, admin, events);
+            return new Organization(UUID.fromString(uuidStr), name, location, address, phoneNb, admin, events);
         } catch (Exception e){
             return null;
         }
@@ -40,7 +45,6 @@ public class OrganizationBuilder extends DatabaseObjectBuilder<Organization> {
         data.put(LOCATION_KEY, org.getLocation());
         data.put(ADDRESS_KEY, org.getAddress());
         data.put(PHONE_NB_KEY, org.getPhoneNumber());
-        data.put(ORGANIZATION_EMAIL, org.getEmail());
         data.put(ADMIN_KEY, org.getAdminIds());
         data.put(ORGANIZED_EVENTS_KEY, org.getEventIds());
 

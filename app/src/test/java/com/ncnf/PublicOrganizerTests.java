@@ -1,4 +1,4 @@
-package com.ncnf.organization;
+package com.ncnf;
 
 import com.ncnf.organizer.PublicOrganizer;
 

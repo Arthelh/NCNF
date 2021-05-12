@@ -9,7 +9,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
 import com.ncnf.main.MainActivity;
-import com.ncnf.user.helpers.CurrentUserModule;
+import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
 
 import org.hamcrest.Matcher;

@@ -1,4 +1,4 @@
-package com.ncnf.user.organization;
+package com.ncnf.organization;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseService;

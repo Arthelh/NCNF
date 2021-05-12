@@ -4,7 +4,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.Group;
-import com.ncnf.user.helpers.CurrentUserModule;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -188,7 +187,7 @@ public class User {
     }
 
     public CompletableFuture<List<User>> getAllUsersLike(String username){
-        return this.db.withFieldContaining(USERS_COLLECTION_KEY, USERNAME_KEY, username, User.class);
+        return this.db.withFieldLike(USERS_COLLECTION_KEY, USERNAME_KEY, username, User.class);
     }
 
     public CompletableFuture<Boolean> addSavedEvent(Event event){

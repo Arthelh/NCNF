@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
 import com.ncnf.authentication.AuthenticationService;
-import com.ncnf.user.helpers.CurrentUserModule;
+import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
 
 import java.util.concurrent.CompletableFuture;

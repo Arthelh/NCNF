@@ -1,7 +1,6 @@
 package com.ncnf.user;
 
 import com.ncnf.database.DatabaseService;
-import com.ncnf.user.friends.FriendsRepository;
 
 import org.junit.Assert;
 import org.junit.Before;

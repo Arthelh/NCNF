@@ -1,4 +1,4 @@
-package com.ncnf.user.helpers;
+package com.ncnf.user;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
-import com.ncnf.user.User;
 import com.ncnf.utilities.InputValidator;
 
 import java.util.List;
