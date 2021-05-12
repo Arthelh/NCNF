@@ -15,6 +15,9 @@
     <string name="map_marker_arrow">Arrow</string>
     <string name="map_feed_button">Back to Map</string>
 
+    <!-- String used for Feed Fragment -->
+    <string name="feed_event_button">Back to Feed</string>
+
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_feed">FeedActivity</string>
@@ -70,7 +73,7 @@
     <string name="save">Save</string>
     <string name="name">Name</string>
     <string name="tag">Tag</string>
-    <string name="event">Event</string>
+    <string name="socialObject">Event</string>
     <string name="id">ID</string>
     <string name="data">Data</string>
 
@@ -82,7 +85,7 @@
     <string name="password_hint">Password...</string>
     <string name="i_m_an_organizer">I\'m an organizer</string>
     <string name="home_profile_button">Profile</string>
-    <string name="home_create_event_button">Create event</string>
+    <string name="home_create_event_button">Create socialObject</string>
     <string name="navigation_menu_feed">Feed</string>
     <string name="navigation_menu_map">Map</string>
     <string name="navigation_menu_home">Home</string>
@@ -120,10 +123,5 @@
     <string name="friends_requests_decline">Decline</string>
     <string name="add_to_calendar_button" />
 
-    <!-- String used for Feed Fragment -->
-    <string name="feed_event_button">Back to Feed</string>
-
-    <!-- Strings for Settings -->
-    <string name="settings_km"> km</string>
 
 </resources>
