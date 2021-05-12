@@ -3,11 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".bookmark.SocialObjDisplayFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".bookmark.EventDisplayFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/SavedEventsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/display_event_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="20dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/display_event_button"
+            android:text="@string/map_feed_button"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:visibility="invisible"
+            android:elevation="5dp"/>
+        <FrameLayout
+            android:id="@+id/display_event_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="48dp"
+            app:layout_constraintBottom_toTopOf="@id/display_event_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

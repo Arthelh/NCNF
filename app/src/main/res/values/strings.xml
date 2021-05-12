@@ -15,6 +15,9 @@
     <string name="map_marker_arrow">Arrow</string>
     <string name="map_feed_button">Back to Map</string>
 
+    <!-- String used for Feed Fragment -->
+    <string name="feed_event_button">Back to Feed</string>
+
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_feed">FeedActivity</string>

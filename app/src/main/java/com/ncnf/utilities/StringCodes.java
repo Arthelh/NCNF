@@ -44,6 +44,9 @@ public class StringCodes {
     public static final String TAGS_LIST_KEY = "tags";
     public static final String ADDRESS_KEY = "address";
     public static final String NEWS_KEY = "news";
+    public static final String GEOHASH_KEY = "geohash";
+    public static final String LAT_KEY = "lat";
+    public static final String LNG_KEY = "lng";
 
     /**
      * Keys related to groups
