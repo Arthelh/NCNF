@@ -4,13 +4,14 @@ import com.google.firebase.Timestamp;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.user.User;
 
-import java.sql.Time;
-import java.time.LocalDateTime;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -32,7 +33,9 @@ public class UserBuilder extends DatabaseObjectBuilder<User>{
     DatabaseService db;
 
     @Override
-    public User toObject(String uuid, Map<String, Object> data) {
+    public User toObject(String uuid, @NotNull Map<String, Object> data) {
+        Objects.requireNonNull(data);
+
         String username = (String) data.getOrDefault(USERNAME_KEY, "");
         String email = (String) data.getOrDefault(EMAIL_KEY, "");
         String firstName = (String) data.getOrDefault(FIRST_NAME_KEY, "");

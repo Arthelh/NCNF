@@ -8,6 +8,8 @@ import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.SocialObject;
 import com.ncnf.socialObject.Tag;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,7 +39,7 @@ import static com.ncnf.utilities.StringCodes.UUID_KEY;
 public class EventBuilder extends DatabaseObjectBuilder<Event> {
 
     @Override
-    public Event toObject(String uuid, Map<String, Object> data){
+    public Event toObject(String uuid, @NotNull Map<String, Object> data){
         Objects.requireNonNull(data);
 
         String ownerId = data.getOrDefault(OWNER_KEY, "").toString();
