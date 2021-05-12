@@ -187,7 +187,7 @@ public class User {
     }
 
     public CompletableFuture<List<User>> getAllUsersLike(String username){
-        return this.db.withFieldLike(USERS_COLLECTION_KEY, USERNAME_KEY, username, User.class);
+        return this.db.withFieldContaining(USERS_COLLECTION_KEY, USERNAME_KEY, username, User.class);
     }
 
     public CompletableFuture<Boolean> addSavedEvent(Event event){

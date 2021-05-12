@@ -1,6 +1,21 @@
 package com.ncnf.utilities;
 
+import com.ncnf.user.organization.Organization;
+
 public class StringCodes {
+
+    public static final int PICK_IMAGE = 100;
+
+    public static String generatePerViewID(Organization o){
+        return FRAGMENT_VIEW_TAG + o.toString();
+    }
+    public static final String FRAGMENT_BUNDLE_KEY_ORG_ID = "org_ID";
+    public static final String FRAGMENT_ORGANIZATION_CREATION_TAG= "fragment_organization_creation";
+    public static final String FRAGMENT_VIEW_TAG = "fragment_organization_view";
+    public static final String FRAGMENT_ORGANIZATION_TAG = "fragment_organization_list";
+    public static final String FRAGMENT_USER_PROFILE = "fragment_user_profile";
+
+
     /**
      * Global variables
      */
@@ -12,6 +27,7 @@ public class StringCodes {
     /**
      * Keys related to users
      */
+    public static final String USER_ORGANIZATIONS = "organizations";
     public static final String USERS_COLLECTION_KEY = "users/";
     public static final String USERNAME_KEY = "username";
     public static final String FIRST_NAME_KEY = "first_name";
@@ -57,10 +73,12 @@ public class StringCodes {
     /**
      * Keys related to organizations
      */
-    public static final String ADMIN_KEY = "admins";
-    public static final String ORGANIZATIONS_COLLECTION_KEY = "organizations";
+    public static final String ORGANIZATIONS_COLLECTION_KEY = "organizations/";
+    public static final String ORGANIZATION_NAME = "name";
+    public static final String ORGANIZATION_EMAIL = "email";
     public static final String ORGANIZED_EVENTS_KEY = "organized_events";
     public static final String PHONE_NB_KEY = "phone_number";
+    public static final String ADMIN_KEY = "admins";
 
     /**
      * Keys related to tests
