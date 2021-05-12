@@ -59,6 +59,11 @@ import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
 @AndroidEntryPoint
 public class FriendsTrackerActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    /**
+     * This class was largely done thanks to the youtube Tutorial by CodingWithMitch.
+     * Source code : https://github.com/mitchtabian/Google-Maps-2018/blob/building-a-service-for-gps-updates-end/app/src/main/java/com/codingwithmitch/googlemaps2018/services/LocationService.java
+     */
+
     @Inject
     public User user;
 
@@ -90,8 +95,6 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     private Marker marker;
 
-    //private DatabaseService dbs;
-
     private LatLngBounds bounds;
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -99,8 +102,6 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_tracker);
-
-        //dbs = new DatabaseService();
 
         //dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, new GeoPoint(46.5201852, 6.5637122));
         //dbs.updateField(USERS_COLLECTION_KEY + uuid2, USER_LOCATION_KEY, new GeoPoint(46.516981, 6.57144331));
@@ -115,7 +116,6 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
         findUserButton = findViewById(R.id.find_user_button);
 
-        //user = CurrentUserModule.getCurrentUser();
         user.loadUserFromDB();
 
         myFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -140,12 +140,9 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     }
 
     private void startLocationUpdates() {
-        handler.postDelayed(runnable = new Runnable() {
-            @Override
-            public void run() {
-                getUserLocations();
-                handler.postDelayed(runnable, LOCATION_UPDATE_INTERVAL);
-            }
+        handler.postDelayed(runnable = () -> {
+            getUserLocations();
+            handler.postDelayed(runnable, LOCATION_UPDATE_INTERVAL);
         }, LOCATION_UPDATE_INTERVAL);
     }
 
@@ -195,8 +192,10 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             });
         }
         if(marker == null) {
-            marker = mMap.addMarker(new MarkerOptions().position(new LatLng(user.getLoc().getLatitude(), user.getLoc().getLongitude())));
-            marker.setTitle(user.getFirstName());
+            if(user.getLoc() != null) {
+                marker = mMap.addMarker(new MarkerOptions().position(new LatLng(user.getLoc().getLatitude(), user.getLoc().getLongitude())));
+                marker.setTitle(user.getFirstName());
+            }
         }
         else {
             marker.setPosition(new LatLng(user.getLoc().getLatitude(), user.getLoc().getLongitude()));
@@ -303,6 +302,9 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     @Override
     public void onMapReady(GoogleMap map) {
         startLocationUpdates();
+        if (mMap != null) {
+            getLastKnownLocation();
+        }
     }
 
     @Override

@@ -56,7 +56,6 @@ public class LocationService extends Service {
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "on create called");
         super.onCreate();
         this.dbs = new DatabaseService();
 

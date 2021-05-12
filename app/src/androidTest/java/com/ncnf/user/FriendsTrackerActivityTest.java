@@ -135,7 +135,7 @@ public class FriendsTrackerActivityTest {
 
         Looper.prepare();
 
-        
+
 
         // Bind the service and grab a reference to the binder.
         mServiceRule.startService(serviceIntent);

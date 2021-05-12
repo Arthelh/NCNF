@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
         getView().findViewById(R.id.homeCreateEventButton).setOnClickListener(this::goToEventCreation);
         getView().findViewById(R.id.homeEventNewsButton).setOnClickListener(this::goToEventNews);
         getView().findViewById(R.id.homeFriendsButton).setOnClickListener(this::goToFriends);
-        getView().findViewById(R.id.track_friends_button).setOnClickListener(this::goToFindFriends);
+        getView().findViewById(R.id.track_friends_button).setOnClickListener(v -> gpsIsEnabled());
     }
 
     public void gotToProfile(View view){
@@ -71,17 +71,6 @@ public class HomeFragment extends Fragment {
 
     public void goToFriends(View view){
         goToActivity(FriendsActivity.class);
-    }
-
-    public void goToFindFriends(View view){
-        Intent intent;
-
-        if(!isConnected()){
-            intent = new Intent(getContext(), LoginActivity.class);
-            startActivity(intent);
-        } else {
-            gpsIsEnabled();
-        }
     }
 
     // Temporary
@@ -149,7 +138,7 @@ public class HomeFragment extends Fragment {
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             locationServicesEnabled = true;
-            launchFindFriends();
+            goToActivity(FriendsTrackerActivity.class);
         } else {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -163,7 +152,7 @@ public class HomeFragment extends Fragment {
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
                 if(locationServicesEnabled){
-                    launchFindFriends();
+                    goToActivity(FriendsTrackerActivity.class);
                 }
                 else {
                     getLocationPermission();
@@ -185,11 +174,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         }
-    }
-
-    private void launchFindFriends() {
-        Intent intent = new Intent(getContext(), FriendsTrackerActivity.class);
-        startActivity(intent);
     }
 
 }
