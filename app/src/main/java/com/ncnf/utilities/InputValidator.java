@@ -2,10 +2,11 @@ package com.ncnf.utilities;
 
 
 import android.text.InputType;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.core.util.PatternsCompat;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +23,14 @@ public class InputValidator {
         return  phoneNumberInputString != null &&
                 !phoneNumberInputString.equals("") &&
                 phoneNumberInputString.matches(phonePattern);
+    }
+
+    static public void setErrorMsg(View v, String error){
+        if(v instanceof Button){
+            ((Button) v).setError(error);
+        } else if(v instanceof EditText){
+            ((EditText) v).setError(error);
+        }
     }
 
     static public boolean verifyWebAddress(String webAddressInputString) {
@@ -78,6 +87,7 @@ public class InputValidator {
         return password.length() >= StringCodes.PASSWORD_MINIMUM_LENGTH;
     }
 
+
     public static boolean isInvalidString(String s){
         return s == null || s.length() == 0;
     }
@@ -87,6 +97,6 @@ public class InputValidator {
     }
 
     public static boolean checkCompleteList(List<String> l){
-        return (l == null) || l.stream().anyMatch(Objects::isNull);
+        return (l == null) || l.stream().anyMatch(Objects::isNull) || l.isEmpty();
     }
 }

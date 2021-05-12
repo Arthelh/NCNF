@@ -142,7 +142,7 @@ public class DatabaseService implements DatabaseServiceInterface {
     }
 
     @Override
-    public <T> CompletableFuture<List<T>> withFieldLike(String collectionPath, String field, String value, Class<T> collectionType) {
+    public <T> CompletableFuture<List<T>> withFieldContaining(String collectionPath, String field, String value, Class<T> collectionType) {
         CompletableFuture<List<T>> futureResponse = new CompletableFuture<>();
 
         this.db.collection(collectionPath).orderBy(field).startAt(value).endAt(value + "\uf8ff").get().addOnCompleteListener(task -> {

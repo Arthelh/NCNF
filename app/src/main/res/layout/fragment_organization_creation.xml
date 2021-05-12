@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/organization_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="58dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="28dp"
+        android:hint="@string/organization_name_hint"
+        app:layout_constraintBottom_toTopOf="@+id/organization_picture"
+        app:layout_constraintEnd_toEndOf="@+id/organization_picture"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/organization_picture"
+        android:layout_width="185dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="45dp"
+        app:layout_constraintBottom_toTopOf="@+id/organization_postal_address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/organization_name"
+        app:srcCompat="@drawable/blobfish" />
+
+    <EditText
+        android:id="@+id/organization_postal_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="38dp"
+        android:ems="10"
+        android:hint="@string/organization_postal_hint"
+        android:inputType="textPostalAddress"
+        app:layout_constraintBottom_toTopOf="@+id/organization_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/organization_picture" />
+
+    <EditText
+        android:id="@+id/organization_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="44dp"
+        android:ems="10"
+        android:hint="@string/organization_email_hint"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/organization_phone"
+        app:layout_constraintStart_toStartOf="@+id/organization_postal_address"
+        app:layout_constraintTop_toBottomOf="@+id/organization_postal_address" />
+
+    <EditText
+        android:id="@+id/organization_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="93dp"
+        android:ems="10"
+        android:hint="@string/organization_phone_hint"
+        android:inputType="phone"
+        app:layout_constraintBottom_toTopOf="@+id/organization_validate_button"
+        app:layout_constraintStart_toStartOf="@+id/organization_email"
+        app:layout_constraintTop_toBottomOf="@+id/organization_email" />
+
+    <Button
+        android:id="@+id/organization_validate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="89dp"
+        android:text="@string/organization_validate_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/organization_phone" />
+
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginBottom="26dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/organization_validate_button" />
+</androidx.constraintlayout.widget.ConstraintLayout>

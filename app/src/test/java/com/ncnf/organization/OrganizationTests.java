@@ -1,8 +1,9 @@
 package com.ncnf.organization;
 
 import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.user.organization.Organization;
 
-import org.junit.Test;
+import org.testng.annotations.AfterTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;

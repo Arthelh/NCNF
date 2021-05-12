@@ -6,6 +6,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.ncnf.R;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
+import com.ncnf.user.helpers.CurrentUserModule;
 
 import org.junit.After;
 import org.junit.Before;

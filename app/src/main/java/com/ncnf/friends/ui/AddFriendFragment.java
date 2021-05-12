@@ -16,7 +16,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
 import com.ncnf.user.User;
-import com.ncnf.user.UserAdapter;
+import com.ncnf.user.helpers.UserAdapter;
 
 import java.util.ArrayList;
 

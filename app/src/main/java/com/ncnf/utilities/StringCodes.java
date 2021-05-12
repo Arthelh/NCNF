@@ -1,6 +1,21 @@
 package com.ncnf.utilities;
 
+import com.ncnf.user.organization.Organization;
+
 public class StringCodes {
+
+    public static final int PICK_IMAGE = 100;
+
+    public static String generatePerViewID(Organization o){
+        return FRAGMENT_VIEW_TAG + o.toString();
+    }
+    public static final String FRAGMENT_BUNDLE_KEY_ORG_ID = "org_ID";
+    public static final String FRAGMENT_ORGANIZATION_CREATION_TAG= "fragment_organization_creation";
+    public static final String FRAGMENT_VIEW_TAG = "fragment_organization_view";
+    public static final String FRAGMENT_ORGANIZATION_TAG = "fragment_organization_list";
+    public static final String FRAGMENT_USER_PROFILE = "fragment_user_profile";
+
+
     /**
      * Global variables
      */
@@ -13,12 +28,14 @@ public class StringCodes {
      * Keys related to users
      */
     public static final String USERS_COLLECTION_KEY = "users/";
+    public static final String USER_ORGANIZATIONS = "organizations";
     public static final String USERNAME_KEY = "username";
     public static final String FIRST_NAME_KEY = "first_name";
     public static final String LAST_NAME_KEY = "last_name";
     public static final String BIRTH_DATE_KEY = "year_of_birth";
     public static final String EMAIL_KEY = "email";
     public static final String FRIENDS_KEY = "friends";
+    public static final String OWNED_EVENTS_KEY = "owned_events";
     public static final String SAVED_EVENTS_KEY = "saved_events";
     public static final String NOTIFICATIONS_KEY = "notifications";
     public static final String NOTIFICATIONS_TOKEN_KEY = "notifications_token";
@@ -54,13 +71,17 @@ public class StringCodes {
     public static final String GROUPS_COLLECTION_KEY = "groups/";
     public static final String OWNED_GROUPS_KEY = "owned_groups";
     public static final String PARTICIPATING_GROUPS_KEY = "participating_groups";
+
     /**
      * Keys related to organizations
      */
-    public static final String ADMIN_KEY = "admins";
-    public static final String ORGANIZATIONS_COLLECTION_KEY = "organizations";
+    public static final String ORGANIZATIONS_COLLECTION_KEY = "organizations/";
+    public static final String ORGANIZATION_NAME = "name";
+    public static final String ORGANIZATION_EMAIL = "email";
     public static final String ORGANIZED_EVENTS_KEY = "organized_events";
     public static final String PHONE_NB_KEY = "phone_number";
+    public static final String ADMIN_KEY = "admins";
+
 
     /**
      * Keys related to tests

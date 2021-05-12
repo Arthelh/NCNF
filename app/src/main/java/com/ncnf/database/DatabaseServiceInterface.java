@@ -29,7 +29,7 @@ public interface DatabaseServiceInterface {
 
     <T> CompletableFuture<List<T>> getCollection(String path, Class<T> collectionType);
 
-    <T> CompletableFuture<List<T>> withFieldLike(String path, String Field, String value, Class<T> collectionType);
+    <T> CompletableFuture<List<T>> withFieldContaining(String path, String Field, String value, Class<T> collectionType);
 
     <T, R> CompletableFuture<List<R>> whereArrayContains(String collectionPath, String field, T value, Class<R> type);
 

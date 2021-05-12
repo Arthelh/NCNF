@@ -1,10 +1,6 @@
-package com.ncnf.organization;
-
-import androidx.annotation.NonNull;
+package com.ncnf.user.organization;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.DatabaseService;
-import com.ncnf.utilities.InputValidator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,9 +8,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
-import static com.ncnf.utilities.StringCodes.ORGANIZATIONS_COLLECTION_KEY;
+import com.ncnf.database.DatabaseService;
+import com.ncnf.utilities.InputValidator;
+
+import static com.ncnf.utilities.StringCodes.*;
+
 
 public class Organization {
 
@@ -23,40 +22,36 @@ public class Organization {
     private GeoPoint location;
     private String address;
     private String phoneNumber;
+    private String email;
     private List<String> adminIds;
     private List<String> eventIds;
 
-    public Organization(String name, GeoPoint location, String address, String phoneNumber, @NonNull String originalOwner) {
-        this(UUID.randomUUID(), name, location, address, phoneNumber, new ArrayList<>(Collections.singletonList(originalOwner)) , new ArrayList<>());
+    public Organization(String name, GeoPoint location, String address, String email, String phoneNumber, String originalOwner) {
+
+        this(UUID.randomUUID(), name, location, address, email, phoneNumber, new ArrayList<String>() {{ add(originalOwner); }}, new ArrayList<>());
     }
 
-    public Organization(UUID uuid, String name, GeoPoint location, String address, String phoneNumber, List<String> adminIds, List<String> events) {
-        if (InputValidator.checkCompleteList(adminIds) || adminIds.isEmpty()){
+    public Organization(UUID uuid, String name, GeoPoint location, String address, String email, String phoneNumber, List<String> adminIds, List<String> eventIds) {
+        if(InputValidator.checkCompleteList(adminIds)){
             throw new IllegalArgumentException("Organization should have at least one admin created when created");
-        }
-        if (events == null){
-            throw new IllegalArgumentException("List of events cannot be null");
-        }
-        if(uuid == null){
-            throw new IllegalArgumentException("The UUID cannot be null");
         }
 
         this.uuid = uuid;
         this.name = name;
         this.location = location;
         this.address = address;
+        this.email = email;
         this.phoneNumber = phoneNumber;
         this.adminIds = adminIds;
-        this.eventIds = events;
+        this.eventIds = eventIds;
     }
 
-    public boolean checkAdminIds(List<String> l){
-        //TODO check with db values?
-        return true;
-        //return l.stream().noneMatch(InputValidator::isInvalidString);
-    }
+
 
     public CompletableFuture<Boolean> saveToDB(DatabaseService db){
+        if(uuid == null || InputValidator.checkCompleteList(adminIds)){
+            return CompletableFuture.completedFuture(false);
+        }
 
         return db.setDocument(ORGANIZATIONS_COLLECTION_KEY + uuid.toString(), this);
     }
@@ -101,35 +96,27 @@ public class Organization {
         this.address = address;
     }
 
+    public void setEmail(String email){
+        if(InputValidator.verifyEmailInput(email)){
+            this.email = email;
+        }
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
     public void setAdminIds(List<String> adminIds) {
-        if(InputValidator.checkCompleteList(adminIds)){
-            throw new IllegalArgumentException("List of new admins cannot be null or empty");
-        }
         this.adminIds = new ArrayList<>(adminIds);
     }
 
-
-    public void replaceEvents(List<String> events) {
-        if(InputValidator.checkCompleteList(events)){
-            throw new IllegalArgumentException("List of new events cannot be null or empty");
-        }
-        this.eventIds = new ArrayList<>(events);
+    public void setEventIds(List<String> eventIds) {
+        this.eventIds = new ArrayList<>(eventIds);
     }
-
-    public void addListEvents(List<String> events){
-        if(InputValidator.checkCompleteList(events)){
-            throw new IllegalArgumentException("List of new events cannot be null or empty");
-        }
-        this.eventIds.addAll(events);
-        //remove duplicates
-        this.eventIds = this.eventIds.stream().distinct().collect(Collectors.toList());
-    }
-
-    public void clearEvents() {this.eventIds.clear();}
 
     public boolean addAdmin(String adminId){
         if(InputValidator.isInvalidString(adminId)){

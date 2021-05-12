@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
-import com.ncnf.user.FriendsRepository;
+import com.ncnf.user.friends.FriendsRepository;
 import com.ncnf.user.User;
 
 import java.util.ArrayList;
