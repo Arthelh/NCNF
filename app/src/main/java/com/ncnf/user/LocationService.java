@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
@@ -50,7 +51,7 @@ public class LocationService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return new LocationServiceBinder();
     }
 
     @Override
@@ -149,6 +150,14 @@ public class LocationService extends Service {
             stopSelf();
         }
 
+    }
+
+    public class LocationServiceBinder extends Binder {
+
+        public LocationService getService() {
+            // Return this instance of LocalService so clients can call public methods.
+            return LocationService.this;
+        }
     }
 
 

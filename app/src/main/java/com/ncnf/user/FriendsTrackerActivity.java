@@ -227,7 +227,6 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             return;
         }
         myFusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-            // Got last known location. In some rare situations this can be null.
             if (location != null) {
                 GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
 

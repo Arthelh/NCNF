@@ -1,9 +1,14 @@
 package com.ncnf.user;
 
+import android.content.Intent;
+import android.os.IBinder;
+import android.os.Looper;
 import android.provider.ContactsContract;
 
+import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.rule.ServiceTestRule;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiSelector;
@@ -27,6 +32,8 @@ import org.mockito.Spy;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import dagger.hilt.android.testing.BindValue;
 import dagger.hilt.android.testing.HiltAndroidRule;
@@ -40,6 +47,8 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static com.ncnf.utilities.StringCodes.FIRST_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
@@ -52,6 +61,10 @@ public class FriendsTrackerActivityTest {
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private GeoPoint p1;
+
+    @Rule
+    public final ServiceTestRule mServiceRule = new ServiceTestRule();
+
 
     @InjectMocks
     private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(FriendsTrackerActivity.class);
@@ -111,6 +124,26 @@ public class FriendsTrackerActivityTest {
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Taylor"));
 
         assertTrue("User marker exists", marker.waitForExists(10000));
+    }
+
+    @Test
+    public void testWithBoundService() throws TimeoutException {
+        when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
+        // Create the service Intent.
+        Intent serviceIntent =
+                new Intent(InstrumentationRegistry.getTargetContext(), LocationService.class);
+
+        Looper.prepare();
+
+        // Bind the service and grab a reference to the binder.
+        mServiceRule.startService(serviceIntent);
+        IBinder binder = mServiceRule.bindService(serviceIntent);
+
+        // Get the reference to the service, or you can call public methods on the binder directly.
+        LocationService service = ((LocationService.LocationServiceBinder) binder).getService();
+
+        // Verify that the service is working correctly.
+        assertThat(service.onStartCommand(null, 0, 0), is(2));
     }
 
 }
