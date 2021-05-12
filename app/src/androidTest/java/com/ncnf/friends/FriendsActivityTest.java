@@ -34,6 +34,7 @@ import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.pressKey;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeRight;
@@ -141,8 +142,9 @@ public class FriendsActivityTest {
         when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
         when(friendsRepository.removeFriend(anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
         onView(withId(R.id.friends_recycler_view)).check(new RecyclerViewItemCountAssertion(1));
+        onView(withId(R.id.friends_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, longClick()));
         onView(withId(R.id.friends_recycler_view))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, CustomRecyclerViewAction.longClickOnButtonInRecyclerViewItem(R.id.friend_card_button)));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, CustomRecyclerViewAction.clickOnButtonInRecyclerViewItem(R.id.friend_card_button)));
         verify(friendsRepository).removeFriend(anyString(), anyString());
         onView(withId(R.id.friends_recycler_view)).check(new RecyclerViewItemCountAssertion(0));
     }
@@ -157,7 +159,7 @@ public class FriendsActivityTest {
         onView(withHint("Username...")).perform(typeText("test")).perform(pressKey(KeyEvent.KEYCODE_ENTER));
         onView(withId(R.id.friends_recycler_view)).check(new RecyclerViewItemCountAssertion(1));
         onView(withId(R.id.friends_recycler_view))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, CustomRecyclerViewAction.longClickOnButtonInRecyclerViewItem(R.id.friend_card_button)));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, CustomRecyclerViewAction.clickOnButtonInRecyclerViewItem(R.id.friend_card_button)));
         verify(friendsRepository).request(anyString(), anyString());;
     }
 
