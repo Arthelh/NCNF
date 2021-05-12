@@ -56,12 +56,15 @@ public class FileStore {
         return future;
     }
 
-    public void downloadImage(ImageView view) {
+    public void downloadImage(ImageView view, Bitmap defaultImage) {
         requiresPath();
 
         download().thenAccept(data -> {
             Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
             view.setImageBitmap(bitmap);
+        }).exceptionally(e -> {
+            view.setImageBitmap(defaultImage);
+            return null;
         });
 
     }

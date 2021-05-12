@@ -9,6 +9,7 @@ import com.ncnf.R;
 import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.Group;
 import com.ncnf.socialObject.SocialObject;
+import com.ncnf.storage.CacheFileStore;
 import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
 
@@ -55,6 +56,9 @@ public class BookMarkActivityTest {
 
     @BindValue
     public User user = mockUser;
+
+    @BindValue
+    CacheFileStore fileStore = Mockito.mock(CacheFileStore.class);
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     @Rule

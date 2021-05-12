@@ -20,6 +20,15 @@ public class CacheFileStore extends FileStore {
     private File file;
     private Context context;
 
+    @Inject
+    public CacheFileStore(FirebaseStorage storage) {
+        super(storage);
+    }
+
+    public CacheFileStore() {
+        super();
+    }
+
     @Override
     public void setPath(String directory, String filename) {
         requiresContext();

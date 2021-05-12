@@ -18,6 +18,9 @@ import com.ncnf.utilities.DateAdapter;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class EventFragment extends Fragment {
 
     @Inject
@@ -43,7 +46,7 @@ public class EventFragment extends Fragment {
         ImageView imageView = view.findViewById(R.id.eventImage);
         fileStore.setContext(this.getContext());
         fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
-        fileStore.downloadImage(imageView);
+        fileStore.downloadImage(imageView, null);
 
         TextView name = view.findViewById(R.id.eventName);
         name.setText(event.getName());
