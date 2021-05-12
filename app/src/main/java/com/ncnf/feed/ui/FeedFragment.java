@@ -44,7 +44,6 @@ import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
 public class FeedFragment extends Fragment {
 
     private RecyclerView.LayoutManager lManager;
-
     private RecyclerView recycler;
     private EventAdapter adapter;
     private List<Event> eventList = new ArrayList<>();
@@ -68,7 +67,6 @@ public class FeedFragment extends Fragment {
         if (eventList.isEmpty())
             actualiseEvents();
     }
-
 
     @Nullable
     @Override
