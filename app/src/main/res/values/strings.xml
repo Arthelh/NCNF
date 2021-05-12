@@ -44,6 +44,7 @@
     <string name="settings_distance_slider">Max distance = </string>
     <string name="settings_accept_button">Accept</string>
     <string name="settings_discard_button">Discard</string>
+    <string name="settings_km"> km</string>
 
     <string name="event_date">Event Date</string>
     <string name="event_owner">Event Owner</string>
