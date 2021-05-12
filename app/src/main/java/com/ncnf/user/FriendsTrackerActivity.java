@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -61,6 +62,9 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     @Inject
     public User user;
 
+    @Inject
+    public DatabaseService dbs;
+
     private AppCompatImageButton findUserButton;
 
     private GoogleMap mMap;
@@ -86,7 +90,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     private Marker marker;
 
-    private DatabaseService dbs;
+    //private DatabaseService dbs;
 
     private LatLngBounds bounds;
 
@@ -96,7 +100,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_tracker);
 
-        dbs = new DatabaseService();
+        //dbs = new DatabaseService();
 
         //dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, new GeoPoint(46.5201852, 6.5637122));
         //dbs.updateField(USERS_COLLECTION_KEY + uuid2, USER_LOCATION_KEY, new GeoPoint(46.516981, 6.57144331));
@@ -168,12 +172,15 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     }
 
     private void getUserLocations() {
+        this.friendsUUID = user.getFriendsIds();
         for(int i = 0; i < friendsUUID.size(); ++i) {
 
             String userId = friendsUUID.get(i);
+
             CompletableFuture<GeoPoint> field = dbs.getField(USERS_COLLECTION_KEY + userId, USER_LOCATION_KEY);
             int finalI = i;
             field.thenAccept(point -> {
+                Log.d(TAG, "user long : " + point.getLongitude());
                 if(finalI >= markers.size()) {
                     markers.add(mMap.addMarker(new MarkerOptions().position(new LatLng(point.getLatitude(), point.getLongitude()))));
                     CompletableFuture<String> name = dbs.getField(USERS_COLLECTION_KEY + userId, FIRST_NAME_KEY);
@@ -296,36 +303,16 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        mapView.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mapView.onStop();
-    }
-
-    @Override
     public void onMapReady(GoogleMap map) {
         startLocationUpdates();
-    }
-
-    @Override
-    protected void onPause() {
-        mapView.onPause();
-        super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         mapView.onDestroy();
         super.onDestroy();
-        Log.d(TAG, "enters on destroy");
         stopLocationUpdates();
     }
-
 
 }
 

@@ -1,5 +1,7 @@
 package com.ncnf.user;
 
+import android.provider.ContactsContract;
+
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.uiautomator.UiDevice;
@@ -22,6 +24,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 
+import java.util.ArrayList;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import dagger.hilt.android.testing.BindValue;
@@ -33,7 +37,11 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
@@ -50,23 +58,25 @@ public class FriendsTrackerActivityTest {
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);
 
     @BindValue
-    public User user = Mockito.mock(User.class);
+    public User user = mock(User.class);
 
-    @Spy
-    private DatabaseService dbs;
-
+    @BindValue
+    public DatabaseService dbs = mock(DatabaseService.class);
 
     @Before
     public void setup(){
         Intents.init();
 
-        dbs = Mockito.mock(DatabaseService.class);
         when(user.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user));
         when(user.getEmail()).thenReturn("john@doe.ch");
         when(user.getFirstName()).thenReturn("John");
         when(user.getUuid()).thenReturn("0");
-        when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
 
+        ArrayList<String> s = new ArrayList<>();
+        s.add("0");
+        when(user.getFriendsIds()).thenReturn(s);
+
+        when(dbs.getField(USERS_COLLECTION_KEY + "0", USER_LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(new GeoPoint(0.3, 0.3)));
     }
 
     @After
@@ -76,6 +86,8 @@ public class FriendsTrackerActivityTest {
 
     @Test
     public void findsCurrentUser() {
+        when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
+
         onView(withId(R.id.find_user_button)).perform(click());
         UiDevice device = UiDevice.getInstance(getInstrumentation());
         UiObject marker = device.findObject(new UiSelector().descriptionContains("John"));
