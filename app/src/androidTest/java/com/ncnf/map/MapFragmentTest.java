@@ -135,10 +135,10 @@ public final class MapFragmentTest {
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
         assertNotNull("Map with events is loaded",
-                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 5000)
+                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 1000)
         );
         // Events are shown
-        UiObject marker = device.findObject(new UiSelector().descriptionContains("Carmen"));
+        UiObject marker = device.findObject(new UiSelector().descriptionContains("TestGeo"));
         assertTrue("Events markers exist", marker.waitForExists(5000));
 
         onView(withId(R.id.menu_settings)).perform(click());
@@ -161,10 +161,8 @@ public final class MapFragmentTest {
         });
         onView(withId(R.id.validateButton)).perform(click());
 
-
-        marker = device.findObject(new UiSelector().descriptionContains("Carmen"));
+        marker = device.findObject(new UiSelector().descriptionContains("TestGeo"));
         assertFalse("Events markers exist", marker.waitForExists(5000));
-
 
         onView(withId(R.id.map_switch_button)).perform(click());
 

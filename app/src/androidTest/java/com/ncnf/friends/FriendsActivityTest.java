@@ -179,7 +179,7 @@ public class FriendsActivityTest {
     public void friendsRequestsFragmentShowsMessageOnAccept() throws InterruptedException {
         when(friendsRepository.awaitingRequests(anyString())).thenReturn(CompletableFuture.completedFuture(users));
         onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
-        Thread.sleep(4000);
+        Thread.sleep(2000);
         onView(withId(R.id.accept_friends_request)).perform(click());
         onView(withId(R.id.friends_request_message)).check(matches(isDisplayed()));
     }
@@ -188,7 +188,7 @@ public class FriendsActivityTest {
     public void friendsRequestsFragmentShowsMessageOnDecline() throws InterruptedException {
         when(friendsRepository.awaitingRequests(anyString())).thenReturn(CompletableFuture.completedFuture(users));
         onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
-        Thread.sleep(4000);
+        Thread.sleep(2000);
         onView(withId(R.id.decline_friends_request)).perform(click());
         onView(withId(R.id.friends_request_message)).check(matches(isDisplayed()));
     }
