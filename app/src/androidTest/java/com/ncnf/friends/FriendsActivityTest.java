@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.friends.ui.FriendsActivity;
-import com.ncnf.user.FirebaseUserModule;
+import com.ncnf.firebase.modules.FirebaseUserModule;
 import com.ncnf.user.FriendsRepository;
 import com.ncnf.user.User;
 

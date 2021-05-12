@@ -1,4 +1,4 @@
-package com.ncnf.utilities;
+package com.ncnf.firebase.modules;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
