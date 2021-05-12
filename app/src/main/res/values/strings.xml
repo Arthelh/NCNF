@@ -108,6 +108,11 @@
     <!-- Friends Requests -->
     <string name="friends_requests_accept">Accept</string>
     <string name="friends_requests_decline">Decline</string>
+    <string name="friends_empty_text">No friends yet</string>
+    <string name="empty_friends_recycler_text">No friends yet.</string>
+    <string name="empty_search_friend_recycler_text">No matching user.</string>
+    <string name="friend_request_accept_text">The request was accepted !</string>
+    <string name="friend_request_decline_text">The request was declined !</string>
     <string name="add_to_calendar_button" />
 
 </resources>

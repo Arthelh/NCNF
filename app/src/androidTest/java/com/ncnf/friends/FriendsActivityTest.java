@@ -1,5 +1,7 @@
 package com.ncnf.friends;
 
+import android.view.KeyEvent;
+
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
@@ -10,6 +12,8 @@ import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.user.FirebaseUserModule;
 import com.ncnf.user.FriendsRepository;
 import com.ncnf.user.User;
+import com.ncnf.utilities.CustomRecyclerViewAction;
+import com.ncnf.utilities.RecyclerViewItemCountAssertion;
 
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -30,12 +34,21 @@ import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.pressKey;
+import static androidx.test.espresso.action.ViewActions.swipeLeft;
+import static androidx.test.espresso.action.ViewActions.swipeRight;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.any;
+import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertTrue;
 
 @HiltAndroidTest
 @UninstallModules({FirebaseUserModule.class})
@@ -61,43 +74,124 @@ public class FriendsActivityTest {
     @BeforeClass
     public static void setup() {
         when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        when(friendsRepository.searchFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
         when(friendsRepository.awaitingRequests(anyString())).thenReturn(CompletableFuture.completedFuture(users));
     }
 
     @Test
-    public void friendsAreDisplayedAndClickable() {
-        onView(withId(R.id.friends_recycler_view)).perform(RecyclerViewActions.actionOnItem(
-                hasDescendant(withText("John Smith")), click()
-        ));
-        // TODO: check that it go user profile when it is implemented
-        onView(withId(com.google.android.material.R.id.snackbar_text))
-                .check(matches(withText("DISPLAY_USER_PROFILE")));
+    public void friendsPageViewerTest() {
+        onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
+        onView(withId(R.id.friends_view_pager)).perform(swipeRight());
     }
 
-//    @Test
-//    public void searchingUserCreatesRecyclerView() throws InterruptedException {
-//        onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
-//
-//        onView(withId(R.id.add_friend_search_bar)).perform(click());
-//        onView(withClassName(containsString(EditText.class.getSimpleName()))).perform(typeText("Gab2"));
-//        onView(withId(R.id.add_friend_search_bar)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
-//
-//        Thread.sleep(5000);
-//
-//        onView(withId(R.id.add_friend_recycler_view)).check(new RecyclerViewItemCountAssertion(1));
-//    }
-//
-//
-//    @Test
-//    public void searchingUserThatExistsWorks() {
-//
-//        when(mockDbRef.orderBy(anyString()).startAt(anyString()).endAt(anyString())).thenReturn(mockQuery);
-//
-//        onView(withId(R.id.user_search)).perform(typeText("Gab 2"));
-//        onView(withId(R.id.user_search)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
-//        onView(withId(R.id.user_search)).perform(pressImeActionButton());
-//        onView(withId(R.id.add_friend_recycler_view)).check(matches(isDisplayed()));
-//    }
+    @Test
+    public void friendsFragmentDisplaysOneFriend(){
+        when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        onView(withId(R.id.friends_recycler_view)).check(new RecyclerViewItemCountAssertion(1));
+    }
+
+    @Test
+    public void friendsFragmentDisplaysNoFriendMessage(){
+        when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
+        onView(withId(R.id.friends_recycler_view)).check(new RecyclerViewItemCountAssertion(0));
+        onView(withId(R.id.friends_text)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void friendsFragmentButtonSwitchesBetweenViews(){
+        when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        when(friendsRepository.searchFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        onView(withId(R.id.friends_switch_button)).perform(click());
+        onView(withId(R.id.friends_search_bar)).check(matches(isDisplayed()));
+        onView(withId(R.id.friends_switch_button)).perform(click());
+        onView(withId(R.id.friends_search_bar)).check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void friendsFragmentSearchUserDisplaysNoUserMessage(){
+        when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        when(friendsRepository.searchFriends(anyString())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
+        onView(withId(R.id.friends_switch_button)).perform(click());
+        onView(withId(R.id.friends_search_bar)).perform(click());
+        onView(withHint("Username...")).perform(typeText("test")).perform(pressKey(KeyEvent.KEYCODE_ENTER));
+        onView(withId(R.id.friends_recycler_view)).check(new RecyclerViewItemCountAssertion(0));
+        onView(withId(R.id.friends_text)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void friendsFragmentSearchUserDisplaysOneUser(){
+        when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        when(friendsRepository.searchFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        onView(withId(R.id.friends_switch_button)).perform(click());
+        onView(withId(R.id.friends_search_bar)).perform(click());
+        onView(withHint("Username...")).perform(typeText("test")).perform(pressKey(KeyEvent.KEYCODE_ENTER));
+        onView(withId(R.id.friends_recycler_view)).check(new RecyclerViewItemCountAssertion(1));
+    }
+
+    @Test
+    public void friendsFragmentClickOnFriendLeadsToPublicProfile(){
+        when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        onView(withId(R.id.friends_recycler_view)).check(new RecyclerViewItemCountAssertion(1));
+        onView(withId(R.id.friends_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.public_profile_header)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void friendsFragmentClickOnRemoveFriendWorks(){
+        when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        when(friendsRepository.removeFriend(anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
+        onView(withId(R.id.friends_recycler_view)).check(new RecyclerViewItemCountAssertion(1));
+        onView(withId(R.id.friends_recycler_view))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, CustomRecyclerViewAction.longClickOnButtonInRecyclerViewItem(R.id.friend_card_button)));
+        verify(friendsRepository).removeFriend(anyString(), anyString());
+        onView(withId(R.id.friends_recycler_view)).check(new RecyclerViewItemCountAssertion(0));
+    }
+
+    @Test
+    public void friendsFragmentClickOnAddFriendWorks(){
+        when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        when(friendsRepository.request(anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
+        when(friendsRepository.searchFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        onView(withId(R.id.friends_switch_button)).perform(click());
+        onView(withId(R.id.friends_search_bar)).perform(click());
+        onView(withHint("Username...")).perform(typeText("test")).perform(pressKey(KeyEvent.KEYCODE_ENTER));
+        onView(withId(R.id.friends_recycler_view)).check(new RecyclerViewItemCountAssertion(1));
+        onView(withId(R.id.friends_recycler_view))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, CustomRecyclerViewAction.longClickOnButtonInRecyclerViewItem(R.id.friend_card_button)));
+        verify(friendsRepository).request(anyString(), anyString());;
+    }
+
+    @Test
+    public void friendsRequestsFragmentShowsOneRequest(){
+        when(friendsRepository.awaitingRequests(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
+        onView(withId(R.id.friends_requests_recycler_view)).check(new RecyclerViewItemCountAssertion(1));
+    }
+
+    @Test
+    public void friendsRequestsFragmentShowsNoRequest(){
+        when(friendsRepository.awaitingRequests(anyString())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
+        onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
+        onView(withId(R.id.friends_requests_recycler_view)).check(new RecyclerViewItemCountAssertion(0));
+    }
+
+    @Test
+    public void friendsRequestsFragmentShowsMessageOnAccept() throws InterruptedException {
+        when(friendsRepository.awaitingRequests(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
+        Thread.sleep(2000);
+        onView(withId(R.id.accept_friends_request)).perform(click());
+        onView(withId(R.id.friends_request_message)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void friendsRequestsFragmentShowsMessageOnDecline() throws InterruptedException {
+        when(friendsRepository.awaitingRequests(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
+        Thread.sleep(2000);
+        onView(withId(R.id.decline_friends_request)).perform(click());
+        onView(withId(R.id.friends_request_message)).check(matches(isDisplayed()));
+    }
 
 }
 
