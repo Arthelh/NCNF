@@ -25,6 +25,7 @@ public class StringCodes {
     public static final String PENDING_REQUESTS_KEY = "pending_requests";
     public static final String AWAITING_REQUESTS_KEY = "awaiting_requests";
     public static final String USER_LOCATION_KEY = "user_location";
+    public static final String USER_IMAGE_PATH = "/users";
 
     /**
      * Keys related to events

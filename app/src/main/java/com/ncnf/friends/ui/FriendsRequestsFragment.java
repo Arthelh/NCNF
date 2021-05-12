@@ -48,7 +48,7 @@ public class FriendsRequestsFragment extends Fragment {
         recycler = getView().findViewById(R.id.friends_requests_recycler_view);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.hasFixedSize();
-        adapter = new FriendsRequestAdapter(new ArrayList<>(), this::displayUser, friendsRepository, user.getUid());
+        adapter = new FriendsRequestAdapter(requireActivity(), new ArrayList<>(), item -> {}, friendsRepository, user.getUid());
         recycler.setAdapter(adapter);
 
         friendsRepository.awaitingRequests(user.getUid()).thenAccept(users -> {
@@ -57,9 +57,4 @@ public class FriendsRequestsFragment extends Fragment {
             return null; // TODO : handle exception
         });
     }
-
-    private void displayUser(User user){
-        Toast.makeText(getActivity(), "TEST_PROFILE_DISPLAY", Toast.LENGTH_LONG).show();
-    }
-
 }
