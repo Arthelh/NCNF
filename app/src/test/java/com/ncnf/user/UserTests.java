@@ -23,6 +23,7 @@ import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -226,7 +227,7 @@ public class UserTests {
         try {
             assertEquals(loaded.get(), null);
         } catch(Exception e){
-            Assert.fail("Something went wrong with the future");
+            assertNotNull(e);
         }
     }
 

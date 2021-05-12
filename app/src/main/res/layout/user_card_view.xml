@@ -3,20 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="20dp"
-    android:scrollbars="vertical"
-    app:cardCornerRadius="20dp"
-    app:cardBackgroundColor="@color/white">
+    android:layout_marginVertical="1dp"
+    app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="@color/white"
+    android:layout_gravity="center">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp">
+        android:padding="3dp">
 
         <include
-            android:id="@+id/user_profile_picture"
+            android:id="@+id/user_card_profile_picture"
             layout="@layout/profile_picture_view"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,28 +22,28 @@
 
         <TextView
             android:id="@+id/user_card_view_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginHorizontal="15dp"
             android:text="Jane Doe"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/user_card_view_username"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/user_profile_picture"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/user_card_profile_picture"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4" />
 
         <TextView
             android:id="@+id/user_card_view_username"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="\@JaneDoe1996"
+            android:layout_marginHorizontal="15dp"
+            android:text="\@JaneDoe"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/user_profile_picture"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/user_card_profile_picture"
             app:layout_constraintTop_toBottomOf="@+id/user_card_view_name" />
 
 

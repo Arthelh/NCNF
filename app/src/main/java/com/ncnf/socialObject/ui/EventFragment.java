@@ -1,9 +1,11 @@
 package com.ncnf.socialObject.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.ncnf.R;
 import com.ncnf.socialObject.SocialObject;
 import com.ncnf.storage.CacheFileStore;
 import com.ncnf.utilities.DateAdapter;
+import com.ncnf.utilities.SaveToCalendar;
 
 import javax.inject.Inject;
 
@@ -42,7 +45,25 @@ public class EventFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initViews(view);
+        initSaveCalendar(view);
 
+    }
+
+    private void initSaveCalendar(View view){
+        Button addToCalendar = view.findViewById(R.id.button_calendar);
+        addToCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent calendarIntent = SaveToCalendar.createCalendarIntent(event);
+                if (calendarIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
+                    startActivity(calendarIntent);
+                }
+            }
+        });
+    }
+
+    private void initViews(View view){
         ImageView imageView = view.findViewById(R.id.eventImage);
         fileStore.setContext(this.getContext());
         fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
