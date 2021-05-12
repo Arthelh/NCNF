@@ -115,7 +115,7 @@ public class FriendsTrackerActivityTest {
         assertTrue("User marker exists", marker.waitForExists(2000));
     }
 
-    /**
+
     @Test
     public void findsOtherUser() {
         when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
@@ -126,7 +126,6 @@ public class FriendsTrackerActivityTest {
 
         assertTrue("User marker exists", marker.waitForExists(10000));
     }
-     **/
 
     @Test
     public void testWithBoundService() throws TimeoutException {
