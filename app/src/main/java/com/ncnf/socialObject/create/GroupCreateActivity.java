@@ -64,6 +64,9 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
     @Inject
     public User user;
 
+    @Inject
+    public FileStore fileStore;
+
     private SocialObject.Type eventType;
     private LocalDate eventDate = LocalDate.now();
     private LocalTime eventTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
@@ -199,13 +202,13 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
                                 eventType
                         );
 
-                        FileStore file = new FileStore(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, group.getUuid()));
+                        fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, group.getUuid()));
                         pictureView.setDrawingCacheEnabled(true);
                         pictureView.buildDrawingCache();
                         Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
 
                         // Simultaneously upload the image and save the group.
-                        CompletableFuture.allOf(file.uploadImage(bitmap), user.createGroup(group))
+                        CompletableFuture.allOf(fileStore.uploadImage(bitmap), user.createGroup(group))
                                 .thenAccept(t -> nextStep())
                                 .exceptionally(e -> {
                                     failToCreateEvent(e.getMessage());

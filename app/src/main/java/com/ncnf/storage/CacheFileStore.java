@@ -11,27 +11,31 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.concurrent.CompletableFuture;
 
+import javax.inject.Inject;
+
 public class CacheFileStore extends FileStore {
 
     private static final String LOG_TAG = "CACHING";
 
-    private final File file;
-    private final Context context;
+    private File file;
+    private Context context;
 
-    public CacheFileStore(FirebaseStorage storage, Context context, String directory, String filename) {
-        super(storage, directory, filename);
-        this.context = context;
+    @Override
+    public void setPath(String directory, String filename) {
+        requiresContext();
+
+        super.setPath(directory, filename);
         this.file = createFile(directory, filename);
     }
 
-    public CacheFileStore(Context context, String directory, String filename) {
-        super(directory, filename);
+    public void setContext(Context context) {
         this.context = context;
-        this.file = createFile(directory, filename);
     }
 
     @Override
     public CompletableFuture<byte[]> download() {
+        super.requiresPath();
+
         if (file.exists()) {
             try {
                 byte[] data = Files.readAllBytes(file.toPath());
@@ -50,6 +54,8 @@ public class CacheFileStore extends FileStore {
     }
 
     private void storeFile(byte[] data) {
+        super.requiresPath();
+
         try {
             file.createNewFile();
             FileOutputStream fos = new FileOutputStream(file);
@@ -65,5 +71,10 @@ public class CacheFileStore extends FileStore {
         File dir = new File(root, directory);
         dir.mkdirs();
         return new File(dir, filename);
+    }
+
+    private void requiresContext() throws IllegalStateException {
+        if (this.context == null)
+            throw new IllegalStateException("Please set a context before setting the path.");
     }
 }

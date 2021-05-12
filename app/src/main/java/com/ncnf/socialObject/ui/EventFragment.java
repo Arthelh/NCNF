@@ -12,13 +12,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
-import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.SocialObject;
 import com.ncnf.storage.CacheFileStore;
-import com.ncnf.storage.FileStore;
 import com.ncnf.utilities.DateAdapter;
 
+import javax.inject.Inject;
+
 public class EventFragment extends Fragment {
+
+    @Inject
+    public CacheFileStore fileStore;
 
     private SocialObject event;
 
@@ -38,8 +41,9 @@ public class EventFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ImageView imageView = view.findViewById(R.id.eventImage);
-        FileStore file = new CacheFileStore(this.getContext(), Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, event.getUuid()));
-        file.downloadImage(imageView);
+        fileStore.setContext(this.getContext());
+        fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
+        fileStore.downloadImage(imageView);
 
         TextView name = view.findViewById(R.id.eventName);
         name.setText(event.getName());

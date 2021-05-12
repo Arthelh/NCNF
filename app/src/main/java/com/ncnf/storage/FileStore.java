@@ -12,24 +12,31 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.CompletableFuture;
 
+import javax.inject.Inject;
+
 public class FileStore {
 
     private final long MAX_SIZE = 10 * 1024 * 1024;
 
     private final FirebaseStorage storage;
-    private final StorageReference fileRef;
+    private StorageReference fileRef;
 
-    public FileStore(FirebaseStorage storage, String directory, String filename) {
+    @Inject
+    public FileStore(FirebaseStorage storage) {
         this.storage = storage;
-        this.fileRef = storage.getReference().child(directory).child(filename);
     }
 
-    public FileStore(String directory, String filename) {
+    public FileStore() {
         this.storage = FirebaseStorage.getInstance();
+    }
+
+    public void setPath(String directory, String filename) {
         this.fileRef = storage.getReference().child(directory).child(filename);
     }
 
     public CompletableFuture<Boolean> uploadImage(Bitmap bitmap) {
+        requiresPath();
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
@@ -38,6 +45,8 @@ public class FileStore {
     }
 
     public CompletableFuture<Boolean> upload(byte[] data) {
+        requiresPath();
+
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         UploadTask uploadTask = fileRef.putBytes(data);
@@ -48,6 +57,8 @@ public class FileStore {
     }
 
     public void downloadImage(ImageView view) {
+        requiresPath();
+
         download().thenAccept(data -> {
             Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
             view.setImageBitmap(bitmap);
@@ -56,15 +67,20 @@ public class FileStore {
     }
 
     public CompletableFuture<byte[]> download() {
+        requiresPath();
+
         CompletableFuture<byte[]> future = new CompletableFuture<>();
 
         Task<byte[]> download = fileRef.getBytes(MAX_SIZE);
         download.addOnSuccessListener(future::complete);
-        download.addOnFailureListener(exception -> {
-
-        });
+        download.addOnFailureListener(future::completeExceptionally);
 
         return future;
+    }
+
+    protected void requiresPath() throws IllegalStateException {
+        if (this.fileRef == null)
+            throw new IllegalStateException("Please set the path before using any methods.");
     }
 
 }
