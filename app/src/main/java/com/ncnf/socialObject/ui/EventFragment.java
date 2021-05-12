@@ -38,7 +38,7 @@ public class EventFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ImageView imageView = view.findViewById(R.id.eventImage);
-        FileStore file = new CacheFileStore(this.getContext(), Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
+        FileStore file = new CacheFileStore(this.getContext(), Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, event.getUuid()));
         file.downloadImage(imageView);
 
         TextView name = view.findViewById(R.id.eventName);
