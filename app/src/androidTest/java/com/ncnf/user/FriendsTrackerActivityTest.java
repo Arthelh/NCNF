@@ -64,6 +64,7 @@ public class FriendsTrackerActivityTest {
 
     @Rule
     public final ServiceTestRule mServiceRule = new ServiceTestRule();
+    
 
 
     @InjectMocks
