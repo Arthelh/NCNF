@@ -37,6 +37,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static com.ncnf.utilities.StringCodes.FIRST_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
 import static org.junit.Assert.assertEquals;
@@ -50,6 +51,7 @@ public class FriendsTrackerActivityTest {
 
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private GeoPoint p1;
 
     @InjectMocks
     private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(FriendsTrackerActivity.class);
@@ -76,7 +78,12 @@ public class FriendsTrackerActivityTest {
         s.add("0");
         when(user.getFriendsIds()).thenReturn(s);
 
-        when(dbs.getField(USERS_COLLECTION_KEY + "0", USER_LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(new GeoPoint(0.3, 0.3)));
+        p1 = new GeoPoint(0.03, 0.03);
+
+
+        when(dbs.getField(USERS_COLLECTION_KEY + "0", USER_LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(p1));
+        when(dbs.getField(USERS_COLLECTION_KEY + "0", FIRST_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("Taylor"));
+
     }
 
     @After
@@ -94,4 +101,16 @@ public class FriendsTrackerActivityTest {
 
         assertTrue("User marker exists", marker.waitForExists(2000));
     }
+
+    @Test
+    public void findsOtherUser() {
+        when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
+
+        onView(withId(R.id.find_user_button)).perform(click());
+        UiDevice device = UiDevice.getInstance(getInstrumentation());
+        UiObject marker = device.findObject(new UiSelector().descriptionContains("Taylor"));
+
+        assertTrue("User marker exists", marker.waitForExists(10000));
+    }
+
 }

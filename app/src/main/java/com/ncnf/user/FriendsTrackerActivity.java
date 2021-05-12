@@ -180,7 +180,6 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             CompletableFuture<GeoPoint> field = dbs.getField(USERS_COLLECTION_KEY + userId, USER_LOCATION_KEY);
             int finalI = i;
             field.thenAccept(point -> {
-                Log.d(TAG, "user long : " + point.getLongitude());
                 if(finalI >= markers.size()) {
                     markers.add(mMap.addMarker(new MarkerOptions().position(new LatLng(point.getLatitude(), point.getLongitude()))));
                     CompletableFuture<String> name = dbs.getField(USERS_COLLECTION_KEY + userId, FIRST_NAME_KEY);
