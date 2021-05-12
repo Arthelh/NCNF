@@ -12,11 +12,16 @@ import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 
 public class UsersRepository {
 
-    @Inject
     public DatabaseService db;
 
+    public UsersRepository() {
+        this.db = new DatabaseService();
+    }
+
     @Inject
-    public UsersRepository(){}
+    public UsersRepository(DatabaseService db) {
+        this.db = db;
+    }
 
     public CompletableFuture<User> loadUser(String uuid){
         return this.db.getDocument(USERS_COLLECTION_KEY + uuid, User.class);
