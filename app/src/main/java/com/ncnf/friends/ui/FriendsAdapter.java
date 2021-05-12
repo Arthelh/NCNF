@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -60,16 +61,20 @@ public class FriendsAdapter extends UserAdapter {
 
             if(friendType == FriendsType.ADDABLE){
                 friendCardButton.setIconResource(R.drawable.ic_baseline_person_add_alt_1_24);
-                friendCardButton.setOnLongClickListener(v -> {
-                    sendAddFriendRequest(u);
-                    return false;
-                });
+                friendCardButton.setOnClickListener(v -> sendAddFriendRequest(u));
             } else if(friendType == FriendsType.REMOVABLE){
-                friendCardButton.setIconResource(R.drawable.ic_baseline_remove_circle_24);
-                friendCardButton.setOnLongClickListener(v -> {
-                    removeFriend(u);
-                    return false;
+                friendCardButton.setVisibility(View.GONE);
+                itemView.setOnLongClickListener(v -> {
+                    if(friendCardButton.getVisibility() == View.GONE){
+                        friendCardButton.setVisibility(View.VISIBLE);
+                    } else {
+                        friendCardButton.setVisibility(View.GONE);
+                    }
+                    return true;
                 });
+                friendCardButton.setIconResource(R.drawable.ic_baseline_remove_circle_24);
+                friendCardButton.setIconTintResource(R.color.red);
+                friendCardButton.setOnClickListener(v -> removeFriend(u));
             } else {
                 friendCardButton.setVisibility(View.GONE);
             }
@@ -78,13 +83,14 @@ public class FriendsAdapter extends UserAdapter {
         private void sendAddFriendRequest(User u){
             friendsRepository.request(myUuid, u.getUuid()).thenAccept(response -> {
                 showDoneButton();
+                Toast.makeText(context, "Sent request to " + u.getFirstName(), Toast.LENGTH_SHORT).show();
             }).exceptionally(exception -> null);
         }
 
         private void removeFriend(User u){
             friendsRepository.removeFriend(myUuid, u.getUuid()).thenAccept(response -> {
                 removeItem(u);
-                showDoneButton();
+                Toast.makeText(context, "User successfully removed", Toast.LENGTH_SHORT).show();
             }).exceptionally(exception -> null);
         }
 
