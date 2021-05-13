@@ -1,4 +1,4 @@
-# Summary for Week 8
+# Summary for Week 9
 
 ## Beltan
 
@@ -22,10 +22,16 @@ Overall it took me a bit longer than expected, mostly because of the map and int
 
 ## Jérémie (Scrum Master)
 
+This week, I worked on the UI for the friends system and its link to the existing backend functions. I had trouble with the way I wanted to display each new feature and this took me some reflexion time but I'm happy with the result. I also worked on how we display the profile of my friends with "sensible information". Finally, I used Keran's work in order to load users profile pictures.
 
+Those tasks took me some time but I think the expected time was pretty close to the actual one. One issue that I have to address is to avoid merging too big PRs but this will be my goal next week.
 
 ## Keran
 
 
 
 ## Overall team
+
+This week's sprint, we decided to keep the tasks and user stories we were working on in order to fully complete them. We achieved our goal and were able to complete 4 big user stories, including the Friends system, the public profile and the Map displaying nearby events. We worked also on a draft for the live position tracking system, which is one of the most important features, and on linking a user to an organization in order to publish events. The destabilisation srpint went pretty well since the extra user story is also complete with a working backend (no UI yet).
+
+Teamwork clearly became easier since several weeks. The team has a clear vision of the goal to achieve each week and the next features to implement. Overall, our app is really starting to look great and we all look forward to finish it.
