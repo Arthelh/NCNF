@@ -93,6 +93,8 @@ public class FriendsTrackerActivityTest {
 
         p1 = new GeoPoint(0.03, 0.03);
 
+        when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
+
 
         when(dbs.getField(USERS_COLLECTION_KEY + "0", USER_LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(p1));
         when(dbs.getField(USERS_COLLECTION_KEY + "0", FIRST_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("Taylor"));
@@ -106,7 +108,6 @@ public class FriendsTrackerActivityTest {
 
     @Test
     public void findsCurrentUser() {
-        when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
 
         onView(withId(R.id.find_user_button)).perform(click());
         UiDevice device = UiDevice.getInstance(getInstrumentation());
@@ -118,18 +119,16 @@ public class FriendsTrackerActivityTest {
 
     @Test
     public void findsOtherUser() {
-        when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
 
         onView(withId(R.id.find_user_button)).perform(click());
         UiDevice device = UiDevice.getInstance(getInstrumentation());
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Taylor"));
 
-        assertTrue("User marker exists", marker.waitForExists(10000));
+        assertTrue("User marker exists", marker.waitForExists(30000));
     }
 
     @Test
     public void testWithBoundService() throws TimeoutException {
-        when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
         // Create the service Intent.
         Intent serviceIntent =
                 new Intent(InstrumentationRegistry.getTargetContext(), LocationService.class);
