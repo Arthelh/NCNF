@@ -5,9 +5,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
@@ -125,12 +127,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.SocialObjVie
         private final TextView socialObject;
         private final TextView date;
         private final TextView description;
+        private final ImageView image;
 
         public SocialObjViewHolder(View v, OnSocialObjListener e) {
             super(v);
             socialObject = (TextView) v.findViewById(R.id.set_event_name);
             date = (TextView) v.findViewById(R.id.event_date);
             description = (TextView) v.findViewById(R.id.event_descr);
+            CardView imageHolder = (CardView) v.findViewById(R.id.event_card_image);
+            image = imageHolder.findViewById(R.id.event_picture);
             //add timestamp
         }
 
