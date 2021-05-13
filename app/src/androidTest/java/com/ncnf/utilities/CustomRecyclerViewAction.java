@@ -9,7 +9,7 @@ import org.hamcrest.Matcher;
 
 public class CustomRecyclerViewAction {
 
-    public static ViewAction longClickOnButtonInRecyclerViewItem(final int id) {
+    public static ViewAction clickOnButtonInRecyclerViewItem(final int id) {
         return new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
@@ -19,6 +19,26 @@ public class CustomRecyclerViewAction {
             @Override
             public String getDescription() {
                 return "Click on a button inside a RecyclerView item";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                View v = view.findViewById(id);
+                v.performClick();
+            }
+        };
+    }
+
+    public static ViewAction longClickOnButtonInRecyclerViewItem(final int id) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return null;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Long lick on a button inside a RecyclerView item";
             }
 
             @Override
