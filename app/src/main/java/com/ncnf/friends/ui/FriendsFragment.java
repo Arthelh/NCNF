@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
-import com.ncnf.user.FriendsRepository;
+import com.ncnf.user.friend.FriendsRepository;
 import com.ncnf.user.User;
 import com.ncnf.user.UserAdapter;
 

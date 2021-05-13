@@ -1,6 +1,7 @@
-package com.ncnf.user;
+package com.ncnf.user.friend;
 
 import com.ncnf.database.DatabaseService;
+import com.ncnf.user.User;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
