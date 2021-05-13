@@ -4,6 +4,7 @@ import com.google.firebase.Timestamp;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.user.User;
 
+import java.time.Instant;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -47,8 +48,9 @@ public class UserBuilder extends DatabaseObjectBuilder<User>{
         Date birthDate = ((Timestamp) data.getOrDefault(BIRTH_DATE_KEY, Timestamp.now())).toDate(); // TODO : change
         boolean notifications = (boolean) data.getOrDefault(NOTIFICATIONS_KEY, false);
 
-        return new User(db, uuid, username, email, firstName, lastName, friends, ownedGroups, participatingGroups, savedEvents, notifications, birthDate);
-    }
+            return new User(db, uuid, username, email, firstName, lastName, friends, ownedGroups, participatingGroups, savedEvents, notifications, birthDate, null);
+        } 
+    
 
     @Override
     public Map<String, Object> toMap(User user) {

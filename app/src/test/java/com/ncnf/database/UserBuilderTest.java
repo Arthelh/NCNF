@@ -71,7 +71,7 @@ public class UserBuilderTest {
 
     @Test
     public void toMapWorks(){
-        User user = new User(db, uuid, username, email, firstName, lastName, friends, ownedGroups, participatingGroups, savedEvents, notifications, birthDate);
+        User user = new User(db, uuid, username, email, firstName, lastName, friends, ownedGroups, participatingGroups, savedEvents, notifications, birthDate, null);
 
         Map<String, Object> data = builder.toMap(user);
 

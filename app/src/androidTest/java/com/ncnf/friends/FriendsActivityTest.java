@@ -68,7 +68,7 @@ public class FriendsActivityTest {
 
     @BindValue
     public FriendsRepository mockFriendsRepository = friendsRepository;
-    private static final User u1 = new User(databaseService, "1", "johnny", "john@bar.com","John",  "Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, new Date());
+    private static final User u1 = new User(databaseService, "1", "johnny", "john@bar.com","John",  "Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, new Date(), null);
     private static final List<User> users = Collections.singletonList(u1);
 
     @BeforeClass
