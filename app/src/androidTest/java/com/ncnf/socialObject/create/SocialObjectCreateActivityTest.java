@@ -1,5 +1,6 @@
 package com.ncnf.socialObject.create;
 
+import android.graphics.Bitmap;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -9,6 +10,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
 import com.ncnf.main.MainActivity;
+import com.ncnf.storage.FileStore;
 import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
 
@@ -44,6 +46,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -58,6 +61,9 @@ public class SocialObjectCreateActivityTest {
     @BindValue
     public User user = mockUser;
 
+    @BindValue
+    public FileStore fileStore = Mockito.mock(FileStore.class);
+
     CompletableFuture<Boolean> response = CompletableFuture.completedFuture(true);
 
     @Rule
@@ -65,13 +71,6 @@ public class SocialObjectCreateActivityTest {
 
     @Before
     public void setup(){
-        hiltRule.inject();
-        Intents.init();
-    }
-
-    @After
-    public void cleanup(){
-        Intents.release();
     }
 
     @Test
@@ -103,8 +102,11 @@ public class SocialObjectCreateActivityTest {
 
     @Test
     public void eventFormValidatesCorrectInput() {
+        Intents.init();
+
         when(user.getUuid()).thenReturn("ownerId");
         when(user.createGroup(anyObject())).thenReturn(response);
+        when(fileStore.uploadImage(any(Bitmap.class))).thenReturn(CompletableFuture.completedFuture(true));
 
         onView(withId(R.id.set_event_name)).perform(scrollTo(), replaceText("Conference"));
         onView(withId(R.id.set_event_description)).perform(scrollTo(), replaceText("Math are fun!"));
@@ -130,7 +132,10 @@ public class SocialObjectCreateActivityTest {
 
         verify(user).getUuid();
         verify(user).createGroup(anyObject());
+
         intended(hasComponent(MainActivity.class.getName()));
+
+        Intents.release();
     }
 
     @Test

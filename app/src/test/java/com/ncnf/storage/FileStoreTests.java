@@ -1,6 +1,7 @@
 package com.ncnf.storage;
 
 import android.graphics.Bitmap;
+import android.widget.ImageView;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -15,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
@@ -39,7 +41,8 @@ public class FileStoreTests {
         when(task.addOnSuccessListener(any())).thenReturn(task);
         when(task.addOnFailureListener(any())).thenReturn(task);
 
-        FileStore file = new FileStore(storage, directory, filename);
+        FileStore file = new FileStore(storage);
+        file.setPath(directory, filename);
 
         file.uploadImage(bitmap);
 
@@ -55,7 +58,8 @@ public class FileStoreTests {
         when(storage.getReference().child(anyString()).child(anyString())).thenReturn(fileRef);
         when(fileRef.getBytes(anyLong())).thenReturn(task);
 
-        FileStore file = new FileStore(storage, directory, filename);
+        FileStore file = new FileStore(storage);
+        file.setPath(directory, filename);
 
         CompletableFuture<byte[]> future = file.download();
 
@@ -64,6 +68,35 @@ public class FileStoreTests {
         } catch (ExecutionException | InterruptedException e) {
             Assert.fail("The future did not complete correctly !");
         }
+    }
+
+    @Test
+    public void downloadImageWithDefault() {
+        FirebaseStorage storage = Mockito.mock(FirebaseStorage.class, Mockito.RETURNS_DEEP_STUBS);
+        StorageReference fileRef = Mockito.mock(StorageReference.class);
+        MockTask<byte[]> task = new MockTask<>(data, new Exception("Download failed"), false);
+        ImageView view = Mockito.mock(ImageView.class);
+        Bitmap bitmap = Mockito.mock(Bitmap.class);
+
+        when(storage.getReference().child(anyString()).child(anyString())).thenReturn(fileRef);
+        when(fileRef.getBytes(anyLong())).thenReturn(task);
+
+        FileStore file = new FileStore(storage);
+        file.setPath(directory, filename);
+        file.downloadImage(view, bitmap);
+
+        verify(view).setImageBitmap(bitmap);
+    }
+
+    @Test
+    public void throwsExceptionIfNoPath() {
+        FirebaseStorage storage = Mockito.mock(FirebaseStorage.class, Mockito.RETURNS_DEEP_STUBS);
+
+        FileStore file = new FileStore(storage);
+
+        assertThrows(IllegalStateException.class, () -> {
+           file.download();
+        });
     }
 
 }

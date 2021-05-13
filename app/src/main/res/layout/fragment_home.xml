@@ -42,6 +42,13 @@
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
                 android:text="@string/home_friends_button" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/track_friends_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:text="@string/find_your_friends_button" />
         </LinearLayout>
 
 
