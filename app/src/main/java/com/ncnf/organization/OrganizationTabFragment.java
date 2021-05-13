@@ -1,4 +1,4 @@
-package com.ncnf.user.organization;
+package com.ncnf.organization;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
 import com.ncnf.user.User;
-import com.ncnf.user.organization.helpers.OrganizationAdapter;
+import com.ncnf.organization.helpers.OrganizationAdapter;
 import com.ncnf.utilities.InputValidator;
 
 import java.util.LinkedList;

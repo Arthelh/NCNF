@@ -1,4 +1,4 @@
-package com.ncnf.user.organization.helpers;
+package com.ncnf.organization.helpers;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
-import com.ncnf.user.organization.Organization;
+import com.ncnf.organization.Organization;
 
 import java.util.LinkedList;
 import java.util.List;

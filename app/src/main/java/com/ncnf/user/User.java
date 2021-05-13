@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.Group;
+import com.ncnf.user.helpers.CurrentUserModule;
 
 import java.util.ArrayList;
 import java.util.Collections;

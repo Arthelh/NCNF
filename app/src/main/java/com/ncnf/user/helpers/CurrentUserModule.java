@@ -1,7 +1,8 @@
-package com.ncnf.user;
+package com.ncnf.user.helpers;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.ncnf.user.User;
 
 import dagger.Module;
 import dagger.Provides;

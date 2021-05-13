@@ -1,6 +1,6 @@
 package com.ncnf.utilities;
 
-import com.ncnf.user.organization.Organization;
+import com.ncnf.organization.Organization;
 
 public class StringCodes {
 

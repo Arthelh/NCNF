@@ -1,4 +1,4 @@
-package com.ncnf.user.organization.unused;
+package com.ncnf.organization.unused;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.ncnf.R;
-import com.ncnf.user.organization.Organization;
-import com.ncnf.user.organization.OrganizationViewFragment;
-import com.ncnf.user.organization.unused.OrganizationTokenFragment;
+import com.ncnf.organization.Organization;
+import com.ncnf.organization.OrganizationViewFragment;
 
 
 public class OrganizationViewPlusToken extends Fragment {

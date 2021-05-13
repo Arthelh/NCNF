@@ -1,4 +1,4 @@
-package com.ncnf.user.organization;
+package com.ncnf.organization;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
