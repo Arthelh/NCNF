@@ -46,6 +46,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,6 +63,9 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
 
     @Inject
     public User user;
+
+    @Inject
+    public FileStore fileStore;
 
     private SocialObject.Type eventType;
     private LocalDate eventDate = LocalDate.now();
@@ -188,15 +192,6 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
 
                     if (user != null) {
 
-                        // TODO: might change with the new event class
-                        // File upload must happened after the event is saved, such that the image path
-                        // contains the event's UUID
-                        FileStore file = new FileStore(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
-                        pictureView.setDrawingCacheEnabled(true);
-                        pictureView.buildDrawingCache();
-                        Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
-                        file.uploadImage(bitmap);
-
                         //TODO: for now some fields aren't used and it only creates group -> should be extended afterward
                         DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());
                         Group group = new Group(user.getUuid(),
@@ -206,13 +201,19 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
                                 eventDescription.getText().toString(),
                                 eventType
                         );
-                        if(group != null) {
 
-                            user.createGroup(group).thenAccept(task -> nextStep()).exceptionally(exception -> {
-                                failToCreateEvent(exception.getMessage());
-                                return null;
-                            });
-                        }
+                        fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, group.getUuid()));
+                        pictureView.setDrawingCacheEnabled(true);
+                        pictureView.buildDrawingCache();
+                        Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
+
+                        // Simultaneously upload the image and save the group.
+                        CompletableFuture.allOf(fileStore.uploadImage(bitmap), user.createGroup(group))
+                                .thenAccept(t -> nextStep())
+                                .exceptionally(e -> {
+                                    failToCreateEvent(e.getMessage());
+                                    return null;
+                                });
                     }
                     else {
                         Log.d(DEBUG_TAG, "Can't create new event if not logged in");

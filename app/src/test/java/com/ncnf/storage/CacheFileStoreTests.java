@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
@@ -35,7 +36,7 @@ public class CacheFileStoreTests {
         FirebaseStorage storage = Mockito.mock(FirebaseStorage.class, Mockito.RETURNS_DEEP_STUBS);
         StorageReference fileRef = Mockito.mock(StorageReference.class);
         Context context = Mockito.mock(Context.class);
-        MockTask<byte[]> task = new MockTask<>(data, null);
+        MockTask<byte[]> task = new MockTask<>(data, new Exception());
 
         when(fileRef.getBytes(anyLong())).thenReturn(task);
         when(storage.getReference().child(anyString()).child(anyString())).thenReturn(fileRef);
@@ -44,7 +45,10 @@ public class CacheFileStoreTests {
         folder.create();
         when(context.getCacheDir()).thenReturn(folder.getRoot());
 
-        CacheFileStore fileStore = new CacheFileStore(storage, context,directory, filename);
+        CacheFileStore fileStore = new CacheFileStore(storage);
+        fileStore.setContext(context);
+        fileStore.setPath(directory, filename);
+
         CompletableFuture<byte[]> future = fileStore.download();
 
         File file = new File(folder.getRoot() + "/" + directory,filename);
@@ -77,7 +81,9 @@ public class CacheFileStoreTests {
 
         when(context.getCacheDir()).thenReturn(folder.getRoot());
 
-        CacheFileStore fileStore = new CacheFileStore(storage, context,directory, filename);
+        CacheFileStore fileStore = new CacheFileStore(storage);
+        fileStore.setContext(context);
+        fileStore.setPath(directory, filename);
         CompletableFuture<byte[]> future = fileStore.download();
 
         try {
@@ -85,5 +91,16 @@ public class CacheFileStoreTests {
         } catch (ExecutionException | InterruptedException e) {
             Assert.fail("The future did not complete correctly !");
         }
+    }
+
+    @Test
+    public void throwsExceptionIfNoContext() {
+        FirebaseStorage storage = Mockito.mock(FirebaseStorage.class, Mockito.RETURNS_DEEP_STUBS);
+
+        CacheFileStore fileStore = new CacheFileStore(storage);
+
+        assertThrows(IllegalStateException.class, () -> {
+           fileStore.setPath(directory, filename);
+        });
     }
 }

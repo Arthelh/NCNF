@@ -12,13 +12,24 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
+import com.ncnf.socialObject.SocialObject;
 import com.ncnf.storage.CacheFileStore;
 import com.ncnf.storage.FileStore;
 import com.ncnf.user.User;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+import static android.graphics.BitmapFactory.decodeFile;
+import static android.graphics.BitmapFactory.decodeResource;
 import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 
+@AndroidEntryPoint
 public class PublicProfileFragment extends Fragment {
+
+    @Inject
+    public CacheFileStore fileStore;
 
     private User user;
 
@@ -44,11 +55,9 @@ public class PublicProfileFragment extends Fragment {
 
         // Change with event UUID
         ImageView imageView = getView().findViewById(R.id.profile_picture);
-        TextView imagePlaceHolder = getView().findViewById(R.id.profile_picture_placeholder);
-//        FileStore file = new CacheFileStore(getActivity(), Utils.USER_IMAGE_PATH, user.getUuid() + ".jpg");
-        FileStore file = new CacheFileStore(getActivity(), USER_IMAGE_PATH, "default.jpg"); // TODO : Change to actual PP
-        file.downloadImage(imageView);
-        imagePlaceHolder.setVisibility(View.INVISIBLE);
+        fileStore.setContext(this.getContext());
+        fileStore.setPath(USER_IMAGE_PATH, user.getUuid() + ".jpg");
+        fileStore.downloadImage(imageView, decodeResource(this.getContext().getResources(), R.drawable.default_profile_picture));
 
         TextView name = getView().findViewById(R.id.public_profile_name);
         name.setText(String.format("%s %s", user.getFirstName(), user.getLastName()));
