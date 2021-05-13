@@ -13,11 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
 import com.ncnf.storage.CacheFileStore;
-import com.ncnf.storage.FileStore;
 import com.ncnf.utilities.InputValidator;
-import com.ncnf.utilities.StringCodes;
 
 import java.util.List;
+
+import static android.graphics.BitmapFactory.decodeResource;
+import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
@@ -115,10 +116,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         }
 
         private void setProfilePicture(User u){
-//            FileStore file = new CacheFileStore(context, Utils.USER_IMAGE_PATH, u.getUuid() + ".jpg");
-            FileStore file = new CacheFileStore(context, StringCodes.USER_IMAGE_PATH, "default.jpg"); // TODO : Change to actual PP
-            file.downloadImage(profilePicture);
-            profilePictureText.setVisibility(View.INVISIBLE);
+            CacheFileStore fileStore = new CacheFileStore();
+            fileStore.setContext(context);
+            fileStore.setPath(USER_IMAGE_PATH, u.getUuid() + ".jpg");
+            fileStore.downloadImage(profilePicture, decodeResource(context.getResources(), R.drawable.default_profile_picture));
         }
 
         private void setItemListener(User u, OnItemClickListener listener){
