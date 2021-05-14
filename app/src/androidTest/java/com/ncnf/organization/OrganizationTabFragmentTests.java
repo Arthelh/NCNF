@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -47,7 +48,7 @@ public class OrganizationTabFragmentTests {
     private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(UserTabActivity.class);
 
     private final DatabaseService databaseService = Mockito.mock(DatabaseService.class);
-    private final User u1 = new User(databaseService, "u1", "johnny", "johnny@bar.com", "John", "Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null);
+    private final User u1 = new User(databaseService, "u1", "johnny", "johnny@bar.com", "John", "Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, new Date(), null);
     private final Organization o1 = new Organization(UUID.randomUUID(), "EPFL", new GeoPoint(0, 0), "Ecublens", "ncnf@epfl.ch", "08008008080", Collections.singletonList("u1"), new ArrayList<>());
     private final List<Organization> organizations = Collections.singletonList(o1);
 
