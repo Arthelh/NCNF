@@ -1,7 +1,9 @@
 package com.ncnf.organization;
 
 import com.ncnf.database.DatabaseService;
+import com.ncnf.utilities.StringCodes;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -54,6 +56,11 @@ public class OrganizationRepository {
      */
     public CompletableFuture<List<Organization>> getByName(String name){
         return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_NAME, name, Organization.class);
+    }
+
+
+    public CompletableFuture<List<Organization>> getOrganizationsWithToken(String token){
+        return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_NAME, token, Organization.class);
     }
 
     private CompletableFuture<Boolean> combine(CompletableFuture<Boolean> u1, CompletableFuture<Boolean> u2) {

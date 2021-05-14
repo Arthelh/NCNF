@@ -3,6 +3,7 @@ package com.ncnf.organization;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,6 +33,9 @@ import com.ncnf.utilities.InputValidator;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
 
@@ -58,7 +62,8 @@ public class OrganizationTabFragment extends Fragment {
 
     private List<Organization> organizations;
 
-    public OrganizationTabFragment(){}
+    public OrganizationTabFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,7 +78,7 @@ public class OrganizationTabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //TODO check error
-       // fm.beginTransaction().addToBackStack(FRAGMENT_ORGANIZATION_TAG);
+        // fm.beginTransaction().addToBackStack(FRAGMENT_ORGANIZATION_TAG);
 
         recycler = requireView().findViewById(R.id.organization_list_recyclerview);
 
@@ -108,7 +113,7 @@ public class OrganizationTabFragment extends Fragment {
         Fragment orgViewFrag = fm.findFragmentByTag(orgViewTag);
 
         //It doesn't so create new corresponding Fragment
-        if(!(orgViewFrag instanceof OrganizationViewFragment)) {
+        if (!(orgViewFrag instanceof OrganizationViewFragment)) {
             orgViewFrag = new OrganizationViewFragment(o);
         }
         fm.beginTransaction()
@@ -120,7 +125,7 @@ public class OrganizationTabFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.organization_menu, menu);
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 
@@ -135,7 +140,7 @@ public class OrganizationTabFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void organizationSearchAlertDialogue(){
+    private void organizationSearchAlertDialogue() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
         final EditText organizationNameOrIdInput = new EditText(requireActivity());
@@ -165,34 +170,43 @@ public class OrganizationTabFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            //TODO : aend token
 
             //Unused
-           /* if(verifyTextInput(inputText)) {
-
-                List<Organization> organizations = new LinkedList<>();
-                user.getOrganizationWithName(inputText.getText().toString()).thenApply(organizations::addAll).exceptionally(exception -> {
-                    return null; // TODO : handle exception
-                });
-
-                Optional<Organization> organization = verifyDatabaseResults(organizations);
-
-                if(organization.isPresent()) {
-                    //Prepare Fragment
-                    OrganizationViewPlusToken organizationViewAndToken = new OrganizationViewPlusToken(organization.get());
-                    fm.beginTransaction()
-                            .replace(((ViewGroup) requireView().getParent()).getId(), organizationViewAndToken)
-                            .commit();
+            if (verifyTextInput(inputText)) {
+                String token = inputText.getText().toString();
+                Optional<Organization> resultOrg = getOrganization(token);
+                if(resultOrg.isPresent()){
+                    organizationRepository.addUserToOrganization(user.getUuid(), resultOrg.get().getUuid().toString());
+                } else {
+                    //displayPopUp(v, "No organizations matching this token");
                 }
-            }*/
-            //dialog.dismiss();
+            } else {
+                //displayPopUp(v, "Invalid token input");
+            }
+        }
+        //dialog.dismiss();
+    }
+
+    private Optional<Organization> getOrganization(String token) {
+        try {
+            List<Organization> organizations = organizationRepository.getOrganizationsWithToken(token).get();
+            int nbOrgs = organizations.size();
+            switch (nbOrgs) {
+                case 0:
+                    return Optional.empty();
+                case 1:
+                    return Optional.of(organizations.get(0));
+                default:
+                    throw new IllegalStateException("Multiple organizations with same admin token");
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            return Optional.empty();
         }
     }
 
 
-
-    private boolean verifyTextInput(EditText input){
-        if (InputValidator.verifyGenericInput(input)){
+    private boolean verifyTextInput(EditText input) {
+        if (InputValidator.isInvalidString(input.getText().toString())) {
             InputValidator.setErrorMsg(input, "Token cannot be empty");
             return false;
         }
@@ -211,10 +225,11 @@ public class OrganizationTabFragment extends Fragment {
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
 
         //TODO CHANGE
+
         // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        ((TextView)popupView.findViewById(R.id.popup_invalid_organization_text)).setText(errorText);
+        ((TextView) popupView.findViewById(R.id.popup_invalid_organization_text)).setText(errorText);
 
         // dismiss the popup window when touched
         popupView.setOnTouchListener(new View.OnTouchListener() {
