@@ -100,16 +100,9 @@ public class EventFragment extends Fragment {
 
         TextView owner = view.findViewById(R.id.eventOwner);
 
-        CompletableFuture<String> ownerName = dbs.getField(USERS_COLLECTION_KEY + event.getOwnerId(), FIRST_NAME_KEY);
-        if(ownerName != null) {
-            ownerName.thenAccept(s -> {
-                if (s != null) {
-                    owner.setText("Event hosted by " + s);
-                } else {
-                    Event e = (Event) event;
-                    owner.setText("Event hosted by " + e.getEmail());
-                }
-            });
+        if(event instanceof Event) {
+            Event e = (Event) event;
+            owner.setText("Event hosted by " + e.getEmail());
         }
     }
 }

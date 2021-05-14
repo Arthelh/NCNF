@@ -31,7 +31,7 @@ import static org.hamcrest.Matchers.containsString;
 @RunWith(AndroidJUnit4.class)
 public class SocialObjectActivityTest {
 
-    private final SocialObject event = new Event("hg0aavb0Fce6EgX3HrTW05rKSww1", "TestGeo", new Date(2021, 05, 04), new GeoPoint(46.518689, 6.568067), "Ecublens", "TestGeo", Event.Type.Conference, 0, 0, "test@email.com");
+    private final SocialObject event = new Event("hg0aavb0Fce6EgX3HrTW05rKSww1", "TestGeo", new Date(2021, 05, 04), new GeoPoint(46.518689, 6.568067), "Ecublens", "TestGeo", Event.Type.Conference, 0, 0, "beltan@test.com");
     private final CompletableFuture<SocialObject> eventC = new CompletableFuture<>();
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
@@ -61,6 +61,7 @@ public class SocialObjectActivityTest {
 
     @Test
     public void test_owner(){
-        onView(withId(R.id.eventOwner)).check(matches(withText(containsString(event.getOwnerId()))));
+        Event e = (Event) event;
+        onView(withId(R.id.eventOwner)).check(matches(withText(containsString(e.getEmail()))));
     }
 }
