@@ -18,6 +18,10 @@ Overall it took me a bit longer than expected, mostly because of the map and int
 
 ## Emmanuelle
 
+This week, I first finished the tests for the feature that I implemented last week. This was a bit difficult at first, and I ended up having to use a feature that we are planning to remove later, but it would've been impossible to test otherwise so I'll just refactor it when we remove the feature. I also had some other troubles with testing because most of my feature is background activity but I eneded up getting an acceptable coverage.
+
+After merging that pull request, I redid the UI for both the event cards in the feed and the event page itself. This wasn't particularly difficult and I didn't run into any particular problems. My time estimates were pretty good this week.
+
 
 
 ## Jérémie (Scrum Master)
