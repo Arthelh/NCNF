@@ -9,6 +9,7 @@
         android:id="@+id/event_picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="centerCrop"
         android:background="@color/teal_700" />
 
 </androidx.cardview.widget.CardView>
