@@ -23,6 +23,7 @@ import org.junit.rules.RuleChain;
 import org.mockito.Mockito;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
 import dagger.hilt.android.testing.BindValue;
@@ -65,6 +66,8 @@ public class UserProfileActivityTests {
         when(mockUser.getEmail()).thenReturn("john@doe.ch");
         when(mockUser.getFullName()).thenReturn("John Doe");
         when(mockUser.getBirthDate()).thenReturn(LocalDate.now());
+        when(mockUser.getSavedEvents()).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
+        when(mockUser.getParticipatingGroups()).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
     }
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
