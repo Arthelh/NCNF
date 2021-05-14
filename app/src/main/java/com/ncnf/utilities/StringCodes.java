@@ -14,7 +14,7 @@ public class StringCodes {
      */
     public static final String USERS_COLLECTION_KEY = "users/";
     public static final String USERNAME_KEY = "username";
-    public static final String FIRST_NAME_KEY = "first_name";
+    public static final String FULL_NAME_KEY = "first_name";
     public static final String LAST_NAME_KEY = "last_name";
     public static final String BIRTH_DATE_KEY = "year_of_birth";
     public static final String EMAIL_KEY = "email";

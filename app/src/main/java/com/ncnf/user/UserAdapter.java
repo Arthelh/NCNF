@@ -98,18 +98,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         }
 
         private void setTextFields(User u){
-            String firstNameText = u.getFirstName();
-            if(InputValidator.isInvalidString(firstNameText)) firstNameText = "empty";
-            String lastNameText = u.getLastName();
-            if(InputValidator.isInvalidString(lastNameText)) lastNameText = "empty";
-            String usernameText = u.getUsername();
+            String fullNameText = u.getFullName();
+            if(InputValidator.isInvalidString(fullNameText)) fullNameText = "empty";
 
+            String usernameText = u.getUsername();
             if(InputValidator.isInvalidString(usernameText)) usernameText = "empty";
 
-            String concatNameText = firstNameText + " " + lastNameText;
-            name.setText(concatNameText);
+            name.setText(fullNameText);
 
-            String initialsText = firstNameText.toUpperCase().charAt(0) + String.valueOf(lastNameText.toUpperCase().charAt(0));
+            String initialsText = fullNameText.substring(0, 2);
             profilePictureText.setText(initialsText);
 
             username.setText(usernameText);

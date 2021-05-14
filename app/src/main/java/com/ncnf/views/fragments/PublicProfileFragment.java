@@ -12,9 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
-import com.ncnf.socialObject.SocialObject;
 import com.ncnf.storage.CacheFileStore;
-import com.ncnf.storage.FileStore;
 import com.ncnf.user.User;
 
 import javax.inject.Inject;
@@ -60,7 +58,7 @@ public class PublicProfileFragment extends Fragment {
         fileStore.downloadImage(imageView, decodeResource(this.getContext().getResources(), R.drawable.default_profile_picture));
 
         TextView name = getView().findViewById(R.id.public_profile_name);
-        name.setText(String.format("%s %s", user.getFirstName(), user.getLastName()));
+        name.setText(user.getFullName());
 
         TextView username = getView().findViewById(R.id.public_profile_username);
         username.setText(user.getUsername());

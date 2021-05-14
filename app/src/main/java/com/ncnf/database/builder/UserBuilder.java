@@ -1,12 +1,14 @@
 package com.ncnf.database.builder;
 
+import android.util.Log;
+
 import com.google.firebase.Timestamp;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.user.User;
 
-import java.time.Instant;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,10 +19,10 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import static com.ncnf.utilities.StringCodes.BIRTH_DATE_KEY;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
-import static com.ncnf.utilities.StringCodes.FIRST_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.FRIENDS_KEY;
-import static com.ncnf.utilities.StringCodes.LAST_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_KEY;
 import static com.ncnf.utilities.StringCodes.OWNED_GROUPS_KEY;
 import static com.ncnf.utilities.StringCodes.PARTICIPATING_GROUPS_KEY;
@@ -39,16 +41,15 @@ public class UserBuilder extends DatabaseObjectBuilder<User>{
 
         String username = (String) data.getOrDefault(USERNAME_KEY, "");
         String email = (String) data.getOrDefault(EMAIL_KEY, "");
-        String firstName = (String) data.getOrDefault(FIRST_NAME_KEY, "");
-        String lastName = (String) data.getOrDefault(LAST_NAME_KEY, "");
+        String full_name = (String) data.getOrDefault(FULL_NAME_KEY, "");
         List<String> friends = (List<String>) data.getOrDefault(FRIENDS_KEY, new ArrayList<>());
         List<String> ownedGroups = (List<String>) data.getOrDefault(OWNED_GROUPS_KEY, new ArrayList<>());
         List<String> participatingGroups = (List<String>) data.getOrDefault(PARTICIPATING_GROUPS_KEY, new ArrayList<>());
         List<String> savedEvents = (List<String>) data.getOrDefault(SAVED_EVENTS_KEY, new ArrayList<>());
-        Date birthDate = ((Timestamp) data.getOrDefault(BIRTH_DATE_KEY, Timestamp.now())).toDate(); // TODO : change
+        Date firebaseDate = ((Timestamp) data.getOrDefault(BIRTH_DATE_KEY, Timestamp.now())).toDate();
+        LocalDate birthDate = LocalDate.ofEpochDay(firebaseDate.getTime()/1000/60/60/24);
         boolean notifications = (boolean) data.getOrDefault(NOTIFICATIONS_KEY, false);
-
-            return new User(db, uuid, username, email, firstName, lastName, friends, ownedGroups, participatingGroups, savedEvents, notifications, birthDate, null);
+        return new User(db, uuid, username, email, full_name, friends, ownedGroups, participatingGroups, savedEvents, notifications, birthDate, null);
         } 
     
 
@@ -58,12 +59,10 @@ public class UserBuilder extends DatabaseObjectBuilder<User>{
         data.put(UUID_KEY, user.getUuid());
         data.put(USERNAME_KEY, user.getUsername());
         data.put(EMAIL_KEY, user.getEmail());
-        data.put(LAST_NAME_KEY, user.getLastName());
-        data.put(FIRST_NAME_KEY, user.getFirstName());
-
+        data.put(FULL_NAME_KEY, user.getFullName());
         Timestamp toSave = Timestamp.now();
         if(user.getBirthDate() != null){
-            toSave = new Timestamp(user.getBirthDate());
+            toSave = new Timestamp(user.getBirthDate().toEpochDay()*24*60*60,0);
         }
         data.put(BIRTH_DATE_KEY, toSave);
 

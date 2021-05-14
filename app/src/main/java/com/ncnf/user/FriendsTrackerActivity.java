@@ -5,21 +5,16 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -28,30 +23,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static android.content.ContentValues.TAG;
-import static com.ncnf.utilities.StringCodes.FIRST_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
 
@@ -179,7 +164,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             field.thenAccept(point -> {
                 if(finalI >= markers.size()) {
                     markers.add(mMap.addMarker(new MarkerOptions().position(new LatLng(point.getLatitude(), point.getLongitude()))));
-                    CompletableFuture<String> name = dbs.getField(USERS_COLLECTION_KEY + userId, FIRST_NAME_KEY);
+                    CompletableFuture<String> name = dbs.getField(USERS_COLLECTION_KEY + userId, FULL_NAME_KEY);
                     name.thenAccept(s -> {
                         if(s != null) {
                             markers.get(finalI).setTitle(s);
@@ -194,7 +179,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         if(marker == null) {
             if(user.getLoc() != null) {
                 marker = mMap.addMarker(new MarkerOptions().position(new LatLng(user.getLoc().getLatitude(), user.getLoc().getLongitude())));
-                marker.setTitle(user.getFirstName());
+                marker.setTitle(user.getFullName());
             }
         }
         else {
@@ -233,7 +218,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
                 if (marker == null) {
                     marker = mMap.addMarker(new MarkerOptions().position(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude())));
-                    marker.setTitle(user.getFirstName());
+                    marker.setTitle(user.getFullName());
                 } else {
                     marker.setPosition(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude()));
                 }

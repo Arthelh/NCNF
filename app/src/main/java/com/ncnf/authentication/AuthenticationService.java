@@ -58,6 +58,13 @@ public class AuthenticationService implements AuthenticationServiceInterface {
         return futureResponse;
     }
 
+    public CompletableFuture<Boolean> changeEmail(String email){
+        CompletableFuture<Boolean> futureResponse = new CompletableFuture<>();
+
+        this.auth.getCurrentUser().updateEmail(email).addOnCompleteListener(task -> onTaskComplete(task , futureResponse));
+        return futureResponse;
+    }
+
     private void onTaskComplete(Task<?> task, CompletableFuture<Boolean> futureResponse){
         if(task.isSuccessful()){
             futureResponse.complete(true);
