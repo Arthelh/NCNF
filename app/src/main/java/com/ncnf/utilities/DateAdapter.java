@@ -3,6 +3,7 @@ package com.ncnf.utilities;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,7 +20,7 @@ public class DateAdapter {
 
     public DateAdapter(LocalDateTime date) {
         final Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(date.getNano()*1000);
+        calendar.setTime(Date.from(date.atZone(ZoneId.systemDefault()).toInstant()));
         this.date = date;
 
         year = calendar.get(Calendar.YEAR);
