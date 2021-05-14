@@ -112,7 +112,7 @@ public class GroupTest {
         LocalDateTime date2 = LocalDateTime.of(2021, 03, 30, 12, 00);
         Group event2 = new Group("00",name, date2, geoPoint,address,description, type);
 
-        assertEquals(event.compareTo(event2), -1);
+        assertEquals(event.compareTo(event2), -19);
     }
 
     @Test
