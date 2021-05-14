@@ -55,7 +55,7 @@ public class  MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Cl
             Fragment fragment;
 
             if (eventList.size() == 1) { //When the marker represents only one event
-                SocialObject e = item.getEventList().get(0);
+                Event e = item.getEventList().get(0);
                 fragment = new EventFragment(e);
             } else {
                 fragment = new MapFeedFragment(eventList, globalWindow, fragmentManager);

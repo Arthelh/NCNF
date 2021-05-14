@@ -19,6 +19,8 @@ import com.ncnf.socialObject.ui.EventFragment;
 
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 public class MapFeedFragment extends FeedFragment {
 
     private final Window globalWindow;
@@ -32,7 +34,7 @@ public class MapFeedFragment extends FeedFragment {
     }
 
     @Override
-    protected void onEventClick(SocialObject e){
+    protected void onEventClick(Event e){
         Fragment fragment = new EventFragment(e);
 
         ConstraintLayout feedContainer = globalWindow.findViewById(R.id.map_feed_container);

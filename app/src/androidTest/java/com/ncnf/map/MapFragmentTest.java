@@ -36,6 +36,7 @@ import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -67,8 +68,8 @@ import static org.mockito.Mockito.when;
 public final class MapFragmentTest {
 
     CompletableFuture<List<Event>> TEST_COMP_FUTURE = new CompletableFuture<>();
-    private final Event e1 = new Event("u1", "TestGeo", new Date(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
-    private final Event e2 = new Event("u2", "TestGeo2", new Date(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
+    private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
+    private final Event e2 = new Event("u2", "TestGeo2", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
     List<Event> TEST_SocialObjects = Arrays.asList(e1, e2);
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);

@@ -97,8 +97,8 @@ public class MapFragment extends Fragment{
             map_ready = true;
         });
 
-        getView().findViewById(R.id.map_switch_button).setOnClickListener(this::switchMarkers);
-        getView().findViewById(R.id.map_gps_button).setOnClickListener(this::returnToLocation);
+        requireView().findViewById(R.id.map_switch_button).setOnClickListener(this::switchMarkers);
+        requireView().findViewById(R.id.map_gps_button).setOnClickListener(this::returnToLocation);
     }
 
     @Override
@@ -135,8 +135,8 @@ public class MapFragment extends Fragment{
      */
     private void setup_search_bar(){
         //Initialize Places element
-        Places.initialize(getActivity(), "AIzaSyCRFxgUBUvyw9myry2shM_dw8VphTtEyJ4");
-        placesClient = Places.createClient(getActivity());
+        Places.initialize(requireActivity(), "AIzaSyCRFxgUBUvyw9myry2shM_dw8VphTtEyJ4");
+        placesClient = Places.createClient(requireActivity());
         final AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
         searchBarHandler.createOnSearchActionListener();

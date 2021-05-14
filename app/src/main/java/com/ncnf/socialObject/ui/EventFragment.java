@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
+import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.SocialObject;
 import com.ncnf.storage.CacheFileStore;
 import com.ncnf.utilities.DateAdapter;
@@ -29,9 +30,9 @@ public class EventFragment extends Fragment {
     @Inject
     public CacheFileStore fileStore;
 
-    private SocialObject event;
+    private final Event event;
 
-    public EventFragment(SocialObject event){
+    public EventFragment(Event event){
         this.event = event;
     }
 

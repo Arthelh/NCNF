@@ -7,6 +7,7 @@ import com.ncnf.socialObject.SocialObject;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,8 @@ public class GroupBuilder extends DatabaseObjectBuilder<Group>{
         String ownerId = data.get(OWNER_KEY).toString();
         String uuidStr = data.get(UUID_KEY).toString();
         String name = (String) data.get(NAME_KEY);
-        Date date = ((Timestamp) data.get(DATE_KEY)).toDate();
+        Date d = ((Timestamp) data.getOrDefault(DATE_KEY, new Date())).toDate();
+        LocalDateTime date = LocalDateTime.of(d.getYear(), d.getMonth(), d.getDay(), d.getHours(), d.getMinutes());
         GeoPoint location = (GeoPoint) data.get(LOCATION_KEY);
         String address = data.get(ADDRESS_KEY).toString();
         String typeStr = data.get(TYPE_KEY).toString();
@@ -52,7 +54,9 @@ public class GroupBuilder extends DatabaseObjectBuilder<Group>{
         map.put(UUID_KEY, group.getUuid().toString());
         map.put(OWNER_KEY, group.getOwnerId());
         map.put(NAME_KEY, group.getName());
-        map.put(DATE_KEY, new Timestamp(group.getDate()));
+        //TODO FIX THIS
+        Date d = new Date(group.getDate().getYear(), group.getDate().getMonth().getValue(), group.getDate().getDayOfYear(), group.getDate().getHour(), group.getDate().getMinute());
+        map.put(DATE_KEY, new Timestamp(d));
         map.put(TYPE_KEY, group.getType().toString());
         map.put(ATTENDEES_KEY, group.getAttendees());
         map.put(DESCRIPTION_KEY, group.getDescription());

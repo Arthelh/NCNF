@@ -38,10 +38,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
 
+@AndroidEntryPoint
 public class FeedFragment extends Fragment {
+
+    @Inject
+    public DatabaseService databaseService;
 
     private RecyclerView.LayoutManager lManager;
     private RecyclerView recycler;
@@ -65,7 +73,7 @@ public class FeedFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (eventList.isEmpty())
-            actualiseEvents();
+            actualizeEvents();
     }
 
     @Nullable
@@ -81,7 +89,7 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Get the RecyclerView
-        recycler = (RecyclerView) getView().findViewById(R.id.recycler_view);
+        recycler = (RecyclerView) requireView().findViewById(R.id.recycler_view);
 
         // Use LinearLayout as the layout manager
         lManager = new LinearLayoutManager(getActivity());
@@ -89,16 +97,16 @@ public class FeedFragment extends Fragment {
 
         // Set the custom adapter
         if (eventList.isEmpty()){
-            actualiseEvents();
+            actualizeEvents();
         } else {
-            adapter = new EventAdapter(eventList, e -> onEventClick(e), EventAdapter.SortingMethod.DATE);
+            adapter = new EventAdapter(eventList, this::onEventClick, EventAdapter.SortingMethod.DATE);
             recycler.setAdapter(adapter);
         }
     }
 
-    protected void onEventClick(SocialObject e) {
+    protected void onEventClick(Event e) {
         Fragment fragment = new EventFragment(e);
-        Window globalWindow = getActivity().getWindow();
+        Window globalWindow = requireActivity().getWindow();
         FragmentManager fragmentManager = getChildFragmentManager();
 
         ConstraintLayout feedContainer = globalWindow.findViewById(R.id.feed_event_container);
@@ -130,7 +138,7 @@ public class FeedFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.event_menu, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_filterEventsByTag);
@@ -171,10 +179,10 @@ public class FeedFragment extends Fragment {
         callback.setEnabled(false);
     }
 
-    private void actualiseEvents(){
+    private void actualizeEvents(){
         final List<Event> result = new ArrayList<>();
 
-        CompletableFuture<List<Event>> completableFuture = new DatabaseService().geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, Event.class);
+        CompletableFuture<List<Event>> completableFuture = databaseService.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, Event.class);
         completableFuture.thenAccept(eventList -> {
 
             for (Event e : eventList){
@@ -182,7 +190,7 @@ public class FeedFragment extends Fragment {
                 if (MapUtilities.position_in_range(Settings.getUserPosition(), eventPosition))
                     result.add(e);
             }
-            adapter = new EventAdapter(result, e -> onEventClick(e), EventAdapter.SortingMethod.DATE);
+            adapter = new EventAdapter(result, this::onEventClick, EventAdapter.SortingMethod.DATE);
             recycler.setAdapter(adapter);
 
         }).exceptionally(e -> {

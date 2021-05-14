@@ -1,23 +1,25 @@
 package com.ncnf.utilities;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Calendar;
 import java.util.Date;
 
 public class DateAdapter {
 
-    private int year;
-    private int month;
-    private int day;
+    private final int year;
+    private final int month;
+    private final int day;
 
-    private int hour;
-    private int minute;
+    private final int hour;
+    private final int minute;
 
-    private Date date;
+    private final LocalDateTime date;
 
-    public DateAdapter(Date date) {
+    public DateAdapter(LocalDateTime date) {
         final Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(date.getTime());
+        calendar.setTimeInMillis(date.getNano()*1000);
         this.date = date;
 
         year = calendar.get(Calendar.YEAR);
@@ -38,7 +40,7 @@ public class DateAdapter {
         this.month = month;
         this.day = day;
 
-        date = new Date(calendar.getTimeInMillis());
+        date = LocalDateTime.of(year, Month.of(month), day, 0, 0);
 
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
@@ -56,13 +58,13 @@ public class DateAdapter {
         this.month = month;
         this.day = day;
 
-        date = new Date(calendar.getTimeInMillis());
+        date = LocalDateTime.of(year, Month.of(month), day, hour, minute);
 
         this.hour = hour;
         this.minute = minute;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
@@ -86,11 +88,12 @@ public class DateAdapter {
         return minute;
     }
 
-    public static Date toDate(String s) {
+    public static LocalDateTime toDate(String s) {
 
         Date date;
 
         try {
+            //TODO Fix this
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
             date = sdf.parse(s);
         }
@@ -98,7 +101,7 @@ public class DateAdapter {
             return null;
         }
 
-        return new Date(date.getTime());
+        return LocalDateTime.of(date.getYear(), date.getMonth(), date.getDay(), date.getHours(), date.getMinutes());
 
     }
 
