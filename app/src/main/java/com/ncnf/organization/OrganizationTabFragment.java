@@ -29,6 +29,7 @@ import com.ncnf.R;
 import com.ncnf.user.User;
 import com.ncnf.organization.helpers.OrganizationAdapter;
 import com.ncnf.utilities.InputValidator;
+import com.ncnf.utilities.PopUpAlert;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -60,12 +61,14 @@ public class OrganizationTabFragment extends Fragment {
     OrganizationAdapter adapter;
 
     private List<Organization> organizations;
+    private Bundle savedInstanceState;
 
     public OrganizationTabFragment() {
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        this.savedInstanceState = savedInstanceState;
         this.layoutInflater = inflater;
         this.fm = getChildFragmentManager();
         setHasOptionsMenu(true);
@@ -181,7 +184,7 @@ public class OrganizationTabFragment extends Fragment {
                     int orgSize = o.size();
                     switch (orgSize){
                         case 0:
-                            displayPopUp(v, "No Organization with this token");
+                            new PopUpAlert().onCreateDialog(savedInstanceState, "ERROR").show();
                             break;
                         case 1:
                             organizationRepository.addUserToOrganization(user.getUuid(), o.get(0).getUuid().toString());

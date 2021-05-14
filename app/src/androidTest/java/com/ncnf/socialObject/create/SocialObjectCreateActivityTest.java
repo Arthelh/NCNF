@@ -11,8 +11,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.ncnf.R;
 import com.ncnf.main.MainActivity;
 import com.ncnf.storage.FileStore;
-import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
+import com.ncnf.user.helpers.CurrentUserModule;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
