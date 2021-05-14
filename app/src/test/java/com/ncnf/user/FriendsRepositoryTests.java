@@ -91,11 +91,11 @@ public class FriendsRepositoryTests {
 
     @Test
     public void searchFriendIsSuccessful(){
-        when(mockDatabase.withFieldLike(anyString(), anyString(), anyString(), eq(User.class))).thenReturn(CompletableFuture.completedFuture(users));
+        when(mockDatabase.withFieldContaining(anyString(), anyString(), anyString(), eq(User.class))).thenReturn(CompletableFuture.completedFuture(users));
 
         CompletableFuture<List<User>> res = friends.searchFriends("username");
 
-        verify(mockDatabase).withFieldLike(USERS_COLLECTION_KEY, FIRST_NAME_KEY, "username", User.class);
+        verify(mockDatabase).withFieldContaining(USERS_COLLECTION_KEY, FIRST_NAME_KEY, "username", User.class);
 
         try {
             assertThat(res.get(), is(users));
