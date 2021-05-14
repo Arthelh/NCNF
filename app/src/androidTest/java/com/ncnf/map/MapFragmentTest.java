@@ -116,7 +116,7 @@ public final class MapFragmentTest {
         );
         // Events are shown
         UiObject marker = device.findObject(new UiSelector().descriptionContains("TestGeo"));
-        assertTrue("Events markers exist", marker.waitForExists(1000));
+        assertTrue("Events markers exist", marker.waitForExists(5000));
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
@@ -125,12 +125,12 @@ public final class MapFragmentTest {
         );
         // Venues are shown
         marker = device.findObject(new UiSelector().descriptionContains("UniL"));
-        assertTrue("Venue markers exist", marker.waitForExists(10000));
+        assertTrue("Venue markers exist", marker.waitForExists(5000));
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
         assertNotNull("Map with venues is loaded",
-                device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 10000)
+                device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 5000)
         );
     }
 
@@ -220,22 +220,22 @@ public final class MapFragmentTest {
             device.click(x, y);
 
             UiObject backToMapButton = device.findObject(new UiSelector().textContains("Back to Map"));
-            assertTrue("Back to Map button exists", backToMapButton.waitForExists(2000));
+            assertTrue("Back to Map button exists", backToMapButton.waitForExists(5000));
 
             UiObject eventCard = device.findObject(new UiSelector().textContains("TestGeo"));
-            assertTrue("Event Card exists", eventCard.waitForExists(2000));
+            assertTrue("Event Card exists", eventCard.waitForExists(5000));
             eventCard.click();
 
             UiObject backToFeedButton = device.findObject(new UiSelector().textContains("Back to Feed"));
-            assertTrue("Back to Feed button exists", backToFeedButton.waitForExists(2000));
+            assertTrue("Back to Feed button exists", backToFeedButton.waitForExists(5000));
             backToFeedButton.click();
 
             UiObject backToMapButtonRevisited = device.findObject(new UiSelector().textContains("Back to Map"));
-            assertTrue("Back to Map button exists again", backToMapButtonRevisited.waitForExists(2000));
+            assertTrue("Back to Map button exists again", backToMapButtonRevisited.waitForExists(5000));
             backToMapButtonRevisited.click();
 
             UiObject switchButton = device.findObject(new UiSelector().textContains("Switch"));
-            assertTrue("Switch button exists, back to map", switchButton.waitForExists(2000));
+            assertTrue("Switch button exists, back to map", switchButton.waitForExists(5000));
 
         } catch (Exception e) {
             e.printStackTrace();
