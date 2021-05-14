@@ -58,7 +58,6 @@ public class MapFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -97,7 +96,7 @@ public class MapFragment extends Fragment{
         });
 
         getView().findViewById(R.id.map_switch_button).setOnClickListener(this::switchMarkers);
-        getView().findViewById(R.id.map_location_button).setOnClickListener(this::returnToLocation);
+        getView().findViewById(R.id.map_gps_button).setOnClickListener(this::returnToLocation);
     }
 
     @Override

@@ -4,10 +4,15 @@ import com.google.firebase.Timestamp;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.user.User;
 
+import java.time.Instant;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -23,32 +28,29 @@ import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
 import static com.ncnf.utilities.StringCodes.USERNAME_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
-
 public class UserBuilder extends DatabaseObjectBuilder<User>{
 
     @Inject
     DatabaseService db;
 
     @Override
-    public User toObject(String uuid, Map<String, Object> data) {
+    public User toObject(String uuid, @NotNull Map<String, Object> data) {
+        Objects.requireNonNull(data);
 
-        try {
-            String username = (String) data.get(USERNAME_KEY);
-            String email = (String) data.get(EMAIL_KEY);
-            String firstName = (String) data.get(FIRST_NAME_KEY);
-            String lastName = (String) data.get(LAST_NAME_KEY);
-            List<String> friends = (List<String>) data.get(FRIENDS_KEY);
-            List<String> ownedGroups = (List<String>) data.get(OWNED_GROUPS_KEY);
-            List<String> participatingGroups = (List<String>) data.get(PARTICIPATING_GROUPS_KEY);
-            List<String> savedEvents = (List<String>) data.get(SAVED_EVENTS_KEY);
-            Date birthDate = ((Timestamp) data.get(BIRTH_DATE_KEY)).toDate();
-            boolean notifications = (boolean) data.get(NOTIFICATIONS_KEY);
+        String username = (String) data.getOrDefault(USERNAME_KEY, "");
+        String email = (String) data.getOrDefault(EMAIL_KEY, "");
+        String firstName = (String) data.getOrDefault(FIRST_NAME_KEY, "");
+        String lastName = (String) data.getOrDefault(LAST_NAME_KEY, "");
+        List<String> friends = (List<String>) data.getOrDefault(FRIENDS_KEY, new ArrayList<>());
+        List<String> ownedGroups = (List<String>) data.getOrDefault(OWNED_GROUPS_KEY, new ArrayList<>());
+        List<String> participatingGroups = (List<String>) data.getOrDefault(PARTICIPATING_GROUPS_KEY, new ArrayList<>());
+        List<String> savedEvents = (List<String>) data.getOrDefault(SAVED_EVENTS_KEY, new ArrayList<>());
+        Date birthDate = ((Timestamp) data.getOrDefault(BIRTH_DATE_KEY, Timestamp.now())).toDate(); // TODO : change
+        boolean notifications = (boolean) data.getOrDefault(NOTIFICATIONS_KEY, false);
 
-            return new User(db, uuid, username, email, firstName, lastName, friends, ownedGroups, participatingGroups, savedEvents, notifications, birthDate);
-        } catch (Exception e){
-            return null;
-        }
-    }
+            return new User(db, uuid, username, email, firstName, lastName, friends, ownedGroups, participatingGroups, savedEvents, notifications, birthDate, null);
+        } 
+    
 
     @Override
     public Map<String, Object> toMap(User user) {

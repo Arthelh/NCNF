@@ -1,4 +1,4 @@
-package com.ncnf.user.helpers;
+package com.ncnf.firebase.modules;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
