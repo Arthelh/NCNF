@@ -1,5 +1,6 @@
 package com.ncnf.friends.ui;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,8 @@ public class FriendsRequestAdapter extends UserAdapter {
     private final FriendsRepository friendsRepository;
     private final String uuid;
 
-    public FriendsRequestAdapter(List<User> users, OnItemClickListener onClick, FriendsRepository friendsRepository, String my_uuid) {
-        super(users, onClick);
+    public FriendsRequestAdapter(Context context, List<User> users, OnItemClickListener onClick, FriendsRepository friendsRepository, String my_uuid) {
+        super(context, users, onClick);
         this.friendsRepository = friendsRepository;
         this.uuid = my_uuid;
     }
@@ -33,7 +34,7 @@ public class FriendsRequestAdapter extends UserAdapter {
         return new FriendsRequestViewHolder(v, friendsRepository, uuid);
     }
 
-    public static class FriendsRequestViewHolder extends UserViewHolder {
+    public class FriendsRequestViewHolder extends UserViewHolder {
 
         private final FriendsRepository friendsRepository;
         private final String uuid;
@@ -56,12 +57,12 @@ public class FriendsRequestAdapter extends UserAdapter {
 
             acceptButton.setOnClickListener(view -> {
                 friendsRepository.updateRequest(true, uuid, u.getUuid());
-                displayMessage("The request was accepted !");
+                displayMessage(context.getString(R.string.friend_request_accept_text));
             });
 
             declineButton.setOnClickListener(view -> {
                 friendsRepository.updateRequest(false, uuid, u.getUuid());
-                displayMessage("The request was declined !");
+                displayMessage(context.getString(R.string.friend_request_decline_text));
             });
         }
 
@@ -70,7 +71,6 @@ public class FriendsRequestAdapter extends UserAdapter {
             declineButton.setVisibility(View.INVISIBLE);
             messageView.setText(message);
             messageView.setVisibility(View.VISIBLE);
-
         }
     }
 }

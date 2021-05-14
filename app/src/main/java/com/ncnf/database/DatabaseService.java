@@ -18,7 +18,6 @@ import com.ncnf.database.builder.GroupBuilder;
 import com.ncnf.database.builder.UserBuilder;
 import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.Group;
-import com.ncnf.socialObject.SocialObject;
 import com.ncnf.user.User;
 
 import java.util.ArrayList;
@@ -30,7 +29,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.GEOHASH_KEY;
 
 public class DatabaseService implements DatabaseServiceInterface {

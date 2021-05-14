@@ -14,14 +14,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
-import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.SocialObject;
 import com.ncnf.storage.CacheFileStore;
-import com.ncnf.storage.FileStore;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.SaveToCalendar;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class EventFragment extends Fragment {
+
+    @Inject
+    public CacheFileStore fileStore;
 
     private SocialObject event;
 
@@ -59,8 +65,9 @@ public class EventFragment extends Fragment {
 
     private void initViews(View view){
         ImageView imageView = view.findViewById(R.id.eventImage);
-        FileStore file = new CacheFileStore(this.getContext(), Event.IMAGE_PATH, String.format(Event.IMAGE_NAME, "PLEASE_REPLACE_WITH_UUID"));
-        file.downloadImage(imageView);
+        fileStore.setContext(this.getContext());
+        fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
+        fileStore.downloadImage(imageView, null);
 
         TextView name = view.findViewById(R.id.eventName);
         name.setText(event.getName());

@@ -6,6 +6,7 @@
     <string name="main_feedview_button">Events Feed</string>
     <string name="main_event_creation_button">Create Event</string>
     <string name="main_placeholder_event_view">PH Event</string>
+    <string name="find_your_friends_button">Find your friends</string>
 
     <!-- Strings used for Map Activity -->
     <string name="map_switch_button">Switch between Events and Venues</string>
@@ -106,10 +107,7 @@
     <string name="home_events_news_button">Events news</string>
 
     <!-- Friends Requests -->
-    <string name="friends_requests_accept">Accept</string>
-    <string name="friends_requests_decline">Decline</string>
-    <string name="add_to_calendar_button" />
-    <string name="add_organization_button_text" >Add Organization</string>
+
     <string name="organization_name_hint">Organization Name</string>
     <string name="organization_postal_hint">Postal Address</string>
     <string name="organization_email_hint">Email</string>
@@ -123,5 +121,16 @@
     <string name="invalid_organization_text">Invalid Organization Name</string>
     <string name="no_organizations">You have no Organizations linked to your profile</string>
     <string name="create_organization_button_text">Create Organization</string>
+
+    <!-- Friends Requests -->
+    <string name="friends_requests_accept">Accept</string>
+    <string name="friends_requests_decline">Decline</string>
+    <string name="friends_empty_text">No friends yet</string>
+    <string name="empty_friends_recycler_text">No friends yet.</string>
+    <string name="empty_search_friend_recycler_text">No matching user.</string>
+    <string name="friend_request_accept_text">The request was accepted !</string>
+    <string name="friend_request_decline_text">The request was declined !</string>
+    <string name="add_to_calendar_button" />
+
 
 </resources>
