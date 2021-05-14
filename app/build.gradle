@@ -85,6 +85,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'com.google.firebase:firebase-database:19.7.0'
+    implementation 'com.firebase:geofire-android-common:3.1.0'
 
     // tests
     testImplementation 'junit:junit:4.13.2'
@@ -155,7 +156,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
             '**/*_Factory.class',
             '**/*_MembersInjector.class',
             // Exclude Hilt Modules
-            '**/*Module*.*'
+            '**/firebase/modules/*.*'
     ]
     def debugTree = fileTree(dir: "$project.buildDir/intermediates/javac/debug/classes", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"

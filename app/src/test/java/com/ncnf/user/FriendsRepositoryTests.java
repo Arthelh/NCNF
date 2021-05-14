@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+
 import static com.ncnf.utilities.StringCodes.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -37,8 +38,8 @@ public class FriendsRepositoryTests {
 
     @Before
     public void setup() {
-        User u1 = new User(mockDatabase, "u1", "John", "john@bar.com","John",  "Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, new Date());
-        User u2 = new User(mockDatabase, "u2", "Albert", "albert@bar.com","Albert",  "Dupont", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, new Date());
+        User u1 = new User(mockDatabase, "u1", "John", "john@bar.com","John",  "Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, new Date(), null);
+        User u2 = new User(mockDatabase, "u2", "Albert", "albert@bar.com","Albert",  "Dupont", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, new Date(), null);
         users = Arrays.asList(u1, u2);
     }
 
@@ -66,6 +67,37 @@ public class FriendsRepositoryTests {
 
         try {
             assertFalse(res.get());
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly !");
+        }
+    }
+
+    @Test
+    public void removeFriendIsSuccessful(){
+        when(mockDatabase.removeArrayField(anyString(), anyString(), anyObject())).thenReturn(CompletableFuture.completedFuture(true));
+
+        CompletableFuture<Boolean> res = friends.removeFriend(uuid, other_uuid);
+
+        verify(mockDatabase).removeArrayField(USERS_COLLECTION_KEY + uuid, FRIENDS_KEY, other_uuid);
+        verify(mockDatabase).removeArrayField(USERS_COLLECTION_KEY + other_uuid, FRIENDS_KEY, uuid);
+
+        try {
+            assertTrue(res.get());
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly !");
+        }
+    }
+
+    @Test
+    public void searchFriendIsSuccessful(){
+        when(mockDatabase.withFieldLike(anyString(), anyString(), anyString(), eq(User.class))).thenReturn(CompletableFuture.completedFuture(users));
+
+        CompletableFuture<List<User>> res = friends.searchFriends("username");
+
+        verify(mockDatabase).withFieldLike(USERS_COLLECTION_KEY, FIRST_NAME_KEY, "username", User.class);
+
+        try {
+            assertThat(res.get(), is(users));
         } catch (ExecutionException | InterruptedException e) {
             Assert.fail("The future did not complete correctly !");
         }

@@ -24,6 +24,8 @@ public class StringCodes {
     public static final String NOTIFICATIONS_TOKEN_KEY = "notifications_token";
     public static final String PENDING_REQUESTS_KEY = "pending_requests";
     public static final String AWAITING_REQUESTS_KEY = "awaiting_requests";
+    public static final String USER_LOCATION_KEY = "user_location";
+    public static final String USER_IMAGE_PATH = "/users";
 
     /**
      * Keys related to events
@@ -44,6 +46,9 @@ public class StringCodes {
     public static final String TAGS_LIST_KEY = "tags";
     public static final String ADDRESS_KEY = "address";
     public static final String NEWS_KEY = "news";
+    public static final String GEOHASH_KEY = "geohash";
+    public static final String LAT_KEY = "lat";
+    public static final String LNG_KEY = "lng";
 
     /**
      * Keys related to groups

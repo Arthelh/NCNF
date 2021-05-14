@@ -6,6 +6,7 @@
     <string name="main_feedview_button">Events Feed</string>
     <string name="main_event_creation_button">Create Event</string>
     <string name="main_placeholder_event_view">PH Event</string>
+    <string name="find_your_friends_button">Find your friends</string>
 
     <!-- Strings used for Map Activity -->
     <string name="map_switch_button">Switch between Events and Venues</string>
@@ -14,6 +15,9 @@
     <string name="map_settings_button">Settings</string>
     <string name="map_marker_arrow">Arrow</string>
     <string name="map_feed_button">Back to Map</string>
+
+    <!-- String used for Feed Fragment -->
+    <string name="feed_event_button">Back to Feed</string>
 
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_map">MapActivity</string>
@@ -105,5 +109,11 @@
     <!-- Friends Requests -->
     <string name="friends_requests_accept">Accept</string>
     <string name="friends_requests_decline">Decline</string>
+    <string name="friends_empty_text">No friends yet</string>
+    <string name="empty_friends_recycler_text">No friends yet.</string>
+    <string name="empty_search_friend_recycler_text">No matching user.</string>
+    <string name="friend_request_accept_text">The request was accepted !</string>
+    <string name="friend_request_decline_text">The request was declined !</string>
+    <string name="add_to_calendar_button" />
 
 </resources>

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".feed.ui.FeedFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -13,4 +14,32 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:scrollbars="vertical" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/feed_event_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="20dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/feed_event_button"
+            android:text="@string/feed_event_button"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:visibility="invisible"
+            android:elevation="5dp"/>
+        <FrameLayout
+            android:id="@+id/feed_event_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="48dp"
+            app:layout_constraintBottom_toTopOf="@id/feed_event_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </FrameLayout>

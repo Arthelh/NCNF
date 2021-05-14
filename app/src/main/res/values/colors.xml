@@ -19,4 +19,11 @@
 
     <!-- Clear text color -->
     <color name="light_cyan">#FFA7E7FE</color>
+
+    <color name="app_background">#CED8E5</color>
+
+    <!-- Navigation Bar Colors -->
+    <color name="navigation_bar_background">#283747</color>
+    <color name="selected_icon_color">#FDFEFE</color>
+    <color name="unselected_icon_color">#85929E</color>
 </resources>
