@@ -60,7 +60,7 @@ public class OrganizationRepository {
 
 
     public CompletableFuture<List<Organization>> getOrganizationsWithToken(String token){
-        return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_NAME, token, Organization.class);
+        return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_ADMIN_TOKEN, token, Organization.class);
     }
 
     private CompletableFuture<Boolean> combine(CompletableFuture<Boolean> u1, CompletableFuture<Boolean> u2) {

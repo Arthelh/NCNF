@@ -3,7 +3,6 @@ package com.ncnf.organization;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,8 +33,7 @@ import com.ncnf.utilities.InputValidator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 
@@ -59,6 +57,7 @@ public class OrganizationTabFragment extends Fragment {
 
     private TextView emptyView;
     private RecyclerView recycler;
+    OrganizationAdapter adapter;
 
     private List<Organization> organizations;
 
@@ -94,6 +93,13 @@ public class OrganizationTabFragment extends Fragment {
                 .exceptionally(e -> null);
 
         //Set visibility
+        updateVisibility();
+
+        adapter = new OrganizationAdapter(organizations, this::onOrganizationClick);
+        recycler.setAdapter(adapter);
+    }
+
+    private void updateVisibility(){
         if (organizations.isEmpty()) {
             recycler.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
@@ -101,9 +107,6 @@ public class OrganizationTabFragment extends Fragment {
             recycler.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
         }
-
-        OrganizationAdapter adapter = new OrganizationAdapter(organizations, this::onOrganizationClick);
-        recycler.setAdapter(adapter);
     }
 
     private void onOrganizationClick(Organization o) {
@@ -174,36 +177,27 @@ public class OrganizationTabFragment extends Fragment {
             //Unused
             if (verifyTextInput(inputText)) {
                 String token = inputText.getText().toString();
-                Optional<Organization> resultOrg = getOrganization(token);
-                if(resultOrg.isPresent()){
-                    organizationRepository.addUserToOrganization(user.getUuid(), resultOrg.get().getUuid().toString());
-                } else {
-                    //displayPopUp(v, "No organizations matching this token");
-                }
+                organizationRepository.getOrganizationsWithToken(token).thenAccept(o -> {
+                    int orgSize = o.size();
+                    switch (orgSize){
+                        case 0:
+                            displayPopUp(v, "No Organization with this token");
+                            break;
+                        case 1:
+                            organizationRepository.addUserToOrganization(user.getUuid(), o.get(0).getUuid().toString());
+                            adapter.addOrganization(o.get(0));
+                            updateVisibility();
+                        default:
+                            throw new IllegalStateException("Too many organizations using the same token");
+                    }
+                }).exceptionally(e -> {displayPopUp(v, "Query failed");
+                                        return null;});
             } else {
-                //displayPopUp(v, "Invalid token input");
+                displayPopUp(v, "Invalid token input");
             }
         }
         //dialog.dismiss();
     }
-
-    private Optional<Organization> getOrganization(String token) {
-        try {
-            List<Organization> organizations = organizationRepository.getOrganizationsWithToken(token).get();
-            int nbOrgs = organizations.size();
-            switch (nbOrgs) {
-                case 0:
-                    return Optional.empty();
-                case 1:
-                    return Optional.of(organizations.get(0));
-                default:
-                    throw new IllegalStateException("Multiple organizations with same admin token");
-            }
-        } catch (ExecutionException | InterruptedException e) {
-            return Optional.empty();
-        }
-    }
-
 
     private boolean verifyTextInput(EditText input) {
         if (InputValidator.isInvalidString(input.getText().toString())) {
