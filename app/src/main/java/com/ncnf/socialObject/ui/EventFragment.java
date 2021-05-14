@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
+import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.SocialObject;
 import com.ncnf.storage.CacheFileStore;
 import com.ncnf.utilities.DateAdapter;
@@ -105,7 +106,8 @@ public class EventFragment extends Fragment {
                 if (s != null) {
                     owner.setText("Event hosted by " + s);
                 } else {
-                    owner.setText("Event hosted by " + event.getOwnerId());
+                    Event e = (Event) event;
+                    owner.setText("Event hosted by " + e.getEmail());
                 }
             });
         }
