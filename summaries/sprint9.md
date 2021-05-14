@@ -29,7 +29,7 @@ Those tasks took me some time but I think the expected time was pretty close to 
 
 ## Keran
 
-I started the week by working with David on Organization. The goal was to finish the pending work such that we can address the code review concerns. So I wrote tests for the views that displays organization to the user and let him add a new one. I also implemented and tested am OrganizationRepository to help finish the feature more easily. On Jeremy's request, I added a default image when downloading an image from the FileStorage such we can have default picture in the application. I realized that I did not properly injected the FileStore in the activities and the tests, so I also fix that problem. 
+I started the week by working with David on Organization. The goal was to finish the pending work such that we can address the code review concerns. So I wrote tests for the views that displays organization to the user and let him add a new one. I also implemented and tested am OrganizationRepository to help finish the feature more easily. On Jeremy's request, I added a default image when downloading an image from the FileStorage such we can have default picture in the application. I realized that I did not properly injected the FileStore in the activities and the tests, so I also fix that problem.
 
 ## Overall team
 
