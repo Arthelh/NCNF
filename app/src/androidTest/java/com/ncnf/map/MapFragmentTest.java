@@ -31,6 +31,7 @@ import com.ncnf.socialObject.SocialObject;
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
@@ -67,10 +68,11 @@ import static org.mockito.Mockito.when;
 @HiltAndroidTest
 public final class MapFragmentTest {
 
-    CompletableFuture<List<Event>> TEST_COMP_FUTURE = new CompletableFuture<>();
-    private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
-    private final Event e2 = new Event("u2", "TestGeo2", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
-    List<Event> TEST_SocialObjects = Arrays.asList(e1, e2);
+    static private final DatabaseService db = Mockito.mock(DatabaseService.class);
+
+    static private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
+    static private final Event e2 = new Event("u2", "TestGeo2", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
+    static private final List<Event> events = Arrays.asList(e1, e2);
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private final ActivityScenarioRule activityRule = new ActivityScenarioRule<>(MainActivity.class);
@@ -79,14 +81,17 @@ public final class MapFragmentTest {
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(activityRule);
 
     @BindValue
-    public DatabaseService db = Mockito.mock(DatabaseService.class);
+    public DatabaseService databaseService = db;
+
+    @BeforeClass
+    static public void injectEvents() {
+        CompletableFuture<List<Event>> future = CompletableFuture.completedFuture(events);
+        when(db.geoQuery(any(LatLng.class), anyInt(), eq(EVENTS_COLLECTION_KEY), eq(Event.class))).thenReturn(future);
+    }
 
     @Before
     public void setup() {
         Intents.init();
-
-        TEST_COMP_FUTURE.complete(TEST_SocialObjects);
-        when(db.geoQuery(any(LatLng.class), anyInt(), eq(EVENTS_COLLECTION_KEY), eq(Event.class))).thenReturn(TEST_COMP_FUTURE);
 
         onView(withId(R.id.navigation_map)).perform(click());
     }
