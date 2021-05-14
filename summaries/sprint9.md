@@ -14,7 +14,7 @@ This week I refactored the Organization option inside a user profile to its (tem
 
 
 ## Eloi 
-
+This week, I focused on the User Profile Interface : it needed a serious refactor as I wasn't a good UI at all. Took more time than expected as clean UI requries time and patience. I had a bit of trouble to understand layouts, etc.
 
 
 ## Emmanuelle
