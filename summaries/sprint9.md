@@ -10,6 +10,7 @@ Overall it took me a bit longer than expected, mostly because of the map and int
 
 ## David
 
+This week I refactored the Organization option inside a user profile to its (temporary?) final form we settled on. With help from Keran we added a repository interface to communicate with the organizations in the db. 
 
 
 ## Eloi 
