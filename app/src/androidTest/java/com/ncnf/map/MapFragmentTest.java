@@ -17,6 +17,7 @@ import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
@@ -57,15 +58,18 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
 public final class MapFragmentTest {
 
-    CompletableFuture<List<SocialObject>> TEST_COMP_FUTURE = new CompletableFuture<>();
-    List<SocialObject> TEST_SocialObjects = Collections.singletonList(new Event("lol", "TestGeo", new Date(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com"));
-    List<Venue> TEST_VENUES = Arrays.asList(new Venue("EPFL", 46.5191f, 6.5668f),
-            new Venue("UniL", 46.5211f, 6.5802f));
+    CompletableFuture<List<Event>> TEST_COMP_FUTURE = new CompletableFuture<>();
+    private final Event e1 = new Event("u1", "TestGeo", new Date(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
+    private final Event e2 = new Event("u2", "TestGeo2", new Date(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
+    List<Event> TEST_SocialObjects = Arrays.asList(e1, e2);
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private final ActivityScenarioRule activityRule = new ActivityScenarioRule<>(MainActivity.class);
@@ -75,16 +79,13 @@ public final class MapFragmentTest {
 
     @BindValue
     public DatabaseService db = Mockito.mock(DatabaseService.class);
-    @BindValue
-    public VenueProvider venueProvider = Mockito.mock(VenueProvider.class);
 
     @Before
     public void setup() {
         Intents.init();
 
         TEST_COMP_FUTURE.complete(TEST_SocialObjects);
-        when(db.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, SocialObject.class)).thenReturn(TEST_COMP_FUTURE);
-        when(venueProvider.getAll()).thenReturn(TEST_VENUES);
+        when(db.geoQuery(any(LatLng.class), anyInt(), eq(EVENTS_COLLECTION_KEY), eq(Event.class))).thenReturn(TEST_COMP_FUTURE);
 
         onView(withId(R.id.navigation_map)).perform(click());
     }
@@ -125,9 +126,6 @@ public final class MapFragmentTest {
         assertNotNull("Map with venues is loaded",
                 device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 10000)
         );
-
-        //Mockito.verify(eventDB).toList();
-        Mockito.verify(venueProvider).getAll();
     }
 
     @Test
@@ -214,7 +212,7 @@ public final class MapFragmentTest {
             int x = markerRect.centerX();
             int y = markerRect.centerY() - markerRect.height();
             device.click(x, y);
-            Thread.sleep(2000);
+
             UiObject backToMapButton = device.findObject(new UiSelector().textContains("Back to Map"));
             assertTrue("Back to Map button exists", backToMapButton.waitForExists(2000));
 

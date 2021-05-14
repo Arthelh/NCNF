@@ -26,6 +26,7 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
+import com.ncnf.database.DatabaseService;
 import com.ncnf.map.MapHandler;
 import com.ncnf.map.SearchBarHandler;
 import com.ncnf.map.VenueProvider;
@@ -37,6 +38,10 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MapFragment extends Fragment{
+
+    @Inject
+    public DatabaseService databaseService;
+
     private GoogleMap mMap;
     private MapView mapView;
 
@@ -51,9 +56,6 @@ public class MapFragment extends Fragment{
 
     //Indicates whether map is ready, useful for onResume() method
     private boolean map_ready = false;
-
-    @Inject
-    VenueProvider venueProvider;
 
     @Nullable
     @Override
@@ -83,7 +85,7 @@ public class MapFragment extends Fragment{
         mapView.getMapAsync(googleMap -> {
             mMap = googleMap;
 
-            mapHandler = new MapHandler((AppCompatActivity) requireActivity(), mMap, venueProvider, getChildFragmentManager());
+            mapHandler = new MapHandler((AppCompatActivity) requireActivity(), mMap, getChildFragmentManager(), databaseService);
             searchBarHandler = new SearchBarHandler(getActivity(), materialSearchBar, mapHandler);
 
             mapHandler.show_markers();

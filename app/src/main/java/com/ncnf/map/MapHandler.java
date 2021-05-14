@@ -28,16 +28,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
-
 
 public class MapHandler {
 
     private final Activity context;
     private final GoogleMap mMap;
     private final DatabaseService databaseService;
-    private final VenueProvider venueProvider;
 
     private ClusterManager<NCNFMarker> clusterManager;
 
@@ -55,10 +57,12 @@ public class MapHandler {
      * @param mMap The Google Map to display
      * @param venueProvider A provider for the organizers, or venues.
      * @param fragmentManager A children fragment manager from the MapFragment
+     * @param databaseService the service to query the database
      */
-    public MapHandler(AppCompatActivity context, GoogleMap mMap, VenueProvider venueProvider, FragmentManager fragmentManager){
+    public MapHandler(AppCompatActivity context, GoogleMap mMap, FragmentManager fragmentManager, DatabaseService databaseService){
         this.context = context;
         this.mMap = mMap;
+        this.databaseService = databaseService;
         if (mMap != null) { //This is just for MapHandler Unit test
             MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context, context.getWindow(), fragmentManager);
 
@@ -76,8 +80,6 @@ public class MapHandler {
             this.mMap.setOnMarkerClickListener(this.clusterManager);
             this.mMap.setOnInfoWindowClickListener(this.clusterManager);
         }
-        this.databaseService = new DatabaseService();
-        this.venueProvider = venueProvider;
     }
 
     /**
@@ -149,6 +151,8 @@ public class MapHandler {
     }
 
     private void addVenueMarkers(){
+        // TODO: Link to the database
+        VenueProvider venueProvider = new VenueProvider();
         List<Venue> venues = venueProvider.getAll();
         for (Venue p : venues) {
             LatLng venue_position = new LatLng(p.getLatitude(), p.getLongitude());
