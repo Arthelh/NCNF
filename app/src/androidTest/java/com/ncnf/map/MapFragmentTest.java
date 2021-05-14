@@ -23,7 +23,6 @@ import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.main.MainActivity;
-import com.ncnf.settings.Settings;
 import com.ncnf.settings.ui.SettingsActivity;
 import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.SocialObject;
@@ -39,8 +38,6 @@ import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -51,6 +48,7 @@ import dagger.hilt.android.testing.HiltAndroidTest;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -219,23 +217,19 @@ public final class MapFragmentTest {
             int y = markerRect.centerY() - markerRect.height();
             device.click(x, y);
 
-            UiObject backToMapButton = device.findObject(new UiSelector().textContains("Back to Map"));
-            assertTrue("Back to Map button exists", backToMapButton.waitForExists(5000));
+            onView(withId(R.id.map_feed_button)).check(matches(withText("Back To Map")));
 
             UiObject eventCard = device.findObject(new UiSelector().textContains("TestGeo"));
             assertTrue("Event Card exists", eventCard.waitForExists(5000));
             eventCard.click();
 
-            UiObject backToFeedButton = device.findObject(new UiSelector().textContains("Back to Feed"));
-            assertTrue("Back to Feed button exists", backToFeedButton.waitForExists(5000));
-            backToFeedButton.click();
+            onView(withId(R.id.map_feed_button)).check(matches(withText("Back to Feed")));
+            onView(withId(R.id.map_feed_button)).perform(click());
 
-            UiObject backToMapButtonRevisited = device.findObject(new UiSelector().textContains("Back to Map"));
-            assertTrue("Back to Map button exists again", backToMapButtonRevisited.waitForExists(5000));
-            backToMapButtonRevisited.click();
+            onView(withId(R.id.map_feed_button)).check(matches(withText("Back to Map")));
+            onView(withId(R.id.map_feed_button)).perform(click());
 
-            UiObject switchButton = device.findObject(new UiSelector().textContains("Switch"));
-            assertTrue("Switch button exists, back to map", switchButton.waitForExists(5000));
+            onView(withId(R.id.map_switch_button)).check(matches(withText(containsString("Switch"))));
 
         } catch (Exception e) {
             e.printStackTrace();
