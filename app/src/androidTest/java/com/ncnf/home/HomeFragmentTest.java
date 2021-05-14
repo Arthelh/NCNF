@@ -10,7 +10,7 @@ import com.ncnf.main.MainActivity;
 import com.ncnf.socialObject.create.GroupCreateActivity;
 import com.ncnf.socialObject.update.EventNewsActivity;
 import com.ncnf.user.FriendsTrackerActivity;
-import com.ncnf.user.UserProfileActivity;
+import com.ncnf.user.UserTabActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -57,7 +57,7 @@ public final class HomeFragmentTest {
         onView(withId(android.R.id.button1)).check(matches(isClickable()));
         onView(withId(android.R.id.button1)).perform(click());
         Intents.intended(hasComponent(LoginActivity.class.getName()));
-        Intents.intended(hasExtra(NEXT_ACTIVITY_EXTRA_KEY, UserProfileActivity.class));
+        Intents.intended(hasExtra(NEXT_ACTIVITY_EXTRA_KEY, UserTabActivity.class));
     }
 
     @Test
