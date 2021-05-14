@@ -12,18 +12,14 @@ Overall it took me a bit longer than expected, mostly because of the map and int
 
 This week I refactored the Organization option inside a user profile to its (temporary?) final form we settled on. With help from Keran we added a repository interface to communicate with the organizations in the db. 
 
-
 ## Eloi 
 This week, I focused on the User Profile Interface : it needed a serious refactor as I wasn't a good UI at all. Took more time than expected as clean UI requries time and patience. I had a bit of trouble to understand layouts, etc.
-
 
 ## Emmanuelle
 
 This week, I first finished the tests for the feature that I implemented last week. This was a bit difficult at first, and I ended up having to use a feature that we are planning to remove later, but it would've been impossible to test otherwise so I'll just refactor it when we remove the feature. I also had some other troubles with testing because most of my feature is background activity but I eneded up getting an acceptable coverage.
 
 After merging that pull request, I redid the UI for both the event cards in the feed and the event page itself. This wasn't particularly difficult and I didn't run into any particular problems. My time estimates were pretty good this week.
-
-
 
 ## Jérémie (Scrum Master)
 
@@ -33,7 +29,7 @@ Those tasks took me some time but I think the expected time was pretty close to 
 
 ## Keran
 
-
+I started the week by working with David on Organization. The goal was to finish the pending work such that we can address the code review concerns. So I wrote tests for the views that displays organization to the user and let him add a new one. I also implemented and tested am OrganizationRepository to help finish the feature more easily. On Jeremy's request, I added a default image when downloading an image from the FileStorage such we can have default picture in the application. I realized that I did not properly injected the FileStore in the activities and the tests, so I also fix that problem. 
 
 ## Overall team
 
