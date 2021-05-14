@@ -22,7 +22,7 @@ import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.user.FriendsTrackerActivity;
-import com.ncnf.user.UserProfileActivity;
+
 
 import static androidx.core.app.ActivityCompat.startActivityForResult;
 

@@ -131,6 +131,7 @@
     <string name="friend_request_accept_text">The request was accepted !</string>
     <string name="friend_request_decline_text">The request was declined !</string>
     <string name="add_to_calendar_button" />
+    <string name="add_organization_button_text">Add Organization</string>
 
 
 </resources>

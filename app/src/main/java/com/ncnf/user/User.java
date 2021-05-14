@@ -7,6 +7,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.Group;
+import com.ncnf.user.helpers.CurrentUserModule;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -196,7 +197,7 @@ public class User {
     }
 
     public CompletableFuture<List<User>> getAllUsersLike(String username){
-        return this.db.withFieldLike(USERS_COLLECTION_KEY, FIRST_NAME_KEY, username, User.class); // TODO : change to username when possible
+        return this.db.withFieldContaining(USERS_COLLECTION_KEY, FIRST_NAME_KEY, username, User.class); // TODO : change to username when possible
     }
 
     public CompletableFuture<Boolean> addSavedEvent(Event event){

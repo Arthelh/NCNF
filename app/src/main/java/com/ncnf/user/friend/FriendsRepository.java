@@ -114,7 +114,7 @@ public class FriendsRepository {
         Get list of users based on username
      */
     public CompletableFuture<List<User>> searchFriends(String username){
-        return db.withFieldLike(USERS_COLLECTION_KEY, FIRST_NAME_KEY, username, User.class); // TODO : change FIRSTNAMEKEY to USERNAME_KEY
+        return db.withFieldContaining(USERS_COLLECTION_KEY, FIRST_NAME_KEY, username, User.class); // TODO : change FIRSTNAMEKEY to USERNAME_KEY
     }
 
     private CompletableFuture<Boolean> combine(CompletableFuture<Boolean> u1, CompletableFuture<Boolean> u2) {

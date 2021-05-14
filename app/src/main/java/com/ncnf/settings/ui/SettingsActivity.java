@@ -59,7 +59,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void setText() {
-        String textViewText = getString(R.string.settings_distance_slider) + distanceSeekBarValue + getString(R.stringfea.settings_km);
+        String textViewText = getString(R.string.settings_distance_slider) + distanceSeekBarValue + getString(R.string.settings_km);
         distanceTextView.setText(textViewText);
 
         Button discard = findViewById(R.id.discardButton);
