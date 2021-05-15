@@ -30,7 +30,6 @@ import com.ncnf.database.DatabaseService;
 import com.ncnf.map.MapUtilities;
 import com.ncnf.settings.Settings;
 import com.ncnf.socialObject.Event;
-import com.ncnf.socialObject.SocialObject;
 import com.ncnf.socialObject.ui.EventFragment;
 
 import java.util.ArrayList;
@@ -89,7 +88,7 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Get the RecyclerView
-        recycler = (RecyclerView) requireView().findViewById(R.id.recycler_view);
+        recycler = (RecyclerView) requireView().findViewById(R.id.feed_recycler_view);
 
         // Use LinearLayout as the layout manager
         lManager = new LinearLayoutManager(getActivity());

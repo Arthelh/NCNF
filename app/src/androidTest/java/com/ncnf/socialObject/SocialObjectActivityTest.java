@@ -4,7 +4,6 @@ import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.main.MainActivity;
 
@@ -14,7 +13,6 @@ import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
 
-import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 import dagger.hilt.android.testing.HiltAndroidRule;
@@ -42,7 +40,7 @@ public class SocialObjectActivityTest {
     @Before
     public void setup(){
         onView(withId(R.id.navigation_feed)).perform(click());
-        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.feed_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
 
     @Test
