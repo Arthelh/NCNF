@@ -69,7 +69,7 @@ public final class MapFragmentTest {
     static private final DatabaseService db = Mockito.mock(DatabaseService.class);
 
     static private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
-    static private final Event e2 = new Event("u2", "TestGeo2", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
+    static private final Event e2 = new Event("u2", "Another Fun event", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
     static private final List<Event> events = Arrays.asList(e1, e2);
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
@@ -216,6 +216,7 @@ public final class MapFragmentTest {
             int x = markerRect.centerX();
             int y = markerRect.centerY() - markerRect.height();
             device.click(x, y);
+            Thread.sleep(2000);
 
             onView(withId(R.id.map_feed_button)).check(matches(withText("Back To Map")));
 
