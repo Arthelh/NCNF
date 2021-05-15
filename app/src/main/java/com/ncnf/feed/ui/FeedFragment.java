@@ -91,7 +91,7 @@ public class FeedFragment extends Fragment {
         if (eventList.isEmpty()){
             actualiseEvents();
         } else {
-            adapter = new EventAdapter(eventList, e -> onEventClick(e), EventAdapter.SortingMethod.DATE);
+            adapter = new EventAdapter(getContext(), eventList, e -> onEventClick(e), EventAdapter.SortingMethod.DATE);
             recycler.setAdapter(adapter);
         }
     }
@@ -103,14 +103,14 @@ public class FeedFragment extends Fragment {
 
         ConstraintLayout feedContainer = globalWindow.findViewById(R.id.feed_event_container);
         FrameLayout feedFrame = globalWindow.findViewById(R.id.feed_event_fragment);
-        Button feedButton = globalWindow.findViewById(R.id.feed_event_button);
+        //Button feedButton = globalWindow.findViewById(R.id.feed_event_button);
 
         recycler.setVisibility(View.INVISIBLE);
 
         feedContainer.setBackgroundResource(R.drawable.main_background_gradient);
         feedContainer.setVisibility(View.VISIBLE);
         feedFrame.setVisibility(View.VISIBLE);
-        feedButton.setVisibility(View.VISIBLE);
+        //feedButton.setVisibility(View.VISIBLE);
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.feed_event_fragment, fragment).commit();
@@ -122,9 +122,11 @@ public class FeedFragment extends Fragment {
             }
         };
 
+        /**
         feedButton.setOnClickListener(v -> {
             destroyChildFragment(fragmentManager, fragment, feedContainer, callback);
         });
+         **/
 
         requireActivity().getOnBackPressedDispatcher().addCallback(callback);
     }
@@ -182,7 +184,7 @@ public class FeedFragment extends Fragment {
                 if (MapUtilities.position_in_range(Settings.getUserPosition(), eventPosition))
                     result.add(e);
             }
-            adapter = new EventAdapter(result, e -> onEventClick(e), EventAdapter.SortingMethod.DATE);
+            adapter = new EventAdapter(getContext(), result, e -> onEventClick(e), EventAdapter.SortingMethod.DATE);
             recycler.setAdapter(adapter);
 
         }).exceptionally(e -> {

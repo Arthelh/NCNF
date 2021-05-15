@@ -37,17 +37,18 @@ public class MapFeedFragment extends FeedFragment {
 
         ConstraintLayout feedContainer = globalWindow.findViewById(R.id.map_feed_container);
         FrameLayout feedFrame = globalWindow.findViewById(R.id.map_feed_fragment);
-        Button feedButton = globalWindow.findViewById(R.id.map_feed_button);
+        //Button feedButton = globalWindow.findViewById(R.id.map_feed_button);
 
         feedContainer.setBackgroundResource(R.drawable.main_background_gradient);
         feedContainer.setVisibility(View.VISIBLE);
         feedFrame.setVisibility(View.VISIBLE);
-        feedButton.setVisibility(View.VISIBLE);
-        feedButton.setText("Back to Feed");
+        //feedButton.setVisibility(View.VISIBLE);
+        //feedButton.setText("Back to Feed");
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.map_feed_fragment, fragment).addToBackStack(null).commit();
 
+        /**
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -59,7 +60,9 @@ public class MapFeedFragment extends FeedFragment {
             destroyChildFragment(fragmentManager, feedButton, feedContainer, callback);
         });
 
+
         requireActivity().getOnBackPressedDispatcher().addCallback(callback);
+         **/
     }
 
     private void destroyChildFragment(FragmentManager fragmentManager, Button button, ConstraintLayout feedContainer, OnBackPressedCallback callback){

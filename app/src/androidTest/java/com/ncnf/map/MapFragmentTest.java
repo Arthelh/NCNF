@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.SeekBar;
 
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.intent.Intents;
@@ -215,20 +216,12 @@ public final class MapFragmentTest {
             int y = markerRect.centerY() - markerRect.height();
             device.click(x, y);
             Thread.sleep(2000);
-            UiObject backToMapButton = device.findObject(new UiSelector().textContains("Back to Map"));
-            assertTrue("Back to Map button exists", backToMapButton.waitForExists(2000));
 
             UiObject eventCard = device.findObject(new UiSelector().textContains("TestGeo"));
             assertTrue("Event Card exists", eventCard.waitForExists(2000));
             eventCard.click();
 
-            UiObject backToFeedButton = device.findObject(new UiSelector().textContains("Back to Feed"));
-            assertTrue("Back to Feed button exists", backToFeedButton.waitForExists(2000));
-            backToFeedButton.click();
-
-            UiObject backToMapButtonRevisited = device.findObject(new UiSelector().textContains("Back to Map"));
-            assertTrue("Back to Map button exists again", backToMapButtonRevisited.waitForExists(2000));
-            backToMapButtonRevisited.click();
+            Espresso.pressBack();
 
             UiObject switchButton = device.findObject(new UiSelector().textContains("Switch"));
             assertTrue("Switch button exists, back to map", switchButton.waitForExists(2000));
