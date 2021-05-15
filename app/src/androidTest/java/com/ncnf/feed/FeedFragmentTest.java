@@ -1,5 +1,6 @@
 package com.ncnf.feed;
 
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
@@ -61,7 +62,7 @@ public class FeedFragmentTest {
     public void eventFragmentCloses(){
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.eventName)).check(matches(withText("TestGeoCluster")));
-        onView(withId(R.id.feed_event_button)).perform(click());
+        Espresso.pressBack();
         onView(withId(R.id.recycler_view)).check(matches(isDisplayed()));
     }
 }
