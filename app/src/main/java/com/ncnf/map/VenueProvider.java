@@ -7,9 +7,6 @@ import javax.inject.Inject;
 
 public class VenueProvider {
 
-    @Inject
-    public VenueProvider() {}
-
     public List<Venue> getAll() {
         ArrayList<Venue> list = new ArrayList<>();
         //list.add(new PlaceholderEvent("Roméo et Juliette, Theatre du Leman", 46.2101f, 6.1510f));

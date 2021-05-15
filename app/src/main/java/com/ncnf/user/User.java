@@ -254,7 +254,7 @@ public class User {
             return CompletableFuture.completedFuture(false);
         }
 
-        return group.store(this.db)
+        return group.store(db)
                 .thenCompose(task -> {
                     return this.addOwnedGroup(group);
 

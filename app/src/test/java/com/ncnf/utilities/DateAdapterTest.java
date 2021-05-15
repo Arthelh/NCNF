@@ -3,8 +3,12 @@ package com.ncnf.utilities;
 import org.junit.Test;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,12 +21,10 @@ public class DateAdapterTest {
         assertEquals(d.getDay(), 13);
         assertEquals(d.getMonth(), 2);
 
-
-        Date date = java.util.Date.from(Instant.now());
+        LocalDateTime date = LocalDateTime.now();
         DateAdapter d2 = new DateAdapter(date);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(date.getTime());
 
         assertEquals(d2.getHour(), calendar.get(Calendar.HOUR_OF_DAY));
         assertEquals(d2.getMinute(), calendar.get(Calendar.MINUTE));
