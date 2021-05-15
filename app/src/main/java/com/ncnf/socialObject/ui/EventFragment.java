@@ -23,6 +23,8 @@ import com.ncnf.storage.CacheFileStore;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.SaveToCalendar;
 
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -39,12 +41,12 @@ public class EventFragment extends Fragment {
     @Inject
     public CacheFileStore fileStore;
 
+    private final Event event;
+    
     @Inject
     public DatabaseService dbs;
 
-    private SocialObject event;
-
-    public EventFragment(SocialObject event){
+    public EventFragment(Event event){
         this.event = event;
     }
 
@@ -90,7 +92,7 @@ public class EventFragment extends Fragment {
         date.setText("Event takes place on : " + new DateAdapter(event.getDate()).toString());
 
         CalendarView calendar = view.findViewById(R.id.show_event_date);
-        calendar.setDate(event.getDate().getTime());
+        calendar.setDate(event.getDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 
         TextView loc = view.findViewById(R.id.eventLocation);
         loc.setText("Event held at : " + event.getAddress());
@@ -100,9 +102,6 @@ public class EventFragment extends Fragment {
 
         TextView owner = view.findViewById(R.id.eventOwner);
 
-        if(event instanceof Event) {
-            Event e = (Event) event;
-            owner.setText("Event hosted by " + e.getEmail());
-        }
+        owner.setText("Event hosted by " + event.getEmail());
     }
 }

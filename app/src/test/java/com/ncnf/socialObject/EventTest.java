@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class EventTest {
 
     String name = "Jane Doe";
-    Date date = new Date(2021, 03, 11);
+    LocalDateTime date = LocalDateTime.of(2021, 3, 11, 12, 0);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
     SocialObject.Type type = SocialObject.Type.Conference;
@@ -66,7 +67,7 @@ public class EventTest {
     @Test
     public void publicEventGeneratesCorrectly() {
 
-        Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
+        Event event = new Event(ownerID,name, date, geoPoint, address, description, type, 0, 0, "test@email.com");
         assertEquals(event.getOwnerId(), ownerID);
         assertEquals(event.getDate(), date);
         assertEquals(event.getName(), name);
@@ -153,7 +154,7 @@ public class EventTest {
     public void basicSettersWork() {
         Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
         List<String> attendees = new ArrayList<>();
-        Date newDate = new Date(2021, 3, 12);
+        LocalDateTime newDate = LocalDateTime.of(2021, 3, 12, 12, 0);
         GeoPoint newGeoPoint = new GeoPoint(1., 1.);
 
         attendees.add("Mary");
@@ -199,9 +200,9 @@ public class EventTest {
     @Test
     public void compareToWorks() {
         Event event = new Event("ownerId", name, date, geoPoint, address, description, type, 0, 0, "test@email.com");
-        Date date2 = new Date(2021, 03, 30);
+        LocalDateTime date2 = LocalDateTime.of(2021, 3, 30, 12, 0);
         Event event2 = new Event("ownerId", name, date2, geoPoint, address, description, type, 0, 0, "test@email.com");
 
-        assertEquals(event.compareTo(event2), -1);
+        assertEquals(event.compareTo(event2), -19);
     }
 }

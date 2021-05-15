@@ -17,7 +17,7 @@ public class SaveToCalendar {
         intent.putExtra(CalendarContract.Events.EVENT_LOCATION, s.getLocation().toString());
         intent.putExtra(CalendarContract.Events.DESCRIPTION, s.getDescription());
         //intent.putExtra(CalendarContract.Events.ALL_DAY, true);
-        intent.putExtra(CalendarContract.Events.DTSTART, s.getDate().getTime());
+        intent.putExtra(CalendarContract.Events.DTSTART, s.getDate().getHour());
         //intent.putExtra(CalendarContract.Events.DTEND, hour end)*/
         return intent;
     }

@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class GroupTest {
 
     String name = "Jane Doe";
-    Date date = new Date(2021, 03, 11);
+    LocalDateTime date = LocalDateTime.of(2021, 03, 11, 12, 0);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
     SocialObject.Type type = SocialObject.Type.Conference;
@@ -108,10 +109,10 @@ public class GroupTest {
     @Test
     public void compareToWorks() {
         Group event = new Group("00",name, date, geoPoint,address,description, type);
-        Date date2 = new Date(2021, 03, 30);
+        LocalDateTime date2 = LocalDateTime.of(2021, 03, 30, 12, 00);
         Group event2 = new Group("00",name, date2, geoPoint,address,description, type);
 
-        assertEquals(event.compareTo(event2), -1);
+        assertEquals(event.compareTo(event2), -19);
     }
 
     @Test
