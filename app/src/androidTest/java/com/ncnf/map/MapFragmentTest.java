@@ -7,6 +7,7 @@ import android.widget.SeekBar;
 
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -14,6 +15,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
+import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 
@@ -26,9 +28,11 @@ import com.ncnf.main.MainActivity;
 import com.ncnf.settings.ui.SettingsActivity;
 import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.SocialObject;
+import com.ncnf.utilities.RecyclerViewItemCountAssertion;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -50,10 +54,12 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.withChild;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -217,23 +223,21 @@ public final class MapFragmentTest {
             int y = markerRect.centerY() - markerRect.height();
             device.click(x, y);
             Thread.sleep(2000);
-
-            onView(withId(R.id.map_feed_button)).check(matches(withText("Back To Map")));
-
-            UiObject eventCard = device.findObject(new UiSelector().textContains("TestGeo"));
-            assertTrue("Event Card exists", eventCard.waitForExists(5000));
-            eventCard.click();
-
-            onView(withId(R.id.map_feed_button)).check(matches(withText("Back to Feed")));
-            onView(withId(R.id.map_feed_button)).perform(click());
-
-            onView(withId(R.id.map_feed_button)).check(matches(withText("Back to Map")));
-            onView(withId(R.id.map_feed_button)).perform(click());
-
-            onView(withId(R.id.map_switch_button)).check(matches(withText(containsString("Switch"))));
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (UiObjectNotFoundException | InterruptedException e) {
+            Assert.fail("Marker not found.");
         }
+
+        onView(withId(R.id.map_feed_button)).check(matches(withText("Back to Map")));
+
+        onView(allOf(withId(R.id.set_event_name), withText("TestGeo"))).perform(click());
+
+        onView(withId(R.id.map_feed_button)).check(matches(withText("Back to Feed")));
+        onView(withId(R.id.map_feed_button)).perform(click());
+
+        onView(withId(R.id.map_feed_button)).check(matches(withText("Back to Map")));
+        onView(withId(R.id.map_feed_button)).perform(click());
+
+        onView(withId(R.id.map_switch_button)).check(matches(withText(containsString("Switch"))));
+
     }
 }
