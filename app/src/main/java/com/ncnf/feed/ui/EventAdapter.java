@@ -1,19 +1,25 @@
 package com.ncnf.feed.ui;
 
+import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
 import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.EventRelevanceCalculator;
 import com.ncnf.socialObject.SocialObject;
+import com.ncnf.storage.CacheFileStore;
+import com.ncnf.user.User;
 import com.ncnf.utilities.DateAdapter;
 
 import java.util.ArrayList;
@@ -21,11 +27,15 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import static android.graphics.BitmapFactory.decodeResource;
+import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
+
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.SocialObjViewHolder> implements Filterable {
     private List<Event> events;
     private List<Event> eventsFull;
     private final OnSocialObjListener onSocialObjListener;
     private SortingMethod sortingMethod;
+    protected final Context context;
 
     public enum SortingMethod {
         DATE, RELEVANCE
@@ -35,7 +45,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.SocialObjVie
         void onEventClick(Event event);
     }
 
-    public EventAdapter(List<Event> items, OnSocialObjListener onSocialObjListener, SortingMethod sortingMethod) {
+    public EventAdapter(Context context, List<Event> items, OnSocialObjListener onSocialObjListener, SortingMethod sortingMethod) {
         //ensure proper copy of the List
 
         this.sortingMethod = SortingMethod.DATE;
@@ -52,6 +62,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.SocialObjVie
         }
 
         this.onSocialObjListener = onSocialObjListener;
+        this.context = context;
     }
 
     public List<SocialObject> getEvents() {
@@ -120,23 +131,35 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.SocialObjVie
         }
     };
 
-    public static class SocialObjViewHolder extends RecyclerView.ViewHolder {
+    public class SocialObjViewHolder extends RecyclerView.ViewHolder {
         // Card fields
         private final TextView socialObject;
         private final TextView date;
         private final TextView description;
+        private final ImageView image;
 
         public SocialObjViewHolder(View v, OnSocialObjListener e) {
             super(v);
             socialObject = (TextView) v.findViewById(R.id.set_event_name);
             date = (TextView) v.findViewById(R.id.event_date);
             description = (TextView) v.findViewById(R.id.event_descr);
+            CardView imageHolder = (CardView) v.findViewById(R.id.event_card_image);
+            image = imageHolder.findViewById(R.id.event_picture);
             //add timestamp
         }
 
         public void bind(final Event e, final OnSocialObjListener listener) {
             socialObject.setText(e.getName());
             itemView.setOnClickListener(v -> listener.onEventClick(e));
+            setEventImage(e);
+        }
+
+        private void setEventImage(Event event){
+            CacheFileStore fileStore = new CacheFileStore();
+            fileStore.setContext(context);
+            fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
+            fileStore.downloadImage(image, BitmapFactory.decodeResource(context.getResources(),
+                    R.drawable.default_event_bg));
         }
     }
 

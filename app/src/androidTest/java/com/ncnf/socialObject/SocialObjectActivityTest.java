@@ -2,8 +2,8 @@ package com.ncnf.socialObject;
 
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.main.MainActivity;
 
@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
-import org.junit.runner.RunWith;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
 import dagger.hilt.android.testing.HiltAndroidRule;
@@ -25,15 +25,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
 
-//TODO WTF IS THAT NAME IOhioUIGIUGIUFLUZCFUDFZ"EUZFDZFULDEQLZUGDEGZLUD"E
-//TODO THIS TEST ALREADY EXITS JESUS CHRIST XUIUGVZWZPUICEUIGLCBNOLäNIPOJERäIöJCONCKNEO
 @HiltAndroidTest
-@RunWith(AndroidJUnit4.class)
 public class SocialObjectActivityTest {
 
+    private final Event event = new Event("hg0aavb0Fce6EgX3HrTW05rKSww1", "TestGeo", LocalDateTime.of(2021, 5, 4, 12, 0), new GeoPoint(46.518689, 6.568067), "Ecublens", "TestGeo", Event.Type.Conference, 0, 0, "beltan@test.com");
     private final CompletableFuture<SocialObject> eventC = new CompletableFuture<>();
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(MainActivity.class));
 
@@ -60,6 +59,6 @@ public class SocialObjectActivityTest {
 
     @Test
     public void test_owner(){
-        onView(withId(R.id.eventOwner)).check(matches(withText(containsString("hg0aavb0Fce6EgX3HrTW05rKSww1"))));
+        onView(withId(R.id.eventOwner)).check(matches(withText(containsString(event.getEmail()))));
     }
 }

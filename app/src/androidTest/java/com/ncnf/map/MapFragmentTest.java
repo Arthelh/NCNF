@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.SeekBar;
 
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.contrib.RecyclerViewActions;
@@ -227,15 +228,9 @@ public final class MapFragmentTest {
             Assert.fail("Marker not found.");
         }
 
-        onView(withId(R.id.map_feed_button)).check(matches(withText("Back to Map")));
-
         onView(allOf(withId(R.id.set_event_name), withText("TestGeo"))).perform(click());
 
-        onView(withId(R.id.map_feed_button)).check(matches(withText("Back to Feed")));
-        onView(withId(R.id.map_feed_button)).perform(click());
-
-        onView(withId(R.id.map_feed_button)).check(matches(withText("Back to Map")));
-        onView(withId(R.id.map_feed_button)).perform(click());
+        Espresso.pressBack();
 
         onView(withId(R.id.map_switch_button)).check(matches(withText(containsString("Switch"))));
 
