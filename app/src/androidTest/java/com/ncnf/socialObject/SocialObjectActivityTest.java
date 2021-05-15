@@ -28,8 +28,7 @@ import static org.hamcrest.Matchers.containsString;
 @HiltAndroidTest
 public class SocialObjectActivityTest {
 
-    private final Event event = new Event("hg0aavb0Fce6EgX3HrTW05rKSww1", "TestGeo", LocalDateTime.of(2021, 5, 4, 12, 0), new GeoPoint(46.518689, 6.568067), "Ecublens", "TestGeo", Event.Type.Conference, 0, 0, "beltan@test.com");
-    private final CompletableFuture<SocialObject> eventC = new CompletableFuture<>();
+    private final Event event = new Event("u1", "TestGeo", LocalDateTime.of(2021, 5, 4, 12, 0), new GeoPoint(46.518689, 6.568067), "Ecublens", "TestGeo", Event.Type.Conference, 0, 0, "beltan@test.com");
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
 
