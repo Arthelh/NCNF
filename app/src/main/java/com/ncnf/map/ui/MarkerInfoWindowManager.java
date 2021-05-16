@@ -55,7 +55,7 @@ public class  MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Cl
             Fragment fragment;
 
             if (eventList.size() == 1) { //When the marker represents only one event
-                SocialObject e = item.getEventList().get(0);
+                Event e = item.getEventList().get(0);
                 fragment = new EventFragment(e);
             } else {
                 fragment = new MapFeedFragment(eventList, globalWindow, fragmentManager);
@@ -63,12 +63,12 @@ public class  MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Cl
 
             ConstraintLayout feedContainer = globalWindow.findViewById(R.id.map_feed_container);
             FrameLayout feedFrame = globalWindow.findViewById(R.id.map_feed_fragment);
-            Button feedButton = globalWindow.findViewById(R.id.map_feed_button);
+            //Button feedButton = globalWindow.findViewById(R.id.map_feed_button);
 
             feedContainer.setBackgroundResource(R.drawable.main_background_gradient);
             feedContainer.setVisibility(View.VISIBLE);
             feedFrame.setVisibility(View.VISIBLE);
-            feedButton.setVisibility(View.VISIBLE);
+            //feedButton.setVisibility(View.VISIBLE);
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.map_feed_fragment, fragment).addToBackStack(null).commit();
@@ -80,9 +80,11 @@ public class  MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Cl
                 }
             };
 
+            /**
             feedButton.setOnClickListener(v -> {
                 destroyChildFragment(fragmentManager, fragment, feedContainer, callback);
             });
+             **/
 
             context.getOnBackPressedDispatcher().addCallback(context, callback);
 

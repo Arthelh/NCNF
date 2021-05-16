@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +24,7 @@ public class Event extends SocialObject {
     private int minAge;
     private String email;
 
-    public Event(String ownerId, String name, Date date, GeoPoint location, String address, String description, Type type, int minAge, double price, String email) {
+    public Event(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type, int minAge, double price, String email) {
         super(ownerId, name, date, location, address, type, description);
 
         checkConstraints(minAge, price);
@@ -34,7 +35,7 @@ public class Event extends SocialObject {
         this.email = email;
     }
 
-    public Event(String ownerId, UUID uuid, String name, Date date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<Tag> tags, String email) {
+    public Event(String ownerId, UUID uuid, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<Tag> tags, String email) {
         super(ownerId, uuid, name, date, location, address, type, attendees, description);
 
         checkConstraints(minAge, price);
@@ -91,7 +92,7 @@ public class Event extends SocialObject {
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(SocialObject o) {
         Event otherEvent = (Event) o;
         return getDate().compareTo(otherEvent.getDate());
     }

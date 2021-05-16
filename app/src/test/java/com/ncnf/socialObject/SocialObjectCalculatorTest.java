@@ -4,15 +4,16 @@ import com.google.firebase.firestore.GeoPoint;
 
 import org.junit.Test;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 public class SocialObjectCalculatorTest {
 
     String name = "Jane Doe";
-    Date date = new Date(2021, 03, 11);
+    LocalDateTime date = LocalDateTime.of(2021, 3, 11, 12, 0);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
     SocialObject.Type type = SocialObject.Type.Conference;
