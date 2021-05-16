@@ -89,14 +89,15 @@ public class UserProfileTabFragment extends Fragment {
     private void initUser() {
         this.user.loadUserFromDB().thenAccept(u -> {
             if (user != null) {
-                setupNotificationSwitch();
-
                 firstName.setText(user.getFirstName());
                 lastName.setText(user.getLastName());
                 birthDate.setText(user.getBirthDate().toString());
                 requireView().findViewById(R.id.userProfileSaveButton).setEnabled(false);
                 email.setEnabled(false);
                 email.setText(user.getEmail());
+                hasNotifications = user.getNotifications();
+
+                setupNotificationSwitch();
             }
         });
     }
@@ -181,7 +182,7 @@ public class UserProfileTabFragment extends Fragment {
 
 
     private void setupNotificationSwitch() {
-        Snackbar errorMsg = Snackbar.make(requireView().findViewById(R.id.userProfileRoot), "An error happened! Try again later", LENGTH_SHORT);
+        Snackbar errorMsg = Snackbar.make(requireActivity().findViewById(android.R.id.content), "An error happened! Try again later", LENGTH_SHORT);
         notification_switch.setChecked(hasNotifications);
         notification_switch.setOnCheckedChangeListener((view, isChecked) -> {
             if (isChecked) {
