@@ -24,16 +24,10 @@ import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.SaveToCalendar;
 
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-
-import static com.ncnf.utilities.StringCodes.FIRST_NAME_KEY;
-import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 
 @AndroidEntryPoint
 public class EventFragment extends Fragment {
@@ -67,13 +61,10 @@ public class EventFragment extends Fragment {
 
     private void initSaveCalendar(View view){
         Button addToCalendar = view.findViewById(R.id.button_calendar);
-        addToCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent calendarIntent = SaveToCalendar.createCalendarIntent(event);
-                if (calendarIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
-                    startActivity(calendarIntent);
-                }
+        addToCalendar.setOnClickListener(v -> {
+            Intent calendarIntent = SaveToCalendar.createCalendarIntent(event);
+            if (calendarIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
+                startActivity(calendarIntent);
             }
         });
     }
