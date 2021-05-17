@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -43,7 +44,7 @@ public class DatabaseServiceTest {
     private static Task task;
 
     String name = "Jane Doe";
-    Date date = new Date(2021, 03, 11);
+    LocalDateTime date = LocalDateTime.of(2021, 03, 11, 12, 0);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
     SocialObject.Type type = SocialObject.Type.Conference;
@@ -282,7 +283,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.orderBy(anyString())).thenReturn(query);
 
-        CompletableFuture<List<Event>> future = service.withFieldLike("/events", "field", "value", Event.class);
+        CompletableFuture<List<Event>> future = service.withFieldContaining("/events", "field", "value", Event.class);
 
         try {
             assertEquals(event, future.get().get(0));
@@ -304,7 +305,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.orderBy(anyString())).thenReturn(query);
 
-        CompletableFuture<List<SocialObject>> future = service.withFieldLike("/events", "field", "value", SocialObject.class);
+        CompletableFuture<List<SocialObject>> future = service.withFieldContaining("/events", "field", "value", SocialObject.class);
 
         assertTrue(future.isCompletedExceptionally());
     }

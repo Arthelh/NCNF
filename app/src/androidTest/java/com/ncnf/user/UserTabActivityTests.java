@@ -14,6 +14,7 @@ import com.ncnf.firebase.modules.FirebaseUserModule;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
+import com.ncnf.user.helpers.CurrentUserModule;
 
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -56,7 +57,7 @@ import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
 @UninstallModules({FirebaseUserModule.class, CurrentUserModule.class})
-public class UserProfileActivityTests {
+public class UserTabActivityTests {
 
     private static final User mockUser = Mockito.mock(User.class);
     private static final FirebaseUser mockFirebaseUser = Mockito.mock(FirebaseUser.class);
@@ -75,7 +76,7 @@ public class UserProfileActivityTests {
     }
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(UserProfileActivity.class);
+    private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(UserTabActivity.class);
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);

@@ -10,8 +10,8 @@ import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.Group;
 import com.ncnf.socialObject.SocialObject;
 import com.ncnf.storage.CacheFileStore;
-import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
+import com.ncnf.user.helpers.CurrentUserModule;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,11 +48,11 @@ public class BookMarkActivityTest {
     private static final User mockUser = Mockito.mock(User.class);
 
     List<Event> events = new ArrayList<>();
-    private final Event event = new Event("EPFL", "EPFL event", new Date(2021, 03, 11), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", SocialObject.Type.Conference, 0, 0, "test@email.com");
+    private final Event event = new Event("EPFL", "EPFL event", LocalDateTime.of(2021, 03, 11, 0, 0), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", SocialObject.Type.Conference, 0, 0, "test@email.com");
     private CompletableFuture<List<Event>> eventsFuture;
 
     List<Group> groups = new ArrayList<>();
-    private final Group group = new Group("EPFL", "EPFL event", new Date(2021, 03, 11), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", SocialObject.Type.Conference);
+    private final Group group = new Group("EPFL", "EPFL event", LocalDateTime.of(2021, 03, 11, 0, 0), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", SocialObject.Type.Conference);
     private CompletableFuture<List<Group>> groupsFuture;
 
     @BindValue

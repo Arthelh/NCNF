@@ -2,6 +2,8 @@ package com.ncnf.utilities;
 
 
 import android.text.InputType;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.core.util.PatternsCompat;
@@ -74,6 +76,14 @@ public class InputValidator {
         return textField.getError() == null;
     }
 
+    static public void setErrorMsg(View v, String error){
+        if(v instanceof Button){
+            ((Button) v).setError(error);
+        } else if(v instanceof EditText){
+            ((EditText) v).setError(error);
+        }
+    }
+
     public static boolean isValidPassword(String password){
         return password.length() >= StringCodes.PASSWORD_MINIMUM_LENGTH;
     }
@@ -87,6 +97,6 @@ public class InputValidator {
     }
 
     public static boolean checkCompleteList(List<String> l){
-        return (l == null) || l.stream().anyMatch(Objects::isNull);
+        return (l == null) || l.stream().anyMatch(Objects::isNull) || l.isEmpty();
     }
 }

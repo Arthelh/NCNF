@@ -10,10 +10,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -42,7 +42,7 @@ public class UserTests {
     DatabaseService db = mock(DatabaseService.class);
     String ownerID = "ownerId";
     String name = "name";
-    Date date = new Date();
+    LocalDateTime date = LocalDateTime.now();
     GeoPoint geoPoint = new GeoPoint(0,0);
     String address = "address";
     String description = "description";
@@ -235,7 +235,7 @@ public class UserTests {
 
         CompletableFuture<List<Object>> future = CompletableFuture.completedFuture(Arrays.asList(user));
 
-        when(db.withFieldLike(anyString(), anyString(), anyString(), any())).thenReturn(future);
+        when(db.withFieldContaining(anyString(), anyString(), anyString(), any())).thenReturn(future);
 
         CompletableFuture<List<User>> query = user2.getAllUsersLike(user.getUsername());
         try {

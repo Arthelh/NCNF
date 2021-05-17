@@ -10,6 +10,8 @@ import com.ncnf.socialObject.Tag;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,6 +48,7 @@ public class EventBuilder extends DatabaseObjectBuilder<Event> {
         String uuidStr = data.getOrDefault(UUID_KEY, "").toString();
         String name = data.getOrDefault(NAME_KEY, "").toString();
         Date date = ((Timestamp) data.getOrDefault(DATE_KEY, new Date())).toDate();
+        LocalDateTime datetime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         GeoPoint location = (GeoPoint) data.getOrDefault(LOCATION_KEY, new GeoPoint(0, 0));
         String address = data.getOrDefault(ADDRESS_KEY, "").toString();
         String typeStr = data.getOrDefault(TYPE_KEY, SocialObject.Type.NOTHING).toString();
@@ -63,7 +66,7 @@ public class EventBuilder extends DatabaseObjectBuilder<Event> {
         List<Tag> tags = (List<Tag>) data.getOrDefault(TAGS_LIST_KEY, new ArrayList<>());
         String email = data.getOrDefault(EMAIL_KEY, "").toString();
         //TODO : should serialize / deserialize tags before adding them
-        return new Event(ownerId, UUID.fromString(uuidStr), name, date, location, address, description, type, attendees, minAge, price, tags, email);
+        return new Event(ownerId, UUID.fromString(uuidStr), name, datetime, location, address, description, type, attendees, minAge, price, tags, email);
     }
 
     @Override
@@ -71,7 +74,8 @@ public class EventBuilder extends DatabaseObjectBuilder<Event> {
         Map<String, Object> map = new HashMap<>();
         map.put(UUID_KEY, event.getUuid().toString());
         map.put(NAME_KEY, event.getName());
-        map.put(DATE_KEY, new Timestamp(event.getDate()));
+        Date date = Date.from(event.getDate().atZone(ZoneId.systemDefault()).toInstant());
+        map.put(DATE_KEY, new Timestamp(date));
         map.put(LOCATION_KEY, event.getLocation());
         map.put(ADDRESS_KEY, event.getAddress());
         map.put(TYPE_KEY, event.getType().toString());

@@ -10,8 +10,8 @@ import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.firebase.modules.FirebaseUserModule;
-import com.ncnf.user.FriendsRepository;
 import com.ncnf.user.User;
+import com.ncnf.user.friend.FriendsRepository;
 import com.ncnf.utilities.CustomRecyclerViewAction;
 import com.ncnf.utilities.RecyclerViewItemCountAssertion;
 

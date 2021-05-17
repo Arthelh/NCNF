@@ -14,7 +14,7 @@
         android:padding="3dp">
 
         <include
-            android:id="@+id/user_card_profile_picture"
+            android:id="@+id/event_card_image"
             layout="@layout/profile_picture_view"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
             app:layout_constraintBottom_toTopOf="@+id/user_card_view_username"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/user_card_profile_picture"
+            app:layout_constraintStart_toEndOf="@+id/event_card_image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.4" />
 
@@ -43,7 +43,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@+id/user_card_profile_picture"
+            app:layout_constraintStart_toEndOf="@+id/event_card_image"
             app:layout_constraintTop_toBottomOf="@+id/user_card_view_name" />
 
         <com.google.android.material.button.MaterialButton

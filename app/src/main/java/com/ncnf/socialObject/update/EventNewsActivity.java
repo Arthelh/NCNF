@@ -40,12 +40,12 @@ public class EventNewsActivity extends AppCompatActivity {
             if (InputValidator.verifyGenericInput(textField)) {
                 textField.setEnabled(false);
                     SocialObject.addNews(db, uuid, textField.getText().toString()).thenAccept(res -> {
-                    Snackbar bar = Snackbar.make(findViewById(R.id.eventNewsRoot), "News published !", LENGTH_LONG);
+                    Snackbar bar = Snackbar.make(findViewById(android.R.id.content), "News published !", LENGTH_LONG);
                     textField.setText("");
                     bar.show();
                     textField.setEnabled(true);
                 }).exceptionally(exception -> {
-                    Snackbar bar = Snackbar.make(findViewById(R.id.eventNewsRoot), "Could not publish the news ! Try again later.", LENGTH_LONG);
+                    Snackbar bar = Snackbar.make(findViewById(android.R.id.content), "Could not publish the news ! Try again later.", LENGTH_LONG);
                     bar.show();
                     return null;
                 });

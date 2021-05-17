@@ -15,6 +15,7 @@ import androidx.test.uiautomator.UiSelector;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
+import com.ncnf.user.helpers.CurrentUserModule;
 
 import org.junit.After;
 import org.junit.Before;
