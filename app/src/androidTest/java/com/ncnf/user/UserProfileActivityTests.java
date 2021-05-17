@@ -10,6 +10,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.bookmark.BookMarkActivity;
+import com.ncnf.database.DatabaseService;
 import com.ncnf.firebase.modules.FirebaseUserModule;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.main.MainActivity;
@@ -49,6 +50,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.ncnf.friends.FriendsActivityTest.friendsRepository;
 import static java.util.EnumSet.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
@@ -66,8 +68,7 @@ public class UserProfileActivityTests {
 
     @BindValue
     public FriendsRepository mockFriendsRepository = friendsRepository;
-    private static final User u1 = new User(databaseService, "1", "johnny", "john@bar.com","John", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, LocalDate.now(), null);
-    private static final List<User> users = Collections.singletonList(u1);
+    private static final List<User> users = Collections.singletonList(mockUser);
 
     // BeforeClass is required because the mocking must be done before the activity is launched
     @BeforeClass
