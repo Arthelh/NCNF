@@ -58,7 +58,7 @@ public class FriendsActivityTest {
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(FriendsActivity.class);
 
-    private static final FriendsRepository friendsRepository = Mockito.mock(FriendsRepository.class);
+    public static final FriendsRepository friendsRepository = Mockito.mock(FriendsRepository.class);
     private static final DatabaseService databaseService = Mockito.mock(DatabaseService.class);
 
     @Rule

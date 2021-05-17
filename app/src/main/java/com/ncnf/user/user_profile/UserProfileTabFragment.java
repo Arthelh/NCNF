@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -78,6 +79,7 @@ public class UserProfileTabFragment extends Fragment {
     private boolean isEditing = false;
 
     private static final int IMG_PICK_CODE = 1000;
+    private final String usernamePrefix = "@";
 
     public UserProfileTabFragment(){}
 
@@ -150,7 +152,7 @@ public class UserProfileTabFragment extends Fragment {
 
                 String usernameStr = user.getUsername();
                 if(!usernameStr.isEmpty()){
-                    username.setText(usernameStr);
+                    setUsernameView(usernameStr);
                 }
 
                 LocalDate birthDateObj = user.getBirthDate();
@@ -273,6 +275,7 @@ public class UserProfileTabFragment extends Fragment {
 
         username.setEnabled(false);
         username.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        setUsernameView(username.getText().toString());
 
         birthDate.setEnabled(false);
         birthDate.setClickable(false);
@@ -289,6 +292,7 @@ public class UserProfileTabFragment extends Fragment {
         fullName.setEnabled(true);
         fullName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_outline_edit_24, 0, 0, 0);
 
+        username.setText(user.getUsername());
         username.setEnabled(true);
         username.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_outline_edit_24, 0, 0, 0);
 
@@ -318,5 +322,10 @@ public class UserProfileTabFragment extends Fragment {
                 });
             }
         });
+    }
+
+    private void setUsernameView(String newUsername){
+        String sourceString = "<b>" + usernamePrefix + "</b>" + newUsername;
+        username.setText(Html.fromHtml(sourceString));
     }
 }

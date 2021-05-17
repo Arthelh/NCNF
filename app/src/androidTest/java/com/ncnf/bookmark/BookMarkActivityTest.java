@@ -39,6 +39,8 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
@@ -90,10 +92,8 @@ public class BookMarkActivityTest {
         onView(withId(R.id.bookmark_view_pager)).perform(swipeLeft());
         onView(withId(R.id.bookmark_view_pager)).perform(swipeRight());
 
-        Thread.sleep(5000);
-
         onView(withId(R.id.bookmark_view_pager)).perform(click());
         onView(withId(R.id.EventPage)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-        //onView(withId(R.id.eventName)).check(matches(withText(contains(event.getName()))));
+        onView(withId(R.id.eventName)).check(matches(withText(contains(event.getName()))));
     }
 }
