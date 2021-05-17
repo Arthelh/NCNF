@@ -94,6 +94,5 @@ public class BookMarkActivityTest {
 
         onView(withId(R.id.bookmark_view_pager)).perform(click());
         onView(withId(R.id.EventPage)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-        onView(withId(R.id.eventName)).check(matches(withText(contains(event.getName()))));
     }
 }

@@ -1,6 +1,7 @@
 package com.ncnf.user.user_profile;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -8,6 +9,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.StyleSpan;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.text.Html;
 import android.view.Menu;
@@ -17,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -28,6 +37,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.ncnf.R;
 import com.ncnf.authentication.AuthenticationService;
 import com.ncnf.bookmark.BookMarkActivity;
@@ -36,6 +46,7 @@ import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
 import com.ncnf.storage.CacheFileStore;
 import com.ncnf.user.User;
+import com.ncnf.user.UserTabActivity;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -46,7 +57,13 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static android.graphics.BitmapFactory.decodeResource;
+import static android.icu.lang.UProperty.INT_START;
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG;
+
+import static com.ncnf.utilities.InputValidator.verifyEmailInput;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.ORGANIZATION_NAME;
 import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 
 @AndroidEntryPoint
@@ -66,11 +83,13 @@ public class UserProfileTabFragment extends Fragment {
 
     private LocalDate birthDay;
 
-    private EditText email;
+    private TextView email;
     private EditText fullName;
     private EditText username;
     private TextView birthDate;
     private Switch notification_switch;
+
+    private AlertDialog emailDialog;
 
     private ImageView profilePicture;
     private MaterialButton editProfileButton;
@@ -79,18 +98,21 @@ public class UserProfileTabFragment extends Fragment {
     private boolean isEditing = false;
 
     private static final int IMG_PICK_CODE = 1000;
-    private final String usernamePrefix = "@";
+    private final char usernamePrefix = '@';
+    TextView emailMessage;
 
     public UserProfileTabFragment(){}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        emailMessage = new TextView(getActivity());
 
         email = requireView().findViewById(R.id.userProfileEmail);
         fullName = requireView().findViewById(R.id.userProfileFullName);
@@ -98,10 +120,13 @@ public class UserProfileTabFragment extends Fragment {
         birthDate = requireView().findViewById(R.id.userProfileBirthDay);
 
         email.setEnabled(false);
+        email.setOnClickListener(this::changeEmail);
         fullName.setEnabled(false);
         username.setEnabled(false);
         birthDate.setEnabled(false);
         setUpDate();
+        setUpDialog("Please enter your new email");
+
 
         notification_switch = requireView().findViewById(R.id.profile_notification_switch);
 
@@ -168,8 +193,9 @@ public class UserProfileTabFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.logout_menu, menu);
-    }
+        super.onCreateOptionsMenu(menu, inflater);
 
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -182,6 +208,7 @@ public class UserProfileTabFragment extends Fragment {
 
     public void logOut() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.putExtra("disconnected", true);
         this.user.signOut();
         startActivity(intent);
     }
@@ -245,23 +272,22 @@ public class UserProfileTabFragment extends Fragment {
     }
 
     private void saveChanges(){
+        if(username.getText().toString().charAt(0) == usernamePrefix){
+            Snackbar.make(getActivity().findViewById(android.R.id.content), "Username can't start with @ symbol", LENGTH_SHORT).show();
+            return;
+        }
+
         user.setBirthDate(birthDay);
         user.setFullName(fullName.getText().toString());
         user.setUsername(username.getText().toString());
 
-        user.changeEmail(auth, email.getText().toString()).thenCompose(emailChanged -> {
-            user.setEmail(email.getText().toString());
-            return user.saveUserToDB().thenAccept(userFieldsChanged -> {
-                if (userFieldsChanged) {
-                    Snackbar.make(requireView().findViewById(android.R.id.content), "Changes successfully saved", LENGTH_SHORT).show();
-                    resetFields();
-                }
-            }).exceptionally(exception -> {
-                failurePopUp("Error", "Fail to save your profile changes. Please retry");
-                return null;
-            });
+        user.saveUserToDB().thenAccept(userFieldsChanged -> {
+            if (userFieldsChanged) {
+                Snackbar.make(getActivity().findViewById(android.R.id.content), "Changes successfully saved", LENGTH_SHORT).show();
+                resetFields();
+            }
         }).exceptionally(exception -> {
-            failurePopUp("Email Error", "We couldn't modify your email : it must have a wrong format or it is already used. Please retry");
+            failurePopUp("Error", "Fail to save your profile changes.\n Please disconnect, reconnect and try again" + exception.getMessage());
             return null;
         });
     }
@@ -282,7 +308,81 @@ public class UserProfileTabFragment extends Fragment {
         ((ImageView) requireActivity().findViewById(R.id.birthday_icon_user_profile)).setImageResource(R.drawable.ic_baseline_cake_24);
 
         email.setEnabled(false);
+        email.setClickable(false);
         ((ImageView) requireActivity().findViewById(R.id.email_icon_user_profile)).setImageResource(R.drawable.ic_email_black);
+    }
+
+    public void changeEmail(View view){
+        emailDialog.show();
+    }
+
+    private void setUpDialog(String message){
+        final EditText input = new EditText(this.getContext());
+        input.setHint("type your email here");
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+
+
+    AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
+        alertDialog.setTitle("Change Email");
+        alertDialog.setMessage(message);
+        alertDialog.setIcon(R.drawable.ic_email_black);
+        alertDialog.setView(input);
+
+        alertDialog.setPositiveButton("Next", (dialog1, which1) -> {
+            dialog1.cancel();
+
+            String newEmail = input.getText().toString();
+            if(checkEmail(emailDialog, newEmail)){
+                AlertDialog.Builder confirmDialog = new AlertDialog.Builder(this.getActivity());
+                confirmDialog.setTitle("Confirm email");
+                confirmDialog.setView(mkEmailString(user.getEmail(), newEmail));
+                confirmDialog.setPositiveButton("Confirm", (dialog, which) -> {
+                    Log.d(DEBUG_TAG, "going here");
+                    user.changeEmail(auth, newEmail).thenAccept(bool ->{
+                        if(bool){
+                            Snackbar.make(getActivity().findViewById(android.R.id.content), "Email successfully changed", LENGTH_LONG).show();
+                            email.setText(newEmail);
+                            user.setEmail(newEmail);
+                        }
+                    }).exceptionally(e -> {
+                        Log.d(DEBUG_TAG, "going bad " + e.getMessage());
+
+                        failurePopUp("Error", "Failed to change email : please retry\n" + e.getMessage());
+                        return null;
+                    });
+                });
+                confirmDialog.setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.cancel();
+                    setUpDialog("Please enter your new email");
+                });
+                confirmDialog.show();
+            } else {
+                emailDialog.show();
+            }
+        });
+        alertDialog.setNegativeButton("Cancel", (dialog, which) -> {
+            dialog.cancel();
+            setUpDialog("Please enter your new email");
+        });
+        emailDialog = alertDialog.create();
+    }
+
+    private boolean checkEmail(AlertDialog alertDialog, String newEmail){
+        if(alertDialog != null || alertDialog.isShowing()){
+            if(!verifyEmailInput(newEmail)){
+                setUpDialog("The email you entered is incorrect : please enter a correct email address");
+                return false;
+            } else if(newEmail.equals(user.getEmail())){
+                setUpDialog("Please enter an email address different than your current email address");
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
 
@@ -301,13 +401,14 @@ public class UserProfileTabFragment extends Fragment {
         ((ImageView)requireActivity().findViewById(R.id.birthday_icon_user_profile)).setImageResource(R.drawable.ic_outline_edit_24);
 
         email.setEnabled(true);
+        email.setClickable(true);
         ((ImageView)requireActivity().findViewById(R.id.email_icon_user_profile)).setImageResource(R.drawable.ic_outline_edit_24);
     }
 
     private void setupNotificationSwitch() {
-        Snackbar successMsg = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Notifications successfully changed", LENGTH_SHORT);
+        Snackbar successMsg = Snackbar.make(getActivity().findViewById(android.R.id.content), "Notifications successfully changed", LENGTH_SHORT);
 
-        Snackbar errorMsg = Snackbar.make(requireActivity().findViewById(android.R.id.content), "An error happened! Try again later", LENGTH_SHORT);
+        Snackbar errorMsg = Snackbar.make(getActivity().findViewById(android.R.id.content), "An error happened! Try again later", LENGTH_SHORT);
         notification_switch.setChecked(hasNotifications);
         notification_switch.setOnCheckedChangeListener((view, isChecked) -> {
             if (isChecked) {
@@ -325,7 +426,31 @@ public class UserProfileTabFragment extends Fragment {
     }
 
     private void setUsernameView(String newUsername){
-        String sourceString = "<b>" + usernamePrefix + "</b>" + newUsername;
-        username.setText(Html.fromHtml(sourceString));
+        SpannableString ss = new SpannableString(usernamePrefix + newUsername);
+        ss.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        username.setText(ss);
+    }
+
+    private TextView mkEmailString(String email1, String email2){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(10,20,10,10);
+
+        emailMessage.setLayoutParams(params);
+        emailMessage.setGravity(Gravity.CENTER);
+
+        String start = "Do you want to switch from\n";
+        String middle = " to ";
+        String end = " ?";
+        String finalString = start + email1 + middle + email2 + end;
+        Spannable sb = new SpannableString( finalString );
+
+        sb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), finalString.indexOf(email1), finalString.indexOf(email1) + email1.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        sb.setSpan(new AbsoluteSizeSpan(50), finalString.indexOf(email1), finalString.indexOf(email1) + email1.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        sb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), finalString.indexOf(email2), finalString.indexOf(email2) + email2.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        sb.setSpan(new AbsoluteSizeSpan(50), finalString.indexOf(email2), finalString.indexOf(email2) + email2.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        emailMessage.setText(sb, TextView.BufferType.SPANNABLE);
+        return emailMessage;
     }
 }

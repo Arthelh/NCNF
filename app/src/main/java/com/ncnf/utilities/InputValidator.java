@@ -15,7 +15,7 @@ public class InputValidator {
 
     static public boolean verifyEmailInput(String emailInputString) {
         return  emailInputString != null &&
-                !emailInputString.equals("") &&
+                !emailInputString.isEmpty() &&
                 PatternsCompat.EMAIL_ADDRESS.matcher(emailInputString).matches();
     }
 
