@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -75,6 +76,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private boolean isEditing = false;
 
     private static final int IMG_PICK_CODE = 1000;
+    private final String usernamePrefix = "@";
 
 
     @Override
@@ -137,7 +139,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 String usernameStr = user.getUsername();
                 if(!usernameStr.isEmpty()){
-                    username.setText(usernameStr);
+                    setUsernameView(usernameStr);
                 }
 
                 LocalDate birthDateObj = user.getBirthDate();
@@ -261,6 +263,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         username.setEnabled(false);
         username.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        setUsernameView(username.getText().toString());
 
         birthDate.setEnabled(false);
         birthDate.setClickable(false);
@@ -277,6 +280,7 @@ public class UserProfileActivity extends AppCompatActivity {
         fullName.setEnabled(true);
         fullName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_outline_edit_24, 0, 0, 0);
 
+        username.setText(user.getUsername());
         username.setEnabled(true);
         username.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_outline_edit_24, 0, 0, 0);
 
@@ -307,6 +311,11 @@ public class UserProfileActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void setUsernameView(String newUsername){
+        String sourceString = "<b>" + usernamePrefix + "</b>" + newUsername;
+        username.setText(Html.fromHtml(sourceString));
     }
 
 }

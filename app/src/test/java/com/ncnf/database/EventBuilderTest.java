@@ -12,6 +12,9 @@ import com.ncnf.socialObject.Tag;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -47,7 +50,8 @@ public class EventBuilderTest {
     String ownerId = "ownerId";
     String uuid = UUID.randomUUID().toString();
     String name = "name";
-    Date date = new Date();
+    LocalDateTime date = LocalDateTime.now();
+    Timestamp timestamp = new Timestamp(Date.from(date.atZone(ZoneId.systemDefault()).toInstant()));
     GeoPoint location = new GeoPoint(0, 0);
     String address = "address";
     String type = "Conference";
@@ -72,7 +76,7 @@ public class EventBuilderTest {
         publicEvent.put(OWNER_KEY, ownerId);
         publicEvent.put(UUID_KEY, this.uuid);
         publicEvent.put(NAME_KEY, this.name);
-        publicEvent.put(DATE_KEY, new Timestamp(this.date));
+        publicEvent.put(DATE_KEY, timestamp);
         publicEvent.put(LOCATION_KEY, this.location);
         publicEvent.put(ADDRESS_KEY, this.address);
         publicEvent.put(VISIBILITY_KEY, "PUBLIC");
@@ -86,12 +90,11 @@ public class EventBuilderTest {
         publicEvent.put(PRICE_KEY, price);
         publicEvent.put(TAGS_LIST_KEY, tags);
 
-
         Event event = eventBuilder.toObject(uuid, publicEvent);
 
         assertEquals(event.getUuid().toString(), uuid);
         assertEquals(event.getName(), name);
-        assertEquals(event.getDate(), date);
+        assertDateEquals(event.getDate(), date);
         assertEquals(event.getLocation(), location);
         assertEquals(event.getAddress(), address);
         assertEquals(event.getType().toString(), type);
@@ -109,7 +112,7 @@ public class EventBuilderTest {
         privateEvent.put(OWNER_KEY, ownerId);
         privateEvent.put(UUID_KEY, this.uuid);
         privateEvent.put(NAME_KEY, this.name);
-        privateEvent.put(DATE_KEY, new Timestamp(this.date));
+        privateEvent.put(DATE_KEY, timestamp);
         privateEvent.put(LOCATION_KEY, this.location);
         privateEvent.put(ADDRESS_KEY, this.address);
         privateEvent.put(VISIBILITY_KEY, "PRIVATE");
@@ -118,14 +121,14 @@ public class EventBuilderTest {
         privateEvent.put(DESCRIPTION_KEY, this.description);
         privateEvent.put(OWNER_KEY, this.ownerId);
 
-
         privateEvent.put(INVITED_KEY, invited);
 
         Group event = (Group) groupbuilder.toObject(uuid, privateEvent);
 
         assertEquals(event.getUuid().toString(), uuid);
         assertEquals(event.getName(), name);
-        assertEquals(event.getDate(), date);
+
+        assertDateEquals(event.getDate(), date);
         assertEquals(event.getLocation(), location);
         assertEquals(event.getAddress(), address);
         assertEquals(event.getType().toString(), type);
@@ -141,7 +144,6 @@ public class EventBuilderTest {
         SocialObject.Type type = SocialObject.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
-
         Group group = new Group(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
         Map<String, Object> map = groupbuilder.toMap(group);
         assertEquals(groupbuilder.toObject(uuid.toString(), map), group);
@@ -153,10 +155,14 @@ public class EventBuilderTest {
         SocialObject.Type type = SocialObject.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
-
         Event event = new Event(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags, email);
         Map<String, Object> map = eventBuilder.toMap(event);
         assertEquals(eventBuilder.toObject(uuid.toString(), map), event);
 
+    }
+
+    private void assertDateEquals(LocalDateTime d1, LocalDateTime d2) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd HH mm");
+        assertEquals(d1.format(formatter), d2.format(formatter));
     }
 }

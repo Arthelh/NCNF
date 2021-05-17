@@ -7,8 +7,10 @@ import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.bookmark.BookMarkActivity;
+import com.ncnf.database.DatabaseService;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
@@ -24,6 +26,8 @@ import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import dagger.hilt.android.testing.BindValue;
@@ -57,7 +61,15 @@ import static org.mockito.Mockito.when;
 public class UserProfileActivityTests {
 
     private static final User mockUser = Mockito.mock(User.class);
+    private static final FriendsRepository friendsRepository = Mockito.mock(FriendsRepository.class);
+    private static final DatabaseService databaseService = Mockito.mock(DatabaseService.class);
+
     private Exception exception = new Exception("There was an error.");
+
+    @BindValue
+    public FriendsRepository mockFriendsRepository = friendsRepository;
+    private static final User u1 = new User(databaseService, "1", "johnny", "john@bar.com","John", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, LocalDate.now(), null);
+    private static final List<User> users = Collections.singletonList(u1);
 
     // BeforeClass is required because the mocking must be done before the activity is launched
     @BeforeClass
@@ -122,17 +134,17 @@ public class UserProfileActivityTests {
 
     @Test
     public void friendsButtonOpensFriendsActivity(){
+        when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+
         onView(withId(R.id.friends_profile_button)).perform(click());
         Intents.intended(hasComponent(FriendsActivity.class.getName()));
     }
-    /*
 
     @Test
     public void bookmarkButtonOpensBookmark(){
         onView(withId(R.id.bookmark_profile_button)).perform(click());
         Intents.intended(hasComponent(BookMarkActivity.class.getName()));
     }
-    */
 
     @Test
     public void openGalleryTest(){

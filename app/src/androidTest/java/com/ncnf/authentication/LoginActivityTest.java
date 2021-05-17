@@ -175,7 +175,8 @@ public class LoginActivityTest {
     @Test
     public void signUpFragmentUnsuccessfulRegisterTest(){
         Exception exception = new Exception(unsuccessfulRegister);
-        CompletableFuture<Boolean> future = CompletableFuture.completedFuture(false);
+        CompletableFuture<Boolean> future = new CompletableFuture();
+        future.completeExceptionally(new Exception());
 
         when(mockedAuth.register(anyString(), anyString())).thenReturn(future);
 

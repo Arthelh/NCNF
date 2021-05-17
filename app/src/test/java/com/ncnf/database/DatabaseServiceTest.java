@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -43,7 +44,7 @@ public class DatabaseServiceTest {
     private static Task task;
 
     String name = "Jane Doe";
-    Date date = new Date(2021, 03, 11);
+    LocalDateTime date = LocalDateTime.of(2021, 03, 11, 12, 0);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
     SocialObject.Type type = SocialObject.Type.Conference;

@@ -52,7 +52,7 @@ public class PublicProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Change with event UUID
-        ImageView imageView = getView().findViewById(R.id.profile_picture);
+        ImageView imageView = getView().findViewById(R.id.event_picture);
         fileStore.setContext(this.getContext());
         fileStore.setPath(USER_IMAGE_PATH, user.getUuid() + ".jpg");
         fileStore.downloadImage(imageView, decodeResource(this.getContext().getResources(), R.drawable.default_profile_picture));

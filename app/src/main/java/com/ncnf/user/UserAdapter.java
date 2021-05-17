@@ -83,7 +83,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             name = v.findViewById(R.id.user_card_view_name);
             username = v.findViewById(R.id.user_card_view_username);
             profilePictureText = v.findViewById(R.id.profile_picture_placeholder);
-            profilePicture = v.findViewById(R.id.profile_picture);
+            profilePicture = v.findViewById(R.id.event_picture);
         }
 
         public void bind(final User u, final UserAdapter.OnItemClickListener listener){

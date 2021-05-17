@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +39,8 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
@@ -47,11 +50,11 @@ public class BookMarkActivityTest {
     private static final User mockUser = Mockito.mock(User.class);
 
     List<Event> events = new ArrayList<>();
-    private final Event event = new Event("EPFL", "EPFL event", new Date(2021, 03, 11), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", SocialObject.Type.Conference, 0, 0, "test@email.com");
+    private final Event event = new Event("EPFL", "EPFL event", LocalDateTime.of(2021, 03, 11, 0, 0), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", SocialObject.Type.Conference, 0, 0, "test@email.com");
     private CompletableFuture<List<Event>> eventsFuture;
 
     List<Group> groups = new ArrayList<>();
-    private final Group group = new Group("EPFL", "EPFL event", new Date(2021, 03, 11), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", SocialObject.Type.Conference);
+    private final Group group = new Group("EPFL", "EPFL event", LocalDateTime.of(2021, 03, 11, 0, 0), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", SocialObject.Type.Conference);
     private CompletableFuture<List<Group>> groupsFuture;
 
     @BindValue
@@ -89,10 +92,8 @@ public class BookMarkActivityTest {
         onView(withId(R.id.bookmark_view_pager)).perform(swipeLeft());
         onView(withId(R.id.bookmark_view_pager)).perform(swipeRight());
 
-        Thread.sleep(5000);
-
         onView(withId(R.id.bookmark_view_pager)).perform(click());
         onView(withId(R.id.EventPage)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-        //onView(withId(R.id.eventName)).check(matches(withText(contains(event.getName()))));
+        onView(withId(R.id.eventName)).check(matches(withText(contains(event.getName()))));
     }
 }

@@ -1,5 +1,6 @@
 package com.ncnf.feed;
 
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
@@ -39,29 +40,29 @@ public class FeedFragmentTest {
 
     @Test
     public void recyclerViewIsDisplayed(){
-        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.feed_recycler_view)).check(matches(isDisplayed()));
     }
 
 
     @Test
     public void eventActivityOpens(){
-        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.eventName)).check(matches(withText("TestGeoCluster")));
+        onView(withId(R.id.feed_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.eventName)).check(matches(withText("Concert")));
     }
 
     @Test
     public void canSwitchSortingOrder() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
         onView(withText("Sort by relevance")).perform(click());
-        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.eventName)).check(matches(withText("TestGeoCluster")));
+        onView(withId(R.id.feed_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.eventName)).check(matches(withText("Concert")));
     }
 
     @Test
     public void eventFragmentCloses(){
-        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.eventName)).check(matches(withText("TestGeoCluster")));
-        onView(withId(R.id.feed_event_button)).perform(click());
-        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.feed_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.eventName)).check(matches(withText("Concert")));
+        Espresso.pressBack();
+        onView(withId(R.id.feed_recycler_view)).check(matches(isDisplayed()));
     }
 }
