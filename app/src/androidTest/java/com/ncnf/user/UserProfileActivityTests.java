@@ -10,7 +10,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.bookmark.BookMarkActivity;
-import com.ncnf.database.DatabaseService;
+import com.ncnf.firebase.modules.FirebaseUserModule;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
@@ -57,13 +57,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
-@UninstallModules(CurrentUserModule.class)
+@UninstallModules({FirebaseUserModule.class, CurrentUserModule.class})
 public class UserProfileActivityTests {
 
     private static final User mockUser = Mockito.mock(User.class);
-    private static final FriendsRepository friendsRepository = Mockito.mock(FriendsRepository.class);
-    private static final DatabaseService databaseService = Mockito.mock(DatabaseService.class);
-
+    private static final FirebaseUser mockFirebaseUser = Mockito.mock(FirebaseUser.class);
     private Exception exception = new Exception("There was an error.");
 
     @BindValue
@@ -80,6 +78,7 @@ public class UserProfileActivityTests {
         when(mockUser.getBirthDate()).thenReturn(LocalDate.now());
         when(mockUser.getSavedEvents()).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
         when(mockUser.getParticipatingGroups()).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
+        when(mockFirebaseUser.getUid()).thenReturn("uuid");
     }
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
@@ -93,6 +92,9 @@ public class UserProfileActivityTests {
 
     @BindValue
     Registration registration = Mockito.mock(Registration.class);
+
+    @BindValue
+    public FirebaseUser firebaseUser = mockFirebaseUser;
 
     @Before
     public void setup(){
