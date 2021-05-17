@@ -108,10 +108,10 @@ public class UserProfileTabFragment extends Fragment {
 
         initUser();
 
-        requireActivity().findViewById(R.id.friends_profile_button).setOnClickListener(this::openFriendsTab);
-        requireActivity().findViewById(R.id.bookmark_profile_button).setOnClickListener(this::openBookmark);
-        requireActivity().findViewById(R.id.editProfileButton).setOnClickListener(this::changeProfileState);
-        requireActivity().findViewById(R.id.editProfilePictureButton).setOnClickListener(this::changeProfilePicture);
+        requireView().findViewById(R.id.friends_profile_button).setOnClickListener(this::openFriendsTab);
+        requireView().findViewById(R.id.bookmark_profile_button).setOnClickListener(this::openBookmark);
+        requireView().findViewById(R.id.editProfileButton).setOnClickListener(this::changeProfileState);
+        requireView().findViewById(R.id.editProfilePictureButton).setOnClickListener(this::changeProfilePicture);
     }
 
     private void setUpDate() {
