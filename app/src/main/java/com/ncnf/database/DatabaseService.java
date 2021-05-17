@@ -140,7 +140,7 @@ public class DatabaseService implements DatabaseServiceInterface {
     }
 
     @Override
-    public <T> CompletableFuture<List<T>> withFieldLike(String collectionPath, String field, String value, Class<T> collectionType) {
+    public <T> CompletableFuture<List<T>> withFieldContaining(String collectionPath, String field, String value, Class<T> collectionType) {
         CompletableFuture<List<T>> futureResponse = new CompletableFuture<>();
 
         this.db.collection(collectionPath).orderBy(field).startAt(value).endAt(value + "\uf8ff").get().addOnCompleteListener(task -> {
@@ -247,7 +247,7 @@ public class DatabaseService implements DatabaseServiceInterface {
     }
 
     public <T> CompletableFuture<List<T>> geoQuery(LatLng location, double radius, String path, Class<T> type){
-        radius = (radius < 1000) ? radius * 1000 : radius; //Check if radius is still in km, convert to m
+        radius *= (radius < 1000) ? 1000 : 1; //Check if radius is still in km, convert to m
 
         List<GeoQueryBounds> bounds = GeoFireUtils.getGeoHashQueryBounds(new GeoLocation(location.latitude, location.longitude), radius);
         final List<Task<QuerySnapshot>> tasks = new ArrayList<>();

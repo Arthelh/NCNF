@@ -283,7 +283,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.orderBy(anyString())).thenReturn(query);
 
-        CompletableFuture<List<Event>> future = service.withFieldLike("/events", "field", "value", Event.class);
+        CompletableFuture<List<Event>> future = service.withFieldContaining("/events", "field", "value", Event.class);
 
         try {
             assertEquals(event, future.get().get(0));
@@ -305,7 +305,7 @@ public class DatabaseServiceTest {
         when(db.collection(anyString())).thenReturn(mockCollection);
         when(mockCollection.orderBy(anyString())).thenReturn(query);
 
-        CompletableFuture<List<SocialObject>> future = service.withFieldLike("/events", "field", "value", SocialObject.class);
+        CompletableFuture<List<SocialObject>> future = service.withFieldContaining("/events", "field", "value", SocialObject.class);
 
         assertTrue(future.isCompletedExceptionally());
     }

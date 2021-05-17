@@ -18,9 +18,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseUser;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
-import com.ncnf.user.FriendsRepository;
 import com.ncnf.user.User;
 import com.ncnf.user.UserAdapter;
+import com.ncnf.user.friend.FriendsRepository;
 import com.ncnf.views.fragments.PublicProfileFragment;
 
 import java.util.ArrayList;

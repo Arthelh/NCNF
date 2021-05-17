@@ -239,7 +239,7 @@ public class UserTests {
 
         CompletableFuture<List<Object>> future = CompletableFuture.completedFuture(Arrays.asList(user));
 
-        when(db.withFieldLike(anyString(), anyString(), anyString(), any())).thenReturn(future);
+        when(db.withFieldContaining(anyString(), anyString(), anyString(), any())).thenReturn(future);
 
         CompletableFuture<List<User>> query = user2.getAllUsersLike(user.getUsername());
         try {

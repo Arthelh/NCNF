@@ -10,8 +10,8 @@ import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.Group;
 import com.ncnf.socialObject.SocialObject;
 import com.ncnf.storage.CacheFileStore;
-import com.ncnf.user.CurrentUserModule;
 import com.ncnf.user.User;
+import com.ncnf.user.helpers.CurrentUserModule;
 
 import org.junit.After;
 import org.junit.Before;

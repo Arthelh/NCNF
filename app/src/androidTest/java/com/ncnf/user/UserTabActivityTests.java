@@ -6,6 +6,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.ncnf.R;
 import com.ncnf.main.MainActivity;
 import com.ncnf.notification.Registration;
+import com.ncnf.user.helpers.CurrentUserModule;
 
 import org.junit.After;
 import org.junit.Before;
@@ -39,7 +40,7 @@ import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
 @UninstallModules(CurrentUserModule.class)
-public class UserProfileActivityTests {
+public class UserTabActivityTests {
 
     private static final User mockUser = Mockito.mock(User.class);
     private Exception exception = new Exception("There was an error.");
@@ -55,7 +56,7 @@ public class UserProfileActivityTests {
     }
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(UserProfileActivity.class);
+    private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(UserTabActivity.class);
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);

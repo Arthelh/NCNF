@@ -22,13 +22,13 @@ import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.user.FriendsTrackerActivity;
-import com.ncnf.user.UserProfileActivity;
+
 
 import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 import com.ncnf.socialObject.create.GroupCreateActivity;
 import com.ncnf.socialObject.update.EventNewsActivity;
-import com.ncnf.user.UserProfileActivity;
+import com.ncnf.user.UserTabActivity;
 
 import static com.ncnf.utilities.StringCodes.NEXT_ACTIVITY_EXTRA_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void gotToProfile(View view){
-        goToActivity(UserProfileActivity.class);
+        goToActivity(UserTabActivity.class);
     }
 
     public void goToEventCreation(View view){

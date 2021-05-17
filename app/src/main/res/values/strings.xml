@@ -107,6 +107,22 @@
     <string name="home_events_news_button">Events news</string>
 
     <!-- Friends Requests -->
+
+    <string name="organization_name_hint">Organization Name</string>
+    <string name="organization_postal_hint">Postal Address</string>
+    <string name="organization_email_hint">Email</string>
+    <string name="organization_phone_hint">"Phone Number "</string>
+    <string name="organization_validate_button">Validate</string>
+    <string name="organization_enter_token_text">Enter Corresponding Event\'s Token</string>
+    <string name="organization_enter_token_button_text">\"Validate Token</string>
+    <string name="organization_token_hint">Enter Token Here</string>
+    <string name="default_organization_name">Club Anaconda</string>
+    <string name="enter_token_hint">"ID or Name "</string>
+    <string name="invalid_organization_text">Invalid Organization Name</string>
+    <string name="no_organizations">You have no Organizations linked to your profile</string>
+    <string name="create_organization_button_text">Create Organization</string>
+
+    <!-- Friends Requests -->
     <string name="friends_requests_accept">Accept</string>
     <string name="friends_requests_decline">Decline</string>
     <string name="friends_empty_text">No friends yet</string>
@@ -115,5 +131,7 @@
     <string name="friend_request_accept_text">The request was accepted !</string>
     <string name="friend_request_decline_text">The request was declined !</string>
     <string name="add_to_calendar_button" />
+    <string name="add_organization_button_text">Add Organization</string>
+
 
 </resources>

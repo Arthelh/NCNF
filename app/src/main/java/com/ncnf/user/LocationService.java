@@ -26,6 +26,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.DatabaseService;
+import com.ncnf.user.helpers.CurrentUserModule;
 
 import java.util.function.Consumer;
 
