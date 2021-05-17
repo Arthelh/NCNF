@@ -66,8 +66,6 @@ public class UserProfileActivityTests {
     private static final FirebaseUser mockFirebaseUser = Mockito.mock(FirebaseUser.class);
     private Exception exception = new Exception("There was an error.");
 
-    @BindValue
-    public FriendsRepository mockFriendsRepository = friendsRepository;
     private static final List<User> users = Collections.singletonList(mockUser);
 
     // BeforeClass is required because the mocking must be done before the activity is launched
