@@ -127,8 +127,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 fileStore.downloadImage(profilePicture, decodeResource(this.getResources(), R.drawable.default_profile_picture));
 
                 setupNotificationSwitch();
-                Log.d(DEBUG_TAG, Integer.toString(user.getParticipatingGroupsIds().size()));
-
+                
                 email.setText(user.getEmail());
 
                 String firstNameStr = user.getFullName();

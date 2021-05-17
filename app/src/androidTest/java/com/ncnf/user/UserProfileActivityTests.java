@@ -87,6 +87,11 @@ public class UserProfileActivityTests {
         Intents.init();
     }
 
+    @After
+    public void cleanup(){
+        Intents.release();
+    }
+
     @Test
     public void titleIsVisible() {
         onView(withId(R.id.profileText)).check(matches(withText("Profile")));
@@ -113,28 +118,26 @@ public class UserProfileActivityTests {
     public void logOutReturnsToHome() {
         onView(withId(R.id.logout_button)).perform(click());
         Intents.intended(hasComponent(MainActivity.class.getName()));
-        Intents.release();
     }
 
     @Test
     public void friendsButtonOpensFriendsActivity(){
         onView(withId(R.id.friends_profile_button)).perform(click());
         Intents.intended(hasComponent(FriendsActivity.class.getName()));
-        Intents.release();
     }
+    /*
 
     @Test
     public void bookmarkButtonOpensBookmark(){
         onView(withId(R.id.bookmark_profile_button)).perform(click());
         Intents.intended(hasComponent(BookMarkActivity.class.getName()));
-        Intents.release();
     }
+    */
 
     @Test
     public void openGalleryTest(){
         onView(withId(R.id.editProfilePictureButton)).perform(click());
         Intents.intended(hasAction(Intent.ACTION_PICK));
-        Intents.release();
     }
 
     @Test
