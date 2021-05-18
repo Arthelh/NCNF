@@ -53,6 +53,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.ncnf.friends.FriendsActivityTest.friendsRepository;
 import static java.util.EnumSet.allOf;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -156,7 +158,6 @@ public class UserTabActivityTests {
 
     @Test
     public void changeFieldsWorks(){
-        when(user.changeEmail(any(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
         when(user.saveUserToDB()).thenReturn(CompletableFuture.completedFuture(true));
 
 
@@ -181,7 +182,6 @@ public class UserTabActivityTests {
 
     @Test
     public void changeFieldsFailsOnSavingUser(){
-        when(user.changeEmail(any(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
         CompletableFuture future = new CompletableFuture();
         future.completeExceptionally(new Exception());
 
@@ -197,7 +197,8 @@ public class UserTabActivityTests {
 
         onView(withId(R.id.editProfileButton)).perform(click());
 
-        onView(withText("Fail to save your profile changes. Please retry")).check(matches(isDisplayed()));
+
+        onView(withId(android.R.id.message)).check(matches(withText(containsString("Fail to save your profile changes.\n Please disconnect, reconnect and try again"))));
         onView(withId(android.R.id.button1)).perform(click());
 
         onView(withId(R.id.userProfileFullName)).check(matches(isEnabled()));
@@ -207,13 +208,7 @@ public class UserTabActivityTests {
     }
 
     @Test
-    public void changeFieldsFailsOnEmail(){
-        CompletableFuture future = new CompletableFuture();
-        future.completeExceptionally(new Exception());
-
-        when(user.changeEmail(any(), anyString())).thenReturn(future);
-        when(user.saveUserToDB()).thenReturn(CompletableFuture.completedFuture(true));
-
+    public void changingFieldsWorks(){
 
         onView(withId(R.id.editProfileButton)).perform(click());
         onView(withId(R.id.userProfileUsername)).perform(replaceText("new username"));
@@ -223,15 +218,22 @@ public class UserTabActivityTests {
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
         onView(withId(android.R.id.button1)).perform(click());
 
+        when(user.saveUserToDB()).thenReturn(CompletableFuture.completedFuture(true));
+
         onView(withId(R.id.editProfileButton)).perform(click());
 
-        onView(withText("We couldn't modify your email : it must have a wrong format or it is already used. Please retry")).check(matches(isDisplayed()));
-        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.userProfileFullName)).check(matches(not(isEnabled())));
+        onView(withId(R.id.userProfileUsername)).check(matches(not(isEnabled())));
+        onView(withId(R.id.userProfileEmail)).check(matches(not(isEnabled())));
+        onView(withId(R.id.userProfileBirthDay)).check(matches(not(isEnabled())));
 
-        onView(withId(R.id.userProfileFullName)).check(matches(isEnabled()));
-        onView(withId(R.id.userProfileUsername)).check(matches(isEnabled()));
-        onView(withId(R.id.userProfileEmail)).check(matches(isEnabled()));
-        onView(withId(R.id.userProfileBirthDay)).check(matches(isEnabled()));
+        onView(withId(R.id.userProfileUsername)).check(matches(withText("@new username")));
+        onView(withId(R.id.userProfileFullName)).perform(replaceText("new full name"));
+    }
+
+    @Test
+    public void changeFieldsFailsOnEmail(){
+
     }
 
     @Test
