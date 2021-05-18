@@ -32,6 +32,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 
 @HiltAndroidTest
 public class SettingsActivityTest {
@@ -111,7 +112,8 @@ public class SettingsActivityTest {
         onView(withId(R.id.distanceSeekBar)).perform(setProgress(progress));
         onView(withId(R.id.discardButton)).perform(click());
 
-        ViewMatchers.assertThat(Settings.getCurrentMaxDistance(), is(initial));
+        //ViewMatchers.assertThat(Settings.getCurrentMaxDistance(), is(initial));
+        assertEquals(Settings.getCurrentMaxDistance(), initial);
     }
 
     @Test
