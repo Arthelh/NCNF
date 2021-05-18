@@ -317,6 +317,7 @@ public class UserProfileTabFragment extends Fragment {
 
     private void setUpDialog(String message){
         final EditText input = new EditText(this.getContext());
+        input.setId(R.id.email_popup_input_text);
         input.setHint("type your email here");
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -340,7 +341,6 @@ public class UserProfileTabFragment extends Fragment {
                 confirmDialog.setTitle("Confirm email");
                 confirmDialog.setView(mkEmailString(user.getEmail(), newEmail));
                 confirmDialog.setPositiveButton("Confirm", (dialog, which) -> {
-                    Log.d(DEBUG_TAG, "going here");
                     user.changeEmail(auth, newEmail).thenAccept(bool ->{
                         if(bool){
                             Snackbar.make(getActivity().findViewById(android.R.id.content), "Email successfully changed", LENGTH_LONG).show();

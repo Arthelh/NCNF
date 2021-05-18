@@ -80,6 +80,7 @@ public class UserTabActivityTests {
         when(mockUser.getBirthDate()).thenReturn(LocalDate.now());
         when(mockUser.getSavedEvents()).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
         when(mockUser.getParticipatingGroups()).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
+        when(mockUser.getNotifications()).thenReturn(false);
         when(mockFirebaseUser.getUid()).thenReturn("uuid");
     }
 
@@ -232,8 +233,33 @@ public class UserTabActivityTests {
     }
 
     @Test
-    public void changeFieldsFailsOnEmail(){
+    public void changeFieldsWorksWithEmail(){
+        when(user.getEmail()).thenReturn("email@email.com");
+        when(user.changeEmail(any(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
+        onView(withId(R.id.editProfileButton)).perform(click());
+
+        onView(withId(R.id.userProfileEmail)).perform(click());
+        onView(withId(android.R.id.message)).check(matches(withText("Please enter your new email")));
+        onView(withId(R.id.email_popup_input_text)).perform(typeText("e"), closeSoftKeyboard());
+        onView(withId(android.R.id.button1)).perform(click());
+
+        onView(withId(android.R.id.message)).check(matches(withText("The email you entered is incorrect : please enter a correct email address")));
+
+
+        onView(withId(R.id.email_popup_input_text)).perform(typeText("email@email.com"), closeSoftKeyboard());
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(android.R.id.message)).check(matches(withText("Please enter an email address different than your current email address")));
+
+        onView(withId(R.id.email_popup_input_text)).perform(typeText("newEmail@email.com"), closeSoftKeyboard());
+        onView(withId(android.R.id.button1)).perform(click());
+
+        //onView(withId(android.R.id.title)).check(matches(withText("Confirm email")));
+        onView(withId(android.R.id.button1)).perform(click());
+
+        onView(withId(com.google.android.material.R.id.snackbar_text)).check(matches(withText("Email successfully changed")));
+
+        onView(withId(R.id.userProfileEmail)).check(matches(withText("newEmail@email.com")));
     }
 
     @Test
@@ -241,7 +267,6 @@ public class UserTabActivityTests {
         CompletableFuture<Boolean> future = CompletableFuture.completedFuture(true);
         when(registration.register()).thenReturn(future);
         when(registration.unregister()).thenReturn(future);
-        when(user.getNotifications()).thenReturn(false);
 
         onView(withId(R.id.profile_notification_switch)).perform(scrollTo(), click());
 
