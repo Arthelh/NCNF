@@ -89,7 +89,6 @@ public class UserProfileTabFragment extends Fragment {
     private EditText username;
     private TextView birthDate;
     private Switch notification_switch;
-    public static EditText input;
 
     private AlertDialog emailDialog;
 
@@ -115,8 +114,6 @@ public class UserProfileTabFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         emailMessage = new TextView(getActivity());
-        input = new EditText(this.getContext());
-        input.setId(email_popup_input_text);
 
         email = requireView().findViewById(R.id.userProfileEmail);
         fullName = requireView().findViewById(R.id.userProfileFullName);
@@ -130,7 +127,6 @@ public class UserProfileTabFragment extends Fragment {
         birthDate.setEnabled(false);
         setUpDate();
         setUpDialog("Please enter your new email");
-
 
 
         notification_switch = requireView().findViewById(R.id.profile_notification_switch);
@@ -322,6 +318,7 @@ public class UserProfileTabFragment extends Fragment {
     }
 
     private void setUpDialog(String message){
+        final EditText input = new EditText(this.getContext());
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setHint("type your email here");
 
