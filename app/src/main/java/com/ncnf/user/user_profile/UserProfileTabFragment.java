@@ -94,7 +94,6 @@ public class UserProfileTabFragment extends Fragment {
     private ImageView profilePicture;
     private MaterialButton editProfileButton;
 
-    private boolean hasNotifications = false;
     private boolean isEditing = false;
 
     private static final int IMG_PICK_CODE = 1000;
@@ -407,9 +406,9 @@ public class UserProfileTabFragment extends Fragment {
 
     private void setupNotificationSwitch() {
         Snackbar successMsg = Snackbar.make(getActivity().findViewById(android.R.id.content), "Notifications successfully changed", LENGTH_SHORT);
-
         Snackbar errorMsg = Snackbar.make(getActivity().findViewById(android.R.id.content), "An error happened! Try again later", LENGTH_SHORT);
-        notification_switch.setChecked(hasNotifications);
+
+        notification_switch.setChecked(user.getNotifications());
         notification_switch.setOnCheckedChangeListener((view, isChecked) -> {
             if (isChecked) {
                 registration.register().thenAccept(v->successMsg.show()).exceptionally(exception -> {

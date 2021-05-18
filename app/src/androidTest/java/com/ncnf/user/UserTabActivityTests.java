@@ -241,6 +241,7 @@ public class UserTabActivityTests {
         CompletableFuture<Boolean> future = CompletableFuture.completedFuture(true);
         when(registration.register()).thenReturn(future);
         when(registration.unregister()).thenReturn(future);
+        when(user.getNotifications()).thenReturn(false);
 
         onView(withId(R.id.profile_notification_switch)).perform(scrollTo(), click());
 
