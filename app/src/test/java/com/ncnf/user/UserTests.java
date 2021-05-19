@@ -9,11 +9,11 @@ import com.ncnf.socialObject.SocialObject;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -54,15 +54,15 @@ public class UserTests {
 
     @Test
     public void hashCodeMatches() {
-        User u1 = new User(this.db, "1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
-        User u2 = new User(this.db, "1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User u1 = new User(this.db, "1234567890", "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User u2 = new User(this.db, "1234567890", "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
         assertEquals(u1.hashCode(), u2.hashCode());
     }
 
     @Test
     public void equalsMatches() {
-        User u1 = new User(this.db, "1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
-        User u2 = new User(this.db, "1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User u1 = new User(this.db, "1234567890", "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User u2 = new User(this.db, "1234567890", "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
 
         assertEquals(u1, u2);
         assertEquals(u1, u1);
@@ -70,14 +70,14 @@ public class UserTests {
 
     @Test
     public void equalsFails() {
-        User u1 = new User(this.db, "1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
-        User u2 = new User(this.db, "1234567890", "", "foo@bal.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User u1 = new User(this.db, "1234567890", "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User u2 = new User(this.db, "1234567890", "", "foo@bal.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
 
 
         assertNotEquals(u1, u2);
 
-        u1 = new User(this.db, "1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
-        u2 = new User(this.db, "0000000000", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        u1 = new User(this.db, "1234567890", "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        u2 = new User(this.db, "0000000000", "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
 
 
         assertNotEquals(u1, u2);
@@ -88,30 +88,30 @@ public class UserTests {
     @Test
     public void nullArgumentsThrows() {
         assertThrows(IllegalArgumentException.class, () ->
-            new User(this.db, null, "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null)
+            new User(this.db, null, "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null)
         );
         assertThrows(IllegalArgumentException.class, () ->
-            new User(this.db, "11223333", "", null,"",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null)
+            new User(this.db, "11223333", "", null,"", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null)
         );
         assertThrows(IllegalArgumentException.class, () ->
-            new User(this.db, "", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null)
+            new User(this.db, "", "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null)
         );
         assertThrows(IllegalArgumentException.class, () ->
-            new User(this.db, "11223333", "", "","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null)
+            new User(this.db, "11223333", "", "","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null)
         );
     }
 
     @Test
     public void getId() {
         String id = "1234567890";
-        User user = new User(this.db, id, "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, id, "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
         assertEquals(id, user.getUuid());
     }
 
     @Test
     public void getEmail() {
         String email = "foo@bar.com";
-        User user = new User(this.db, "1234567890", "", email,"",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, "1234567890", "", email,"", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
         assertEquals(email, user.getEmail());
     }
 
@@ -120,26 +120,24 @@ public class UserTests {
         String uuid = "uuid";
         String username = "username";
         String email = "email";
-        String firstName = "first";
-        String lastName = "last";
+        String full_name = "full_name";
         List<String> friends = new ArrayList<>();
         friends.add("friend1");
         List<String> owned = new ArrayList<>();
         owned.add("event1");
         List<String> saved = new ArrayList<>();
         saved.add("event2");
-        Date date = new Date();
+        LocalDate date = LocalDate.now();
         List<String> groups = new ArrayList<>();
         groups.add("group1");
 
         List<String> empty = new ArrayList<>();
 
-        User user = new User(this.db, "1234567890", "", email,"",  "", empty, empty, new ArrayList<>(), empty, false, null, null);
+        User user = new User(this.db, "1234567890", "", email,"", empty, empty, new ArrayList<>(), empty, false, null, null);
         assertEquals(user.getUuid(), "1234567890");
         assertEquals(user.getUsername(), "");
         assertEquals(user.getEmail(), email);
-        assertEquals(user.getFirstName(), "");
-        assertEquals(user.getLastName(), "");
+        assertEquals(user.getFullName(), "");
         assertEquals(user.getFriendsIds(), empty);
         assertEquals(user.getOwnedGroupsIds(), empty);
         assertEquals(user.getSavedEventsIds(), empty);
@@ -148,8 +146,7 @@ public class UserTests {
         assertFalse(user.getNotifications());
 
         user.setUsername(username);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
+        user.setFullName(full_name);
         user.setFriendsIds(friends);
         user.setSavedEventsIds(saved);
         user.setOwnedGroupsIds(owned);
@@ -159,8 +156,7 @@ public class UserTests {
 
         assertEquals(user.getUuid(), "1234567890");
         assertEquals(user.getUsername(), username);
-        assertEquals(user.getFirstName(), firstName);
-        assertEquals(user.getLastName(), lastName);
+        assertEquals(user.getFullName(), full_name);
         assertEquals(user.getFriendsIds(), friends);
         assertEquals(user.getOwnedGroupsIds(), owned);
         assertEquals(user.getSavedEventsIds(), saved);
@@ -172,7 +168,7 @@ public class UserTests {
     @Test
     public void updateNotificationsWorks() {
         when(db.updateField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
-        User user = new User(this.db, "1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, "1234567890", "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
 
         assertFalse(user.getNotifications());
         user.updateNotifications(true);
@@ -183,7 +179,7 @@ public class UserTests {
     @Test
     public void updateNotificationsTokenWorks() {
         when(db.updateField(anyString(), anyString(), anyObject())).thenReturn(new CompletableFuture<>());
-        User user = new User(this.db, "1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, "1234567890", "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
 
         user.updateNotificationsToken("Doe");
         verify(db).updateField(USERS_COLLECTION_KEY + "1234567890", NOTIFICATIONS_TOKEN_KEY, "Doe");
@@ -192,7 +188,7 @@ public class UserTests {
     @Test
     public void saveUserCallsDatabase() {
         when(db.setDocument(anyString(), anyObject())).thenReturn(CompletableFuture.completedFuture(true));
-        User user = new User(this.db, "1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, "1234567890", "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
         CompletableFuture<Boolean> future = user.saveUserToDB();
         verify(db).setDocument(anyString(), anyMap());
         try {
@@ -204,7 +200,7 @@ public class UserTests {
 
     @Test
     public void loadUserFromDBWorks(){
-        User user = new User(this.db, "1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, "1234567890", "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
         CompletableFuture future = CompletableFuture.completedFuture(user);
 
         when(db.getDocument(anyString(), anyObject())).thenReturn(future);
@@ -219,7 +215,7 @@ public class UserTests {
 
     @Test
     public void loadUserFromDBFails() throws ExecutionException, InterruptedException {
-        User user = new User(this.db, "1234567890", "", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, "1234567890", "", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
         CompletableFuture future = new CompletableFuture();
         future.completeExceptionally(new IllegalStateException());
 
@@ -234,8 +230,8 @@ public class UserTests {
 
     @Test
     public void getAllUsersLikeWorks(){
-        User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
-        User user2 = new User(this.db, "0000000000", "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, "1234567890", "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user2 = new User(this.db, "0000000000", "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
 
         CompletableFuture<List<Object>> future = CompletableFuture.completedFuture(Arrays.asList(user));
 
@@ -252,7 +248,7 @@ public class UserTests {
 
     @Test
     public void saveEventWorks(){
-        User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, "1234567890", "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
         when(db.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
         CompletableFuture<Boolean> future = user.addParticipatingGroup(group);
@@ -265,7 +261,7 @@ public class UserTests {
 
     @Test
     public void ownEventWorks(){
-        User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, "1234567890", "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
         when(db.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
         CompletableFuture<Boolean> future = user.addOwnedGroup(group);
@@ -278,7 +274,7 @@ public class UserTests {
 
     @Test
     public void getOwnedEventsWorksOnEmptyList(){
-        User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, "1234567890", "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
 
         CompletableFuture<List<Group>> future = user.getOwnedGroups();
         try {
@@ -290,7 +286,7 @@ public class UserTests {
 
     @Test
     public void getOwnedEventsWorks(){
-        User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), Arrays.asList(ownerID, ownerID), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, "1234567890", "test", "foo@bar.com","", new ArrayList<>(), Arrays.asList(ownerID, ownerID), new ArrayList<>(), new ArrayList<>(), false, null, null);
         CompletableFuture<List<SocialObject>> events = CompletableFuture.completedFuture(Arrays.asList(group));
         when(db.whereIn(anyString(), anyString(), anyList(), any())).thenReturn(events);
 
@@ -306,7 +302,7 @@ public class UserTests {
 
     @Test
     public void getSavedEventsWorksOnEmptyList(){
-        User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, "1234567890", "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
 
         CompletableFuture<List<Event>> future = user.getSavedEvents();
         try {
@@ -318,7 +314,7 @@ public class UserTests {
 
     @Test
     public void getSavedEventsWorks(){
-        User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), Arrays.asList(ownerID), false, null, null);
+        User user = new User(this.db, "1234567890", "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), Arrays.asList(ownerID), false, null, null);
         CompletableFuture<List<SocialObject>> events = CompletableFuture.completedFuture(Arrays.asList(event));
         when(db.whereIn(anyString(), anyString(), anyList(), any())).thenReturn(events);
 
@@ -334,7 +330,7 @@ public class UserTests {
 
     @Test
     public void createEventFailsFailsOnWrongCredentials(){
-        User user = new User(this.db, "1234567890", "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), Arrays.asList(ownerID), false, null, null);
+        User user = new User(this.db, "1234567890", "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), Arrays.asList(ownerID), false, null, null);
 
         CompletableFuture<Boolean> future = user.createGroup(group);
         try {
@@ -346,7 +342,7 @@ public class UserTests {
 
     @Test
     public void createEventFails(){
-        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), Arrays.asList(ownerID), false, null, null);
+        User user = new User(this.db, ownerID, "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), Arrays.asList(ownerID), false, null, null);
         CompletableFuture<Boolean> failingFuture = new CompletableFuture<>();
         failingFuture.completeExceptionally(new IllegalStateException());
         when(this.db.setDocument(anyString(), anyObject())).thenReturn(failingFuture);
@@ -362,7 +358,7 @@ public class UserTests {
 
     @Test
     public void createEventFailsWorks(){
-        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), Arrays.asList(ownerID), false, null, null);
+        User user = new User(this.db, ownerID, "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), Arrays.asList(ownerID), false, null, null);
         when(this.db.setDocument(anyString(), anyObject())).thenReturn(CompletableFuture.completedFuture(true));
         when(this.db.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
@@ -376,7 +372,7 @@ public class UserTests {
 
     @Test
     public void addSavedEvent(){
-        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), false, null, null);
+        User user = new User(this.db, ownerID, "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), false, null, null);
         when(this.db.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
         CompletableFuture<Boolean> future = user.addSavedEvent(event);
@@ -389,7 +385,7 @@ public class UserTests {
 
     @Test
     public void getParticipatingGroupsWorksOnEmptyList(){
-        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), false, null, null);
+        User user = new User(this.db, ownerID, "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), false, null, null);
         CompletableFuture<List<Group>> future = user.getParticipatingGroups();
         try{
             assertTrue(future.get().isEmpty());
@@ -401,7 +397,7 @@ public class UserTests {
 
     @Test
     public void getParticipatingGroupsWorks(){
-        User user = new User(this.db, ownerID, "test", "foo@bar.com","",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), new ArrayList<>(), false, null, null);
+        User user = new User(this.db, ownerID, "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), new ArrayList<>(), false, null, null);
         when(db.whereIn(anyString(), anyString(), anyList(), any())).thenReturn(CompletableFuture.completedFuture(Arrays.asList(group)));
 
         CompletableFuture<List<Group>> query = user.getParticipatingGroups();

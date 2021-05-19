@@ -58,7 +58,7 @@ public class PublicProfileFragment extends Fragment {
         fileStore.downloadImage(imageView, decodeResource(this.getContext().getResources(), R.drawable.default_profile_picture));
 
         TextView name = getView().findViewById(R.id.public_profile_name);
-        name.setText(String.format("%s %s", user.getFirstName(), user.getLastName()));
+        name.setText(user.getFullName());
 
         TextView username = getView().findViewById(R.id.public_profile_username);
         username.setText(user.getUsername());

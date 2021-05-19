@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -32,7 +33,7 @@ public class UserBuilderTest {
     List<String> ownedGroups = new ArrayList<>(Collections.singleton("testOwnedUUID"));
     List<String> participatingGroups = new ArrayList<>(Collections.singleton("testGroupUUID"));
     List<String> savedEvents = new ArrayList<>(Collections.singleton("testSavedUUID"));
-    Date birthDate = new Date();
+    LocalDate birthDate = LocalDate.now();
     boolean notifications = true;
 
     @Before
@@ -45,13 +46,12 @@ public class UserBuilderTest {
         Map<String, Object> data = new HashMap<>();
         data.put(USERNAME_KEY, username);
         data.put(EMAIL_KEY, email);
-        data.put(FIRST_NAME_KEY, firstName);
-        data.put(LAST_NAME_KEY, lastName);
+        data.put(FULL_NAME_KEY, firstName);
         data.put(FRIENDS_KEY, friends);
         data.put(OWNED_GROUPS_KEY, ownedGroups);
         data.put(PARTICIPATING_GROUPS_KEY, participatingGroups);
         data.put(SAVED_EVENTS_KEY, savedEvents);
-        data.put(BIRTH_DATE_KEY, new Timestamp(birthDate));
+        data.put(BIRTH_DATE_KEY, new Timestamp(birthDate.toEpochDay()*24*60*60,0));
         data.put(NOTIFICATIONS_KEY, notifications);
 
         User user = builder.toObject(uuid, data);
@@ -59,8 +59,7 @@ public class UserBuilderTest {
         assertEquals(user.getUuid(), uuid);
         assertEquals(user.getUsername(), username);
         assertEquals(user.getEmail(), email);
-        assertEquals(user.getFirstName(), firstName);
-        assertEquals(user.getLastName(), lastName);
+        assertEquals(user.getFullName(), firstName);
         assertEquals(user.getFriendsIds().get(0), friends.get(0));
         assertEquals(user.getOwnedGroupsIds().get(0), ownedGroups.get(0));
         assertEquals(user.getParticipatingGroupsIds().get(0), participatingGroups.get(0));
@@ -71,7 +70,7 @@ public class UserBuilderTest {
 
     @Test
     public void toMapWorks(){
-        User user = new User(db, uuid, username, email, firstName, lastName, friends, ownedGroups, participatingGroups, savedEvents, notifications, birthDate, null);
+        User user = new User(db, uuid, username, email, firstName, friends, ownedGroups, participatingGroups, savedEvents, notifications, birthDate, null);
 
         Map<String, Object> data = builder.toMap(user);
 

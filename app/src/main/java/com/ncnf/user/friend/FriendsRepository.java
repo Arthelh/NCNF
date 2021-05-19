@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 
 import static com.ncnf.utilities.StringCodes.AWAITING_REQUESTS_KEY;
-import static com.ncnf.utilities.StringCodes.FIRST_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.FRIENDS_KEY;
 import static com.ncnf.utilities.StringCodes.PENDING_REQUESTS_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
@@ -114,7 +114,7 @@ public class FriendsRepository {
         Get list of users based on username
      */
     public CompletableFuture<List<User>> searchFriends(String username){
-        return db.withFieldContaining(USERS_COLLECTION_KEY, FIRST_NAME_KEY, username, User.class); // TODO : change FIRSTNAMEKEY to USERNAME_KEY
+        return db.withFieldContaining(USERS_COLLECTION_KEY, FULL_NAME_KEY, username, User.class); // TODO : change FULL_NAME_KEY to USERNAME_KEY
     }
 
     private CompletableFuture<Boolean> combine(CompletableFuture<Boolean> u1, CompletableFuture<Boolean> u2) {

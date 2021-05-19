@@ -3,7 +3,6 @@ package com.ncnf.user;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.Looper;
-import android.provider.ContactsContract;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.intent.Intents;
@@ -16,24 +15,17 @@ import androidx.test.uiautomator.UiSelector;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.database.DatabaseService;
-import com.ncnf.main.MainActivity;
 import com.ncnf.user.helpers.CurrentUserModule;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
-import org.mockito.Spy;
 
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import dagger.hilt.android.testing.BindValue;
@@ -45,7 +37,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static com.ncnf.utilities.StringCodes.FIRST_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -85,7 +77,7 @@ public class FriendsTrackerActivityTest {
 
         when(user.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user));
         when(user.getEmail()).thenReturn("john@doe.ch");
-        when(user.getFirstName()).thenReturn("John");
+        when(user.getFullName()).thenReturn("John");
         when(user.getUuid()).thenReturn("0");
 
         ArrayList<String> s = new ArrayList<>();
@@ -98,7 +90,7 @@ public class FriendsTrackerActivityTest {
 
 
         when(dbs.getField(USERS_COLLECTION_KEY + "0", USER_LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(p1));
-        when(dbs.getField(USERS_COLLECTION_KEY + "0", FIRST_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("Taylor"));
+        when(dbs.getField(USERS_COLLECTION_KEY + "0", FULL_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("Taylor"));
 
     }
 

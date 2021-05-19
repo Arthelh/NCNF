@@ -83,7 +83,7 @@ public class FriendsAdapter extends UserAdapter {
         private void sendAddFriendRequest(User u){
             friendsRepository.request(myUuid, u.getUuid()).thenAccept(response -> {
                 showDoneButton();
-                Toast.makeText(context, "Sent request to " + u.getFirstName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Sent request to " + u.getFullName(), Toast.LENGTH_SHORT).show();
             }).exceptionally(exception -> null);
         }
 

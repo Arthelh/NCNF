@@ -17,19 +17,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.authentication.ui.LoginActivity;
 import com.ncnf.friends.ui.FriendsActivity;
 import com.ncnf.user.FriendsTrackerActivity;
 
-
-import static androidx.core.app.ActivityCompat.startActivityForResult;
-
 import com.ncnf.socialObject.create.GroupCreateActivity;
 import com.ncnf.socialObject.update.EventNewsActivity;
 import com.ncnf.user.UserTabActivity;
 
+import static android.content.Intent.getIntent;
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
 import static com.ncnf.utilities.StringCodes.NEXT_ACTIVITY_EXTRA_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
@@ -38,6 +38,13 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Intent intent = getActivity().getIntent();
+        if(intent != null && intent.getExtras() != null) {
+            boolean gotDisconnected = (boolean) intent.getExtras().get("disconnected");
+            if (gotDisconnected) {
+                Snackbar.make(requireActivity().findViewById(android.R.id.content), "Successfully disconnected", LENGTH_SHORT).show();
+            }
+        }
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 

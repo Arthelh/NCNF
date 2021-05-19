@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="80dp"
-    android:layout_height="80dp"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="50dp">
+    app:cardCornerRadius="75dp">
 
     <ImageView
-        android:id="@+id/event_picture"
+        android:id="@+id/personal_profile_picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/quantum_grey800" />
@@ -16,7 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="JD"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"/>

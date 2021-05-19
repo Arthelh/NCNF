@@ -1,24 +1,23 @@
 package com.ncnf.user;
 
-import android.util.Log;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.authentication.AuthenticationService;
 import com.ncnf.database.DatabaseService;
 import com.ncnf.socialObject.Event;
 import com.ncnf.socialObject.Group;
 import com.ncnf.user.helpers.CurrentUserModule;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.utilities.InputValidator.isInvalidString;
 import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
-import static com.ncnf.utilities.StringCodes.FIRST_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_KEY;
 import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_TOKEN_KEY;
@@ -35,20 +34,19 @@ public class User {
     private final String uuid;
     private String username;
     private String email;
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private List<String> friendsIds;
     private List<String> ownedGroupsIds;
     private List<String> participatingGroupsIds;
     private List<String> savedEventsIds;
-    private Date birthDate;
+    private LocalDate birthDate;
     private boolean notifications;
     private GeoPoint loc;
 
     
     private final IllegalStateException wrongCredentials = new IllegalStateException("User doesn't have the right credentials to perform current operation");
 
-    public User(DatabaseService db, String uuid, String username, String email, String firstName, String lastName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> participatingGroups, List<String> savedEventsIds, boolean notifications, Date birthDate, GeoPoint loc) {
+    public User(DatabaseService db, String uuid, String username, String email, String fullName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> participatingGroups, List<String> savedEventsIds, boolean notifications, LocalDate birthDate, GeoPoint loc) {
         if(isInvalidString(uuid) || isInvalidString(email)){
             throw new IllegalArgumentException();
         }
@@ -56,8 +54,7 @@ public class User {
         this.uuid = uuid;
         this.username = username;
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.fullName = fullName;
         this.friendsIds = friendsIds;
         this.ownedGroupsIds = ownedGroupsIds;
         this.savedEventsIds = savedEventsIds;
@@ -68,11 +65,11 @@ public class User {
     }
 
     public User(){
-        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), "",FirebaseAuth.getInstance().getCurrentUser().getEmail(),"",  "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), "",FirebaseAuth.getInstance().getCurrentUser().getEmail(),"", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
     }
 
-    public User(String username, String email, String firstName, String lastName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> savedEventsIds, Date birthDate, boolean notifications, GeoPoint loc) {
-        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), username, email, firstName, lastName, friendsIds, ownedGroupsIds, new ArrayList<>(), savedEventsIds, notifications, birthDate, loc);
+    public User(String username, String email, String fullName, String lastName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> savedEventsIds, LocalDate birthDate, boolean notifications, GeoPoint loc) {
+        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), username, email, fullName, friendsIds, ownedGroupsIds, new ArrayList<>(), savedEventsIds, notifications, birthDate, loc);
     }
 
     public String getUuid(){
@@ -87,12 +84,8 @@ public class User {
         return email;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
+    public String getFullName() {
+        return fullName;
     }
 
     public List<String> getFriendsIds() {
@@ -111,7 +104,7 @@ public class User {
         return Collections.unmodifiableList(savedEventsIds);
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
@@ -125,12 +118,8 @@ public class User {
         this.username = username;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public void setFriendsIds(List<String> friendsIds) {
@@ -138,6 +127,10 @@ public class User {
     }
 
     public void setLoc(GeoPoint loc) { this.loc = loc; }
+
+    public void setEmail(String email){
+        this.email = email;
+    }
 
     
     public void setParticipatingGroupsIds(List<String> participatingGroupsIds) {
@@ -152,7 +145,7 @@ public class User {
         this.savedEventsIds = new ArrayList<>(savedEventsIds);
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -179,8 +172,7 @@ public class User {
         return futureUser.thenApply(response -> {
             this.username = response.getUsername();
             this.email = response.getEmail();
-            this.firstName = response.getFirstName();
-            this.lastName = response.getLastName();
+            this.fullName = response.getFullName();
             this.friendsIds = response.getFriendsIds();
             this.ownedGroupsIds = response.getOwnedGroupsIds();
             this.participatingGroupsIds = response.getParticipatingGroupsIds();
@@ -197,7 +189,7 @@ public class User {
     }
 
     public CompletableFuture<List<User>> getAllUsersLike(String username){
-        return this.db.withFieldContaining(USERS_COLLECTION_KEY, FIRST_NAME_KEY, username, User.class); // TODO : change to username when possible
+        return this.db.withFieldContaining(USERS_COLLECTION_KEY, FULL_NAME_KEY, username, User.class); // TODO : change to username when possible
     }
 
     public CompletableFuture<Boolean> addSavedEvent(Event event){
@@ -254,11 +246,8 @@ public class User {
             return CompletableFuture.completedFuture(false);
         }
 
-        return group.store(db)
-                .thenCompose(task -> {
-                    return this.addOwnedGroup(group);
-
-                })
+        return group.store(this.db)
+                .thenCompose(task -> this.addOwnedGroup(group))
                 .exceptionally(exception -> false); // TODO: handle exception
     }
 
@@ -266,6 +255,9 @@ public class User {
         CurrentUserModule.signOut();
     }
 
+    public CompletableFuture<Boolean> changeEmail(AuthenticationService auth, String email){
+        return auth.changeEmail(email);
+    }
 
     @Override
     public boolean equals(Object o) {

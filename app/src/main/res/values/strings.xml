@@ -78,6 +78,9 @@
     <string name="socialObject">Event</string>
     <string name="id">ID</string>
     <string name="data">Data</string>
+    <string name="friends">Friends</string>
+    <string name="organizations">Organizations</string>
+    <string name="bookmark">Bookmark</string>
 
     <string name="login">Login</string>
     <string name="email_hint">Email...</string>
