@@ -5,7 +5,7 @@
     android:id="@+id/relativeLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.fragments.PublicProfileFragment">
+    tools:context=".views.fragments.user.PublicProfileFragment">
 
     <RelativeLayout
         android:id="@+id/public_profile_header"

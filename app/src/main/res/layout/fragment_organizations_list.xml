@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context=".organization.OrganizationTabFragment">
+    tools:context=".views.fragments.organization.OrganizationTabFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/organization_list_recyclerview"

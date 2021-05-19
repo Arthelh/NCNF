@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".friends.ui.FriendsActivity">
+    tools:context=".views.activities.friends.FriendsActivity">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/friends_tabs"

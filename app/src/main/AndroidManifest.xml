@@ -24,24 +24,24 @@
         android:theme="@style/Theme.NCNF"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".friends.ui.FriendsActivity"
-            android:parentActivityName=".main.MainActivity"/>
+            android:name=".views.activities.friends.FriendsActivity"
+            android:parentActivityName=".views.activities.main.MainActivity"/>
         <activity
-            android:name=".bookmark.BookMarkActivity"
+            android:name=".views.activities.bookmark.BookMarkActivity"
             android:label="@string/title_activity_bookmark"
             android:parentActivityName=".user.UserProfileActivity" />
         <activity
-            android:name=".user.UserTabActivity"
-            android:parentActivityName=".main.MainActivity"
+            android:name=".views.activities.user.UserTabActivity"
+            android:parentActivityName=".views.activities.main.MainActivity"
             tools:ignore="MissingClass" />
         <activity
-            android:name=".user.FriendsTrackerActivity"
-            android:parentActivityName=".main.MainActivity" />
+            android:name=".views.activities.group.FriendsTrackerActivity"
+            android:parentActivityName=".views.activities.main.MainActivity" />
         <activity
-            android:name=".authentication.ui.LoginActivity"
-            android:parentActivityName=".main.MainActivity"
+            android:name=".views.activities.login.LoginActivity"
+            android:parentActivityName=".views.activities.main.MainActivity"
             tools:ignore="MissingClass" />
-        <activity android:name=".settings.ui.SettingsActivity" />
+        <activity android:name=".views.activities.settings.SettingsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -61,20 +61,20 @@
                app to run.
         -->
         <service
-            android:name=".user.LocationService"
+            android:name=".utilities.user.LocationService"
             android:stopWithTask="true" />
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" /> <!-- FEED -->
         <activity
-            android:name=".socialObject.create.GroupCreateActivity"
+            android:name=".views.activities.group.GroupCreateActivity"
             android:label="@string/title_event_creation"
-            android:parentActivityName=".main.MainActivity" />
+            android:parentActivityName=".views.activities.main.MainActivity" />
         <activity
-            android:name=".socialObject.update.EventNewsActivity"
+            android:name=".views.activities.event.EventNewsActivity"
             android:label="Publish a news"
-            android:parentActivityName=".main.MainActivity" />
-        <activity android:name=".main.MainActivity">
+            android:parentActivityName=".views.activities.main.MainActivity" />
+        <activity android:name=".views.activities.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
