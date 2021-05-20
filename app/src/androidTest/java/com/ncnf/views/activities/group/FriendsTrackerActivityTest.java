@@ -67,7 +67,6 @@ public class FriendsTrackerActivityTest {
     static private final User user1 = Mockito.mock(User.class);
     static private final DatabaseService database1 = Mockito.mock(DatabaseService.class);
 
-    private static final User u1 = new User(database1, "1", "taylor", "john@bar.com","John", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, LocalDate.now(), null);
     private static final List<String> users = Collections.singletonList("1");
 
     static Intent intent;
@@ -155,6 +154,7 @@ public class FriendsTrackerActivityTest {
     }
 
 
+    /**
     @Test
     public void findsOtherUser() {
 
@@ -164,6 +164,7 @@ public class FriendsTrackerActivityTest {
 
         assertTrue("User marker exists", marker.waitForExists(30000));
     }
+     **/
 
 
     @Test
