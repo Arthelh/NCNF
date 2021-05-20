@@ -9,10 +9,9 @@ import com.ncnf.R;
 import com.ncnf.models.Event;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
-import com.ncnf.storage.firebase.CacheFileStore;
+import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.models.User;
 import com.ncnf.authentication.firebase.CurrentUserModule;
-import com.ncnf.views.activities.bookmark.BookMarkActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -59,7 +58,7 @@ public class BookMarkActivityTest {
     public User user = mockUser;
 
     @BindValue
-    CacheFileStore fileStore = Mockito.mock(CacheFileStore.class);
+    FirebaseCacheFileStore fileStore = Mockito.mock(FirebaseCacheFileStore.class);
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     @Rule

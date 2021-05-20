@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
 import com.ncnf.models.Event;
+import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.utilities.event.EventRelevanceCalculator;
 import com.ncnf.models.SocialObject;
-import com.ncnf.storage.firebase.CacheFileStore;
 import com.ncnf.utilities.DateAdapter;
 
 import java.util.ArrayList;
@@ -153,7 +153,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Soci
         }
 
         private void setEventImage(Event event){
-            CacheFileStore fileStore = new CacheFileStore();
+            FirebaseCacheFileStore fileStore = new FirebaseCacheFileStore();
             fileStore.setContext(context);
             fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
             fileStore.downloadImage(image, BitmapFactory.decodeResource(context.getResources(),

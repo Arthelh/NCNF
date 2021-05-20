@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
-public class CacheFileStore extends FileStore {
+public class FirebaseCacheFileStore extends FirebaseFileStore {
 
     private static final String LOG_TAG = "CACHING";
 
@@ -21,11 +21,11 @@ public class CacheFileStore extends FileStore {
     private Context context;
 
     @Inject
-    public CacheFileStore(FirebaseStorage storage) {
+    public FirebaseCacheFileStore(FirebaseStorage storage) {
         super(storage);
     }
 
-    public CacheFileStore() {
+    public FirebaseCacheFileStore() {
         super();
     }
 

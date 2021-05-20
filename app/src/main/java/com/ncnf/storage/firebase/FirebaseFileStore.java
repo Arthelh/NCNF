@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
-public class FileStore {
+public class FirebaseFileStore {
 
     private final long MAX_SIZE = 10 * 1024 * 1024;
 
@@ -22,11 +22,11 @@ public class FileStore {
     private StorageReference fileRef;
 
     @Inject
-    public FileStore(FirebaseStorage storage) {
+    public FirebaseFileStore(FirebaseStorage storage) {
         this.storage = storage;
     }
 
-    public FileStore() {
+    public FirebaseFileStore() {
         this.storage = FirebaseStorage.getInstance();
     }
 

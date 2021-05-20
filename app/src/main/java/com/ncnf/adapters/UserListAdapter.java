@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
-import com.ncnf.storage.firebase.CacheFileStore;
+import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.models.User;
 import com.ncnf.utilities.InputValidator;
 
@@ -114,7 +114,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         }
 
         private void setProfilePicture(User u){
-            CacheFileStore fileStore = new CacheFileStore();
+            FirebaseCacheFileStore fileStore = new FirebaseCacheFileStore();
             fileStore.setContext(context);
             fileStore.setPath(USER_IMAGE_PATH, u.getUuid() + ".jpg");
             fileStore.downloadImage(profilePicture, decodeResource(context.getResources(), R.drawable.default_profile_picture));

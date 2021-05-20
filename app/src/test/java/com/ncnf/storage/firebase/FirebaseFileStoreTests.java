@@ -7,7 +7,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.ncnf.mocks.MockTask;
-import com.ncnf.storage.firebase.FileStore;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,7 +23,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class FileStoreTests {
+public class FirebaseFileStoreTests {
 
     private final byte[] data = new byte[] {42, 24};
     private final String directory = "events";
@@ -42,7 +41,7 @@ public class FileStoreTests {
         when(task.addOnSuccessListener(any())).thenReturn(task);
         when(task.addOnFailureListener(any())).thenReturn(task);
 
-        FileStore file = new FileStore(storage);
+        FirebaseFileStore file = new FirebaseFileStore(storage);
         file.setPath(directory, filename);
 
         file.uploadImage(bitmap);
@@ -59,7 +58,7 @@ public class FileStoreTests {
         when(storage.getReference().child(anyString()).child(anyString())).thenReturn(fileRef);
         when(fileRef.getBytes(anyLong())).thenReturn(task);
 
-        FileStore file = new FileStore(storage);
+        FirebaseFileStore file = new FirebaseFileStore(storage);
         file.setPath(directory, filename);
 
         CompletableFuture<byte[]> future = file.download();
@@ -82,7 +81,7 @@ public class FileStoreTests {
         when(storage.getReference().child(anyString()).child(anyString())).thenReturn(fileRef);
         when(fileRef.getBytes(anyLong())).thenReturn(task);
 
-        FileStore file = new FileStore(storage);
+        FirebaseFileStore file = new FirebaseFileStore(storage);
         file.setPath(directory, filename);
         file.downloadImage(view, bitmap);
 
@@ -93,7 +92,7 @@ public class FileStoreTests {
     public void throwsExceptionIfNoPath() {
         FirebaseStorage storage = Mockito.mock(FirebaseStorage.class, Mockito.RETURNS_DEEP_STUBS);
 
-        FileStore file = new FileStore(storage);
+        FirebaseFileStore file = new FirebaseFileStore(storage);
 
         assertThrows(IllegalStateException.class, () -> {
            file.download();

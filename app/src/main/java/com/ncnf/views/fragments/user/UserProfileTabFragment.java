@@ -41,7 +41,7 @@ import com.ncnf.views.activities.bookmark.BookMarkActivity;
 import com.ncnf.views.activities.friends.FriendsActivity;
 import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.notifications.firebase.FirebaseNotifications;
-import com.ncnf.storage.firebase.CacheFileStore;
+import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.models.User;
 
 import java.io.IOException;
@@ -70,7 +70,7 @@ public class UserProfileTabFragment extends Fragment {
     public FirebaseNotifications firebaseNotifications;
 
     @Inject
-    public CacheFileStore fileStore;
+    public FirebaseCacheFileStore fileStore;
 
     @Inject
     public FirebaseAuthentication auth;
