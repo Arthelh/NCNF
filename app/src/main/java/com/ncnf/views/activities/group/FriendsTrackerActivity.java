@@ -26,18 +26,25 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.models.Group;
 import com.ncnf.models.User;
 import com.ncnf.utilities.user.LocationService;
 
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static android.content.ContentValues.TAG;
+import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
@@ -69,16 +76,8 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     private FusedLocationProviderClient myFusedLocationClient;
 
     private Handler handler = new Handler();
-    // private Handler handler2 = new Handler();
     private Runnable runnable;
-    // private Runnable runnable2;
     private static final int LOCATION_UPDATE_INTERVAL = 3000;
-
-    private int counter;
-
-    // for testing
-    //private static final String uuid = "MSpKLkyyrrN3PC5KmxkoD05Vy1m2";
-    //private static final String uuid2 = "xsohP7PYdDQZ69STCpznOZt0Zfg2";
 
     private Marker marker;
 
@@ -89,17 +88,27 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_tracker);
-
-        //dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, new GeoPoint(46.5201852, 6.5637122));
-        //dbs.updateField(USERS_COLLECTION_KEY + uuid2, USER_LOCATION_KEY, new GeoPoint(46.516981, 6.57144331));
-
-        counter = 0;
-
         friendsUUID = new ArrayList<>();
-        markers = new ArrayList<>();
 
-        //friendsUUID.add(uuid);
-        //friendsUUID.add(uuid2);
+        String groupId = getIntent().getStringExtra("GROUP_ID");
+        CompletableFuture<Group> thisGroup = user.getParticipatingGroup(groupId);
+
+        // ONLY FOR TESTING
+        //Group g2 = new Group(user.getUuid(), "Group 2 !", LocalDateTime.now(), new GeoPoint(0,0), "Ecublens", "test group", SocialObject.Type.Movie);
+        //g2.invite("oFqlaX7uxifmck6AByJ52ZAZqHh1");
+        //CompletableFuture<Group> thisGroup = CompletableFuture.completedFuture(g2);
+
+
+        thisGroup.thenAccept(group -> {
+            if(group != null) {
+                friendsUUID = new ArrayList<>(group.getInvited());
+            }
+            else {
+                Log.d("TAG", "Group is null");
+            }
+        });
+
+        markers = new ArrayList<>();
 
         findUserButton = findViewById(R.id.find_user_button);
 
@@ -114,7 +123,6 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             onMapReady(mMap);
             getLastKnownLocation();
 
-            //changeUserLocs();
 
             findUserButton.setOnClickListener(v -> {
                 if(user.getLoc() != null) {
@@ -133,30 +141,12 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         }, LOCATION_UPDATE_INTERVAL);
     }
 
-    // ONLY FOR TESTING / DEMOS
-    /**
-    private void changeUserLocs() {
-        handler2.postDelayed(runnable2 = new Runnable() {
-            @Override
-            public void run() {
-                dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, new GeoPoint(46.51612823811807 + counter*0.0005, 6.560711384991796)).thenAccept(aBoolean -> {
-                    dbs.updateField(USERS_COLLECTION_KEY + uuid2, USER_LOCATION_KEY, new GeoPoint(46.51612823811807, 6.560711384991796+ counter*0.0005)).thenAccept(aBoolean1 -> {
-                        counter += 1;
-                    });
-                });
-                handler2.postDelayed(runnable2, 2*LOCATION_UPDATE_INTERVAL);
-            }
-        }, 2*LOCATION_UPDATE_INTERVAL);
-    }
-     **/
-
     private void stopLocationUpdates(){
         handler.removeCallbacks(runnable);
-        //handler2.removeCallbacks(runnable2);
     }
 
     private void getUserLocations() {
-        this.friendsUUID = user.getFriendsIds();
+
         for(int i = 0; i < friendsUUID.size(); ++i) {
 
             String userId = friendsUUID.get(i);
@@ -171,6 +161,9 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
                         if(s != null) {
                             markers.get(finalI).setTitle(s);
                         }
+                        else {
+                            Log.d("TAG", "point was null");
+                        }
                     });
                 }
                 else {
@@ -181,7 +174,9 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         if(marker == null) {
             if(user.getLoc() != null) {
                 marker = mMap.addMarker(new MarkerOptions().position(new LatLng(user.getLoc().getLatitude(), user.getLoc().getLongitude())));
-                marker.setTitle(user.getFullName());
+                if(user.getFullName() != null && user.getFullName().length() != 0) {
+                    marker.setTitle(user.getFullName());
+                }
             }
         }
         else {
@@ -268,7 +263,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     private boolean isLocationServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
-            if("com.ncnf.utilities.user.LocationService".equals(service.service.getClassName())) {
+            if("com.ncnf.user.LocationService".equals(service.service.getClassName())) {
                 Log.d(TAG, "isLocationServiceRunning: location service is already running.");
                 return true;
             }
