@@ -88,8 +88,6 @@ public class EventBuilder extends DatabaseObjectBuilder<Event> {
         double lng = event.getLocation().getLongitude();
         String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lng));
         map.put(GEOHASH_KEY, hash);
-        map.put(LAT_KEY, lat);
-        map.put(LNG_KEY, lng);
 
         map.put(MIN_AGE_KEY, event.getMinAge());
         map.put(PRICE_KEY, event.getPrice());

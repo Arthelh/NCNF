@@ -17,9 +17,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.R;
+import com.ncnf.models.Organization;
 import com.ncnf.views.fragments.map.MapFeedFragment;
 import com.ncnf.models.Event;
 import com.ncnf.views.fragments.event.EventFragment;
+import com.ncnf.views.fragments.organization.OrganizationViewFragment;
 
 import java.util.List;
 
@@ -47,10 +49,10 @@ public class  MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Cl
 
     @Override
     public void onClusterItemInfoWindowClick(NCNFMarker item) {
-        if (item.isEvent()) {
+        Fragment fragment;
 
+        if (item.isEvent()){
             List<Event> eventList = item.getEventList();
-            Fragment fragment;
 
             if (eventList.size() == 1) { //When the marker represents only one event
                 Event e = item.getEventList().get(0);
@@ -58,37 +60,37 @@ public class  MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Cl
             } else {
                 fragment = new MapFeedFragment(eventList, globalWindow, fragmentManager);
             }
-
-            ConstraintLayout feedContainer = globalWindow.findViewById(R.id.map_feed_container);
-            FrameLayout feedFrame = globalWindow.findViewById(R.id.map_feed_fragment);
-            //Button feedButton = globalWindow.findViewById(R.id.map_feed_button);
-
-            feedContainer.setBackgroundResource(R.drawable.main_background_gradient);
-            feedContainer.setVisibility(View.VISIBLE);
-            feedFrame.setVisibility(View.VISIBLE);
-            //feedButton.setVisibility(View.VISIBLE);
-
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.map_feed_fragment, fragment).addToBackStack(null).commit();
-
-            OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-                @Override
-                public void handleOnBackPressed() {
-                    destroyChildFragment(fragmentManager, fragment, feedContainer, this);
-                }
-            };
-
-            /**
-            feedButton.setOnClickListener(v -> {
-                destroyChildFragment(fragmentManager, fragment, feedContainer, callback);
-            });
-             **/
-
-            context.getOnBackPressedDispatcher().addCallback(context, callback);
-
         } else {
-            //TODO show the organization page
+            Organization org = item.getOrg();
+            fragment = new OrganizationViewFragment(org);
         }
+
+        ConstraintLayout feedContainer = globalWindow.findViewById(R.id.map_feed_container);
+        FrameLayout feedFrame = globalWindow.findViewById(R.id.map_feed_fragment);
+        //Button feedButton = globalWindow.findViewById(R.id.map_feed_button);
+
+        feedContainer.setBackgroundResource(R.drawable.main_background_gradient);
+        feedContainer.setVisibility(View.VISIBLE);
+        feedFrame.setVisibility(View.VISIBLE);
+        //feedButton.setVisibility(View.VISIBLE);
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.map_feed_fragment, fragment).addToBackStack(null).commit();
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                destroyChildFragment(fragmentManager, fragment, feedContainer, this);
+            }
+        };
+
+        /**
+         feedButton.setOnClickListener(v -> {
+         destroyChildFragment(fragmentManager, fragment, feedContainer, callback);
+         });
+         **/
+
+        context.getOnBackPressedDispatcher().addCallback(context, callback);
     }
 
     private void renderInfoWindow(){

@@ -16,9 +16,10 @@ import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.ncnf.database.firebase.DatabaseService;
-import com.ncnf.utilities.settings.Settings;
 import com.ncnf.models.Event;
+import com.ncnf.models.Organization;
 import com.ncnf.models.SocialObject;
+import com.ncnf.utilities.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.ORGANIZATIONS_COLLECTION_KEY;
 
 public class MapHandler {
 
@@ -50,7 +52,6 @@ public class MapHandler {
      * and handling the retrieval of the events and organizations to be displayed
      * @param context The activity the map will be displayed in
      * @param mMap The Google Map to display
-     * @param venueProvider A provider for the organizers, or venues.
      * @param fragmentManager A children fragment manager from the MapFragment
      * @param databaseService the service to query the database
      */
@@ -88,7 +89,7 @@ public class MapHandler {
             queryAndAddEvents();
             mMap.setContentDescription("MAP_WITH_EVENTS");
         } else {
-            addVenueMarkers();
+            queryAndAddOrgs();
             mMap.setContentDescription("MAP_WITH_VENUES");
         }
         clusterManager.cluster();
@@ -104,7 +105,7 @@ public class MapHandler {
         if (eventsShown){
             queryAndAddEvents();
         } else {
-            addVenueMarkers();
+            queryAndAddOrgs();
         }
         clusterManager.cluster();
     }
@@ -140,19 +141,17 @@ public class MapHandler {
                 desc.append(p.getName()).append("\n");
             }
             String description = desc.toString();
-            clusterManager.addItem(new NCNFMarker(k, description, eventMap.get(k).get(0).getAddress(), list, true));
+            clusterManager.addItem(new NCNFMarker(k, description, eventMap.get(k).get(0).getAddress(), list, null, true));
         }
         clusterManager.cluster();
     }
 
-    private void addVenueMarkers(){
-        // TODO: Link to the database
-        VenueProvider venueProvider = new VenueProvider();
-        List<Venue> venues = venueProvider.getAll();
-        for (Venue p : venues) {
-            LatLng venue_position = new LatLng(p.getLatitude(), p.getLongitude());
+    private void addVenueMarkers(List<Organization> list){
+
+        for (Organization o : list) {
+            LatLng venue_position = new LatLng(o.getLocation().getLatitude(), o.getLocation().getLongitude());
             if (MapUtilities.position_in_range(venue_position, Settings.getUserPosition())){
-                clusterManager.addItem(new NCNFMarker(venue_position, p.getName(), p.getName(), new ArrayList<>(), false));
+                clusterManager.addItem(new NCNFMarker(venue_position, o.getName(), o.getAddress(), new ArrayList<>(), o, false));
             }
         }
     }
@@ -165,6 +164,23 @@ public class MapHandler {
 
             result.addAll(eventList);
             addEventMarkers(result);
+
+        }).exceptionally(e -> {
+
+            Log.d(DEBUG_TAG, e.getMessage());
+            return null;
+
+        });
+    }
+
+    private void queryAndAddOrgs(){
+        final List<Organization> result = new ArrayList<>();
+
+        CompletableFuture<List<Organization>> completableFuture = databaseService.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance(), ORGANIZATIONS_COLLECTION_KEY, Organization.class);
+        completableFuture.thenAccept(organizations -> {
+
+            result.addAll(organizations);
+            addVenueMarkers(result);
 
         }).exceptionally(e -> {
 

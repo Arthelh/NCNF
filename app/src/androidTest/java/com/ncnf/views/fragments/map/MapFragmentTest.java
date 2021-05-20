@@ -24,10 +24,11 @@ import com.google.firebase.firestore.GeoPoint;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
 import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.models.Event;
+import com.ncnf.models.Organization;
+import com.ncnf.models.SocialObject;
 import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.views.activities.settings.SettingsActivity;
-import com.ncnf.models.Event;
-import com.ncnf.models.SocialObject;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -57,6 +58,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.ORGANIZATIONS_COLLECTION_KEY;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertFalse;
@@ -75,6 +77,9 @@ public final class MapFragmentTest {
     static private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
     static private final Event e2 = new Event("u2", "Another Fun event", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
     static private final List<Event> events = Arrays.asList(e1, e2);
+    static private final Organization o1 = new Organization("EPFL", new GeoPoint(46.5338f, 6.5914f), "EPFL Route Cantonale 15", "epfl@epfl.ch", "021 123 45 67", "EPFL");
+    static private final Organization o2 = new Organization("UniL", new GeoPoint(46.5211f, 6.5802f), "Route de l'UniL 1", "unil@unil.ch", "021 765 43 21", "UniL");
+    static private final List<Organization> orgs = Arrays.asList(o1, o2);
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private final ActivityScenarioRule activityRule = new ActivityScenarioRule<>(MainActivity.class);
@@ -89,6 +94,9 @@ public final class MapFragmentTest {
     static public void injectEvents() {
         CompletableFuture<List<Event>> future = CompletableFuture.completedFuture(events);
         when(db.geoQuery(any(LatLng.class), anyInt(), eq(EVENTS_COLLECTION_KEY), eq(Event.class))).thenReturn(future);
+
+        CompletableFuture<List<Organization>> orgFuture = CompletableFuture.completedFuture(orgs);
+        when(db.geoQuery(any(LatLng.class), anyInt(), eq(ORGANIZATIONS_COLLECTION_KEY), eq(Organization.class))).thenReturn(orgFuture);
     }
 
     @Before
@@ -126,8 +134,8 @@ public final class MapFragmentTest {
                 device.wait(Until.hasObject(By.desc("MAP_WITH_VENUES")), 5000)
         );
         // Venues are shown
-        marker = device.findObject(new UiSelector().descriptionContains("UniL"));
-        assertTrue("Venue markers exist", marker.waitForExists(5000));
+        marker = device.findObject(new UiSelector().descriptionContains(o1.getName()));
+        assertTrue("Organization markers exist", marker.waitForExists(5000));
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
@@ -173,9 +181,9 @@ public final class MapFragmentTest {
         onView(withId(R.id.map_switch_button)).perform(click());
 
         marker = device.findObject(new UiSelector().descriptionContains("EPFL"));
-        assertFalse("Venue markers exist", marker.waitForExists(5000));
+        assertFalse("Organization markers exist", marker.waitForExists(5000));
         marker = device.findObject(new UiSelector().descriptionContains("UniL"));
-        assertTrue("Venue markers exist", marker.waitForExists(5000));
+        assertTrue("Organization markers exist", marker.waitForExists(5000));
 
         onView(withId(R.id.menu_settings)).perform(click());
         onView(withId(R.id.distanceSeekBar)).perform(new ViewAction() {
@@ -231,5 +239,30 @@ public final class MapFragmentTest {
 
         onView(withId(R.id.map_switch_button)).check(matches(withText(containsString("Switch"))));
 
+    }
+
+    @Test
+    public final void testOrgInfoWindow(){
+        onView(withId(R.id.map_switch_button)).perform(click());
+
+        UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+
+        UiObject marker = device.findObject(new UiSelector().descriptionContains(o1.getName()));
+        try {
+            marker.click();
+            Rect markerRect = marker.getBounds();
+            int x = markerRect.centerX();
+            int y = markerRect.centerY() - markerRect.height();
+            device.click(x, y);
+            Thread.sleep(2000);
+        } catch (UiObjectNotFoundException | InterruptedException e) {
+            Assert.fail("Marker not found.");
+        }
+
+        onView(allOf(withId(R.id.organization_display_name), withText("EPFL"))).perform(click());
+
+        Espresso.pressBack();
+
+        onView(withId(R.id.map_switch_button)).check(matches(withText(containsString("Switch"))));
     }
 }

@@ -1,5 +1,7 @@
 package com.ncnf.database.builders;
 
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.models.Organization;
 
@@ -11,6 +13,7 @@ import java.util.UUID;
 import static com.ncnf.utilities.StringCodes.ADDRESS_KEY;
 import static com.ncnf.utilities.StringCodes.ADMIN_KEY;
 import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
+import static com.ncnf.utilities.StringCodes.GEOHASH_KEY;
 import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
 import static com.ncnf.utilities.StringCodes.NAME_KEY;
 import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS_KEY;
@@ -50,6 +53,12 @@ public class OrganizationBuilder extends DatabaseObjectBuilder<Organization>{
         data.put(PHONE_NB_KEY, org.getPhoneNumber());
         data.put(ADMIN_KEY, org.getAdminIds());
         data.put(ORGANIZED_EVENTS_KEY, org.getEventIds());
+
+        //Geohash info for geoQueries
+        double lat = org.getLocation().getLatitude();
+        double lng = org.getLocation().getLongitude();
+        String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lng));
+        data.put(GEOHASH_KEY, hash);
 
         return data;
     }
