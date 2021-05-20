@@ -21,17 +21,17 @@ import java.util.List;
 import static android.graphics.BitmapFactory.decodeResource;
 import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
+public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserViewHolder> {
 
     protected final Context context;
     private final List<User> users;
-    private final UserAdapter.OnItemClickListener listener;
+    private final UserListAdapter.OnItemClickListener listener;
 
     public interface OnItemClickListener {
         void onItemClick(User user);
     }
 
-    public UserAdapter(Context context, List<User> users, OnItemClickListener listener) {
+    public UserListAdapter(Context context, List<User> users, OnItemClickListener listener) {
         this.context = context;
         this.users = users;
         this.listener = listener;
@@ -87,7 +87,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             profilePicture = v.findViewById(R.id.event_picture);
         }
 
-        public void bind(final User u, final UserAdapter.OnItemClickListener listener){
+        public void bind(final User u, final UserListAdapter.OnItemClickListener listener){
             // Set item listener
             setItemListener(u, listener);
 

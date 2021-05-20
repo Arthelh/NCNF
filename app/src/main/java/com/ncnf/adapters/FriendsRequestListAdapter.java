@@ -15,12 +15,12 @@ import com.ncnf.models.User;
 
 import java.util.List;
 
-public class FriendsRequestAdapter extends UserAdapter {
+public class FriendsRequestListAdapter extends UserListAdapter {
 
     private final FriendsRepository friendsRepository;
     private final String uuid;
 
-    public FriendsRequestAdapter(Context context, List<User> users, OnItemClickListener onClick, FriendsRepository friendsRepository, String my_uuid) {
+    public FriendsRequestListAdapter(Context context, List<User> users, OnItemClickListener onClick, FriendsRepository friendsRepository, String my_uuid) {
         super(context, users, onClick);
         this.friendsRepository = friendsRepository;
         this.uuid = my_uuid;
@@ -51,7 +51,7 @@ public class FriendsRequestAdapter extends UserAdapter {
             this.uuid = uuid;
         }
 
-        public void bind(final User u, final UserAdapter.OnItemClickListener onClick) {
+        public void bind(final User u, final UserListAdapter.OnItemClickListener onClick) {
             super.bind(u, onClick);
 
             acceptButton.setOnClickListener(view -> {

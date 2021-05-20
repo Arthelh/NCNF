@@ -3,7 +3,7 @@ package com.ncnf.models;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class Event extends SocialObject {
     private static final int MIN_AGE = 0;
     private static final int MAX_AGE = 125;
 
-    private List<Tag> tags;
+    private List<EventTag> eventTags;
     private double price;
     private int minAge;
     private String email;
@@ -28,18 +28,18 @@ public class Event extends SocialObject {
 
         checkConstraints(minAge, price);
 
-        tags = new ArrayList<>();
+        eventTags = new ArrayList<>();
         this.minAge = minAge;
         this.price = price;
         this.email = email;
     }
 
-    public Event(String ownerId, UUID uuid, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<Tag> tags, String email) {
+    public Event(String ownerId, UUID uuid, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<EventTag> eventTags, String email) {
         super(ownerId, uuid, name, date, location, address, type, attendees, description);
 
         checkConstraints(minAge, price);
 
-        setTags(tags);
+        setEventTags(eventTags);
         this.minAge = minAge;
         this.price = price;
         this.email = email;
@@ -54,7 +54,7 @@ public class Event extends SocialObject {
     public int getMinAge() { return minAge; }
     public double getPrice() { return price; }
     public String getEmail() { return email; }
-    public List<Tag> getTags() { return new ArrayList<Tag>(tags); }
+    public List<EventTag> getEventTags() { return new ArrayList<EventTag>(eventTags); }
 
     public void setMinAge(int minAge) {
         checkConstraints(minAge, this.price);
@@ -65,24 +65,24 @@ public class Event extends SocialObject {
 
     public void setEmail(String email) { this.email = email; }
 
-    public void setTags(List<Tag> tags) {
-        this.tags = new ArrayList<Tag>(tags);
+    public void setEventTags(List<EventTag> eventTags) {
+        this.eventTags = new ArrayList<EventTag>(eventTags);
     }
 
-    public void addTag(Tag newTag) {
+    public void addTag(EventTag newEventTag) {
 
-        for(int i = 0; i < tags.size(); ++i) {
-            if(tags.get(i).equals(newTag)) {
+        for(int i = 0; i < eventTags.size(); ++i) {
+            if(eventTags.get(i).equals(newEventTag)) {
                 return;
             }
         }
-        tags.add(newTag);
+        eventTags.add(newEventTag);
     }
 
     public boolean filterTags(String s) {
 
-        for(Tag tag : tags) {
-            if (tag.getName().equals(s) || tag.getName().toLowerCase().contains(s)) {
+        for(EventTag eventTag : eventTags) {
+            if (eventTag.getName().equals(s) || eventTag.getName().toLowerCase().contains(s)) {
                 return true;
             }
         }
@@ -102,7 +102,7 @@ public class Event extends SocialObject {
         return p.getUuid().equals(getUuid());
     }
 
-    public CompletableFuture<Boolean> store(@NonNull DatabaseService db){
+    public CompletableFuture<Boolean> store(@NonNull FirebaseDatabase db){
         return db.setDocument(EVENTS_COLLECTION_KEY + this.getUuid(), this);
     }
 }

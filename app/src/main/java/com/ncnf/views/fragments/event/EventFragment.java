@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Event;
 import com.ncnf.models.SocialObject;
 import com.ncnf.storage.firebase.CacheFileStore;
@@ -38,7 +38,7 @@ public class EventFragment extends Fragment {
     private final Event event;
     
     @Inject
-    public DatabaseService dbs;
+    public FirebaseDatabase dbs;
 
     public EventFragment(Event event){
         this.event = event;

@@ -1,6 +1,6 @@
 package com.ncnf.repositories;
 
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Organization;
 
 import java.util.List;
@@ -13,14 +13,14 @@ import static com.ncnf.utilities.StringCodes.*;
 
 public class OrganizationRepository {
 
-    private final DatabaseService db;
+    private final FirebaseDatabase db;
 
     public OrganizationRepository() {
-        this.db = new DatabaseService();
+        this.db = new FirebaseDatabase();
     }
 
     @Inject
-    public OrganizationRepository(DatabaseService db)  {
+    public OrganizationRepository(FirebaseDatabase db)  {
         this.db = db;
     }
 

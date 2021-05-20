@@ -1,6 +1,6 @@
 package com.ncnf.repositories;
 
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
 
 import java.util.List;
@@ -29,15 +29,15 @@ public class FriendsRepository {
     /*
         TODO: Some requests needs to be written with a transaction in case of failure.
      */
-    private final DatabaseService db;
+    private final FirebaseDatabase db;
     private final String path = USERS_COLLECTION_KEY;
 
     public FriendsRepository() {
-        this.db = new DatabaseService();
+        this.db = new FirebaseDatabase();
     }
 
     @Inject
-    public FriendsRepository(DatabaseService db) {
+    public FriendsRepository(FirebaseDatabase db) {
         this.db = db;
     }
 

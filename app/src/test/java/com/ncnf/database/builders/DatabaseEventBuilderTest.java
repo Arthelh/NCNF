@@ -2,12 +2,10 @@ package com.ncnf.database.builders;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.builders.EventBuilder;
-import com.ncnf.database.builders.GroupBuilder;
 import com.ncnf.models.Event;
+import com.ncnf.models.EventTag;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
-import com.ncnf.models.Tag;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,10 +38,10 @@ import static com.ncnf.utilities.StringCodes.UUID_KEY;
 import static com.ncnf.utilities.StringCodes.VISIBILITY_KEY;
 import static org.junit.Assert.assertEquals;
 
-public class EventBuilderTest {
+public class DatabaseEventBuilderTest {
 
-    private EventBuilder eventBuilder = new EventBuilder();
-    private GroupBuilder groupbuilder = new GroupBuilder();
+    private DatabaseEventBuilder eventBuilder = new DatabaseEventBuilder();
+    private DatabaseGroupBuilder groupbuilder = new DatabaseGroupBuilder();
 
     Map<String, Object> publicEvent;
     Map<String, Object> privateEvent;
@@ -61,7 +59,7 @@ public class EventBuilderTest {
 
     int minAge = 0;
     double price = 0;
-    List<Tag> tags = new ArrayList<>(Collections.singleton(new Tag("\uD83C\uDFB8", "Rock Music")));
+    List<EventTag> eventTags = new ArrayList<>(Collections.singleton(new EventTag("\uD83C\uDFB8", "Rock Music")));
 
     List<String> invited = new ArrayList<>(Collections.singleton("invited"));
 
@@ -88,7 +86,7 @@ public class EventBuilderTest {
 
         publicEvent.put(MIN_AGE_KEY, minAge);
         publicEvent.put(PRICE_KEY, price);
-        publicEvent.put(TAGS_LIST_KEY, tags);
+        publicEvent.put(TAGS_LIST_KEY, eventTags);
 
         Event event = eventBuilder.toObject(uuid, publicEvent);
 
@@ -155,7 +153,7 @@ public class EventBuilderTest {
         SocialObject.Type type = SocialObject.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
-        Event event = new Event(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags, email);
+        Event event = new Event(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, eventTags, email);
         Map<String, Object> map = eventBuilder.toMap(event);
         assertEquals(eventBuilder.toObject(uuid.toString(), map), event);
 

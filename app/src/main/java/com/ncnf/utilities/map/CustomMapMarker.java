@@ -10,7 +10,7 @@ import com.ncnf.models.Event;
 import java.util.Collections;
 import java.util.List;
 
-public class NCNFMarker implements ClusterItem {
+public class CustomMapMarker implements ClusterItem {
 
     private final LatLng position;
     private final String title;
@@ -18,11 +18,11 @@ public class NCNFMarker implements ClusterItem {
     private final List<Event> eventList;
     private final boolean isEvent;
 
-    public NCNFMarker(float lat, float lon, String title, String snippet, List<Event> eventList, boolean isEvent){
+    public CustomMapMarker(float lat, float lon, String title, String snippet, List<Event> eventList, boolean isEvent){
         this(new LatLng(lat, lon), title, snippet, eventList, isEvent);
     }
 
-    public NCNFMarker(LatLng position, String title, String snippet, List<Event> eventList, boolean isEvent){
+    public CustomMapMarker(LatLng position, String title, String snippet, List<Event> eventList, boolean isEvent){
         this.position = position;
         this.title = title;
         this.snippet = snippet;

@@ -28,7 +28,7 @@ import java.util.List;
 
 import static android.graphics.BitmapFactory.decodeResource;
 
-public class EventAdapter extends RecyclerView.Adapter<EventAdapter.SocialObjViewHolder> implements Filterable {
+public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.SocialObjViewHolder> implements Filterable {
     private List<Event> events;
     private List<Event> eventsFull;
     private final OnSocialObjListener onSocialObjListener;
@@ -43,7 +43,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.SocialObjVie
         void onEventClick(Event event);
     }
 
-    public EventAdapter(Context context, List<Event> items, OnSocialObjListener onSocialObjListener, SortingMethod sortingMethod) {
+    public EventListAdapter(Context context, List<Event> items, OnSocialObjListener onSocialObjListener, SortingMethod sortingMethod) {
         //ensure proper copy of the List
 
         this.sortingMethod = SortingMethod.DATE;

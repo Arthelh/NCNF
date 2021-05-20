@@ -15,7 +15,7 @@ import com.ncnf.repositories.FriendsRepository;
 
 import java.util.List;
 
-public class FriendsAdapter extends UserAdapter {
+public class FriendsListAdapter extends UserListAdapter {
 
     public enum FriendsType{
         NONE, ADDABLE, REMOVABLE
@@ -25,7 +25,7 @@ public class FriendsAdapter extends UserAdapter {
     private final String uuid;
     private final FriendsType friendsType;
 
-    public FriendsAdapter(Context context, List<User> users, OnItemClickListener onClick, FriendsRepository friendsRepository, String my_uuid, FriendsType friendsType) {
+    public FriendsListAdapter(Context context, List<User> users, OnItemClickListener onClick, FriendsRepository friendsRepository, String my_uuid, FriendsType friendsType) {
         super(context, users, onClick);
         this.friendsRepository = friendsRepository;
         this.uuid = my_uuid;
@@ -39,7 +39,7 @@ public class FriendsAdapter extends UserAdapter {
         return new FriendsViewHolder(v, friendsRepository, uuid, friendsType);
     }
 
-    public class FriendsViewHolder extends UserAdapter.UserViewHolder {
+    public class FriendsViewHolder extends UserListAdapter.UserViewHolder {
 
         private final FriendsRepository friendsRepository;
         private final String myUuid;
@@ -55,7 +55,7 @@ public class FriendsAdapter extends UserAdapter {
             this.friendType = friendType;
         }
 
-        public void bind(final User u, final UserAdapter.OnItemClickListener onClick) {
+        public void bind(final User u, final UserListAdapter.OnItemClickListener onClick) {
             super.bind(u, onClick);
 
             if(friendType == FriendsType.ADDABLE){

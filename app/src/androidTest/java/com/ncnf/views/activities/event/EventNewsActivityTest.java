@@ -7,8 +7,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.google.firebase.FirebaseException;
 import com.ncnf.R;
-import com.ncnf.database.firebase.DatabaseService;
-import com.ncnf.views.activities.event.EventNewsActivity;
+import com.ncnf.database.firebase.FirebaseDatabase;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -46,7 +45,7 @@ public class EventNewsActivityTest {
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);
 
     @BindValue
-    DatabaseService db = Mockito.mock(DatabaseService.class);
+    FirebaseDatabase db = Mockito.mock(FirebaseDatabase.class);
 
     @Before
     public void setup() {

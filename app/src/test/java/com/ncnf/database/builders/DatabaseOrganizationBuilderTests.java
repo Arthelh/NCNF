@@ -1,8 +1,7 @@
 package com.ncnf.database.builders;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.firebase.DatabaseService;
-import com.ncnf.database.builders.OrganizationBuilder;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Organization;
 
 import org.junit.Before;
@@ -28,11 +27,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class OrganizationBuilderTests {
+public class DatabaseOrganizationBuilderTests {
 
-    private final DatabaseService db = Mockito.mock(DatabaseService.class);
+    private final FirebaseDatabase db = Mockito.mock(FirebaseDatabase.class);
 
-    private final OrganizationBuilder builder = new OrganizationBuilder();
+    private final DatabaseOrganizationBuilder builder = new DatabaseOrganizationBuilder();
 
     private final Map<String, Object> data = new HashMap<>();
     private UUID uuid = UUID.randomUUID();

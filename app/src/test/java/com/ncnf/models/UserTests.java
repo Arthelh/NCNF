@@ -1,11 +1,7 @@
 package com.ncnf.models;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.firebase.DatabaseService;
-import com.ncnf.models.Event;
-import com.ncnf.models.Group;
-import com.ncnf.models.SocialObject;
-import com.ncnf.models.User;
+import com.ncnf.database.firebase.FirebaseDatabase;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,7 +36,7 @@ import static org.mockito.Mockito.when;
 
 public class UserTests {
 
-    DatabaseService db = mock(DatabaseService.class);
+    FirebaseDatabase db = mock(FirebaseDatabase.class);
     String ownerID = "ownerId";
     String name = "name";
     LocalDateTime date = LocalDateTime.now();

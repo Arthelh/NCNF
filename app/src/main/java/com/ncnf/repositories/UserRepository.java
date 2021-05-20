@@ -1,6 +1,6 @@
 package com.ncnf.repositories;
 
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
 
 import java.util.concurrent.CompletableFuture;
@@ -12,14 +12,14 @@ import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 
 public class UserRepository {
 
-    public DatabaseService db;
+    public FirebaseDatabase db;
 
     public UserRepository() {
-        this.db = new DatabaseService();
+        this.db = new FirebaseDatabase();
     }
 
     @Inject
-    public UserRepository(DatabaseService db) {
+    public UserRepository(FirebaseDatabase db) {
         this.db = db;
     }
 

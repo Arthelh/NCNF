@@ -7,7 +7,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.authentication.firebase.FirebaseUserModule;
 import com.ncnf.models.User;
 import com.ncnf.repositories.FriendsRepository;
@@ -57,7 +57,7 @@ public class FriendsActivityTest {
     private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(FriendsActivity.class);
 
     public static final FriendsRepository friendsRepository = Mockito.mock(FriendsRepository.class);
-    private static final DatabaseService databaseService = Mockito.mock(DatabaseService.class);
+    private static final FirebaseDatabase FIREBASE_DATABASE = Mockito.mock(FirebaseDatabase.class);
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(scenario);
@@ -67,7 +67,7 @@ public class FriendsActivityTest {
 
     @BindValue
     public FriendsRepository mockFriendsRepository = friendsRepository;
-    private static final User u1 = new User(databaseService, "1", "johnny", "john@bar.com","John", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, LocalDate.now(), null);
+    private static final User u1 = new User(FIREBASE_DATABASE, "1", "johnny", "john@bar.com","John", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, LocalDate.now(), null);
     private static final List<User> users = Collections.singletonList(u1);
 
     @BeforeClass

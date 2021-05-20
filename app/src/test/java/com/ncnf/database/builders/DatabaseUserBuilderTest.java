@@ -1,8 +1,7 @@
 package com.ncnf.database.builders;
 
 import com.google.firebase.Timestamp;
-import com.ncnf.database.builders.UserBuilder;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
 
 import org.junit.Before;
@@ -19,10 +18,10 @@ import java.util.Map;
 import static com.ncnf.utilities.StringCodes.*;
 import static org.junit.Assert.assertEquals;
 
-public class UserBuilderTest {
+public class DatabaseUserBuilderTest {
 
-    private UserBuilder builder = new UserBuilder();
-    private DatabaseService db;
+    private DatabaseUserBuilder builder = new DatabaseUserBuilder();
+    private FirebaseDatabase db;
 
     String uuid = "UUID";
     String username = "username";
@@ -38,7 +37,7 @@ public class UserBuilderTest {
 
     @Before
     public void setup() {
-        db = Mockito.mock(DatabaseService.class);
+        db = Mockito.mock(FirebaseDatabase.class);
     }
 
     @Test

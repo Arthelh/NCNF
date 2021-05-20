@@ -1,7 +1,7 @@
 package com.ncnf.utilities.event;
 
 import com.ncnf.models.Event;
-import com.ncnf.models.Tag;
+import com.ncnf.models.EventTag;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,31 +26,31 @@ public class EventRelevanceCalculator {
 
     private List<Event> sortedList() {
         List<Event> l = new ArrayList<>();
-        Map<Tag, Integer> m = new HashMap<>();
+        Map<EventTag, Integer> m = new HashMap<>();
 
         for (Event e : events) {
-            List<Tag> tags = e.getTags();
+            List<EventTag> eventTags = e.getEventTags();
 
-            if (!tags.isEmpty()) {
-                Tag maxTag = tags.get(0);
+            if (!eventTags.isEmpty()) {
+                EventTag maxEventTag = eventTags.get(0);
                 int maxOccurrences = 0;
 
-                for (int i = 0; i < tags.size(); ++i) {
+                for (int i = 0; i < eventTags.size(); ++i) {
                     int thisTagOcc = 0;
-                    Tag thisTag = tags.get(i);
+                    EventTag thisEventTag = eventTags.get(i);
                     for (Event e2 : events) {
-                        if (!e2.equals(e) && e2.getTags().contains(thisTag)) {
+                        if (!e2.equals(e) && e2.getEventTags().contains(thisEventTag)) {
                             thisTagOcc += 1;
                         }
                     }
 
                     if (thisTagOcc > maxOccurrences) {
-                        maxTag = thisTag;
+                        maxEventTag = thisEventTag;
                         maxOccurrences = thisTagOcc;
                     }
                 }
 
-                m.put(maxTag, maxOccurrences);
+                m.put(maxEventTag, maxOccurrences);
             }
         }
 
@@ -60,10 +60,10 @@ public class EventRelevanceCalculator {
         List<Integer> occurrences = new ArrayList<>(new HashSet<>(m.values()));
         Collections.sort(occurrences, Collections.reverseOrder());
         for (Integer i : occurrences) {
-            for (Tag t : m.keySet()) {
+            for (EventTag t : m.keySet()) {
                 if (m.get(t).equals(i)) {
                     for (Event e : events) {
-                        if (e.getTags().contains(t) && !l.contains(e)) {
+                        if (e.getEventTags().contains(t) && !l.contains(e)) {
                             l.add(e);
                         }
                     }

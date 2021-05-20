@@ -1,4 +1,4 @@
-package com.ncnf.utilities.registration;
+package com.ncnf.notifications.firebase;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.ncnf.models.User;
@@ -7,23 +7,23 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
-public class Registration {
+public class FirebaseNotifications {
 
     private final FirebaseMessaging service;
     private final User user;
 
     @Inject
-    public Registration(User user) {
+    public FirebaseNotifications(User user) {
         this.service = FirebaseMessaging.getInstance();
         this.user = user;
     }
 
-    public Registration(FirebaseMessaging messaging, User user) {
+    public FirebaseNotifications(FirebaseMessaging messaging, User user) {
         this.service = messaging;
         this.user = user;
     }
 
-    public CompletableFuture<Boolean> register() {
+    public CompletableFuture<Boolean> registerToNotifications() {
         CompletableFuture<Boolean> res = new CompletableFuture<>();
 
         service.getToken().addOnCompleteListener(task -> {
@@ -41,7 +41,7 @@ public class Registration {
         return res;
     }
 
-    public CompletableFuture<Boolean> unregister() {
+    public CompletableFuture<Boolean> unregisterFromNotifications() {
         CompletableFuture<Boolean> res = new CompletableFuture<>();
 
         user.updateNotifications(false).whenComplete((r, e) -> {

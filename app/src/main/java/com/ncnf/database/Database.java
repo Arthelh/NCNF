@@ -1,9 +1,9 @@
-package com.ncnf.database.firebase;
+package com.ncnf.database;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public interface DatabaseServiceInterface {
+public interface Database {
 
 
     /**

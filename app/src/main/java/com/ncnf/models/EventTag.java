@@ -2,12 +2,12 @@ package com.ncnf.models;
 
 import androidx.annotation.Nullable;
 
-public class Tag {
+public class EventTag {
 
     private String emoji;
     private String name;
 
-    public Tag(String emoji, String name){
+    public EventTag(String emoji, String name){
         this.emoji = emoji;
         this.name = name;
     }
@@ -30,7 +30,7 @@ public class Tag {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        Tag otherTag = (Tag) obj;
-        return otherTag.getName().toLowerCase().trim().equals(name.toLowerCase().trim());
+        EventTag otherEventTag = (EventTag) obj;
+        return otherEventTag.getName().toLowerCase().trim().equals(name.toLowerCase().trim());
     }
 }
