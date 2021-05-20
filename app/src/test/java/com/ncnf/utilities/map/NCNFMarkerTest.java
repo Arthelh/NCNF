@@ -15,7 +15,7 @@ public class NCNFMarkerTest {
     @Test
     public void testMarkers(){
         LatLng position = new LatLng(46f, 32f);
-        NCNFMarker marker = new NCNFMarker(46f, 32f, "TestTitle", "TestSnippet", new ArrayList<>(), true);
+        NCNFMarker marker = new NCNFMarker(position, "TestTitle", "TestSnippet", new ArrayList<>(), null, true);
 
         assertEquals(position, marker.getPosition());
         assertEquals("TestTitle", marker.getTitle());
