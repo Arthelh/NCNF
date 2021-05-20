@@ -16,13 +16,14 @@ import com.ncnf.R;
 import com.ncnf.utilities.settings.Settings;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private int distanceSeekBarValue = Settings.getCurrentMaxDistance();
-    private LocalDate minDate = Settings.getMinDate();
-    private LocalDate maxDate = Settings.getMaxDate();
+    private LocalDateTime minDate = Settings.getMinDate();
+    private LocalDateTime maxDate = Settings.getMaxDate();
     private TextView distanceTextView, minDateTextView, maxDateTextView;
     private MaterialButtonToggleGroup toggleGroup;
     private int selYear, selMonth, selDay;
@@ -47,9 +48,9 @@ public class SettingsActivity extends AppCompatActivity {
         Button maxDateSelection = findViewById(R.id.settingsMaxDateButton);
         Button minDateSelection = findViewById(R.id.settingsMinDateButton);
         minDateTextView = findViewById(R.id.settingsMinDateView);
-        minDateTextView.setText(minDate.toString());
+        minDateTextView.setText(minDate.toLocalDate().toString());
         maxDateTextView = findViewById(R.id.settingsMaxDateView);
-        maxDateTextView.setText(maxDate.toString());
+        maxDateTextView.setText(maxDate.toLocalDate().toString());
         minDateSelection.setFocusable(false);
         maxDateSelection.setFocusable(false);
 
@@ -87,19 +88,19 @@ public class SettingsActivity extends AppCompatActivity {
                 group.setSelectionRequired(true);
                 switch (checkedId) {
                     case R.id.settingsToggleToday:
-                        minDate = LocalDate.now();
+                        minDate = LocalDateTime.now();
                         maxDate = minDate;
                         break;
                     case R.id.settingsToggleTomorrow:
-                        minDate = LocalDate.now().plusDays(1);
+                        minDate = LocalDateTime.now().plusDays(1);
                         maxDate = minDate;
                         break;
                     case R.id.settingsToggleWeek:
-                        minDate = LocalDate.now();
+                        minDate = LocalDateTime.now();
                         maxDate = minDate.plusDays(7);
                 }
-                minDateTextView.setText(minDate.toString());
-                maxDateTextView.setText(maxDate.toString());
+                minDateTextView.setText(minDate.toLocalDate().toString());
+                maxDateTextView.setText(maxDate.toLocalDate().toString());
             }
         };
         return oBCL;
@@ -132,18 +133,18 @@ public class SettingsActivity extends AppCompatActivity {
             selMonth = month;
             selDay = dayOfMonth;
             if (isMin) {
-                minDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth);
+                minDate = LocalDateTime.of(selYear, Month.of(selMonth + 1), dayOfMonth, 00, 00, 00); //First second of the day for min day
                 minDateTextView.setText(minDate.toString());
                 if (minDate.isAfter(maxDate)) {
                     maxDate = minDate;
-                    maxDateTextView.setText(maxDate.toString());
+                    maxDateTextView.setText(maxDate.toLocalDate().toString());
                 }
             } else {
-                maxDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth);
+                maxDate = LocalDateTime.of(selYear, Month.of(selMonth + 1), dayOfMonth, 23, 59, 59); //Last second of the day for max day
                 maxDateTextView.setText(maxDate.toString());
                 if (maxDate.isBefore(minDate)) {
                     minDate = maxDate;
-                    minDateTextView.setText(minDate.toString());
+                    minDateTextView.setText(minDate.toLocalDate().toString());
                 }
             }
             toggleGroup.setSelectionRequired(false);

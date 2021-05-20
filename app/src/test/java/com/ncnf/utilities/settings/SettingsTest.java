@@ -6,11 +6,14 @@ import com.ncnf.utilities.settings.Settings;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SettingsTest {
 
@@ -29,10 +32,10 @@ public class SettingsTest {
 
     @Test
     public void testSetAndGetMinDate(){
-        LocalDate testDate = LocalDate.now().plusDays(1);
-        assertNotEquals(testDate, Settings.getMinDate());
+        LocalDateTime testDate = LocalDateTime.now().plusDays(1);
+        assertNotEquals("First", testDate, Settings.getMinDate());
         Settings.setMinDate(testDate);
-        assertEquals(testDate, Settings.getMinDate());
+        assertEquals("Second", testDate, Settings.getMinDate());
     }
 
     @Test
@@ -46,9 +49,25 @@ public class SettingsTest {
 
     @Test
     public void testSetAndGetMaxDate(){
-        LocalDate testDate = LocalDate.now().plusDays(1);
+        LocalDateTime testDate = LocalDateTime.now().plusDays(1);
         assertNotEquals(testDate, Settings.getMaxDate());
         Settings.setMaxDate(testDate);
         assertEquals(testDate, Settings.getMaxDate());
+    }
+
+    @Test
+    public void testDateInRange(){
+        LocalDateTime date3 = LocalDateTime.of(2022, 5, 22, 12, 0);
+        LocalDateTime date2 = LocalDateTime.of(2021, 10, 22, 12, 0);
+        LocalDateTime date1 = LocalDateTime.of(2021, 5, 22, 12, 0);
+
+        Settings.setMinDate(date1); Settings.setMaxDate(date3);
+        assertTrue(Settings.dateInRange(date2));
+
+        Settings.setMinDate(date2);
+        assertFalse(Settings.dateInRange(date1));
+
+        Settings.setMinDate(date1); Settings.setMaxDate(date2);
+        assertFalse(Settings.dateInRange(date3));
     }
 }
