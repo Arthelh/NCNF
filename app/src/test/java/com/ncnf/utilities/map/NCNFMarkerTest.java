@@ -1,7 +1,6 @@
 package com.ncnf.utilities.map;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.ncnf.utilities.map.NCNFMarker;
 
 import org.junit.Test;
 

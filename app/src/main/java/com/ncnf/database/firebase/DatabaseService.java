@@ -1,5 +1,7 @@
 package com.ncnf.database.firebase;
 
+import android.util.Log;
+
 import com.firebase.geofire.GeoFireUtils;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQueryBounds;
@@ -15,9 +17,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.ncnf.database.builders.DatabaseObjectBuilder;
 import com.ncnf.database.builders.EventBuilder;
 import com.ncnf.database.builders.GroupBuilder;
+import com.ncnf.database.builders.OrganizationBuilder;
 import com.ncnf.database.builders.UserBuilder;
 import com.ncnf.models.Event;
 import com.ncnf.models.Group;
+import com.ncnf.models.Organization;
 import com.ncnf.models.User;
 
 import java.util.ArrayList;
@@ -29,6 +33,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.GEOHASH_KEY;
 
 public class DatabaseService implements DatabaseServiceInterface {
@@ -51,6 +56,7 @@ public class DatabaseService implements DatabaseServiceInterface {
         registry.put(User.class, new UserBuilder());
         registry.put(Event.class, new EventBuilder());
         registry.put(Group.class, new GroupBuilder());
+        registry.put(Organization.class, new OrganizationBuilder());
     }
 
     @Override
@@ -270,9 +276,11 @@ public class DatabaseService implements DatabaseServiceInterface {
                             QuerySnapshot snap = t.getResult();
                             matchingDocs.addAll(snap.getDocuments());
                         }
+                        Log.d(DEBUG_TAG, "Matching docs size: " + matchingDocs.size());
                         for (DocumentSnapshot doc : matchingDocs){
                             result.add((T) registry.get(type).toObject(doc.getId(), doc.getData()));
                         }
+                        Log.d(DEBUG_TAG, "Result size: " + result.size());
                         futureResponse.complete(result);
                     } else {
                         futureResponse.completeExceptionally(task.getException());
