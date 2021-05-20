@@ -5,7 +5,7 @@
     android:id="@+id/EventPage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".socialObject.ui.EventFragment">
+    tools:context=".views.fragments.event.EventFragment">
 
     <ScrollView
         android:layout_width="wrap_content"

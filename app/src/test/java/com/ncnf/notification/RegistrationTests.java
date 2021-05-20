@@ -2,7 +2,8 @@ package com.ncnf.notification;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.ncnf.mocks.MockTask;
-import com.ncnf.user.User;
+import com.ncnf.models.User;
+import com.ncnf.utilities.registration.Registration;
 
 import org.junit.Assert;
 import org.junit.Test;
