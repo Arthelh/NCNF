@@ -27,6 +27,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
 import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.repositories.EventRepository;
 import com.ncnf.utilities.map.MapHandler;
 import com.ncnf.utilities.map.SearchBarHandler;
 import com.ncnf.utilities.settings.Settings;
@@ -39,7 +40,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class MapFragment extends Fragment{
 
     @Inject
-    public FirebaseDatabase firebaseDatabase;
+    public EventRepository eventRepository;
 
     private GoogleMap mMap;
     private MapView mapView;
@@ -84,7 +85,7 @@ public class MapFragment extends Fragment{
         mapView.getMapAsync(googleMap -> {
             mMap = googleMap;
 
-            mapHandler = new MapHandler((AppCompatActivity) requireActivity(), mMap, getChildFragmentManager(), firebaseDatabase);
+            mapHandler = new MapHandler((AppCompatActivity) requireActivity(), mMap, getChildFragmentManager(), eventRepository);
             searchBarHandler = new SearchBarHandler(getActivity(), materialSearchBar, mapHandler);
 
             mapHandler.show_markers();

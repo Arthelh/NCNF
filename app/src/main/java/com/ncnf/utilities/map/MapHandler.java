@@ -16,6 +16,7 @@ import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.repositories.EventRepository;
 import com.ncnf.utilities.settings.Settings;
 import com.ncnf.models.Event;
 import com.ncnf.models.SocialObject;
@@ -34,7 +35,7 @@ public class MapHandler {
 
     private final Activity context;
     private final GoogleMap mMap;
-    private final FirebaseDatabase firebaseDatabase;
+    private final EventRepository eventRepository;
 
     private ClusterManager<CustomMapMarker> clusterManager;
 
@@ -50,14 +51,13 @@ public class MapHandler {
      * and handling the retrieval of the events and organizations to be displayed
      * @param context The activity the map will be displayed in
      * @param mMap The Google Map to display
-     * @param venueProvider A provider for the organizers, or venues.
      * @param fragmentManager A children fragment manager from the MapFragment
-     * @param firebaseDatabase the service to query the database
+     * @param eventRepository the service to query the database
      */
-    public MapHandler(AppCompatActivity context, GoogleMap mMap, FragmentManager fragmentManager, FirebaseDatabase firebaseDatabase){
+    public MapHandler(AppCompatActivity context, GoogleMap mMap, FragmentManager fragmentManager, EventRepository eventRepository){
         this.context = context;
         this.mMap = mMap;
-        this.firebaseDatabase = firebaseDatabase;
+        this.eventRepository = eventRepository;
         if (mMap != null) { //This is just for MapHandler Unit test
             MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context, context.getWindow(), fragmentManager);
 
@@ -160,7 +160,7 @@ public class MapHandler {
     private void queryAndAddEvents(){
         final List<Event> result = new ArrayList<>();
 
-        CompletableFuture<List<Event>> completableFuture = firebaseDatabase.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, Event.class);
+        CompletableFuture<List<Event>> completableFuture = eventRepository.getEventsNearBy();
         completableFuture.thenAccept(eventList -> {
 
             result.addAll(eventList);

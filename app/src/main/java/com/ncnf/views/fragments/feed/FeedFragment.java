@@ -27,6 +27,7 @@ import com.ncnf.R;
 
 import com.ncnf.adapters.EventListAdapter;
 import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.repositories.EventRepository;
 import com.ncnf.utilities.map.MapUtilities;
 import com.ncnf.utilities.settings.Settings;
 import com.ncnf.models.Event;
@@ -48,14 +49,12 @@ import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
 public class FeedFragment extends Fragment {
 
     @Inject
-    public FirebaseDatabase firebaseDatabase;
+    public EventRepository eventRepository;
 
     private RecyclerView.LayoutManager lManager;
     private RecyclerView recycler;
     private EventListAdapter adapter;
     private List<Event> eventList = new ArrayList<>();
-
-    private static final String CHANNEL_NAME = "events_to_be_shown";
 
     public FeedFragment(){
         super();
@@ -88,7 +87,7 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Get the RecyclerView
-        recycler = (RecyclerView) requireView().findViewById(R.id.feed_recycler_view);
+        recycler = requireView().findViewById(R.id.feed_recycler_view);
 
         // Use LinearLayout as the layout manager
         lManager = new LinearLayoutManager(getActivity());
@@ -183,7 +182,7 @@ public class FeedFragment extends Fragment {
     private void actualizeEvents(){
         final List<Event> result = new ArrayList<>();
 
-        CompletableFuture<List<Event>> completableFuture = firebaseDatabase.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, Event.class);
+        CompletableFuture<List<Event>> completableFuture = eventRepository.getEventsNearBy();
         completableFuture.thenAccept(eventList -> {
 
             for (Event e : eventList){

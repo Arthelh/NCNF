@@ -24,6 +24,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
 import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.repositories.EventRepository;
 import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.views.activities.settings.SettingsActivity;
 import com.ncnf.models.Event;
@@ -70,7 +71,7 @@ import static org.mockito.Mockito.when;
 @HiltAndroidTest
 public final class MapFragmentTest {
 
-    static private final FirebaseDatabase db = Mockito.mock(FirebaseDatabase.class);
+    static private final EventRepository mockEventRepository = Mockito.mock(EventRepository.class);
 
     static private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
     static private final Event e2 = new Event("u2", "Another Fun event", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
@@ -83,12 +84,12 @@ public final class MapFragmentTest {
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(activityRule);
 
     @BindValue
-    public FirebaseDatabase firebaseDatabase = db;
+    public EventRepository eventRepository = mockEventRepository;
 
     @BeforeClass
     static public void injectEvents() {
         CompletableFuture<List<Event>> future = CompletableFuture.completedFuture(events);
-        when(db.geoQuery(any(LatLng.class), anyInt(), eq(EVENTS_COLLECTION_KEY), eq(Event.class))).thenReturn(future);
+        when(mockEventRepository.getEventsNearBy()).thenReturn(future);
     }
 
     @Before
