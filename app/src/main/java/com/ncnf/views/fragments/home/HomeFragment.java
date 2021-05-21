@@ -23,7 +23,7 @@ import com.ncnf.views.activities.login.LoginActivity;
 import com.ncnf.views.activities.friends.FriendsActivity;
 import com.ncnf.views.activities.group.FriendsTrackerActivity;
 
-import com.ncnf.views.activities.group.GroupCreateActivity;
+import com.ncnf.views.fragments.organization.EventCreateFragment;
 import com.ncnf.views.activities.event.EventNewsActivity;
 import com.ncnf.views.activities.user.UserTabActivity;
 
@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void goToEventCreation(View view){
-        goToActivity(GroupCreateActivity.class);
+        goToActivity(EventCreateFragment.class);
     }
 
     private void goToActivity(Class<?> activity){

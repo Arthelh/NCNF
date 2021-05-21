@@ -9,11 +9,11 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
-import com.ncnf.views.activities.group.GroupCreateActivity;
 import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.storage.firebase.FileStore;
 import com.ncnf.models.User;
 import com.ncnf.authentication.firebase.CurrentUserModule;
+import com.ncnf.views.fragments.organization.EventCreateFragment;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -67,7 +67,7 @@ public class GroupCreateActivityTest {
     CompletableFuture<Boolean> response = CompletableFuture.completedFuture(true);
 
     @Rule
-    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(GroupCreateActivity.class));
+    public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(EventCreateFragment.class));
 
     @Before
     public void setup(){

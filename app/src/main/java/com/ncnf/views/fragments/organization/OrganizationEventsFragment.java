@@ -24,7 +24,6 @@ import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
 import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.views.fragments.event.EventFragment;
-import com.ncnf.views.fragments.feed.FeedFragment;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -32,6 +31,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+
+import static com.ncnf.utilities.StringCodes.FRAGMENT_ORGANIZATION_TAG;
 
 @AndroidEntryPoint
 public class OrganizationEventsFragment extends Fragment {
@@ -69,7 +70,7 @@ public class OrganizationEventsFragment extends Fragment {
 
         fetchOrganizationEvents();
 
-        if(this.eventsList.isEmpty()){
+        if (this.eventsList.isEmpty()) {
             //TODO display empty message?
         } else {
             this.adapter = new EventAdapter(getContext(), this.eventsList, this::onEventClick, EventAdapter.SortingMethod.DATE);
@@ -87,16 +88,25 @@ public class OrganizationEventsFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void fetchOrganizationEvents(){
+    private void fetchOrganizationEvents() {
         //TODO check if uuid is corrected there
-        organizationRepository.getOrganizationEvents(organization.getUuid().toString()).thenAccept(lo ->{
-                this.eventsList.clear();
-                this.eventsList.addAll(lo);
+        organizationRepository.getOrganizationEvents(organization.getUuid().toString()).thenAccept(lo -> {
+            this.eventsList.clear();
+            this.eventsList.addAll(lo);
         });
     }
 
-    private void createEvent(){
-        //TODO
+    private void createEvent() {
+        Bundle args = new Bundle();
+        args.putString("organization_id", organization.getUuid().toString());
+
+        EventCreateFragment eventCreateFrag = new EventCreateFragment();
+        eventCreateFrag.setArguments(args);
+
+        getChildFragmentManager().beginTransaction()
+                .replace(((ViewGroup) requireView().getParent()).getId(), eventCreateFrag, null)
+                .addToBackStack(FRAGMENT_ORGANIZATION_TAG)
+                .commit();
     }
 
     //TODO put into another class
@@ -125,17 +135,10 @@ public class OrganizationEventsFragment extends Fragment {
                 destroyChildFragment(fragmentManager, fragment, feedContainer, this);
             }
         };
-
-        /**
-         feedButton.setOnClickListener(v -> {
-         destroyChildFragment(fragmentManager, fragment, feedContainer, callback);
-         });
-         **/
-
         requireActivity().getOnBackPressedDispatcher().addCallback(callback);
     }
 
-    private void destroyChildFragment(FragmentManager fragmentManager, Fragment fragment, ConstraintLayout feedContainer, OnBackPressedCallback callback){
+    private void destroyChildFragment(FragmentManager fragmentManager, Fragment fragment, ConstraintLayout feedContainer, OnBackPressedCallback callback) {
         fragmentManager.beginTransaction().remove(fragment).commit();
         feedContainer.setVisibility(View.GONE);
         this.recyclerView.setVisibility(View.VISIBLE);

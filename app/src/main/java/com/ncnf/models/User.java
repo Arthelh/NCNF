@@ -249,6 +249,11 @@ public class User {
                 .exceptionally(exception -> false); // TODO: handle exception
     }
 
+    public CompletableFuture<Boolean> createEvent(Event event){
+        return event.store(this.db)
+                .exceptionally(exception -> false); // TODO: handle exception
+    }
+
     public void signOut() {
         CurrentUserModule.signOut();
     }

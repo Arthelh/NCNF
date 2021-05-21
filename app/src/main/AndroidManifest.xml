@@ -67,7 +67,7 @@
             android:name="com.google.android.wearable.standalone"
             android:value="true" /> <!-- FEED -->
         <activity
-            android:name=".views.activities.group.GroupCreateActivity"
+            android:name=".views.fragments.organization.EventCreateFragment"
             android:label="@string/title_event_creation"
             android:parentActivityName=".views.activities.main.MainActivity" />
         <activity

@@ -50,8 +50,7 @@ public class OrganizationProfileTabs extends Fragment {
 
         public ViewPagerFragmentAdapter(@NonNull FragmentActivity fragmentActivity, String uuid) {
             super(fragmentActivity);
-            this.uuid=uuid;
-
+            this.uuid = uuid;
         }
 
         @NonNull

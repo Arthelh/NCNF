@@ -2,7 +2,6 @@ package com.ncnf.database.builders;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.firebase.DatabaseService;
-import com.ncnf.database.builders.OrganizationBuilder;
 import com.ncnf.models.Organization;
 
 import org.junit.Before;
@@ -20,7 +19,7 @@ import static com.ncnf.utilities.StringCodes.ADMIN_KEY;
 import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
 import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
 import static com.ncnf.utilities.StringCodes.NAME_KEY;
-import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS;
 import static com.ncnf.utilities.StringCodes.PHONE_NB_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 import static org.junit.Assert.assertEquals;
@@ -61,7 +60,7 @@ public class OrganizationBuilderTests {
         data.put(ADDRESS_KEY, address);
         data.put(EMAIL_KEY, email);
         data.put(PHONE_NB_KEY, phoneNb);
-        data.put(ORGANIZED_EVENTS_KEY, events);
+        data.put(ORGANIZED_EVENTS, events);
 
         assertNull(builder.toObject(uuid.toString(), data));
         data.put(ADMIN_KEY, admins);

@@ -49,6 +49,10 @@ public class OrganizationRepository {
         return combine(r1, r2);
     }
 
+    public CompletableFuture<Boolean> addEventToOrganization(String organization_id, String event_id){
+        return db.updateArrayField(ORGANIZATIONS_COLLECTION_KEY + organization_id, ORGANIZED_EVENTS, event_id);
+    }
+
     /**
      * Fetch an organization given its name
      * @param name name of the organization
@@ -63,7 +67,7 @@ public class OrganizationRepository {
     }
 
     public CompletableFuture<List<Event>> getOrganizationEvents(String organization_id) {
-        return db.getField(ORGANIZATIONS_COLLECTION_KEY+ organization_id, ORGANIZED_EVENTS_KEY);
+        return db.getField(ORGANIZATIONS_COLLECTION_KEY+ organization_id, ORGANIZED_EVENTS);
     }
 
 

@@ -1,4 +1,4 @@
-package com.ncnf.views.activities.group;
+package com.ncnf.views.fragments.organization;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -14,7 +14,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,12 +27,16 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
-import com.ncnf.views.activities.main.MainActivity;
-import com.ncnf.models.Group;
+import com.ncnf.models.Event;
+import com.ncnf.models.Organization;
+import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.models.SocialObject;
 import com.ncnf.storage.firebase.FileStore;
 import com.ncnf.models.User;
@@ -39,6 +45,7 @@ import com.ncnf.utilities.InputValidator;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
@@ -46,6 +53,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -54,18 +62,26 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+import static android.app.Activity.RESULT_OK;
 import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.POPUP_POSITIVE_BUTTON;
 import static com.ncnf.utilities.StringCodes.POPUP_TITLE;
+import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
 
 @AndroidEntryPoint
-public class GroupCreateActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class EventCreateFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     @Inject
     public User user;
 
     @Inject
     public FileStore fileStore;
+
+    @Inject
+    public OrganizationRepository organizationRepository;
+    private Organization organization;
+    private String uuid;
 
     private SocialObject.Type eventType;
     private LocalDate eventDate = LocalDate.now();
@@ -85,26 +101,30 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
     EditText eventPrice;
 
 
-    private final List<EditText> allFields = new LinkedList<>();
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_creation);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        this.uuid = getArguments().getString("organization_id");
+        organizationRepository.getByUUID(this.uuid).thenAccept(o -> this.organization = o.get(0));
 
-        Button validate = findViewById(R.id.validate_event);
+        return inflater.inflate(R.layout.fragment_event_creation, container, false);
+    }
 
-        eventName = findViewById(R.id.set_event_name);
-        eventDescription = findViewById(R.id.set_event_description);
-        eventAddress = findViewById(R.id.set_event_address);
-        eventEmail = findViewById(R.id.set_contact_email);
+    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
 
-        minAge = findViewById(R.id.set_min_age);
-        eventPrice = findViewById(R.id.set_event_price);
+        Button validate =v.findViewById(R.id.validate_event);
+
+        eventName = v.findViewById(R.id.set_event_name);
+        eventDescription = v.findViewById(R.id.set_event_description);
+        eventAddress = v.findViewById(R.id.set_event_address);
+        eventEmail = v.findViewById(R.id.set_contact_email);
+
+        minAge = v.findViewById(R.id.set_min_age);
+        eventPrice = v.findViewById(R.id.set_event_price);
 
         //Date Selection
-        Button dateSelection = findViewById(R.id.set_event_date_button);
-        TextView dateDisplay = (TextView) findViewById(R.id.display_event_date);
+        Button dateSelection = v.findViewById(R.id.set_event_date_button);
+        TextView dateDisplay = (TextView) v.findViewById(R.id.display_event_date);
         dateSelection.setFocusable(false);
 
         dateSelection.setOnClickListener(view -> {
@@ -113,7 +133,7 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
             selMonth = calendar.get(Calendar.MONTH);
             selDay = calendar.get(Calendar.DATE);
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(GroupCreateActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, (view1, year, month, dayOfMonth) -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, (view1, year, month, dayOfMonth) -> {
                 selYear = year;
                 selMonth = month;
                 selDay = dayOfMonth;
@@ -126,12 +146,12 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
 
         // Time Selection
 
-        Button timeSelection = findViewById(R.id.set_event_time_button);
-        TextView timeDisplay = (TextView) findViewById(R.id.display_event_time);
+        Button timeSelection = v.findViewById(R.id.set_event_time_button);
+        TextView timeDisplay = (TextView) v.findViewById(R.id.display_event_time);
         timeSelection.setFocusable(false);
 
         timeSelection.setOnClickListener(view -> {
-            TimePickerDialog timePickerDialog = new TimePickerDialog(GroupCreateActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, (view12, hourOfDay, minute) -> {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, (view12, hourOfDay, minute) -> {
                 selHour = hourOfDay;
                 selMin = minute;
                 eventTime = LocalTime.of(selHour, selMin);
@@ -144,11 +164,11 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
         });
 
         //Select image
-        pictureView = findViewById(R.id.set_event_image);
-        pictureView.setOnClickListener(v -> openGallery());
+        pictureView = v.findViewById(R.id.set_event_image);
+        pictureView.setOnClickListener(c -> openGallery());
 
         //Email default setting
-        CheckBox useDefault = findViewById(R.id.use_personal_email_checkbox);
+        CheckBox useDefault = v.findViewById(R.id.use_personal_email_checkbox);
         useDefault.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked) {
                 if(user != null) {
@@ -162,20 +182,20 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
 
         // Select event type
 
-        Spinner spinner = (Spinner) findViewById(R.id.select_event_type);
-        spinner.setOnItemSelectedListener(GroupCreateActivity.this);
+        Spinner spinner = (Spinner) v.findViewById(R.id.select_event_type);
+        spinner.setOnItemSelectedListener(EventCreateFragment.this);
         List<String> options = Stream.of(SocialObject.Type.values()).map(SocialObject.Type::name).collect(Collectors.toList());
 
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(GroupCreateActivity.this, android.R.layout.simple_spinner_item, options);
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, options);
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(typeAdapter);
 
         // Set price
 
-        eventPrice.setOnEditorActionListener((TextView.OnEditorActionListener) (v, actionId, event) -> {
+        eventPrice.setOnEditorActionListener((TextView.OnEditorActionListener) (ve, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 String s = eventPrice.getText().toString().contains("€") ? eventPrice.getText().toString().replaceAll("€", "") : eventPrice.getText().toString();
-                double price = Double.parseDouble(s);
+                double price = parseDouble(s);
                 DecimalFormat euroFormat = new DecimalFormat("#.00");
                 eventPrice.setText(euroFormat.format(price) + "€");
                 return true;
@@ -186,29 +206,47 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
         });
 
         validate.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 if (checkAllFieldsAreFilledAndCorrect()) {
 
                     if (user != null) {
 
+                        UUID eventUUID = UUID.randomUUID();
+
                         //TODO: for now some fields aren't used and it only creates group -> should be extended afterward
                         DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());
-                        Group group = new Group(user.getUuid(),
+                        Event event = new Event(organization.getName(),
+                                eventUUID,
                                 eventName.getText().toString(),
-                                date.getDate(), getLocationFromAddress(eventAddress.getText().toString()),
+                                LocalDateTime.of(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute()),
+                                getLocationFromAddress(eventAddress.getText().toString()),
                                 eventAddress.getText().toString(),
                                 eventDescription.getText().toString(),
-                                eventType
-                        );
+                                eventType,
+                                new LinkedList<>(),
+                                parseInt(minAge.getText().toString()),
+                                parseDouble(eventPrice.getText().toString()),
+                                new LinkedList<>(),
+                                eventEmail.getText().toString());
 
-                        fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, group.getUuid()));
+
+                        organizationRepository.addEventToOrganization(organization.getUuid().toString(),eventUUID.toString())
+                                .thenAccept(res -> nextStep())
+                                .exceptionally(e -> {
+                                    failToCreateEvent(e.getMessage());
+                                    return null;
+                                });
+
+
+                        fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
                         pictureView.setDrawingCacheEnabled(true);
                         pictureView.buildDrawingCache();
                         Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
 
-                        // Simultaneously upload the image and save the group.
-                        CompletableFuture.allOf(fileStore.uploadImage(bitmap), user.createGroup(group))
+                        // Simultaneously upload the image and save the event.
+                        CompletableFuture.allOf(fileStore.uploadImage(bitmap), user.createEvent(event))
                                 .thenAccept(t -> nextStep())
                                 .exceptionally(e -> {
                                     failToCreateEvent(e.getMessage());
@@ -227,7 +265,7 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
     //Helpers
     public GeoPoint getLocationFromAddress(String strAddress){
 
-        Geocoder coder = new Geocoder(this);
+        Geocoder coder = new Geocoder(requireContext());
         List<Address> address;
 
         try {
@@ -239,10 +277,8 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
             coordinates.getLatitude();
             coordinates.getLongitude();
 
-            GeoPoint location = new GeoPoint((double) (coordinates.getLatitude()),
+            return new GeoPoint((double) (coordinates.getLatitude()),
                     (double) (coordinates.getLongitude()));
-
-            return location;
         } catch (Exception e){
             return null;
         }
@@ -257,7 +293,7 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){
             Uri imageUri = data.getData();
@@ -267,15 +303,15 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
 
     //TODO : decide what next step is
     private void nextStep(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        FragmentManager fm = getParentFragmentManager();
+        fm.popBackStack();
     }
 
     /**
      * Pop-up telling the user that the the application failed to save its event
      */
     private void failToCreateEvent(String s){
-        AlertDialog.Builder popup = new AlertDialog.Builder(this);
+        AlertDialog.Builder popup = new AlertDialog.Builder(requireContext());
         popup.setCancelable(true);
         popup.setTitle(POPUP_TITLE);
         popup.setMessage(s);
@@ -290,7 +326,7 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
     private boolean checkAllFieldsAreFilledAndCorrect() {
 
         EditText[] fields = new EditText[] {eventName, eventDescription, eventEmail, eventAddress};
-        boolean interm = Arrays.asList(fields).stream().map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != SocialObject.Type.NOTHING;
+        boolean interm = Arrays.stream(fields).map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != SocialObject.Type.NOTHING;
         if(!interm) {
             return false;
         }
@@ -309,11 +345,11 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
         }
 
         if(!(minAge == null || minAge.getText().length() == 0)) {
-            minAgeVal = Integer.parseInt(minAge.getText().toString());
+            minAgeVal = parseInt(minAge.getText().toString());
         }
 
         if(!(eventPrice == null || eventPrice.getText().length() == 0)) {
-            priceVal = Double.parseDouble(eventPrice.getText().toString().replaceAll("€", ""));
+            priceVal = parseDouble(eventPrice.getText().toString().replaceAll("€", ""));
         }
 
         return true;

@@ -13,7 +13,7 @@ import static com.ncnf.utilities.StringCodes.ADMIN_KEY;
 import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
 import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
 import static com.ncnf.utilities.StringCodes.NAME_KEY;
-import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS;
 import static com.ncnf.utilities.StringCodes.PHONE_NB_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
@@ -30,7 +30,7 @@ public class OrganizationBuilder extends DatabaseObjectBuilder<Organization>{
             GeoPoint location = (GeoPoint) data.get(LOCATION_KEY);
             String phoneNb = data.get(PHONE_NB_KEY).toString();
             List<String> admin = (List<String>) data.get(ADMIN_KEY);
-            List<String> events = (List<String>) data.get(ORGANIZED_EVENTS_KEY);
+            List<String> events = (List<String>) data.get(ORGANIZED_EVENTS);
 
             return new Organization(UUID.fromString(uuidStr), name, location, address, email, phoneNb, admin, events);
         } catch (Exception e){
@@ -49,7 +49,7 @@ public class OrganizationBuilder extends DatabaseObjectBuilder<Organization>{
         data.put(EMAIL_KEY, org.getEmail());
         data.put(PHONE_NB_KEY, org.getPhoneNumber());
         data.put(ADMIN_KEY, org.getAdminIds());
-        data.put(ORGANIZED_EVENTS_KEY, org.getEventIds());
+        data.put(ORGANIZED_EVENTS, org.getEventIds());
 
         return data;
     }
