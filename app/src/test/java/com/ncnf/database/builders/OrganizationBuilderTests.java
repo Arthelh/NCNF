@@ -35,7 +35,7 @@ public class OrganizationBuilderTests {
     private final OrganizationBuilder builder = new OrganizationBuilder();
 
     private final Map<String, Object> data = new HashMap<>();
-    private UUID uuid = UUID.randomUUID();
+    private String uuid = UUID.randomUUID().toString();
     private String name = "name";
     private String address = "address";
     private String email = "foo@bar.com";
@@ -63,9 +63,9 @@ public class OrganizationBuilderTests {
         data.put(PHONE_NB_KEY, phoneNb);
         data.put(ORGANIZED_EVENTS_KEY, events);
 
-        assertNull(builder.toObject(uuid.toString(), data));
+        assertNull(builder.toObject(uuid, data));
         data.put(ADMIN_KEY, admins);
-        Organization org = builder.toObject(uuid.toString(), data);
+        Organization org = builder.toObject(uuid, data);
         Organization org2 = new Organization(uuid, name, location, address, email, phoneNb, admins, events);
         assertNotNull(org);
         assertTrue(org.getEventIds().contains(event1));
@@ -78,7 +78,7 @@ public class OrganizationBuilderTests {
     public void buildOnErrorTest() {
         Organization org = new Organization(uuid, name, location, address, email, phoneNb, admins, events);
         Map<String, Object> map = builder.toMap(org);
-        Organization org2 = builder.toObject(uuid.toString(), map);
+        Organization org2 = builder.toObject(uuid, map);
 
         assertEquals(org, org2);
     }
