@@ -6,10 +6,10 @@ This week I finished the last links of the map to the database, namely showing t
 
 ## David
 
+I started this week by helping Keran fix all the tests that had been broken because of last minute changes for the demo and incorrect Injections, along the way I started changing the Date to LocalDateTimes. I then patiently waited for the package hierarchy to be refactored and finally started working on Organization elements that were missing, namely event creation and owned events list. I didn't run into any difficulties so far as UI is fairly straightoforward.
 
 
 ## Eloi 
-This week, I finished the User Profile UI : took my a bit more time as I decided to add several features to it afterwards. Once this was done, I started to add java documentation to the code because if we start this too late, we might not be able to finish it before the deadline. I have also added a few tests to increase the overall test coverage of the project which had dropped a bit after the last pull requests.
 
 
 
