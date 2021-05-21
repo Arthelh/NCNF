@@ -30,7 +30,6 @@ public class FriendsRepository {
         TODO: Some requests needs to be written with a transaction in case of failure.
      */
     private final FirebaseDatabase db;
-    private final String path = USERS_COLLECTION_KEY;
 
     public FriendsRepository() {
         this.db = new FirebaseDatabase();
@@ -47,7 +46,7 @@ public class FriendsRepository {
     public CompletableFuture<Boolean> request(String my_uuid, String other_uuid) {
 
         // Add a pending request to the user
-        CompletableFuture<Boolean> u1 = db.updateArrayField(this.path + my_uuid, PENDING_REQUESTS_KEY, other_uuid);
+        CompletableFuture<Boolean> u1 = db.updateArrayField(USERS_COLLECTION_KEY + my_uuid, PENDING_REQUESTS_KEY, other_uuid);
         // Add a awaiting request to the other user
         CompletableFuture<Boolean> u2 = db.updateArrayField(USERS_COLLECTION_KEY + other_uuid, AWAITING_REQUESTS_KEY, my_uuid);
         return combine(u1, u2);
@@ -80,12 +79,12 @@ public class FriendsRepository {
      */
     public CompletableFuture<Boolean> updateRequest(boolean accept, String my_uuid, String other_uuid) {
         // remove the awaiting request of the user
-        CompletableFuture<Boolean> u1 = db.removeArrayField(this.path + my_uuid, AWAITING_REQUESTS_KEY, other_uuid);
+        CompletableFuture<Boolean> u1 = db.removeArrayField(USERS_COLLECTION_KEY + my_uuid, AWAITING_REQUESTS_KEY, other_uuid);
         // remove the pending request of the other user
         CompletableFuture<Boolean> u2 = db.removeArrayField(USERS_COLLECTION_KEY + other_uuid, PENDING_REQUESTS_KEY, my_uuid);
         if (accept) {
             // add the new friend to both users
-            CompletableFuture<Boolean> u3 = db.updateArrayField(this.path + my_uuid, FRIENDS_KEY, other_uuid);
+            CompletableFuture<Boolean> u3 = db.updateArrayField(USERS_COLLECTION_KEY + my_uuid, FRIENDS_KEY, other_uuid);
             CompletableFuture<Boolean> u4 = db.updateArrayField(USERS_COLLECTION_KEY + other_uuid, FRIENDS_KEY, my_uuid);
             return combine(combine(combine(u1, u2), u3), u4);
         }
@@ -104,7 +103,7 @@ public class FriendsRepository {
         Remove from friends
      */
     public CompletableFuture<Boolean> removeFriend(String my_uuid, String other_uuid) {
-        CompletableFuture<Boolean> u1 = db.removeArrayField(this.path + my_uuid, FRIENDS_KEY, other_uuid);
+        CompletableFuture<Boolean> u1 = db.removeArrayField(USERS_COLLECTION_KEY + my_uuid, FRIENDS_KEY, other_uuid);
         CompletableFuture<Boolean> u2 = db.removeArrayField(USERS_COLLECTION_KEY + other_uuid, FRIENDS_KEY, my_uuid);
         return combine(u1, u2);
     }

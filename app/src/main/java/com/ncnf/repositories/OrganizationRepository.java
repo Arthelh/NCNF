@@ -1,6 +1,7 @@
 package com.ncnf.repositories;
 
 import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.models.Group;
 import com.ncnf.models.Organization;
 
 import java.util.List;
@@ -22,6 +23,33 @@ public class OrganizationRepository {
     @Inject
     public OrganizationRepository(FirebaseDatabase db)  {
         this.db = db;
+    }
+
+    /**
+     * Loads the Organization from Database
+     * @param uuid the unique identifier of the Organization
+     * @return A CompletableFuture wrapping the loaded Organization
+     */
+    public CompletableFuture<Organization> loadOrganization(String uuid){
+        return this.db.getDocument(ORGANIZATIONS_COLLECTION_KEY + uuid, Organization.class);
+    }
+
+    /**
+     * Stores the Organization to Database
+     * @param organization the Organization object to store
+     * @return A CompletableFuture wrapping a boolean indicating that the request was successful or not
+     */
+    public CompletableFuture<Boolean> storeOrganization(Organization organization){
+        return this.db.setDocument(ORGANIZATIONS_COLLECTION_KEY + organization.getUuid(), organization);
+    }
+
+    /**
+     * Loads multiple Organization objects from Database
+     * @param uuidList the list of Organization unique identifiers to load
+     * @return A CompletableFuture wrapping a list containing the loaded Organization objects
+     */
+    public CompletableFuture<List<Organization>> loadMultipleOrganizations(List<String> uuidList){
+        return this.db.whereIn(ORGANIZATIONS_COLLECTION_KEY, UUID_KEY, uuidList, Organization.class);
     }
 
     /**
