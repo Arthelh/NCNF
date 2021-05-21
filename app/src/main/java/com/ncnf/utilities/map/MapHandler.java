@@ -147,13 +147,14 @@ public class MapHandler {
     }
 
     private void addVenueMarkers(List<Organization> list){
-
         for (Organization o : list) {
             LatLng venue_position = new LatLng(o.getLocation().getLatitude(), o.getLocation().getLongitude());
+            Log.d(DEBUG_TAG, "Organization position: " + venue_position.toString());
             if (MapUtilities.position_in_range(venue_position, Settings.getUserPosition())){
                 clusterManager.addItem(new NCNFMarker(venue_position, o.getName(), o.getAddress(), new ArrayList<>(), o, false));
             }
         }
+        clusterManager.cluster();
     }
 
     private void queryAndAddEvents(){

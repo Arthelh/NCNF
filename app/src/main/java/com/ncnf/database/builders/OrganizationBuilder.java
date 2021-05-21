@@ -39,7 +39,7 @@ public class OrganizationBuilder extends DatabaseObjectBuilder<Organization>{
             List<String> admin = (List<String>) data.get(ADMIN_KEY);
             List<String> events = (List<String>) data.get(ORGANIZED_EVENTS_KEY);
 
-            return new Organization(UUID.fromString(uuidStr), name, location, address, email, phoneNb, admin, events);
+            return new Organization(uuidStr, name, location, address, email, phoneNb, admin, events);
         } catch (Exception e){
             Log.d(DEBUG_TAG, e.getLocalizedMessage());
             e.printStackTrace();
@@ -51,7 +51,7 @@ public class OrganizationBuilder extends DatabaseObjectBuilder<Organization>{
     public Map<String, Object> toMap(Organization org) {
 
         Map<String, Object> data = new HashMap<>();
-        data.put(UUID_KEY, org.getUuid().toString());
+        data.put(UUID_KEY, org.getUuid());
         data.put(NAME_KEY, org.getName());
         data.put(LOCATION_KEY, org.getLocation());
         data.put(ADDRESS_KEY, org.getAddress());
