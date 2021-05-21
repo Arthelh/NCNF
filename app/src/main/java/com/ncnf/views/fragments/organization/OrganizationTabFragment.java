@@ -125,12 +125,16 @@ public class OrganizationTabFragment extends Fragment {
             args.putString("organization_id",o.getUuid().toString());
 
             orgViewFrag = new OrganizationProfileTabs();
-            orgViewFrag.setArguments(args);
+            requireActivity().getSupportFragmentManager().setFragmentResult("organization_id",args);
         }
-        fm.beginTransaction()
-                .replace(((ViewGroup) requireView().getParent()).getId(), orgViewFrag, orgViewTag)
-                .addToBackStack(FRAGMENT_ORGANIZATION_TAG)
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .add(((ViewGroup) requireView().getParent()).getId(), orgViewFrag, orgViewTag)
+                .addToBackStack(null)
                 .commit();
+        /*fm.beginTransaction()
+                .replace(R.id.fragment_organizations_list, orgViewFrag, orgViewTag)
+                .addToBackStack(FRAGMENT_ORGANIZATION_TAG)
+                .commit();*/
     }
 
     @Override
@@ -195,10 +199,13 @@ public class OrganizationTabFragment extends Fragment {
                             organizationRepository.addUserToOrganization(user.getUuid(), o.get(0).getUuid().toString());
                             adapter.addOrganization(o.get(0));
                             updateVisibility();
+                            break;
                         default:
                             throw new IllegalStateException("Too many organizations using the same token");
                     }
-                }).exceptionally(e -> {displayPopUp(v, "Query failed");
+                }).exceptionally(e -> {
+                    e.printStackTrace();
+                    displayPopUp(v, "Query failed");
                                         return null;});
             } else {
                 displayPopUp(v, "Invalid token input");

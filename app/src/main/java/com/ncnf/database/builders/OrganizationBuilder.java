@@ -32,7 +32,7 @@ public class OrganizationBuilder extends DatabaseObjectBuilder<Organization>{
             List<String> admin = (List<String>) data.get(ADMIN_KEY);
             List<String> events = (List<String>) data.get(ORGANIZED_EVENTS);
 
-            return new Organization(UUID.fromString(uuidStr), name, location, address, email, phoneNb, admin, events);
+            return new Organization(uuidStr, name, location, address, email, phoneNb, admin, events);
         } catch (Exception e){
             return null;
         }

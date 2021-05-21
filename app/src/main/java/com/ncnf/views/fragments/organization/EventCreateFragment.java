@@ -31,6 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentResultListener;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
@@ -103,14 +104,19 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.uuid = getArguments().getString("organization_id");
-        organizationRepository.getByUUID(this.uuid).thenAccept(o -> this.organization = o.get(0));
-
+        requireActivity().getSupportFragmentManager().setFragmentResultListener("request Key", getViewLifecycleOwner(), new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                uuid = result.getString("organization_id");
+            }
+        });
         return inflater.inflate(R.layout.fragment_event_creation, container, false);
     }
 
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+
+        organizationRepository.getByUUID(this.uuid).thenAccept(o -> this.organization = o.get(0));
 
         Button validate =v.findViewById(R.id.validate_event);
 
