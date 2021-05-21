@@ -1,6 +1,7 @@
 package com.ncnf.repositories;
 
 import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
 
 import java.util.List;
@@ -55,6 +56,14 @@ public class OrganizationRepository {
      */
     public CompletableFuture<List<Organization>> getByName(String name){
         return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_NAME, name, Organization.class);
+    }
+
+    public CompletableFuture<List<Organization>> getByUUID(String uuid){
+        return db.whereEqualTo(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_UUID, uuid, Organization.class);
+    }
+
+    public CompletableFuture<List<Event>> getOrganizationEvents(String organization_id) {
+        return db.getField(ORGANIZATIONS_COLLECTION_KEY+ organization_id, ORGANIZED_EVENTS_KEY);
     }
 
 

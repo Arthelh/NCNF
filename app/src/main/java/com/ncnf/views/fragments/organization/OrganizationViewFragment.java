@@ -13,10 +13,19 @@ import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
 import com.ncnf.models.Organization;
+import com.ncnf.repositories.OrganizationRepository;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class OrganizationViewFragment extends Fragment {
 
-    private final Organization organization;
+    @Inject
+    public OrganizationRepository organizationRepository;
+
+    private Organization organization;
 
     private EditText orgName;
     private EditText orgEmail;
@@ -24,8 +33,11 @@ public class OrganizationViewFragment extends Fragment {
     private EditText orgAddress;
     private ImageView orgPicture;
 
-    public OrganizationViewFragment(Organization organization){
-        this.organization = organization;
+    public OrganizationViewFragment(){
+        String uuid = getArguments().getString("organization_id");
+        organizationRepository.getByUUID(uuid).thenAccept(o ->
+                this.organization = o.get(0)
+        );
     }
 
     @Nullable

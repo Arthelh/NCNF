@@ -84,7 +84,7 @@ public class OrganizationTabFragment extends Fragment {
 
         recycler = requireView().findViewById(R.id.organization_list_recyclerview);
 
-        RecyclerView.LayoutManager lm = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager lm = new LinearLayoutManager(requireActivity());
         recycler.setLayoutManager(lm);
 
         emptyView = requireView().findViewById(R.id.empty_organization_view);
@@ -120,7 +120,12 @@ public class OrganizationTabFragment extends Fragment {
 
         //It doesn't so create new corresponding Fragment
         if (!(orgViewFrag instanceof OrganizationViewFragment)) {
-            orgViewFrag = new OrganizationViewFragment(o);
+
+            Bundle args = new Bundle();
+            args.putString("organization_id",o.getUuid().toString());
+
+            orgViewFrag = new OrganizationProfileTabs();
+            orgViewFrag.setArguments(args);
         }
         fm.beginTransaction()
                 .replace(((ViewGroup) requireView().getParent()).getId(), orgViewFrag, orgViewTag)
@@ -239,43 +244,3 @@ public class OrganizationTabFragment extends Fragment {
         });
     }
 }
-
-// ===========================================================================================//
-
-//UNUSED
-
-
-  /*  private Optional<Organization> verifyDatabaseResults(List<Organization> organizations){
-       if(organizations.size() == 1) {
-           return Optional.of(organizations.get(0));
-       } else {
-            displayPopUp(getView(), (organizations.size() == 0) ? "No Organizations found" : "Narrow down search with more precise name");
-            return Optional.empty();
-       }
-    }*/
-
-
-   /* private void moveToCreateOrganization(){
-        emptyView.setVisibility(View.GONE);
-        OrganizationCreateFragment organizationCreateFragment = new OrganizationCreateFragment();
-        requireActivity().getSupportFragmentManager().beginTransaction()
-                .add(((ViewGroup) requireView().getParent()).getId(), organizationCreateFragment, FRAGMENT_ORGANIZATION_CREATION_TAG)
-                .addToBackStack(null)
-                .commit();
-    }*/
-
-    /*@Override
-    public void onHiddenChanged(boolean hidden) {
-        Log.d("BBB", "FvreihhrgeioegrhhigiergogizreirgezgrzogerzgreF1");
-        Fragment currentFragment = fm.findFragmentByTag("f2");
-        if(fm.getBackStackEntryCount() == 0 && currentFragment instanceof OrganizationTabFragment){
-            if (organizations.isEmpty()) {
-                recycler.setVisibility(View.GONE);
-                emptyView.setVisibility(View.VISIBLE);
-            } else {
-                recycler.setVisibility(View.VISIBLE);
-                emptyView.setVisibility(View.GONE);
-            }
-        }
-    }
-*/
