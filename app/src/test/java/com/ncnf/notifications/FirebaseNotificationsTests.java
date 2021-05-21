@@ -21,12 +21,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class FirebaseNotificationsTests {
-
-
-    private final UserRepository userRepository = Mockito.mock(UserRepository.class);
+    
     private final FirebaseMessaging messaging = Mockito.mock(FirebaseMessaging.class);
     private final User user = Mockito.mock(User.class);
-    FirebaseNotifications firebaseNotifications = new FirebaseNotifications(messaging, user, userRepository);
+    FirebaseNotifications firebaseNotifications = new FirebaseNotifications(messaging, user);
 
     @Test
     public void registerIsSuccessful() {
@@ -36,14 +34,13 @@ public class FirebaseNotificationsTests {
         CompletableFuture<Boolean> tokenFuture = CompletableFuture.completedFuture(true);
 
         when(messaging.getToken()).thenReturn(task);
-        when(user.getUuid()).thenReturn("uuid");
-        when(userRepository.updateNotifications(anyString(), anyBoolean())).thenReturn(notificationFuture);
-        when(userRepository.updateNotificationsToken(anyString(), anyString())).thenReturn(tokenFuture);
+        when(user.updateNotifications(anyBoolean())).thenReturn(notificationFuture);
+        when(user.updateNotificationsToken(anyString())).thenReturn(tokenFuture);
 
         CompletableFuture<Boolean> res = firebaseNotifications.registerToNotifications();
 
-        verify(userRepository).updateNotifications("uuid", true);
-        verify(userRepository).updateNotificationsToken("uuid", "My token");
+        verify(user).updateNotifications(true);
+        verify(user).updateNotificationsToken("My token");
 
         try {
             assertEquals(true, res.get());
@@ -70,7 +67,7 @@ public class FirebaseNotificationsTests {
     public void unregisterIsSuccessful() {
         CompletableFuture<Boolean> notificationFuture = CompletableFuture.completedFuture(true);
 
-        when(userRepository.updateNotifications(anyString(), anyBoolean())).thenReturn(notificationFuture);
+        when(user.updateNotifications(anyBoolean())).thenReturn(notificationFuture);
 
         CompletableFuture<Boolean> res = firebaseNotifications.unregisterFromNotifications();
         try {
@@ -84,7 +81,7 @@ public class FirebaseNotificationsTests {
     public void unregisterFails() {
         CompletableFuture<Boolean> notificationFuture = new CompletableFuture<>();
 
-        when(userRepository.updateNotifications(anyString(), anyBoolean())).thenReturn(notificationFuture);
+        when(user.updateNotifications(anyBoolean())).thenReturn(notificationFuture);
 
         notificationFuture.completeExceptionally(new Exception());
         CompletableFuture<Boolean> res = firebaseNotifications.unregisterFromNotifications();
@@ -95,5 +92,6 @@ public class FirebaseNotificationsTests {
             Assert.fail("The future did not complete correctly !");
         }
     }
+
 
 }
