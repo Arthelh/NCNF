@@ -28,7 +28,11 @@ This refactoring will be merged during next week since it takes more than one we
 
 ## Keran
 
+We needed to flush our work in progress to apply package refactoring. We realized that some tests were dependent on the database and failed. That problem prevented us from merging any new pull requests. So I worked in emergency to fix the tests which meant add injection to activities (e.g MapActivity) and mocking to the corresponding tests.
 
+Furthermore, I changed the use of Date to LocalDateTime because of deprecation notice. This requires changes across the app, for conversion from LocalDateTime to Date for some API.
+
+I could not work on all my tasks this week because of the refactoring. So the tasks will be finished by the end of week.
 
 ## Overall team
 
