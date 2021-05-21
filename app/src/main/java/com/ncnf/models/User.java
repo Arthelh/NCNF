@@ -41,9 +41,6 @@ public class User {
     private boolean notifications;
     private GeoPoint loc;
 
-    
-    private final IllegalStateException wrongCredentials = new IllegalStateException("User doesn't have the right credentials to perform current operation");
-
     public User(FirebaseDatabase db, String uuid, String username, String email, String fullName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> participatingGroups, List<String> savedEventsIds, boolean notifications, LocalDate birthDate, GeoPoint loc) {
         if(isInvalidString(uuid) || isInvalidString(email)){
             throw new IllegalArgumentException();
@@ -198,7 +195,6 @@ public class User {
     }
 
     public CompletableFuture<Boolean> addOwnedGroup(Group group){
-
         if(this.ownedGroupsIds.add(group.getUuid().toString())){
             return this.db.updateArrayField(USERS_COLLECTION_KEY + uuid, OWNED_GROUPS_KEY, group.getUuid().toString())
                     .thenCompose(task -> addParticipatingGroup(group));
