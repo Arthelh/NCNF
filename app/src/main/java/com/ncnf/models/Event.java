@@ -80,14 +80,12 @@ public class Event extends SocialObject {
     }
 
     public boolean filterTags(String s) {
-
         for(EventTag eventTag : eventTags) {
             if (eventTag.getName().equals(s) || eventTag.getName().toLowerCase().contains(s)) {
                 return true;
             }
         }
         return false;
-
     }
 
     @Override
