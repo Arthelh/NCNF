@@ -1,9 +1,10 @@
-package com.ncnf.notification;
+package com.ncnf.notifications;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.ncnf.mocks.MockTask;
 import com.ncnf.models.User;
 import com.ncnf.notifications.firebase.FirebaseNotifications;
+import com.ncnf.repositories.UserRepository;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -20,9 +22,11 @@ import static org.mockito.Mockito.when;
 
 public class FirebaseNotificationsTests {
 
+
+    private final UserRepository userRepository = Mockito.mock(UserRepository.class);
     private final FirebaseMessaging messaging = Mockito.mock(FirebaseMessaging.class);
     private final User user = Mockito.mock(User.class);
-    FirebaseNotifications firebaseNotifications = new FirebaseNotifications(messaging, user);
+    FirebaseNotifications firebaseNotifications = new FirebaseNotifications(messaging, user, userRepository);
 
     @Test
     public void registerIsSuccessful() {
@@ -32,13 +36,14 @@ public class FirebaseNotificationsTests {
         CompletableFuture<Boolean> tokenFuture = CompletableFuture.completedFuture(true);
 
         when(messaging.getToken()).thenReturn(task);
-        when(user.updateNotifications(anyBoolean())).thenReturn(notificationFuture);
-        when(user.updateNotificationsToken(anyString())).thenReturn(tokenFuture);
+        when(user.getUuid()).thenReturn("uuid");
+        when(userRepository.updateNotifications(anyString(), anyBoolean())).thenReturn(notificationFuture);
+        when(userRepository.updateNotificationsToken(anyString(), anyString())).thenReturn(tokenFuture);
 
         CompletableFuture<Boolean> res = firebaseNotifications.registerToNotifications();
 
-        verify(user).updateNotifications(true);
-        verify(user).updateNotificationsToken("My token");
+        verify(userRepository).updateNotifications("uuid", true);
+        verify(userRepository).updateNotificationsToken("uuid", "My token");
 
         try {
             assertEquals(true, res.get());
@@ -65,7 +70,7 @@ public class FirebaseNotificationsTests {
     public void unregisterIsSuccessful() {
         CompletableFuture<Boolean> notificationFuture = CompletableFuture.completedFuture(true);
 
-        when(user.updateNotifications(anyBoolean())).thenReturn(notificationFuture);
+        when(userRepository.updateNotifications(anyString(), anyBoolean())).thenReturn(notificationFuture);
 
         CompletableFuture<Boolean> res = firebaseNotifications.unregisterFromNotifications();
         try {
@@ -79,7 +84,7 @@ public class FirebaseNotificationsTests {
     public void unregisterFails() {
         CompletableFuture<Boolean> notificationFuture = new CompletableFuture<>();
 
-        when(user.updateNotifications(anyBoolean())).thenReturn(notificationFuture);
+        when(userRepository.updateNotifications(anyString(), anyBoolean())).thenReturn(notificationFuture);
 
         notificationFuture.completeExceptionally(new Exception());
         CompletableFuture<Boolean> res = firebaseNotifications.unregisterFromNotifications();
