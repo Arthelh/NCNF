@@ -51,7 +51,7 @@ public class OrganizationTabFragmentTests {
 
     private final DatabaseService databaseService = Mockito.mock(DatabaseService.class);
     private final User u1 = new User(databaseService, "u1", "johnny", "johnny@bar.com", "John Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, LocalDate.now(), null);
-    private final Organization o1 = new Organization(UUID.randomUUID(), "EPFL", new GeoPoint(0, 0), "Ecublens", "ncnf@epfl.ch", "08008008080", Collections.singletonList("u1"), new ArrayList<>());
+    private final Organization o1 = new Organization(UUID.randomUUID().toString(), "EPFL", new GeoPoint(0, 0), "Ecublens", "ncnf@epfl.ch", "08008008080", Collections.singletonList("u1"), new ArrayList<>());
     private final List<Organization> organizations = Collections.singletonList(o1);
 
     @Rule
