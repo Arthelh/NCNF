@@ -55,7 +55,7 @@ public class OrganizationBuilderTests {
 
     @Test
     public void buildTest(){
-        data.put(UUID_KEY, uuid.toString());
+        data.put(UUID_KEY, uuid);
         data.put(NAME_KEY, name);
         data.put(LOCATION_KEY, location);
         data.put(ADDRESS_KEY, address);
@@ -63,11 +63,11 @@ public class OrganizationBuilderTests {
         data.put(PHONE_NB_KEY, phoneNb);
         data.put(ORGANIZED_EVENTS_KEY, events);
 
-        assertNull(builder.toObject(uuid, data));
+        assertNull("Should return null", builder.toObject(uuid, data));
         data.put(ADMIN_KEY, admins);
         Organization org = builder.toObject(uuid, data);
         Organization org2 = new Organization(uuid, name, location, address, email, phoneNb, admins, events);
-        assertNotNull(org);
+        assertNotNull("Organization should not be null", org);
         assertTrue(org.getEventIds().contains(event1));
         assertEquals(org.getName(), name);
 

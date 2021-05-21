@@ -41,8 +41,8 @@ public class OrganizationBuilder extends DatabaseObjectBuilder<Organization>{
 
             return new Organization(uuidStr, name, location, address, email, phoneNb, admin, events);
         } catch (Exception e){
-            Log.d(DEBUG_TAG, e.getLocalizedMessage());
-            e.printStackTrace();
+            Log.d(DEBUG_TAG, e.getMessage());
+//            e.printStackTrace();
             return null;
         }
     }
