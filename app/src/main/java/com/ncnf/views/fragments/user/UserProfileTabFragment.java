@@ -164,9 +164,9 @@ public class UserProfileTabFragment extends Fragment {
 
                 email.setText(user.getEmail());
 
-                String firstNameStr = user.getFullName();
-                if(!firstNameStr.isEmpty()){
-                    fullName.setText(firstNameStr);
+                String fullNameStr = user.getFullName();
+                if(!fullNameStr.isEmpty()){
+                    fullName.setText(fullNameStr);
                 }
 
                 String usernameStr = user.getUsername();

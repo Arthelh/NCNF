@@ -69,14 +69,14 @@ public class Event extends SocialObject {
         this.tags = new ArrayList<Tag>(tags);
     }
 
-    public void addTag(Tag newTag) {
+    public boolean addTag(Tag newTag) {
 
         for(int i = 0; i < tags.size(); ++i) {
             if(tags.get(i).equals(newTag)) {
-                return;
+                return true;
             }
         }
-        tags.add(newTag);
+        return tags.add(newTag);
     }
 
     public boolean filterTags(String s) {

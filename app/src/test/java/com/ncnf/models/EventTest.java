@@ -130,8 +130,10 @@ public class EventTest {
     public void addTagWorks() {
         Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
         Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
-        event.addTag(tag);
-        assertTrue(event.getTags().contains(tag));
+
+        assertTrue(event.addTag(tag));
+        assertTrue(event.addTag(tag));
+
     }
 
     @Test
@@ -153,7 +155,7 @@ public class EventTest {
     }
 
     @Test
-    public void basicSettersWork() {
+    public void basicSettersGettersWork() {
         Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
         List<String> attendees = new ArrayList<>();
         LocalDateTime newDate = LocalDateTime.of(2021, 3, 12, 12, 0);
@@ -167,12 +169,14 @@ public class EventTest {
         event.setOwnerId("EPFL-IC");
         event.setLocation(newGeoPoint);
         event.setDescription("Another description");
+        event.setEmail("newEmail@test.ch");
 
         assertEquals(event.getDate(), newDate);
         assertEquals(event.getName(), "Christmas Party");
         assertEquals(event.getLocation(), newGeoPoint);
         assertEquals(event.getDescription(), "Another description");
         assertEquals(event.getOwnerId(), "EPFL-IC");
+        assertEquals(event.getEmail(), "newEmail@test.ch");
         assertEquals(event.getNumOfAttendees(), 1);
         assertTrue(event.getAttendees().size() == attendees.size());
         for(int i = 0; i < attendees.size(); ++i) {
@@ -181,19 +185,12 @@ public class EventTest {
     }
 
     @Test
-    public void gettersWork() {
-
-        Event event = new Event("ownerId", name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
-//        assertEquals(event.getImageName(), "swan_lake");
-    }
-
-    @Test
     public void filterTagsWorks() {
         Event event = new Event("ownerId", name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
         Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
         Tag tag2 = new Tag("\uD83C\uDFB8", "Folk Music");
-        event.addTag(tag);
-        event.addTag(tag2);
+        assertTrue(event.addTag(tag));
+        assertTrue(event.addTag(tag2));
 
         assertTrue(event.filterTags(tag2.getName()));
         assertFalse(event.filterTags("example"));
