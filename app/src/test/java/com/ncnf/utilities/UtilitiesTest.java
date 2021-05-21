@@ -1,13 +1,18 @@
 package com.ncnf.utilities;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.models.Organization;
 import com.ncnf.utilities.map.MapUtilities;
 import com.ncnf.utilities.settings.Settings;
 
 import org.junit.Test;
 
+import static com.ncnf.utilities.StringCodes.FRAGMENT_VIEW_TAG;
+import static com.ncnf.utilities.StringCodes.generatePerViewID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class UtilitiesTest {
 
@@ -32,5 +37,12 @@ public class UtilitiesTest {
         Settings.setCurrentMaxDistance(23);
         assertThat(MapUtilities.position_in_range(epfl_position, chuv_position), is(true));
         assertThat(MapUtilities.position_in_range(epfl_position, vevey_position), is(true));
+    }
+
+    @Test
+    public void generatePerViewIdWorks(){
+            Organization organization = new Organization("name", new GeoPoint(0, 0), "address", "email", "0000000000", "originalId");
+            String orgString = organization.toString();
+            assertTrue(generatePerViewID(organization).equals(FRAGMENT_VIEW_TAG + orgString));
     }
 }

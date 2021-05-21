@@ -30,6 +30,7 @@ import com.ncnf.authentication.firebase.CurrentUserModule;
 import com.ncnf.models.User;
 
 import static android.content.ContentValues.TAG;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 
@@ -101,54 +102,40 @@ public class LocationService extends Service {
 
         Log.d(TAG, "getLocation: getting location information.");
         mFusedLocationClient.requestLocationUpdates(mLocationRequestHighAccuracy, new LocationCallback() {
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
 
-                        Log.d(TAG, "onLocationResult: got location result.");
+                Log.d(TAG, "onLocationResult: got location result.");
 
-                        Location location = locationResult.getLastLocation();
+                Location location = locationResult.getLastLocation();
 
-                        if (location != null) {
-                            User user = CurrentUserModule.getCurrentUser();
+                if (location != null) {
+                    User user = CurrentUserModule.getCurrentUser();
+                    if(user != null && user.getUuid() != null) {
 
-                            if(user != null) {
-
-                                user.loadUserFromDB().thenAccept(user1 -> {
-                                    if (user1 != null) {
-                                        GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-                                        saveUserLocation(geoPoint, user1.getUuid());
+                        user.loadUserFromDB().thenAccept(user1 -> {
+                            if (user1 != null) {
+                                GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                                dbs.updateField(USERS_COLLECTION_KEY + user1.getUuid(), LOCATION_KEY, geoPoint).thenAccept(bool ->{
+                                    if(bool){
                                         user1.setLoc(geoPoint);
-                                    } else {
-                                        stopSelf();
                                     }
+                                }).exceptionally(exception -> {
+                                    stopSelf();
+                                    return null;
                                 });
-                            }
-                            else {
+                            } else {
                                 stopSelf();
                             }
-
-                        }
+                        });
                     }
-                },
-                Looper.myLooper()); // Looper.myLooper tells this to repeat forever until thread is destroyed
-    }
-
-    private void saveUserLocation(final GeoPoint location, String uuid){
-
-        try{
-            dbs.updateField(USERS_COLLECTION_KEY + uuid, LOCATION_KEY, location).thenAccept(aBoolean -> {
-                if (aBoolean) {
-                    Log.d(TAG, "onComplete: \ninserted user location into database." +
-                            "\n latitude: " + location.getLatitude() +
-                            "\n longitude: " + location.getLongitude());
+                    else {
+                        stopSelf();
+                    }
                 }
-            });
-        }catch (Exception e){
-            Log.e(TAG, "saveUserLocation: User instance is null, stopping location service.");
-            Log.e(TAG, "saveUserLocation: Exception: "  + e.getMessage() );
-            stopSelf();
-        }
-
+            }
+        },
+        Looper.myLooper()); // Looper.myLooper tells this to repeat forever until thread is destroyed
     }
 
     public class LocationServiceBinder extends Binder {
@@ -158,7 +145,4 @@ public class LocationService extends Service {
             return LocationService.this;
         }
     }
-
-
-
 }

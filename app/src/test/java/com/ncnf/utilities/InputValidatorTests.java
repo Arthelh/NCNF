@@ -1,10 +1,15 @@
 package com.ncnf.utilities;
 
+import android.widget.EditText;
+
+import com.ncnf.views.activities.main.MainActivity;
+
 import org.junit.Test;
 
 import static com.ncnf.utilities.InputValidator.isInvalidString;
 import static com.ncnf.utilities.InputValidator.isValidPassword;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 public class InputValidatorTests {
@@ -97,5 +102,4 @@ public class InputValidatorTests {
     public void validPasswordTest(){
         assertTrue(isValidPassword(validPassword));
     }
-
 }

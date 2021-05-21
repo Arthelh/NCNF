@@ -59,7 +59,7 @@ public class InputValidator {
         }
 
         switch(inputType) {
-            case (InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_CLASS_TEXT):
+            case (InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS):
                 if (!verifyEmailInput(inputText)) textField.setError("Please enter a correct email address");
                 break;
             case InputType.TYPE_CLASS_PHONE:
@@ -68,7 +68,7 @@ public class InputValidator {
             case InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS: // Postal Address
                 if (!verifyPostalCode(inputText)) textField.setError("Please enter a valid postal code");
                 break;
-            case (InputType.TYPE_TEXT_VARIATION_URI | InputType.TYPE_CLASS_TEXT):
+            case (InputType.TYPE_TEXT_VARIATION_URI):
                 if (!verifyWebAddress(inputText)) textField.setError("Please enter a valid url");
                 break;
         }
@@ -97,6 +97,6 @@ public class InputValidator {
     }
 
     public static boolean checkCompleteList(List<String> l){
-        return (l == null) || l.stream().anyMatch(Objects::isNull) || l.isEmpty();
+        return (l == null) || l.isEmpty() || l.stream().anyMatch(Objects::isNull);
     }
 }

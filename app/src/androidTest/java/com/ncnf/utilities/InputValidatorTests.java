@@ -2,6 +2,7 @@ package com.ncnf.utilities;
 
 import android.content.Context;
 import android.text.InputType;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -9,7 +10,12 @@ import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 public class InputValidatorTests {
@@ -18,8 +24,8 @@ public class InputValidatorTests {
 
     private EditText editTextWith(String value, int type) {
         EditText input = new EditText(ctx);
-        input.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        input.setText("foo@bar.com", TextView.BufferType.NORMAL);
+        input.setInputType(type);
+        input.setText(value, TextView.BufferType.NORMAL);
         return input;
     }
 
@@ -58,4 +64,50 @@ public class InputValidatorTests {
         assertTrue(InputValidator.verifyGenericInput(input));
     }
 
+    @Test
+    public void verifyThrowsException(){
+        assertThrows(IllegalArgumentException.class, () -> InputValidator.verifyGenericInput(null));
+    }
+
+    @Test
+    public void verifyReturnsFalseOnEmptyString (){
+        EditText input = editTextWith(null, InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
+        input.setText(null);
+        assertFalse(InputValidator.verifyGenericInput(input));
+    }
+
+    @Test
+    public void verifyGenericInputTestEveryInputType(){
+        EditText input = editTextWith("test", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        assertTrue(!InputValidator.verifyGenericInput(input) || input.getError().equals("Please enter a correct email address"));
+
+        input = editTextWith("test", InputType.TYPE_CLASS_PHONE);
+        assertTrue(!InputValidator.verifyGenericInput(input) || input.getError().equals("Please enter a correct phone number"));
+
+        input = editTextWith("test", InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS);
+        assertTrue(!InputValidator.verifyGenericInput(input) || input.getError().equals("Please enter a valid postal code"));
+
+        input = editTextWith("test", InputType.TYPE_TEXT_VARIATION_URI);
+        assertTrue(!InputValidator.verifyGenericInput(input) || input.getError().equals("Please enter a valid url"));
+
+    }
+
+    @Test
+    public void ArrayIsInvalidWorks(){
+        assertTrue(InputValidator.isInvalidArray(null) && InputValidator.isInvalidArray(new ArrayList()));
+        List<Integer> list = new ArrayList<>();
+        list.add(4);
+        assertFalse(InputValidator.isInvalidArray(list));
+    }
+
+    @Test
+    public void setErrorMsgWorksTest(){
+        EditText editText = new EditText(ctx);
+        InputValidator.setErrorMsg(editText, "error");
+        assertTrue(editText.getError().equals("error"));
+
+        Button button = new Button(ctx);
+        InputValidator.setErrorMsg(button, "error");
+        assertTrue(button.getError().equals("error"));
+    }
 }
