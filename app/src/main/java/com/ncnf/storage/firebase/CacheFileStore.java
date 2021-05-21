@@ -62,6 +62,15 @@ public class CacheFileStore extends FileStore {
         return future;
     }
 
+    @Override
+    public CompletableFuture<Boolean> upload(byte[] data) {
+        // invalidate cache
+        if (file.exists())
+            file.delete();
+
+        return super.upload(data);
+    }
+
     private void storeFile(byte[] data) {
         super.requiresPath();
 
