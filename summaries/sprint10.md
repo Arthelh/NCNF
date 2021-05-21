@@ -21,7 +21,9 @@ There are still some issues with the linking of the groups to the database. I ho
 
 ## Jérémie 
 
+This week, I worked on refactoring the whole project addressing the Code Review. I had to wait for every team member to merge their PRs in order to avoid merging issues. I refactored the layout of packages and addressed the naming convention issues. I'm still working on the modularity issues by writing Repositories for each model to be managed in the database. 
 
+This refactoring will be merged during next week since it takes more than one week to refactor the whole project.
 
 ## Keran
 
