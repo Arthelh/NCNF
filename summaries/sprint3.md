@@ -20,7 +20,7 @@ This week, I manage to create the Database service in order to properly separate
 
 # Emmanuelle
 
-This week, I worked on filtering the event feed by Tags and sorting it by date or by relevance, and on connecting the feed view which was still linked with placeholder event activities to the actual event activity. I didn't run into any major difficulties, and it took me the expected time. Next week, I will implement tests for this part and merge it with the main branch.
+This week, I worked on filtering the event feed by tags and sorting it by date or by relevance, and on connecting the feed view which was still linked with placeholder event activities to the actual event activity. I didn't run into any major difficulties, and it took me the expected time. Next week, I will implement tests for this part and merge it with the main branch.
 
 # Jérémie (scrum master)
 
