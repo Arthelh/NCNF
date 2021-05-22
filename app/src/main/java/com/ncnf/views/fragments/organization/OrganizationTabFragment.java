@@ -2,6 +2,7 @@ package com.ncnf.views.fragments.organization;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -131,12 +133,25 @@ public class OrganizationTabFragment extends Fragment {
             orgProfileFrag = new OrganizationProfileTabs();
             requireActivity().getSupportFragmentManager().setFragmentResult("organization_id_key",args);
         }
-        recycler.setVisibility(View.GONE);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                fm.popBackStack();
+                recycler.setVisibility(View.VISIBLE);
+                this.setEnabled(false);
+            }
+        };
+
+
+        recycler.setVisibility(View.INVISIBLE);
         fm.beginTransaction()
               .hide(this)
               .replace(((ViewGroup) requireView().getParent()).getId(), orgProfileFrag, orgProfileTag)
               .addToBackStack(null)
               .commit();
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(callback);
        /* fm.beginTransaction()
                 .replace(((ViewGroup) requireView().getParent()).getId(), orgViewFrag, orgViewTag)
                 .addToBackStack(FRAGMENT_ORGANIZATION_TAG)
