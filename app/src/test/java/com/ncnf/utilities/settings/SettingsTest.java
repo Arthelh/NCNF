@@ -32,7 +32,7 @@ public class SettingsTest {
 
     @Test
     public void testSetAndGetMinDate(){
-        LocalDateTime testDate = LocalDateTime.now().plusDays(1);
+        LocalDate testDate = LocalDate.now().plusDays(1);
         assertNotEquals("First", testDate, Settings.getMinDate());
         Settings.setMinDate(testDate);
         assertEquals("Second", testDate, Settings.getMinDate());
@@ -49,7 +49,7 @@ public class SettingsTest {
 
     @Test
     public void testSetAndGetMaxDate(){
-        LocalDateTime testDate = LocalDateTime.now().plusDays(1);
+        LocalDate testDate = LocalDate.now().plusDays(1);
         assertNotEquals(testDate, Settings.getMaxDate());
         Settings.setMaxDate(testDate);
         assertEquals(testDate, Settings.getMaxDate());
@@ -57,9 +57,9 @@ public class SettingsTest {
 
     @Test
     public void testDateInRange(){
-        LocalDateTime date3 = LocalDateTime.of(2022, 5, 22, 12, 0);
-        LocalDateTime date2 = LocalDateTime.of(2021, 10, 22, 12, 0);
-        LocalDateTime date1 = LocalDateTime.of(2021, 5, 22, 12, 0);
+        LocalDate date3 = LocalDate.of(2022, 5, 22);
+        LocalDate date2 = LocalDate.of(2021, 10, 22);
+        LocalDate date1 = LocalDate.of(2021, 5, 22);
 
         Settings.setMinDate(date1); Settings.setMaxDate(date3);
         assertTrue(Settings.dateInRange(date2));
