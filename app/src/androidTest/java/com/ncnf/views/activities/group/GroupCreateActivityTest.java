@@ -9,9 +9,8 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
-import com.ncnf.views.activities.group.GroupCreateActivity;
 import com.ncnf.views.activities.main.MainActivity;
-import com.ncnf.storage.firebase.FileStore;
+import com.ncnf.storage.firebase.FirebaseFileStore;
 import com.ncnf.models.User;
 import com.ncnf.authentication.firebase.CurrentUserModule;
 
@@ -62,7 +61,7 @@ public class GroupCreateActivityTest {
     public User user = mockUser;
 
     @BindValue
-    public FileStore fileStore = Mockito.mock(FileStore.class);
+    public FirebaseFileStore firebaseFileStore = Mockito.mock(FirebaseFileStore.class);
 
     CompletableFuture<Boolean> response = CompletableFuture.completedFuture(true);
 
@@ -106,7 +105,7 @@ public class GroupCreateActivityTest {
 
         when(user.getUuid()).thenReturn("ownerId");
         when(user.createGroup(anyObject())).thenReturn(response);
-        when(fileStore.uploadImage(any(Bitmap.class))).thenReturn(CompletableFuture.completedFuture(true));
+        when(firebaseFileStore.uploadImage(any(Bitmap.class))).thenReturn(CompletableFuture.completedFuture(true));
 
         onView(withId(R.id.set_event_name)).perform(scrollTo(), replaceText("Conference"));
         onView(withId(R.id.set_event_description)).perform(scrollTo(), replaceText("Math are fun!"));

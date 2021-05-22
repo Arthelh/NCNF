@@ -15,7 +15,8 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.repositories.EventRepository;
 import com.ncnf.utilities.settings.Settings;
 import com.ncnf.models.Event;
 import com.ncnf.models.SocialObject;
@@ -34,9 +35,9 @@ public class MapHandler {
 
     private final Activity context;
     private final GoogleMap mMap;
-    private final DatabaseService databaseService;
+    private final EventRepository eventRepository;
 
-    private ClusterManager<NCNFMarker> clusterManager;
+    private ClusterManager<CustomMapMarker> clusterManager;
 
     //Event cache to avoid querying every time we switch from organizers to events
     private List<Event> cache;
@@ -51,12 +52,12 @@ public class MapHandler {
      * @param context The activity the map will be displayed in
      * @param mMap The Google Map to display
      * @param fragmentManager A children fragment manager from the MapFragment
-     * @param databaseService the service to query the database
+     * @param eventRepository the service to query the database
      */
-    public MapHandler(AppCompatActivity context, GoogleMap mMap, FragmentManager fragmentManager, DatabaseService databaseService){
+    public MapHandler(AppCompatActivity context, GoogleMap mMap, FragmentManager fragmentManager, EventRepository eventRepository){
         this.context = context;
         this.mMap = mMap;
-        this.databaseService = databaseService;
+        this.eventRepository = eventRepository;
         if (mMap != null) { //This is just for MapHandler Unit test
             MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context, context.getWindow(), fragmentManager);
 
@@ -139,7 +140,7 @@ public class MapHandler {
                 desc.append(p.getName()).append("\n");
             }
             String description = desc.toString();
-            clusterManager.addItem(new NCNFMarker(k, description, eventMap.get(k).get(0).getAddress(), list, true));
+            clusterManager.addItem(new CustomMapMarker(k, description, eventMap.get(k).get(0).getAddress(), list, true));
         }
         clusterManager.cluster();
     }
@@ -151,7 +152,7 @@ public class MapHandler {
         for (Venue p : venues) {
             LatLng venue_position = new LatLng(p.getLatitude(), p.getLongitude());
             if (MapUtilities.position_in_range(venue_position, Settings.getUserPosition())){
-                clusterManager.addItem(new NCNFMarker(venue_position, p.getName(), p.getName(), new ArrayList<>(), false));
+                clusterManager.addItem(new CustomMapMarker(venue_position, p.getName(), p.getName(), new ArrayList<>(), false));
             }
         }
     }
@@ -159,7 +160,7 @@ public class MapHandler {
     private void queryAndAddEvents(){
         final List<Event> result = new ArrayList<>();
 
-        CompletableFuture<List<Event>> completableFuture = databaseService.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, Event.class);
+        CompletableFuture<List<Event>> completableFuture = eventRepository.getEventsNearBy();
         completableFuture.thenAccept(eventList -> {
 
             result.addAll(eventList);

@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
-import com.ncnf.authentication.firebase.AuthenticationService;
+import com.ncnf.authentication.firebase.FirebaseAuthentication;
 import com.ncnf.authentication.firebase.CurrentUserModule;
 import com.ncnf.models.User;
 
@@ -42,7 +42,7 @@ import static com.ncnf.utilities.StringCodes.POPUP_TITLE;
 public class SignUpFragment extends Fragment {
 
     @Inject
-    AuthenticationService auth;
+    FirebaseAuthentication auth;
 
     private Boolean isOrganizer = false;
 

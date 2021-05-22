@@ -1,9 +1,7 @@
 package com.ncnf.models;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.firebase.DatabaseService;
-import com.ncnf.models.Group;
-import com.ncnf.models.SocialObject;
+import com.ncnf.database.firebase.FirebaseDatabase;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,13 +34,13 @@ public class GroupTest {
     List<String> attendees = new ArrayList<>();
     List<String> invited = new ArrayList<>();
 
-    DatabaseService db;
+    FirebaseDatabase db;
     Group mainEvent;
     CompletableFuture<Boolean> response;
 
     @Before
     public void setup(){
-        db = Mockito.mock(DatabaseService.class);
+        db = Mockito.mock(FirebaseDatabase.class);
         mainEvent = new Group(ownerId,name, date, geoPoint,address,description, type);
         response = CompletableFuture.completedFuture(true);
     }

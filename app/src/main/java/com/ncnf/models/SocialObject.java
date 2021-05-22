@@ -1,7 +1,7 @@
 package com.ncnf.models;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -131,10 +131,10 @@ public abstract class SocialObject implements Comparable<SocialObject> {
         this.description = description;
     }
 
-    abstract public CompletableFuture<Boolean> store(DatabaseService db);
+    abstract public CompletableFuture<Boolean> store(FirebaseDatabase db);
 
     //TODO WTF is this doing here? Why is there a static method, that takes a DBS, in an abstract class, where it only is used for events??????
-    public static CompletableFuture<Boolean> addNews(DatabaseService db, String uuid, String value) {
+    public static CompletableFuture<Boolean> addNews(FirebaseDatabase db, String uuid, String value) {
         return db.updateArrayField(EVENTS_COLLECTION_KEY + uuid, NEWS_KEY, value);
     }
 }

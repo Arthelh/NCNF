@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
-import com.ncnf.authentication.firebase.AuthenticationService;
+import com.ncnf.authentication.firebase.FirebaseAuthentication;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -35,7 +35,7 @@ import static com.ncnf.utilities.StringCodes.POPUP_TITLE;
 @AndroidEntryPoint
 public class SignInFragment extends Fragment {
     @Inject
-    AuthenticationService auth;
+    FirebaseAuthentication auth;
 
     private EditText email;
     private EditText password;
