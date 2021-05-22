@@ -70,7 +70,7 @@ public class OrganizationTabFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.savedInstanceState = savedInstanceState;
         this.layoutInflater = inflater;
-        this.fm = getChildFragmentManager();
+        this.fm = getParentFragmentManager();
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_organizations_list, container, false);
     }
@@ -131,12 +131,12 @@ public class OrganizationTabFragment extends Fragment {
             orgViewFrag = new OrganizationProfileTabs();
             requireActivity().getSupportFragmentManager().setFragmentResult("organization_id_key",args);
         }
-        requireActivity().getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, orgViewFrag, orgViewTag)
+       getParentFragmentManager().beginTransaction()
+                .replace(((ViewGroup) requireView().getParent()).getId(), orgViewFrag, orgViewTag)
                 .addToBackStack(null)
                 .commit();
-        /*fm.beginTransaction()
-                .replace(R.id.fragment_organizations_list, orgViewFrag, orgViewTag)
+       /* fm.beginTransaction()
+                .replace(((ViewGroup) requireView().getParent()).getId(), orgViewFrag, orgViewTag)
                 .addToBackStack(FRAGMENT_ORGANIZATION_TAG)
                 .commit();*/
     }

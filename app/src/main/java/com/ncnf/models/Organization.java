@@ -19,7 +19,7 @@ import static com.ncnf.utilities.StringCodes.*;
 
 public class Organization {
 
-    private final String uuid;
+    private final UUID uuid;
     private String name;
     private GeoPoint location;
     private String address;
@@ -30,10 +30,10 @@ public class Organization {
 
     public Organization(String name, GeoPoint location, String address, String email, String phoneNumber, String originalOwner) {
 
-        this(UUID.randomUUID().toString(), name, location, address, email, phoneNumber, new ArrayList<String>() {{ add(originalOwner); }}, new ArrayList<>());
+        this(UUID.randomUUID(), name, location, address, email, phoneNumber, new ArrayList<String>() {{ add(originalOwner); }}, new ArrayList<>());
     }
 
-    public Organization(String uuid, String name, GeoPoint location, String address, String email, String phoneNumber, List<String> adminIds, List<String> eventIds) {
+    public Organization(UUID uuid, String name, GeoPoint location, String address, String email, String phoneNumber, List<String> adminIds, List<String> eventIds) {
         if(checkCompleteList(adminIds) ){
             throw new IllegalArgumentException("Organization should have at least one admin created when created");
         }
@@ -57,7 +57,7 @@ public class Organization {
         return db.setDocument(ORGANIZATIONS_COLLECTION_KEY + uuid.toString(), this);
     }
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 

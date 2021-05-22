@@ -88,7 +88,7 @@ public class OrganizationEventsFragment extends Fragment {
     private void fetchOrganizationEvents() {
         //TODO check if uuid is corrected there
         organizationRepository.getByUUID(this.uuid).thenAccept(o -> {
-            organizationRepository.getOrganizationEvents(o.get(0).getUuid()).thenAccept(le -> {
+            organizationRepository.getOrganizationEvents(o.get(0).getUuid().toString()).thenAccept(le -> {
                 this.eventsList.clear();
                 //TODO get all events
                 this.eventsList.addAll(le);
