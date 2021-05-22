@@ -1,6 +1,8 @@
 package com.ncnf.views.fragments.organization;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,8 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+import static android.content.Context.MODE_PRIVATE;
+
 @AndroidEntryPoint
 public class OrganizationViewFragment extends Fragment {
 
@@ -36,28 +40,31 @@ public class OrganizationViewFragment extends Fragment {
     private TextView orgAddress;
     private ImageView orgPicture;
 
+    public static final String MY_SHARED_PREFERENCES = "MySharedPrefs" ;
+    SharedPreferences myPreferences;
+
     public OrganizationViewFragment(){ }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        requireActivity().getSupportFragmentManager().setFragmentResultListener("request Key", getViewLifecycleOwner(), new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                uuid = result.getString("organization_id");
-            }
-        });
+        myPreferences = requireContext().getSharedPreferences(MY_SHARED_PREFERENCES , MODE_PRIVATE);
+        this.uuid = myPreferences.getString("organization_id", null);
         return inflater.inflate(R.layout.fragment_organization_view, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        organizationRepository.getByUUID(uuid).thenAccept(o ->
-                this.organization = o.get(0)
-        );
         initView();
-        fillViews();
+        organizationRepository.getByUUID(uuid).thenAccept(o -> {
+            this.organization = o.get(0);
+            fillViews();
+                }
+        ).exceptionally(e -> {
+            e.printStackTrace();
+            return null;
+        });
     }
 
     private void initView(){

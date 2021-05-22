@@ -1,5 +1,6 @@
 package com.ncnf.views.fragments.organization;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.ncnf.utilities.StringCodes.FRAGMENT_ORGANIZATION_TAG;
 
 @AndroidEntryPoint
@@ -41,21 +43,23 @@ public class OrganizationEventsFragment extends Fragment {
     public OrganizationRepository organizationRepository;
 
     private Organization organization;
+    private String uuid;
 
     private RecyclerView recyclerView;
     private EventAdapter adapter;
     private final List<Event> eventsList = new LinkedList<>();
 
-    public OrganizationEventsFragment() {
-        String uuid = getArguments().getString("organization_id");
-        organizationRepository.getByUUID(uuid).thenAccept(o ->
-                this.organization = o.get(0)
-        );
-    }
+    public static final String MY_SHARED_PREFERENCES = "MySharedPrefs" ;
+    SharedPreferences myPreferences;
+
+
+    public OrganizationEventsFragment() {}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        myPreferences = requireContext().getSharedPreferences(MY_SHARED_PREFERENCES , MODE_PRIVATE);
+        this.uuid = myPreferences.getString("organization_id", null);
         return inflater.inflate(R.layout.fragment_organization_events, container, false);
     }
 
@@ -63,19 +67,12 @@ public class OrganizationEventsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        this.recyclerView = recyclerView.findViewById(R.id.organization_events_recyclerview);
+        this.recyclerView = view.findViewById(R.id.organization_events_recyclerview);
 
         RecyclerView.LayoutManager lManager = new LinearLayoutManager(getActivity());
         this.recyclerView.setLayoutManager(lManager);
 
         fetchOrganizationEvents();
-
-        if (this.eventsList.isEmpty()) {
-            //TODO display empty message?
-        } else {
-            this.adapter = new EventAdapter(getContext(), this.eventsList, this::onEventClick, EventAdapter.SortingMethod.DATE);
-            this.recyclerView.setAdapter(adapter);
-        }
     }
 
 
@@ -90,10 +87,15 @@ public class OrganizationEventsFragment extends Fragment {
 
     private void fetchOrganizationEvents() {
         //TODO check if uuid is corrected there
-        organizationRepository.getOrganizationEvents(organization.getUuid().toString()).thenAccept(lo -> {
-            this.eventsList.clear();
-            this.eventsList.addAll(lo);
-        });
+        organizationRepository.getByUUID(this.uuid).thenAccept(o -> {
+            organizationRepository.getOrganizationEvents(o.get(0).getUuid()).thenAccept(le -> {
+                this.eventsList.clear();
+                //TODO get all events
+                this.eventsList.addAll(le);
+                this.adapter = new EventAdapter(getContext(), this.eventsList, this::onEventClick, EventAdapter.SortingMethod.DATE);
+                this.recyclerView.setAdapter(adapter);
+            }).exceptionally(e -> {e.printStackTrace(); return null;});
+        }).exceptionally(e -> {e.printStackTrace(); return null;});
     }
 
     private void createEvent() {

@@ -1,5 +1,7 @@
 package com.ncnf.views.fragments.organization;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,13 +26,17 @@ public class OrganizationProfileTabs extends Fragment {
     private final String[] tabNames = new String[]{"Profile", "Events"};
     private String uuid;
 
+    SharedPreferences preferences;
+    public static final String MY_SHARED_PREFERENCES = "MySharedPrefs" ;
+
+
     public OrganizationProfileTabs(){
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Get the uuid and pass it to the children
-        requireActivity().getSupportFragmentManager().setFragmentResultListener("request Key", getViewLifecycleOwner(), new FragmentResultListener() {
+        requireActivity().getSupportFragmentManager().setFragmentResultListener("organization_id_key", getViewLifecycleOwner(), new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 uuid = result.getString("organization_id");
@@ -49,6 +55,8 @@ public class OrganizationProfileTabs extends Fragment {
         TabLayout tabLayout = requireView().findViewById(R.id.organization_tabs);
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabNames[position])).attach();
+
+        preferences = requireContext().getSharedPreferences(MY_SHARED_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     private class ViewPagerFragmentAdapter extends FragmentStateAdapter {
@@ -61,19 +69,20 @@ public class OrganizationProfileTabs extends Fragment {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
+            transferData();
 
             switch (position) {
                 case 0:
-                    return createFragmentWithExtra(uuid, 0);
+                    return createFragmentWithExtra( 0);
                 case 1:
-                    return createFragmentWithExtra(uuid, 1);
+                    return createFragmentWithExtra(1);
                 default:
                     //TODO default case
                     throw new IllegalStateException();
             }
         }
 
-        private Fragment createFragmentWithExtra(String uuid, int fragId) {
+        private Fragment createFragmentWithExtra(int fragId) {
             Fragment f;
             switch (fragId) {
                 case 0:
@@ -85,10 +94,13 @@ public class OrganizationProfileTabs extends Fragment {
                 default:
                     throw new IllegalArgumentException("Invalid class type Id");
             }
-            Bundle bundle = new Bundle();
-            bundle.putString("organization_id", uuid);
-            requireActivity().getSupportFragmentManager().setFragmentResult("organization_id",bundle);
             return f;
+        }
+
+        private void transferData(){
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("organization_id", uuid);
+            editor.apply();
         }
 
         @Override

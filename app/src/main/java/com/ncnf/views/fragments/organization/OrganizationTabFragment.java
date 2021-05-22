@@ -60,7 +60,7 @@ public class OrganizationTabFragment extends Fragment {
     private RecyclerView recycler;
     OrganizationAdapter adapter;
 
-    private List<Organization> organizations;
+    private List<Organization> organizations = new LinkedList<>();
     private Bundle savedInstanceState;
 
     public OrganizationTabFragment() {
@@ -88,18 +88,22 @@ public class OrganizationTabFragment extends Fragment {
         recycler.setLayoutManager(lm);
 
         emptyView = requireView().findViewById(R.id.empty_organization_view);
+        fetchOrganizations();
+    }
 
-        organizations = new LinkedList<>();
-        //TODO Handle exceptions
+    private void fetchOrganizations(){
         organizationRepository.getUserOrganizations(user.getUuid())
-                .thenApply(organizations::addAll)
-                .exceptionally(e -> null);
-
-        //Set visibility
-        updateVisibility();
-
-        adapter = new OrganizationAdapter(organizations, this::onOrganizationClick);
-        recycler.setAdapter(adapter);
+                .thenAccept(lo -> {
+                    organizations.addAll(lo);
+                    adapter = new OrganizationAdapter(organizations, this::onOrganizationClick);
+                    recycler.setAdapter(adapter);
+                    //Set visibility
+                    updateVisibility();
+                })
+                .exceptionally(e -> {
+                    e.printStackTrace();
+                    return null;
+                });
     }
 
     private void updateVisibility(){
@@ -125,7 +129,7 @@ public class OrganizationTabFragment extends Fragment {
             args.putString("organization_id",o.getUuid().toString());
 
             orgViewFrag = new OrganizationProfileTabs();
-            requireActivity().getSupportFragmentManager().setFragmentResult("organization_id",args);
+            requireActivity().getSupportFragmentManager().setFragmentResult("organization_id_key",args);
         }
         requireActivity().getSupportFragmentManager().beginTransaction()
                 .add(((ViewGroup) requireView().getParent()).getId(), orgViewFrag, orgViewTag)
