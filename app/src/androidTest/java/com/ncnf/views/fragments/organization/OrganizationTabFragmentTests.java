@@ -89,7 +89,7 @@ public class OrganizationTabFragmentTests {
 
     }
 
-    //@Test
+    @Test
     public void clickOnOrganization() {
         when(organizationRepository.getUserOrganizations(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
 
@@ -99,8 +99,7 @@ public class OrganizationTabFragmentTests {
                 hasDescendant(withText("EPFL")), click()
         ));
 
-        // TODO
-        // onView(withId(R.id.organization_display_email)).check(matches(withText("johnny@bar.com")));
+        onView(withId(R.id.organization_display_email)).check(matches(withText("johnny@bar.com")));
     }
 
     @Test

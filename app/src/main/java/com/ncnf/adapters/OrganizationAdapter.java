@@ -17,31 +17,35 @@ import java.util.List;
 
 public class OrganizationAdapter extends RecyclerView.Adapter<OrganizationAdapter.OrganizationViewHolder> {
 
-    private final List<Organization> items;
+    private List<Organization> organizations;
     private final OrganizationListener organizationListener;
 
     public interface OrganizationListener {
-        void onEventClick(Organization organization);
+        void onOrganizationClick(Organization organization);
     }
 
-    public OrganizationAdapter(List<Organization> items, OrganizationListener organizationListener) {
+    public OrganizationAdapter(List<Organization> organizations, OrganizationListener organizationListener) {
         //ensure proper copy of the List
-        this.items = new LinkedList<>(items);
+        this.organizations = new LinkedList<>(organizations);
         this.organizationListener = organizationListener;
     }
 
     public void addOrganization(Organization organization) {
         // Add the organization at the beginning of the list
-        items.add(0, organization);
+        organizations.add(0, organization);
         // Notify the insertion so the view can be refreshed
         notifyItemInserted(0);
     }
 
-    @Override
-    public int getItemCount() {
-        return items.size();
+    public void setOrganizations(List<Organization> organizations) {
+        this.organizations = organizations;
+        notifyDataSetChanged();
     }
 
+    @Override
+    public int getItemCount() {
+        return organizations.size();
+    }
 
     @NonNull
     @Override
@@ -54,7 +58,7 @@ public class OrganizationAdapter extends RecyclerView.Adapter<OrganizationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull OrganizationViewHolder holder, int position) {
-        holder.bind(items.get(position), organizationListener);
+        holder.bind(organizations.get(position), organizationListener);
     }
 
     public static class OrganizationViewHolder extends RecyclerView.ViewHolder {
@@ -76,7 +80,7 @@ public class OrganizationAdapter extends RecyclerView.Adapter<OrganizationAdapte
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onEventClick(o);
+                    listener.onOrganizationClick(o);
                 }
             });
         }
