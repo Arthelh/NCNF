@@ -132,7 +132,7 @@ public class OrganizationTabFragment extends Fragment {
             requireActivity().getSupportFragmentManager().setFragmentResult("organization_id_key",args);
         }
         requireActivity().getSupportFragmentManager().beginTransaction()
-                .add(((ViewGroup) requireView().getParent()).getId(), orgViewFrag, orgViewTag)
+                .replace(android.R.id.content, orgViewFrag, orgViewTag)
                 .addToBackStack(null)
                 .commit();
         /*fm.beginTransaction()
