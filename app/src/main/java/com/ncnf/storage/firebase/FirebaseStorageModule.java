@@ -9,10 +9,17 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.components.ActivityComponent;
 
+/**
+ * Hilt module for Firebase Storage
+ */
 @Module
 @InstallIn(ActivityComponent.class)
 public class FirebaseStorageModule {
 
+    /**
+     * Inject a Firebase Storage
+     * @return a Firebase Storage instance
+     */
     @Provides
     public static FirebaseStorage getFirebaseStorage() {
         return FirebaseStorage.getInstance();
