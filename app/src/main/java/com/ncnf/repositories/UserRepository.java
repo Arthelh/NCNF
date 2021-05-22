@@ -66,7 +66,7 @@ public class UserRepository {
     }
 
     public CompletableFuture<Boolean> updateUserPosition(String uuid, GeoPoint location){
-        return this.db.updateField(USERS_COLLECTION_KEY + uuid, LOCATION_KEY, location);
+        return this.db.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, location);
     }
 
     public CompletableFuture<GeoPoint> getUserPosition(String uuid){
