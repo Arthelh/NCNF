@@ -19,12 +19,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.adapters.GroupsAdapter;
 import com.ncnf.models.Group;
+import com.ncnf.models.SocialObject;
 import com.ncnf.models.User;
 
 
@@ -48,6 +50,7 @@ public class GroupFragment extends Fragment {
     private RecyclerView recycler;
     private GroupsAdapter adapter;
 
+    private TextView isEmpty;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +68,8 @@ public class GroupFragment extends Fragment {
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.hasFixedSize();
 
+        isEmpty = view.findViewById(R.id.no_owned_group);
+
         setUpGroupsView();
     }
 
@@ -79,15 +84,26 @@ public class GroupFragment extends Fragment {
          Group g2 = new Group(user.getUuid(), "Group 2 !", LocalDateTime.now(), new GeoPoint(0,0), "Ecublens", "test group", SocialObject.Type.Movie);
          g2.invite("oFqlaX7uxifmck6AByJ52ZAZqHh1");
          testGroups.add(g2);
-
          **/
+
+
 
         user.loadUserFromDB().thenAccept(user -> {
             CompletableFuture<List<Group>> groupsFuture = user.getParticipatingGroups();
             //CompletableFuture<List<Group>> groupsFuture = CompletableFuture.completedFuture(testGroups);
             groupsFuture.thenAccept(groups -> {
-                adapter = new GroupsAdapter(getContext(), groups, this::openGroupPage);
-                recycler.setAdapter(adapter);
+                CompletableFuture<List<Group>> ownedGroupsFuture = user.getOwnedGroups();
+                ownedGroupsFuture.thenAccept(groups1 -> {
+                    groups.addAll(groups1);
+                    if(groups.isEmpty()) {
+                        isEmpty.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        adapter = new GroupsAdapter(getContext(), groups, this::openGroupPage);
+                        recycler.setAdapter(adapter);
+                    }
+
+                });
             });
         });
 

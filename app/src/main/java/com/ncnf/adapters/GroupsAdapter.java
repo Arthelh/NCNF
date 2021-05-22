@@ -94,11 +94,11 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 
         private void setTextFields(Group g) {
             groupName.setText(g.getName());
-            if(g.getInvited().size() == 0) {
+            if(g.getAttendees().size() == 0) {
                 groupParticipants.setText("1 participant");
             }
             else {
-                int num = g.getInvited().size() + 1;
+                int num = g.getAttendees().size() + 1;
                 groupParticipants.setText(num + " participants");
             }
         }

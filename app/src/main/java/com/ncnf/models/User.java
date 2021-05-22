@@ -238,6 +238,14 @@ public class User {
         return this.db.getDocument(GROUPS_COLLECTION_KEY + groupId, Group.class);
     }
 
+    public CompletableFuture<Group> getOwnedGroup(String groupId){
+
+        if(!(this.ownedGroupsIds.contains(groupId))){
+            return CompletableFuture.completedFuture(null);
+        }
+        return this.db.getDocument(GROUPS_COLLECTION_KEY + groupId, Group.class);
+    }
+
     public CompletableFuture<List<Event>> getSavedEvents(){
 
         if(this.savedEventsIds.isEmpty()){

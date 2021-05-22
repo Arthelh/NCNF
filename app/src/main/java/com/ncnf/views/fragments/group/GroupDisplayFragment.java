@@ -20,6 +20,7 @@ import com.ncnf.R;
 import com.ncnf.adapters.GroupUserRecyclerAdapter;
 import com.ncnf.database.firebase.DatabaseService;
 import com.ncnf.models.Group;
+import com.ncnf.models.SocialObject;
 import com.ncnf.models.User;
 import com.ncnf.views.activities.group.FriendsTrackerActivity;
 
@@ -84,14 +85,25 @@ public class GroupDisplayFragment extends Fragment {
             Group g2 = new Group(user.getUuid(), "Group 2 !", LocalDateTime.now(), new GeoPoint(0,0), "Ecublens", "test group", SocialObject.Type.Movie);
             g2.invite("oFqlaX7uxifmck6AByJ52ZAZqHh1");
             CompletableFuture<Group> thisGroup = CompletableFuture.completedFuture(g2);
-             **/
+             */
 
-            CompletableFuture<Group> thisGroup = user.getParticipatingGroup(groupID);
-            thisGroup.thenAccept(group -> {
-                this.group = group;
+            if(user.getParticipatingGroupsIds().contains(groupID)) {
 
-                prepareAllFields();
-            });
+                CompletableFuture<Group> thisGroup = user.getParticipatingGroup(groupID);
+                thisGroup.thenAccept(group -> {
+                    this.group = group;
+                    prepareAllFields();
+                });
+            }
+
+            else if(user.getOwnedGroupsIds().contains(groupID)) {
+
+                CompletableFuture<Group> thisGroup = user.getOwnedGroup(groupID);
+                thisGroup.thenAccept(group -> {
+                    this.group = group;
+                    prepareAllFields();
+                });
+            }
 
         }
     }
@@ -105,8 +117,8 @@ public class GroupDisplayFragment extends Fragment {
 
         getUserName(group.getOwnerId());
 
-        for(int i = 0; i < group.getInvited().size(); ++i) {
-            getUserName(group.getInvited().get(i));
+        for(int i = 0; i < group.getAttendees().size(); ++i) {
+            getUserName(group.getAttendees().get(i));
         }
 
     }

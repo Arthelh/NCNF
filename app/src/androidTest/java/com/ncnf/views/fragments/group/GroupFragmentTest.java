@@ -90,6 +90,7 @@ public class GroupFragmentTest {
         l.add(g);
         when(user1.getParticipatingGroups()).thenReturn(CompletableFuture.completedFuture(l));
 
+        when(user1.getParticipatingGroupsIds().contains(gUuid.toString())).thenReturn(true);
         when(user1.getParticipatingGroup(gUuid.toString())).thenReturn(CompletableFuture.completedFuture(g));
 
         when(database1.getField(USERS_COLLECTION_KEY + "u1", FULL_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("John"));

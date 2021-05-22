@@ -110,6 +110,7 @@ public class FriendsTrackerActivityTest {
         when(user1.getParticipatingGroups()).thenReturn(CompletableFuture.completedFuture(l));
 
         when(user1.getParticipatingGroup("u1")).thenReturn(CompletableFuture.completedFuture(g));
+        when(user1.getParticipatingGroupsIds().contains("u1")).thenReturn(true);
 
         when(database1.getField(USERS_COLLECTION_KEY + "u1", FULL_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("John"));
         when(database1.getField(USERS_COLLECTION_KEY + "1", USER_LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(p1));

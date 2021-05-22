@@ -27,6 +27,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.database.firebase.DatabaseService;
 import com.ncnf.models.Group;
+import com.ncnf.models.SocialObject;
 import com.ncnf.models.User;
 import com.ncnf.utilities.user.LocationService;
 
@@ -91,22 +92,33 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         friendsUUID = new ArrayList<>();
 
         String groupId = getIntent().getStringExtra("GROUP_ID");
-        CompletableFuture<Group> thisGroup = user.getParticipatingGroup(groupId);
 
-        // ONLY FOR TESTING
-        //Group g2 = new Group(user.getUuid(), "Group 2 !", LocalDateTime.now(), new GeoPoint(0,0), "Ecublens", "test group", SocialObject.Type.Movie);
-        //g2.invite("oFqlaX7uxifmck6AByJ52ZAZqHh1");
-        //CompletableFuture<Group> thisGroup = CompletableFuture.completedFuture(g2);
+        if(user.getParticipatingGroupsIds().contains(groupId)) {
+            CompletableFuture<Group> thisGroup = user.getParticipatingGroup(groupId);
 
+            thisGroup.thenAccept(group -> {
+                if(group != null) {
+                    friendsUUID = new ArrayList<>(group.getAttendees());
+                    friendsUUID.remove(user.getUuid());
+                }
+                else {
+                    Log.d("TAG", "Group is null");
+                }
+            });
+        }
+        else {
+            CompletableFuture<Group> thisGroup = user.getOwnedGroup(groupId);
 
-        thisGroup.thenAccept(group -> {
-            if(group != null) {
-                friendsUUID = new ArrayList<>(group.getInvited());
-            }
-            else {
-                Log.d("TAG", "Group is null");
-            }
-        });
+            thisGroup.thenAccept(group -> {
+                if(group != null) {
+                    friendsUUID = new ArrayList<>(group.getAttendees());
+                }
+                else {
+                    Log.d("TAG", "Group is null");
+                }
+            });
+
+        }
 
         markers = new ArrayList<>();
 

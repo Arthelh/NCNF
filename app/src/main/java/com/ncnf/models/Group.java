@@ -16,15 +16,29 @@ public class Group extends SocialObject {
     public DatabaseService databaseService;
 
     private final List<String> invited;
+    private final  List<String> attendees;
 
     public Group(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type) {
         super(ownerId, name, date, location, address, type, description);
         invited = new ArrayList<>();
+        attendees = new ArrayList<>();
     }
 
     public Group(String ownerId, UUID id, String name, LocalDateTime date, GeoPoint location, String address, Type type, List<String> attendees, String description, List<String> invited) {
         super(ownerId, id, name, date, location, address, type, attendees, description);
-        this.invited = invited;
+        if(invited == null) {
+            this.invited = new ArrayList<>();
+        }
+        else {
+            this.invited = invited;
+        }
+
+        if(attendees == null) {
+            this.attendees = new ArrayList<>();
+        }
+        else {
+            this.attendees = attendees;
+        }
     }
 
     public void invite(String user) {
@@ -33,6 +47,10 @@ public class Group extends SocialObject {
 
     public List<String> getInvited() {
         return invited;
+    }
+
+    public List<String> getAttendees() {
+        return attendees;
     }
 
     @Override
