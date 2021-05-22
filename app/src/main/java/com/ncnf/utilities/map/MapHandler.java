@@ -125,7 +125,7 @@ public class MapHandler {
             LatLng event_position = new LatLng(p.getLocation().getLatitude(), p.getLocation().getLongitude());
 
             //Additional check in range as geoqueries sometimes have false positives (https://cloud.google.com/firestore/docs/solutions/geoqueries#javaandroid_1)
-            if (MapUtilities.position_in_range(event_position, Settings.getUserPosition())){
+            if (MapUtilities.position_in_range(event_position, Settings.getUserPosition()) && Settings.dateInRange(p.getDate().toLocalDate())){
                 if (!eventMap.containsKey(event_position)){
                     eventMap.put(event_position, new ArrayList<>());
                 }

@@ -132,14 +132,14 @@ public class SettingsActivity extends AppCompatActivity {
             selMonth = month;
             selDay = dayOfMonth;
             if (isMin) {
-                minDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth);
+                minDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth); //First second of the day for min day
                 minDateTextView.setText(minDate.toString());
                 if (minDate.isAfter(maxDate)) {
                     maxDate = minDate;
                     maxDateTextView.setText(maxDate.toString());
                 }
             } else {
-                maxDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth);
+                maxDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth); //Last second of the day for max day
                 maxDateTextView.setText(maxDate.toString());
                 if (maxDate.isBefore(minDate)) {
                     minDate = maxDate;
