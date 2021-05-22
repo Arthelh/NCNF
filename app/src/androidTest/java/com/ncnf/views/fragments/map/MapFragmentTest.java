@@ -233,7 +233,7 @@ public final class MapFragmentTest {
             int x = markerRect.centerX();
             int y = markerRect.centerY() - markerRect.height();
             device.click(x, y);
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         } catch (UiObjectNotFoundException | InterruptedException e) {
             Assert.fail("Marker not found.");
         }
@@ -259,7 +259,7 @@ public final class MapFragmentTest {
             int x = markerRect.centerX();
             int y = markerRect.centerY() - markerRect.height();
             device.click(x, y);
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         } catch (UiObjectNotFoundException | InterruptedException e) {
             Assert.fail("Marker not found.");
         }
