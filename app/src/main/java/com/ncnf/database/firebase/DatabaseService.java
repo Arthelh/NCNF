@@ -15,9 +15,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.ncnf.database.builders.DatabaseObjectBuilder;
 import com.ncnf.database.builders.EventBuilder;
 import com.ncnf.database.builders.GroupBuilder;
+import com.ncnf.database.builders.OrganizationBuilder;
 import com.ncnf.database.builders.UserBuilder;
 import com.ncnf.models.Event;
 import com.ncnf.models.Group;
+import com.ncnf.models.Organization;
 import com.ncnf.models.User;
 
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ public class DatabaseService implements DatabaseServiceInterface {
         registry.put(User.class, new UserBuilder());
         registry.put(Event.class, new EventBuilder());
         registry.put(Group.class, new GroupBuilder());
+        registry.put(Organization.class, new OrganizationBuilder());
     }
 
     @Override
