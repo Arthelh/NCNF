@@ -276,11 +276,9 @@ public class DatabaseService implements DatabaseServiceInterface {
                             QuerySnapshot snap = t.getResult();
                             matchingDocs.addAll(snap.getDocuments());
                         }
-                        Log.d(DEBUG_TAG, "Matching docs size: " + matchingDocs.size());
                         for (DocumentSnapshot doc : matchingDocs){
                             result.add((T) registry.get(type).toObject(doc.getId(), doc.getData()));
                         }
-                        Log.d(DEBUG_TAG, "Result size: " + result.size());
                         futureResponse.complete(result);
                     } else {
                         futureResponse.completeExceptionally(task.getException());

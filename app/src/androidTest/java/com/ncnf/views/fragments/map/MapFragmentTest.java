@@ -259,7 +259,7 @@ public final class MapFragmentTest {
             Assert.fail("Marker not found.");
         }
 
-        onView(allOf(withId(R.id.organization_display_name))).check(matches(withText(containsString(o1.getName()))));
+        onView(withId(R.id.organization_display_name)).check(matches(withText(containsString(o1.getName()))));
 
         Espresso.pressBack();
 

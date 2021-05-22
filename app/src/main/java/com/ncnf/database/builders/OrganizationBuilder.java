@@ -30,7 +30,6 @@ public class OrganizationBuilder extends DatabaseObjectBuilder<Organization>{
     public Organization toObject(String uuid, Map<String, Object> data) {
         try {
             String uuidStr = data.get(UUID_KEY).toString();
-            Log.d(DEBUG_TAG, "UUID: "  + uuidStr);
             String name = data.get(NAME_KEY).toString();
             String address = data.get(ADDRESS_KEY).toString();
             String email = data.get(EMAIL_KEY).toString();
@@ -41,8 +40,7 @@ public class OrganizationBuilder extends DatabaseObjectBuilder<Organization>{
 
             return new Organization(uuidStr, name, location, address, email, phoneNb, admin, events);
         } catch (Exception e){
-            Log.d(DEBUG_TAG, e.getMessage());
-//            e.printStackTrace();
+            e.printStackTrace();
             return null;
         }
     }
