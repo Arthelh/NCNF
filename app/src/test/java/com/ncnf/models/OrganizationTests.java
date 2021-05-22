@@ -23,7 +23,7 @@ public class OrganizationTests {
     public void constructorEqualsHashTest(){
         Organization org1 = new Organization("Test1", new GeoPoint(1,1), "address", "foo@bar.com", "phone", "first_owner");
         Organization org2 = new Organization("Test1", new GeoPoint(1,1), "address", "foo@bar.com", "phone", "first_owner");
-        String uuid = UUID.randomUUID().toString();
+        UUID uuid = UUID.randomUUID();
         Organization o1 = new Organization(uuid,"Test1", new GeoPoint(1,1), "address", "foo@bar.com", "phone", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
         Organization o2 = new Organization(uuid,"Test 2", new GeoPoint(1,1), "address", "foo@bar.com", "phone", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
 

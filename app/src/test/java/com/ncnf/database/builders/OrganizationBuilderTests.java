@@ -66,7 +66,7 @@ public class OrganizationBuilderTests {
         assertNull("Should return null", builder.toObject(uuid, data));
         data.put(ADMIN_KEY, admins);
         Organization org = builder.toObject(uuid, data);
-        Organization org2 = new Organization(uuid, name, location, address, email, phoneNb, admins, events);
+        Organization org2 = new Organization(UUID.fromString(uuid), name, location, address, email, phoneNb, admins, events);
         assertNotNull("Organization should not be null", org);
         assertTrue(org.getEventIds().contains(event1));
         assertEquals(org.getName(), name);
@@ -76,7 +76,7 @@ public class OrganizationBuilderTests {
 
     @Test
     public void buildOnErrorTest() {
-        Organization org = new Organization(uuid, name, location, address, email, phoneNb, admins, events);
+        Organization org = new Organization(UUID.fromString(uuid), name, location, address, email, phoneNb, admins, events);
         Map<String, Object> map = builder.toMap(org);
         Organization org2 = builder.toObject(uuid, map);
 
