@@ -119,22 +119,24 @@ public class OrganizationTabFragment extends Fragment {
     private void onOrganizationClick(Organization o) {
 
         //Check if fragment already exists
-        String orgViewTag = generatePerViewID(o);
-        Fragment orgViewFrag = fm.findFragmentByTag(orgViewTag);
+        String orgProfileTag = generatePerViewID(o);
+        Fragment orgProfileFrag = fm.findFragmentByTag(orgProfileTag);
 
         //It doesn't so create new corresponding Fragment
-        if (!(orgViewFrag instanceof OrganizationViewFragment)) {
+        if (!(orgProfileFrag instanceof OrganizationViewFragment)) {
 
             Bundle args = new Bundle();
             args.putString("organization_id",o.getUuid().toString());
 
-            orgViewFrag = new OrganizationProfileTabs();
+            orgProfileFrag = new OrganizationProfileTabs();
             requireActivity().getSupportFragmentManager().setFragmentResult("organization_id_key",args);
         }
-       getParentFragmentManager().beginTransaction()
-                .replace(((ViewGroup) requireView().getParent()).getId(), orgViewFrag, orgViewTag)
-                .addToBackStack(null)
-                .commit();
+        recycler.setVisibility(View.GONE);
+        fm.beginTransaction()
+              .hide(this)
+              .replace(((ViewGroup) requireView().getParent()).getId(), orgProfileFrag, orgProfileTag)
+              .addToBackStack(null)
+              .commit();
        /* fm.beginTransaction()
                 .replace(((ViewGroup) requireView().getParent()).getId(), orgViewFrag, orgViewTag)
                 .addToBackStack(FRAGMENT_ORGANIZATION_TAG)
