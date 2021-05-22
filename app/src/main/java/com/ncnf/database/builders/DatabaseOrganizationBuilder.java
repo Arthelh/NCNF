@@ -49,7 +49,7 @@ public class DatabaseOrganizationBuilder extends DatabaseObjectBuilder<Organizat
     public Map<String, Object> toMap(Organization org) {
 
         Map<String, Object> data = new HashMap<>();
-        data.put(UUID_KEY, org.getUuid());
+        data.put(UUID_KEY, org.getUuid().toString());
         data.put(NAME_KEY, org.getName());
         data.put(LOCATION_KEY, org.getLocation());
         data.put(ADDRESS_KEY, org.getAddress());

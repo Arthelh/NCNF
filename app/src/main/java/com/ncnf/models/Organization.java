@@ -57,8 +57,8 @@ public class Organization {
         return db.setDocument(ORGANIZATIONS_COLLECTION_KEY + uuid.toString(), this);
     }
 
-    public String getUuid() {
-        return uuid.toString();
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getName() {
