@@ -81,6 +81,9 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     private static final int LOCATION_UPDATE_INTERVAL = 3000;
 
     private Marker marker;
+    private Marker meetingPointMarker;
+
+    private GeoPoint meetingPoint;
 
     private LatLngBounds bounds;
 
@@ -100,6 +103,8 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
                 if(group != null) {
                     friendsUUID = new ArrayList<>(group.getAttendees());
                     friendsUUID.remove(user.getUuid());
+
+                    meetingPoint = group.getLocation();
                 }
                 else {
                     Log.d("TAG", "Group is null");
@@ -112,6 +117,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             thisGroup.thenAccept(group -> {
                 if(group != null) {
                     friendsUUID = new ArrayList<>(group.getAttendees());
+                    meetingPoint = group.getLocation();
                 }
                 else {
                     Log.d("TAG", "Group is null");
@@ -135,6 +141,10 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             onMapReady(mMap);
             getLastKnownLocation();
 
+            if(meetingPoint != null) {
+                meetingPointMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(meetingPoint.getLatitude(), meetingPoint.getLongitude())));
+                meetingPointMarker.setTitle("Meeting Point");
+            }
 
             findUserButton.setOnClickListener(v -> {
                 if(user.getLoc() != null) {
@@ -194,6 +204,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         else {
             marker.setPosition(new LatLng(user.getLoc().getLatitude(), user.getLoc().getLongitude()));
         }
+
     }
 
     private void setMapCamera(GeoPoint point) {
