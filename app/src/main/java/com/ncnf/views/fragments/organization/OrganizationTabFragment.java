@@ -88,22 +88,22 @@ public class OrganizationTabFragment extends Fragment {
         recycler.setLayoutManager(lm);
 
         emptyView = requireView().findViewById(R.id.empty_organization_view);
-        fetchOrganizations();
-    }
+        
+        organizations = new LinkedList<>();
 
-    private void fetchOrganizations(){
-        organizationRepository.getUserOrganizations(user.getUuid())
-                .thenAccept(lo -> {
-                    organizations.addAll(lo);
-                    adapter = new OrganizationAdapter(organizations, this::onOrganizationClick);
-                    recycler.setAdapter(adapter);
-                    //Set visibility
-                    updateVisibility();
-                })
-                .exceptionally(e -> {
-                    e.printStackTrace();
-                    return null;
-                });
+        adapter = new OrganizationAdapter(organizations, this::onOrganizationClick);
+        recycler.setAdapter(adapter);
+
+        //TODO Handle exceptions
+        organizationRepository.getUserOrganizations(user.getUuid()).thenAccept(org -> {
+            organizations = org;
+            adapter.setOrganizations(organizations);
+            updateVisibility();
+        }).exceptionally(e -> {
+            e.printStackTrace();
+            return null;
+        });
+
     }
 
     private void updateVisibility(){
