@@ -130,7 +130,7 @@ public class FirebaseCacheFileStoreTests {
 
         when(context.getCacheDir()).thenReturn(folder.getRoot());
 
-        CacheFileStore fileStore = new CacheFileStore(storage);
+        FirebaseCacheFileStore fileStore = new FirebaseCacheFileStore(storage);
         fileStore.setContext(context);
         fileStore.setPath(directory, filename);
         CompletableFuture<Boolean> future = fileStore.upload(new byte[0]);
