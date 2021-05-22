@@ -16,7 +16,6 @@ import com.ncnf.R;
 import com.ncnf.utilities.settings.Settings;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Month;
 
 public class SettingsActivity extends AppCompatActivity {

@@ -3,9 +3,7 @@ package com.ncnf.utilities.settings;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
-import java.time.chrono.ChronoLocalDateTime;
 
 public class Settings {
 
