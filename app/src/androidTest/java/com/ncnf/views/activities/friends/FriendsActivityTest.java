@@ -78,8 +78,9 @@ public class FriendsActivityTest {
     }
 
     @Test
-    public void friendsPageViewerTest() {
+    public void friendsPageViewerTest() throws InterruptedException {
         onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
+        Thread.sleep(1000);
         onView(withId(R.id.friends_view_pager)).perform(swipeRight());
     }
 
@@ -162,16 +163,18 @@ public class FriendsActivityTest {
     }
 
     @Test
-    public void friendsRequestsFragmentShowsOneRequest(){
+    public void friendsRequestsFragmentShowsOneRequest() throws InterruptedException {
         when(friendsRepository.awaitingRequests(anyString())).thenReturn(CompletableFuture.completedFuture(users));
         onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
+        Thread.sleep(1000);
         onView(withId(R.id.friends_requests_recycler_view)).check(new RecyclerViewItemCountAssertion(1));
     }
 
     @Test
-    public void friendsRequestsFragmentShowsNoRequest(){
+    public void friendsRequestsFragmentShowsNoRequest() throws InterruptedException {
         when(friendsRepository.awaitingRequests(anyString())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
         onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
+        Thread.sleep(1000);
         onView(withId(R.id.friends_requests_recycler_view)).check(new RecyclerViewItemCountAssertion(0));
     }
 
@@ -179,7 +182,7 @@ public class FriendsActivityTest {
     public void friendsRequestsFragmentShowsMessageOnAccept() throws InterruptedException {
         when(friendsRepository.awaitingRequests(anyString())).thenReturn(CompletableFuture.completedFuture(users));
         onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         onView(withId(R.id.accept_friends_request)).perform(click());
         onView(withId(R.id.friends_request_message)).check(matches(isDisplayed()));
     }
@@ -188,7 +191,7 @@ public class FriendsActivityTest {
     public void friendsRequestsFragmentShowsMessageOnDecline() throws InterruptedException {
         when(friendsRepository.awaitingRequests(anyString())).thenReturn(CompletableFuture.completedFuture(users));
         onView(withId(R.id.friends_view_pager)).perform(swipeLeft());
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         onView(withId(R.id.decline_friends_request)).perform(click());
         onView(withId(R.id.friends_request_message)).check(matches(isDisplayed()));
     }
