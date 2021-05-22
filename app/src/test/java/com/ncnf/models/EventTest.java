@@ -1,10 +1,7 @@
 package com.ncnf.models;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.firebase.DatabaseService;
-import com.ncnf.models.Event;
-import com.ncnf.models.SocialObject;
-import com.ncnf.models.Tag;
+import com.ncnf.database.firebase.FirebaseDatabase;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,17 +36,17 @@ public class EventTest {
     List<String> attendees = new ArrayList<>();
     int minAge = 0;
     int price = 0;
-    List<Tag> tags = new ArrayList<>();
+    List<EventTag> eventTags = new ArrayList<>();
 
-    DatabaseService db;
+    FirebaseDatabase db;
     Event mainEvent;
     CompletableFuture<Boolean> response;
     CompletableFuture<Boolean> response2;
 
     @Before
     public void setup(){
-        db = Mockito.mock(DatabaseService.class);
-        mainEvent = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, tags, "test@email.com");
+        db = Mockito.mock(FirebaseDatabase.class);
+        mainEvent = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, eventTags, "test@email.com");
         response = CompletableFuture.completedFuture(true);
     }
 
@@ -86,11 +83,11 @@ public class EventTest {
     @Test
     public void secondaryConstructorTest(){
         attendees.add("Attendee1");
-        Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
-        tags.add(tag);
+        EventTag eventTag = new EventTag("\uD83C\uDFB8", "Rock Music");
+        eventTags.add(eventTag);
 
 
-        Event event = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, tags, "test@email.com");
+        Event event = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, eventTags, "test@email.com");
         assertEquals(event.getUuid(), uuid);
         assertEquals(event.getOwnerId(), ownerID);
         assertEquals(event.getDate(), date);
@@ -103,8 +100,8 @@ public class EventTest {
         assertEquals(event.getAttendees().get(0), "Attendee1");
         assertEquals(event.getAttendees().size(), 1);
 
-        assertEquals(event.getTags().size(), 1);
-        assertEquals(event.getTags().get(0), tag);
+        assertEquals(event.getEventTags().size(), 1);
+        assertEquals(event.getEventTags().get(0), eventTag);
 
     }
 
@@ -129,22 +126,22 @@ public class EventTest {
     @Test
     public void addTagWorks() {
         Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
-        Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
-        event.addTag(tag);
-        assertTrue(event.getTags().contains(tag));
+        EventTag eventTag = new EventTag("\uD83C\uDFB8", "Rock Music");
+        event.addTag(eventTag);
+        assertTrue(event.getEventTags().contains(eventTag));
     }
 
     @Test
     public void setTagWorks() {
-        List<Tag> list = new ArrayList<Tag>();
-        Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
-        Tag tag2 = new Tag("\uD83C\uDFB8", "Folk Music");
-        list.add(tag);
-        list.add(tag2);
+        List<EventTag> list = new ArrayList<EventTag>();
+        EventTag eventTag = new EventTag("\uD83C\uDFB8", "Rock Music");
+        EventTag eventTag2 = new EventTag("\uD83C\uDFB8", "Folk Music");
+        list.add(eventTag);
+        list.add(eventTag2);
         Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
-        event.setTags(list);
+        event.setEventTags(list);
 
-        List<Tag> result = event.getTags();
+        List<EventTag> result = event.getEventTags();
         assertEquals(result.size(), list.size());
         for(int i = 0; i < result.size(); ++i) {
             assertEquals(list.get(i), result.get(i));
@@ -190,12 +187,12 @@ public class EventTest {
     @Test
     public void filterTagsWorks() {
         Event event = new Event("ownerId", name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
-        Tag tag = new Tag("\uD83C\uDFB8", "Rock Music");
-        Tag tag2 = new Tag("\uD83C\uDFB8", "Folk Music");
-        event.addTag(tag);
-        event.addTag(tag2);
+        EventTag eventTag = new EventTag("\uD83C\uDFB8", "Rock Music");
+        EventTag eventTag2 = new EventTag("\uD83C\uDFB8", "Folk Music");
+        event.addTag(eventTag);
+        event.addTag(eventTag2);
 
-        assertTrue(event.filterTags(tag2.getName()));
+        assertTrue(event.filterTags(eventTag2.getName()));
         assertFalse(event.filterTags("example"));
     }
 

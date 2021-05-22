@@ -1,9 +1,8 @@
 package com.ncnf.repositories;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Organization;
-import com.ncnf.repositories.OrganizationRepository;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,17 +22,17 @@ import static org.mockito.Mockito.when;
 
 public class OrganizationRepositoryTests {
 
-    private static DatabaseService databaseService = Mockito.mock(DatabaseService.class);
+    private static FirebaseDatabase firebaseDatabase = Mockito.mock(FirebaseDatabase.class);
 
     private final Organization o1 = new Organization("EPFL", new GeoPoint(1,1), "Ecublens", "epfl@bar.com", "08008008080", "Vetterli");
     private final List<Organization> organizations = Collections.singletonList(o1);
 
     @Test
     public void getUserOrganizationsIsSuccessful() {
-        when(databaseService.whereArrayContains(anyString(), anyString(), anyString(), eq(Organization.class)))
+        when(firebaseDatabase.whereArrayContains(anyString(), anyString(), anyString(), eq(Organization.class)))
                 .thenReturn(CompletableFuture.completedFuture(organizations));
 
-        OrganizationRepository repository = new OrganizationRepository(databaseService);
+        OrganizationRepository repository = new OrganizationRepository(firebaseDatabase);
         CompletableFuture<List<Organization>> future = repository.getUserOrganizations("u1");
 
         try {
@@ -45,9 +44,9 @@ public class OrganizationRepositoryTests {
 
     @Test
     public void addUserToOrganizationIsSuccessful() {
-        when(databaseService.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
+        when(firebaseDatabase.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
-        OrganizationRepository repository = new OrganizationRepository(databaseService);
+        OrganizationRepository repository = new OrganizationRepository(firebaseDatabase);
         CompletableFuture<Boolean> future = repository.addUserToOrganization("u1", "o1");
 
         try {
@@ -59,9 +58,9 @@ public class OrganizationRepositoryTests {
 
     @Test
     public void addUserToOrganizationFails() {
-        when(databaseService.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(false));
+        when(firebaseDatabase.updateArrayField(anyString(), anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(false));
 
-        OrganizationRepository repository = new OrganizationRepository(databaseService);
+        OrganizationRepository repository = new OrganizationRepository(firebaseDatabase);
         CompletableFuture<Boolean> future = repository.addUserToOrganization("u1", "o1");
 
         try {
@@ -73,10 +72,10 @@ public class OrganizationRepositoryTests {
 
     @Test
     public void getByNameIsSuccessful() {
-        when(databaseService.withFieldContaining(anyString(), anyString(), anyString(), eq(Organization.class)))
+        when(firebaseDatabase.withFieldContaining(anyString(), anyString(), anyString(), eq(Organization.class)))
                 .thenReturn(CompletableFuture.completedFuture(organizations));
 
-        OrganizationRepository repository = new OrganizationRepository(databaseService);
+        OrganizationRepository repository = new OrganizationRepository(firebaseDatabase);
         CompletableFuture<List<Organization>> future = repository.getByName("EPFL");
 
         try {

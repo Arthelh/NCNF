@@ -25,13 +25,13 @@ import com.ncnf.views.fragments.organization.OrganizationViewFragment;
 
 import java.util.List;
 
-public class  MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, ClusterManager.OnClusterItemClickListener<NCNFMarker>, ClusterManager.OnClusterItemInfoWindowClickListener<NCNFMarker> {
+public class  MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, ClusterManager.OnClusterItemClickListener<CustomMapMarker>, ClusterManager.OnClusterItemInfoWindowClickListener<CustomMapMarker> {
 
     private final AppCompatActivity context;
     private final View markerWindow;
     private final Window globalWindow;
     private final FragmentManager fragmentManager;
-    private NCNFMarker item;
+    private CustomMapMarker item;
 
     public MarkerInfoWindowManager(AppCompatActivity context, Window globalWindow, FragmentManager fragmentManager){
         this.context = context;
@@ -42,16 +42,16 @@ public class  MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Cl
     }
 
     @Override
-    public boolean onClusterItemClick(NCNFMarker item) {
+    public boolean onClusterItemClick(CustomMapMarker item) {
         this.item = item;
         return false;
     }
 
     @Override
-    public void onClusterItemInfoWindowClick(NCNFMarker item) {
+    public void onClusterItemInfoWindowClick(CustomMapMarker item) {
         Fragment fragment;
 
-        if (item.isEvent()){
+        if (item.isEvent()) {
             List<Event> eventList = item.getEventList();
 
             if (eventList.size() == 1) { //When the marker represents only one event

@@ -2,9 +2,8 @@ package com.ncnf.utilities.event;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.models.Event;
+import com.ncnf.models.EventTag;
 import com.ncnf.models.SocialObject;
-import com.ncnf.models.Tag;
-import com.ncnf.utilities.event.EventRelevanceCalculator;
 
 import org.junit.Test;
 
@@ -30,15 +29,15 @@ public class EventRelevanceCalculatorTests {
         Event event2 = new Event(ownerId, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
         Event event3 = new Event(ownerId, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
 
-        event1.addTag(new Tag("\uD83D\uDCF1", "Technology"));
-        event1.addTag(new Tag("\uD83D\uDCF1", "Conference"));
-        event1.addTag(new Tag("\uD83D\uDCF1", "Artificial Intelligence"));
+        event1.addTag(new EventTag("\uD83D\uDCF1", "Technology"));
+        event1.addTag(new EventTag("\uD83D\uDCF1", "Conference"));
+        event1.addTag(new EventTag("\uD83D\uDCF1", "Artificial Intelligence"));
 
-        event2.addTag(new Tag("\uD83D\uDCF1", "Opera"));
-        event2.addTag(new Tag("\uD83D\uDCF1", "Singing"));
-        event2.addTag(new Tag("\uD83D\uDCF1", "Art"));
+        event2.addTag(new EventTag("\uD83D\uDCF1", "Opera"));
+        event2.addTag(new EventTag("\uD83D\uDCF1", "Singing"));
+        event2.addTag(new EventTag("\uD83D\uDCF1", "Art"));
 
-        event3.addTag(new Tag("\uD83D\uDCF1", "Art"));
+        event3.addTag(new EventTag("\uD83D\uDCF1", "Art"));
 
         List<Event> l = new ArrayList<>();
         l.add(event1);

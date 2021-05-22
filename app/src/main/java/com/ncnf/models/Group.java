@@ -1,7 +1,7 @@
 package com.ncnf.models;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 
 public class Group extends SocialObject {
 
-    public DatabaseService databaseService;
+    public FirebaseDatabase firebaseDatabase;
 
     private final List<String> invited;
 
@@ -47,7 +47,7 @@ public class Group extends SocialObject {
         return getDate().compareTo(otherGroup.getDate());
     }
 
-    public CompletableFuture<Boolean> store(DatabaseService db){
+    public CompletableFuture<Boolean> store(FirebaseDatabase db){
         return db.setDocument(GROUPS_COLLECTION_KEY + this.getUuid(), this);
     }
 

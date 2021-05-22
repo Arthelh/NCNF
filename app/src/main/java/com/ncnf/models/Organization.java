@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.utilities.InputValidator;
 
 import static com.ncnf.utilities.InputValidator.checkCompleteList;
@@ -49,7 +49,7 @@ public class Organization {
     }
 
 
-    public CompletableFuture<Boolean> saveToDB(DatabaseService db){
+    public CompletableFuture<Boolean> saveToDB(FirebaseDatabase db){
         if(uuid == null || checkCompleteList(adminIds)){
             return CompletableFuture.completedFuture(false);
         }

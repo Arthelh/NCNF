@@ -15,10 +15,11 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-import com.ncnf.database.firebase.DatabaseService;
 import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
 import com.ncnf.models.SocialObject;
+import com.ncnf.repositories.EventRepository;
+import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.utilities.settings.Settings;
 
 import java.util.ArrayList;
@@ -29,16 +30,15 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
-import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
-import static com.ncnf.utilities.StringCodes.ORGANIZATIONS_COLLECTION_KEY;
 
 public class MapHandler {
 
     private final Activity context;
     private final GoogleMap mMap;
-    private final DatabaseService databaseService;
+    private final EventRepository eventRepository;
+    private final OrganizationRepository organizationRepository;
 
-    private ClusterManager<NCNFMarker> clusterManager;
+    private ClusterManager<CustomMapMarker> clusterManager;
 
     //Event cache to avoid querying every time we switch from organizers to events
     private List<Event> cache;
@@ -53,12 +53,14 @@ public class MapHandler {
      * @param context The activity the map will be displayed in
      * @param mMap The Google Map to display
      * @param fragmentManager A children fragment manager from the MapFragment
-     * @param databaseService the service to query the database
+     * @param eventRepository the service to query the database
      */
-    public MapHandler(AppCompatActivity context, GoogleMap mMap, FragmentManager fragmentManager, DatabaseService databaseService){
+    public MapHandler(AppCompatActivity context, GoogleMap mMap, FragmentManager fragmentManager, EventRepository eventRepository, OrganizationRepository organizationRepository){
         this.context = context;
         this.mMap = mMap;
-        this.databaseService = databaseService;
+        this.eventRepository = eventRepository;
+        this.organizationRepository = organizationRepository;
+
         if (mMap != null) { //This is just for MapHandler Unit test
             MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context, context.getWindow(), fragmentManager);
 
@@ -141,7 +143,8 @@ public class MapHandler {
                 desc.append(p.getName()).append("\n");
             }
             String description = desc.toString();
-            clusterManager.addItem(new NCNFMarker(k, description, eventMap.get(k).get(0).getAddress(), list, null, true));
+
+            clusterManager.addItem(new CustomMapMarker(k, description, eventMap.get(k).get(0).getAddress(), list, null, true));
         }
         clusterManager.cluster();
     }
@@ -151,7 +154,7 @@ public class MapHandler {
             LatLng venue_position = new LatLng(o.getLocation().getLatitude(), o.getLocation().getLongitude());
             Log.d(DEBUG_TAG, "Organization position: " + venue_position.toString());
             if (MapUtilities.position_in_range(venue_position, Settings.getUserPosition())){
-                clusterManager.addItem(new NCNFMarker(venue_position, o.getName(), o.getAddress(), new ArrayList<>(), o, false));
+                clusterManager.addItem(new CustomMapMarker(venue_position, o.getName(), o.getName(), new ArrayList<>(), o, false));
             }
         }
         clusterManager.cluster();
@@ -160,7 +163,7 @@ public class MapHandler {
     private void queryAndAddEvents(){
         final List<Event> result = new ArrayList<>();
 
-        CompletableFuture<List<Event>> completableFuture = databaseService.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, Event.class);
+        CompletableFuture<List<Event>> completableFuture = eventRepository.getEventsNearBy();
         completableFuture.thenAccept(eventList -> {
 
             result.addAll(eventList);
@@ -177,7 +180,7 @@ public class MapHandler {
     private void queryAndAddOrgs(){
         final List<Organization> result = new ArrayList<>();
 
-        CompletableFuture<List<Organization>> completableFuture = databaseService.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance(), ORGANIZATIONS_COLLECTION_KEY, Organization.class);
+        CompletableFuture<List<Organization>> completableFuture = organizationRepository.getOrgsNearBy();
         completableFuture.thenAccept(organizations -> {
 
             result.addAll(organizations);

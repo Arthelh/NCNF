@@ -29,7 +29,7 @@ import com.ncnf.R;
 import com.ncnf.models.Organization;
 import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.models.User;
-import com.ncnf.adapters.OrganizationAdapter;
+import com.ncnf.adapters.OrganizationListAdapter;
 import com.ncnf.utilities.InputValidator;
 import com.ncnf.utilities.PopUpAlert;
 
@@ -58,7 +58,7 @@ public class OrganizationTabFragment extends Fragment {
 
     private TextView emptyView;
     private RecyclerView recycler;
-    OrganizationAdapter adapter;
+    OrganizationListAdapter adapter;
 
     private List<Organization> organizations;
     private Bundle savedInstanceState;
@@ -98,7 +98,7 @@ public class OrganizationTabFragment extends Fragment {
         //Set visibility
         updateVisibility();
 
-        adapter = new OrganizationAdapter(organizations, this::onOrganizationClick);
+        adapter = new OrganizationListAdapter(organizations, this::onOrganizationClick);
         recycler.setAdapter(adapter);
     }
 

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.ncnf.R;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.SocialObject;
 import com.ncnf.utilities.InputValidator;
 
@@ -23,7 +23,7 @@ import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH
 public class EventNewsActivity extends AppCompatActivity {
 
     @Inject
-    DatabaseService db;
+    FirebaseDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

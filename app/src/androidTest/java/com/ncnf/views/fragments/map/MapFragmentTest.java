@@ -23,10 +23,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
-import com.ncnf.database.firebase.DatabaseService;
 import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
 import com.ncnf.models.SocialObject;
+import com.ncnf.repositories.EventRepository;
+import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.views.activities.settings.SettingsActivity;
 
@@ -72,7 +73,8 @@ import static org.mockito.Mockito.when;
 @HiltAndroidTest
 public final class MapFragmentTest {
 
-    static private final DatabaseService db = Mockito.mock(DatabaseService.class);
+    static private final EventRepository mockEventRepository = Mockito.mock(EventRepository.class);
+    static private final OrganizationRepository mockOrgRepo = Mockito.mock(OrganizationRepository.class);
 
     static private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
     static private final Event e2 = new Event("u2", "Another Fun event", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
@@ -88,15 +90,18 @@ public final class MapFragmentTest {
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(activityRule);
 
     @BindValue
-    public DatabaseService databaseService = db;
+    public EventRepository eventRepository = mockEventRepository;
+
+    @BindValue
+    public OrganizationRepository organizationRepository = mockOrgRepo;
 
     @BeforeClass
     static public void injectEvents() {
         CompletableFuture<List<Event>> future = CompletableFuture.completedFuture(events);
-        when(db.geoQuery(any(LatLng.class), anyInt(), eq(EVENTS_COLLECTION_KEY), eq(Event.class))).thenReturn(future);
-
         CompletableFuture<List<Organization>> orgFuture = CompletableFuture.completedFuture(orgs);
-        when(db.geoQuery(any(LatLng.class), anyInt(), eq(ORGANIZATIONS_COLLECTION_KEY), eq(Organization.class))).thenReturn(orgFuture);
+
+        when(mockEventRepository.getEventsNearBy()).thenReturn(future);
+        when(mockOrgRepo.getOrgsNearBy()).thenReturn(orgFuture);
     }
 
     @Before

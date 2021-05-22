@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
-import com.ncnf.adapters.EventAdapter;
+import com.ncnf.adapters.EventListAdapter;
 import com.ncnf.models.Event;
 import com.ncnf.views.fragments.event.EventFragment;
 import com.ncnf.models.User;
@@ -35,10 +35,10 @@ import dagger.hilt.android.AndroidEntryPoint;
 import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
 
 @AndroidEntryPoint
-public class EventDisplayFragment extends Fragment implements EventAdapter.OnSocialObjListener {
+public class EventDisplayFragment extends Fragment implements EventListAdapter.OnSocialObjListener {
 
     private List<Event> objToDisplay;
-    private EventAdapter adapter;
+    private EventListAdapter adapter;
     private RecyclerView.LayoutManager lManager;
     private final String collection;
 
@@ -66,7 +66,7 @@ public class EventDisplayFragment extends Fragment implements EventAdapter.OnSoc
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter
-        adapter = new EventAdapter(getContext(), objToDisplay, this::onEventClick, EventAdapter.SortingMethod.DATE);
+        adapter = new EventListAdapter(getContext(), objToDisplay, this::onEventClick, EventListAdapter.SortingMethod.DATE);
         recycler.setAdapter(adapter);
         getEventList(view.findViewById(R.id.SavedEventsRecyclerView));
 

@@ -1,7 +1,10 @@
 package com.ncnf.repositories;
 
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.models.Event;
+import com.ncnf.models.Group;
 import com.ncnf.models.Organization;
+import com.ncnf.utilities.settings.Settings;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -13,15 +16,42 @@ import static com.ncnf.utilities.StringCodes.*;
 
 public class OrganizationRepository {
 
-    private final DatabaseService db;
+    private final FirebaseDatabase db;
 
     public OrganizationRepository() {
-        this.db = new DatabaseService();
+        this.db = new FirebaseDatabase();
     }
 
     @Inject
-    public OrganizationRepository(DatabaseService db)  {
+    public OrganizationRepository(FirebaseDatabase db)  {
         this.db = db;
+    }
+
+    /**
+     * Loads the Organization from Database
+     * @param uuid the unique identifier of the Organization
+     * @return A CompletableFuture wrapping the loaded Organization
+     */
+    public CompletableFuture<Organization> loadOrganization(String uuid){
+        return this.db.getDocument(ORGANIZATIONS_COLLECTION_KEY + uuid, Organization.class);
+    }
+
+    /**
+     * Stores the Organization to Database
+     * @param organization the Organization object to store
+     * @return A CompletableFuture wrapping a boolean indicating that the request was successful or not
+     */
+    public CompletableFuture<Boolean> storeOrganization(Organization organization){
+        return this.db.setDocument(ORGANIZATIONS_COLLECTION_KEY + organization.getUuid(), organization);
+    }
+
+    /**
+     * Loads multiple Organization objects from Database
+     * @param uuidList the list of Organization unique identifiers to load
+     * @return A CompletableFuture wrapping a list containing the loaded Organization objects
+     */
+    public CompletableFuture<List<Organization>> loadMultipleOrganizations(List<String> uuidList){
+        return this.db.whereIn(ORGANIZATIONS_COLLECTION_KEY, UUID_KEY, uuidList, Organization.class);
     }
 
     /**
@@ -57,7 +87,6 @@ public class OrganizationRepository {
         return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_NAME, name, Organization.class);
     }
 
-
     public CompletableFuture<List<Organization>> getOrganizationsWithToken(String token){
         return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_ADMIN_TOKEN, token, Organization.class);
     }
@@ -65,5 +94,13 @@ public class OrganizationRepository {
     private CompletableFuture<Boolean> combine(CompletableFuture<Boolean> u1, CompletableFuture<Boolean> u2) {
         return u1.thenCombine(u2, (v1, v2) -> v1 && v2)
                 .exceptionally(exception -> false);
+    }
+
+    /**
+     * Returns all organization that are in a radius set in the settings around the current user position
+     * @return A CompletableFuture wrapping a list containing the nearby Organization objects
+     */
+    public CompletableFuture<List<Organization>> getOrgsNearBy(){
+        return db.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, ORGANIZATIONS_COLLECTION_KEY, Organization.class);
     }
 }
