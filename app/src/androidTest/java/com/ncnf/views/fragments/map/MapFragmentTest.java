@@ -154,7 +154,7 @@ public final class MapFragmentTest {
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
         assertNotNull("Map with events is loaded",
-                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 1000)
+                device.wait(Until.hasObject(By.desc("MAP_WITH_EVENTS")), 5000)
         );
         // Events are shown
         UiObject marker = device.findObject(new UiSelector().descriptionContains("TestGeo"));
@@ -233,7 +233,7 @@ public final class MapFragmentTest {
             int x = markerRect.centerX();
             int y = markerRect.centerY() - markerRect.height();
             device.click(x, y);
-            Thread.sleep(5000);
+            Thread.sleep(10000);
         } catch (UiObjectNotFoundException | InterruptedException e) {
             Assert.fail("Marker not found.");
         }
@@ -259,7 +259,7 @@ public final class MapFragmentTest {
             int x = markerRect.centerX();
             int y = markerRect.centerY() - markerRect.height();
             device.click(x, y);
-            Thread.sleep(5000);
+            Thread.sleep(10000);
         } catch (UiObjectNotFoundException | InterruptedException e) {
             Assert.fail("Marker not found.");
         }
