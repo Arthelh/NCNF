@@ -119,12 +119,16 @@ public class MapHandler {
         clusterManager.cluster();
     }
 
+    /**
+     * Add the marker on the map for each event in the list (either its own marker or marker for a cluster of event)
+     * @param events List of events we want to add an marker
+     */
     private void addEventMarkers(List<Event> events){
         Map<LatLng, List<Event>> eventMap = new HashMap<>();
         for (Event p : events) {
             LatLng event_position = new LatLng(p.getLocation().getLatitude(), p.getLocation().getLongitude());
 
-            //Additional check in range as geoqueries sometimes have false positives (https://cloud.google.com/firestore/docs/solutions/geoqueries#javaandroid_1)
+            //Additional check in range as geo-queries sometimes have false positives (https://cloud.google.com/firestore/docs/solutions/geoqueries#javaandroid_1)
             if (MapUtilities.position_in_range(event_position, Settings.getUserPosition())){
                 if (!eventMap.containsKey(event_position)){
                     eventMap.put(event_position, new ArrayList<>());
@@ -145,6 +149,9 @@ public class MapHandler {
         clusterManager.cluster();
     }
 
+    /**
+     * Add markers for venues
+     */
     private void addVenueMarkers(){
         // TODO: Link to the database
         VenueProvider venueProvider = new VenueProvider();
@@ -157,6 +164,9 @@ public class MapHandler {
         }
     }
 
+    /**
+     * Fetch the user's nearby events
+     */
     private void queryAndAddEvents(){
         final List<Event> result = new ArrayList<>();
 
@@ -174,7 +184,9 @@ public class MapHandler {
         });
     }
 
-    //This makes it so that markers cluster as soon as 2 of them are close enough
+    /**
+     * Set the clustering of markers on the map
+     */
     private class CustomRender<T extends ClusterItem> extends DefaultClusterRenderer<T>{
         public CustomRender(Context context, GoogleMap map, ClusterManager clusterManager){
             super(context, map, clusterManager);

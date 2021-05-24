@@ -23,6 +23,10 @@ public class Registration {
         this.user = user;
     }
 
+    /**
+     * Register the current user in FirebaseMessaging service
+     * @return CompletableFuture containing the FirebaseMessaging service's response : true if successful
+     */
     public CompletableFuture<Boolean> register() {
         CompletableFuture<Boolean> res = new CompletableFuture<>();
 
@@ -41,6 +45,10 @@ public class Registration {
         return res;
     }
 
+    /**
+     * Remove the current user from FirebaseMessaging service
+     * @return CompletableFuture containing the FirebaseMessaging service's response : true if successful
+     */
     public CompletableFuture<Boolean> unregister() {
         CompletableFuture<Boolean> res = new CompletableFuture<>();
 

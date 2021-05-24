@@ -30,18 +30,20 @@ public class NCNFMarker implements ClusterItem {
         this.isEvent = isEvent;
     }
 
+    /**
+     * Getters for attributes
+     */
+
     @NonNull
     @Override
     public LatLng getPosition() {
         return position;
     }
-
     @Nullable
     @Override
     public String getTitle() {
         return title;
     }
-
     @Nullable
     @Override
     public String getSnippet() {
@@ -49,7 +51,6 @@ public class NCNFMarker implements ClusterItem {
     }
 
     public List<Event> getEventList() {return Collections.unmodifiableList(eventList);}
-
     public boolean isEvent(){
         return isEvent;
     }

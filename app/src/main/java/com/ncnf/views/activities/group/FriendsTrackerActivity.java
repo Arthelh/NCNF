@@ -117,8 +117,8 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             //changeUserLocs();
 
             findUserButton.setOnClickListener(v -> {
-                if(user.getLoc() != null) {
-                    setMapCamera(user.getLoc());
+                if(user.getLocation() != null) {
+                    setMapCamera(user.getLocation());
                 }
             });
         });
@@ -179,13 +179,13 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             });
         }
         if(marker == null) {
-            if(user.getLoc() != null) {
-                marker = mMap.addMarker(new MarkerOptions().position(new LatLng(user.getLoc().getLatitude(), user.getLoc().getLongitude())));
+            if(user.getLocation() != null) {
+                marker = mMap.addMarker(new MarkerOptions().position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude())));
                 marker.setTitle(user.getFullName());
             }
         }
         else {
-            marker.setPosition(new LatLng(user.getLoc().getLatitude(), user.getLoc().getLongitude()));
+            marker.setPosition(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()));
         }
     }
 
@@ -216,7 +216,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             if (location != null) {
                 GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
 
-                user.setLoc(geoPoint);
+                user.setLocation(geoPoint);
 
                 if (marker == null) {
                     marker = mMap.addMarker(new MarkerOptions().position(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude())));
@@ -235,7 +235,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     private void saveUserLocation() {
         if(user != null) {
-            dbs.updateField(USERS_COLLECTION_KEY + user.getUuid(), USER_LOCATION_KEY, user.getLoc());
+            dbs.updateField(USERS_COLLECTION_KEY + user.getUuid(), USER_LOCATION_KEY, user.getLocation());
         }
     }
 

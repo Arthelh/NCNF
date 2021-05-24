@@ -65,7 +65,9 @@ public class SearchBarHandler {
         });
     }
 
-    //Sets the behavior for when text is changed in the search bar
+    /**
+     * Sets the behavior for when text is changed in the search bar
+     */
     public void createTextChangeListener(AutocompleteSessionToken token, PlacesClient placesClient){
         materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override
@@ -113,7 +115,9 @@ public class SearchBarHandler {
         });
     }
 
-    //Creates the behavior for when clicking on a suggestion
+    /**
+     * Creates the behavior for when clicking on a suggestion
+     */
     private void createSuggestionsClickListener(PlacesClient placesClient){
         materialSearchBar.setSuggestionsClickListener(new SuggestionsAdapter.OnItemViewClickListener() {
             @Override

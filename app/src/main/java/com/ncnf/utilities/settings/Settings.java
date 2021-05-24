@@ -69,10 +69,16 @@ public class Settings {
         return LocalDate.from(maxDate);
     }
 
+    /**
+     * Setter for the user's position
+     */
     public static void setUserPosition(LatLng userPosition) {
         Settings.userPosition = new LatLng(userPosition.latitude, userPosition.longitude);
     }
 
+    /**
+     * Getter for the user's position
+     */
     public static LatLng getUserPosition(){
         return new LatLng(Settings.userPosition.latitude, Settings.userPosition.longitude);
     }

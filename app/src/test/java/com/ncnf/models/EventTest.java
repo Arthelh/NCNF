@@ -2,9 +2,6 @@ package com.ncnf.models;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.firebase.DatabaseService;
-import com.ncnf.models.Event;
-import com.ncnf.models.SocialObject;
-import com.ncnf.models.Tag;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,7 +46,7 @@ public class EventTest {
     @Before
     public void setup(){
         db = Mockito.mock(DatabaseService.class);
-        mainEvent = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, tags, "test@email.com");
+        mainEvent = new Event(uuid, ownerID, name, date, geoPoint, address, description, type, attendees, minAge, price, tags, "test@email.com");
         response = CompletableFuture.completedFuture(true);
     }
 
@@ -90,7 +87,7 @@ public class EventTest {
         tags.add(tag);
 
 
-        Event event = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, tags, "test@email.com");
+        Event event = new Event(uuid, ownerID, name, date, geoPoint, address, description, type, attendees, minAge, price, tags, "test@email.com");
         assertEquals(event.getUuid(), uuid);
         assertEquals(event.getOwnerId(), ownerID);
         assertEquals(event.getDate(), date);

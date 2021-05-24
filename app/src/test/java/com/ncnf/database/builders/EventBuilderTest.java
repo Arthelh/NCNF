@@ -2,8 +2,6 @@ package com.ncnf.database.builders;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.builders.EventBuilder;
-import com.ncnf.database.builders.GroupBuilder;
 import com.ncnf.models.Event;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
@@ -144,7 +142,7 @@ public class EventBuilderTest {
         SocialObject.Type type = SocialObject.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
-        Group group = new Group(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
+        Group group = new Group(uuid, ownerId, name, date, location, address, type, attendees, description, invited);
         Map<String, Object> map = groupbuilder.toMap(group);
         assertEquals(groupbuilder.toObject(uuid.toString(), map), group);
 
@@ -155,7 +153,7 @@ public class EventBuilderTest {
         SocialObject.Type type = SocialObject.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
-        Event event = new Event(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, tags, email);
+        Event event = new Event(uuid, ownerId, name, date, location, address, description, type, attendees, minAge, price, tags, email);
         Map<String, Object> map = eventBuilder.toMap(event);
         assertEquals(eventBuilder.toObject(uuid.toString(), map), event);
 

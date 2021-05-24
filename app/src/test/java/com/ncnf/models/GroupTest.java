@@ -2,8 +2,6 @@ package com.ncnf.models;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.firebase.DatabaseService;
-import com.ncnf.models.Group;
-import com.ncnf.models.SocialObject;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -81,7 +79,7 @@ public class GroupTest {
         attendees.add("Attendee1");
         invited.add("Invited1");
 
-        Group event = new Group(ownerId, uuid, name, date, geoPoint, address, type, attendees, description, invited);
+        Group event = new Group(uuid, ownerId, name, date, geoPoint, address, type, attendees, description, invited);
         assertEquals(event.getUuid(), uuid);
         assertEquals(event.getOwnerId(), ownerId);
         assertEquals(event.getDate(), date);

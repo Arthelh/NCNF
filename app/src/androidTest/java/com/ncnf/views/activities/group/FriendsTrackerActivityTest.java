@@ -87,7 +87,7 @@ public class FriendsTrackerActivityTest {
 
         p1 = new GeoPoint(0.03, 0.03);
 
-        when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
+        when(user.getLocation()).thenReturn(new GeoPoint(0, 0));
 
 
         when(dbs.getField(USERS_COLLECTION_KEY + "0", USER_LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(p1));

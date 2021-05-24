@@ -30,7 +30,6 @@ import com.ncnf.authentication.firebase.CurrentUserModule;
 import com.ncnf.models.User;
 
 import static android.content.ContentValues.TAG;
-import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 
@@ -118,7 +117,7 @@ public class LocationService extends Service {
                                 GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                                 dbs.updateField(USERS_COLLECTION_KEY + user1.getUuid(), LOCATION_KEY, geoPoint).thenAccept(bool ->{
                                     if(bool){
-                                        user1.setLoc(geoPoint);
+                                        user1.setLocation(geoPoint);
                                     }
                                 }).exceptionally(exception -> {
                                     stopSelf();

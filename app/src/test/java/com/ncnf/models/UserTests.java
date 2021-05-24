@@ -3,10 +3,6 @@ package com.ncnf.models;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.authentication.firebase.AuthenticationService;
 import com.ncnf.database.firebase.DatabaseService;
-import com.ncnf.models.Event;
-import com.ncnf.models.Group;
-import com.ncnf.models.SocialObject;
-import com.ncnf.models.User;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -148,7 +144,7 @@ public class UserTests {
         assertEquals(user.getParticipatingGroupsIds(), empty);
         assertEquals(user.getBirthDate(), null);
         assertFalse(user.getNotifications());
-        assertEquals(user.getLoc(), null);
+        assertEquals(user.getLocation(), null);
 
 
         user.setUsername(username);
@@ -159,7 +155,7 @@ public class UserTests {
         user.setBirthDate(date);
         user.setNotifications(true);
         user.setParticipatingGroupsIds(groups);
-        user.setLoc(location);
+        user.setLocation(location);
         user.setEmail(newEmail);
 
         assertEquals(user.getUuid(), "1234567890");
@@ -171,7 +167,7 @@ public class UserTests {
         assertEquals(user.getBirthDate(), date);
         assertTrue(user.getNotifications());
         assertEquals(user.getParticipatingGroupsIds(), groups);
-        assertEquals(user.getLoc(), location);
+        assertEquals(user.getLocation(), location);
         assertEquals(user.getEmail(), newEmail);
     }
 

@@ -23,6 +23,19 @@ public class Event extends SocialObject {
     private int minAge;
     private String email;
 
+    /**
+     * Public constructor used to create a new event
+     * @param ownerId Identifier of the owner of this event
+     * @param name Name of the event
+     * @param date Date during which the event will take place
+     * @param location Location where the event will take place (GPS coordinates)
+     * @param address Address corresponding the location of the event
+     * @param description Description of the event
+     * @param type Type of event : Concert, Movie, Museum, etc.
+     * @param minAge Minimum age to attend the event
+     * @param price Price to pay to attend the event
+     * @param email Contact email of the event
+     */
     public Event(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type, int minAge, double price, String email) {
         super(ownerId, name, date, location, address, type, description);
 
@@ -34,8 +47,24 @@ public class Event extends SocialObject {
         this.email = email;
     }
 
-    public Event(String ownerId, UUID uuid, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<Tag> tags, String email) {
-        super(ownerId, uuid, name, date, location, address, type, attendees, description);
+    /**
+     * Public constructor used to create an event from an already existing event
+     * @param uuid Unique identifier of the event
+     * @param ownerId Identifier of the owner of this event
+     * @param name Name of the event
+     * @param date Date during which the event will take place
+     * @param location Location where the event will take place (GPS coordinates)
+     * @param address Address corresponding the location of the event
+     * @param description Description of the event
+     * @param type Type of event : Concert, Movie, Museum, etc.
+     * @param attendees List of IDs of the people attending the event
+     * @param minAge Minimum age to attend the event
+     * @param price Price to pay to attend the event
+     * @param tags List of the event's tags
+     * @param email Contact email of the event
+     */
+    public Event(UUID uuid, String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<Tag> tags, String email) {
+        super(uuid, ownerId, name, date, location, address, type, attendees, description);
 
         checkConstraints(minAge, price);
 
@@ -45,32 +74,43 @@ public class Event extends SocialObject {
         this.email = email;
     }
 
+    /**
+     * Check if the minimum age and price respect the constraint :
+     * age and price can't be negative and age can't have a value to high as well
+     */
     private void checkConstraints(int minAge, double price){
         if(!(minAge >= MIN_AGE && minAge <= MAX_AGE) || price < 0) {
             throw new IllegalArgumentException();
         }
     }
 
+    /**
+     * Getters for the event's attributes
+     */
     public int getMinAge() { return minAge; }
     public double getPrice() { return price; }
     public String getEmail() { return email; }
     public List<Tag> getTags() { return new ArrayList<Tag>(tags); }
 
+    /**
+     * Setters for the event's attributes
+     */
     public void setMinAge(int minAge) {
         checkConstraints(minAge, this.price);
         this.minAge = minAge;
     }
-
     public void setPrice(double price) { this.price = price; }
-
     public void setEmail(String email) { this.email = email; }
-
     public void setTags(List<Tag> tags) {
-        this.tags = new ArrayList<Tag>(tags);
+        this.tags = new ArrayList<>(tags);
     }
 
+    /**
+     * Method to add a new tag to the event
+     * @param newTag
+     * @return
+     */
     public boolean addTag(Tag newTag) {
-
         for(int i = 0; i < tags.size(); ++i) {
             if(tags.get(i).equals(newTag)) {
                 return true;
@@ -79,6 +119,11 @@ public class Event extends SocialObject {
         return tags.add(newTag);
     }
 
+    /**
+     * Method that filters the event's tags : checks if one of the tags contains the given string
+     * @param s String that should be contained in the tags
+     * @return Boolean describing whether or not a tag contains the given string
+     */
     public boolean filterTags(String s) {
 
         for(Tag tag : tags) {
@@ -102,6 +147,11 @@ public class Event extends SocialObject {
         return p.getUuid().equals(getUuid());
     }
 
+    /**
+     * Store the event in the given database service
+     * @param db Database service used to store the event
+     * @return CompletableFuture containing the Firebase's response : true if successful
+     */
     public CompletableFuture<Boolean> store(@NonNull DatabaseService db){
         return db.setDocument(EVENTS_COLLECTION_KEY + this.getUuid(), this);
     }

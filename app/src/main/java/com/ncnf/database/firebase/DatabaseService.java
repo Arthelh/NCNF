@@ -160,14 +160,14 @@ public class DatabaseService implements DatabaseServiceInterface {
     }
 
     @Override
-    public <T, R> CompletableFuture<List<R>> whereArrayContains(String collectionPath, String field, T value, Class<R> type) {
+    public <T, R> CompletableFuture<List<R>> whereArrayContains(String collectionPath, String arrayField, T value, Class<R> collectionType) {
         CompletableFuture<List<R>> futureResponse = new CompletableFuture<>();
 
-        this.db.collection(collectionPath).whereArrayContains(field, value).get().addOnCompleteListener(task -> {
+        this.db.collection(collectionPath).whereArrayContains(arrayField, value).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 List<R> result = new ArrayList<>();
                 for(DocumentSnapshot document : task.getResult().getDocuments()){
-                    result.add((R) registry.get(type).toObject(document.getId(), document.getData()));
+                    result.add((R) registry.get(collectionType).toObject(document.getId(), document.getData()));
                 }
 
                 futureResponse.complete(result);
@@ -180,14 +180,14 @@ public class DatabaseService implements DatabaseServiceInterface {
     }
 
     @Override
-    public <T, R> CompletableFuture<List<R>> whereEqualTo(String collectionPath, String field, T value, Class<R> type) {
+    public <T, R> CompletableFuture<List<R>> whereEqualTo(String collectionPath, String field, T value, Class<R> collectionType) {
         CompletableFuture<List<R>> futureResponse = new CompletableFuture<>();
 
         this.db.collection(collectionPath).whereEqualTo(field, value).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 List<R> result = new ArrayList<>();
                 for(DocumentSnapshot document : task.getResult().getDocuments()){
-                    result.add((R) registry.get(type).toObject(document.getId(), document.getData()));
+                    result.add((R) registry.get(collectionType).toObject(document.getId(), document.getData()));
                 }
 
                 futureResponse.complete(result);
@@ -200,7 +200,7 @@ public class DatabaseService implements DatabaseServiceInterface {
     }
 
     @Override
-    public <T, R> CompletableFuture<List<R>> whereIn(String collectionPath, String field, List<T> values, Class<R> type) {
+    public <T, R> CompletableFuture<List<R>> whereIn(String collectionPath, String field, List<T> values, Class<R> collectionType) {
         CompletableFuture<List<R>> futureResponse = new CompletableFuture<>();
 
         if(values == null) {
@@ -213,7 +213,7 @@ public class DatabaseService implements DatabaseServiceInterface {
         
         List<CompletableFuture<List<R>>> futures = values
                 .stream()
-                .map(value -> this.whereEqualTo(collectionPath, field, value, type))
+                .map(value -> this.whereEqualTo(collectionPath, field, value, collectionType))
                 .collect(Collectors.toList());
 
         return CompletableFuture

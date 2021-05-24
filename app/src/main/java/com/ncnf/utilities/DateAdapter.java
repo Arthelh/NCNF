@@ -18,6 +18,9 @@ public class DateAdapter {
 
     private final LocalDateTime date;
 
+    /**
+     * Constructor using LocalDateTime date as initial value
+     */
     public DateAdapter(LocalDateTime date) {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(Date.from(date.atZone(ZoneId.systemDefault()).toInstant()));
@@ -31,6 +34,9 @@ public class DateAdapter {
         minute = calendar.get(Calendar.MINUTE);
     }
 
+    /**
+     * Constructor using year, month and day to initialize its attributes
+     */
     public DateAdapter(int year, int month, int day) {
         final Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
@@ -47,6 +53,9 @@ public class DateAdapter {
         minute = calendar.get(Calendar.MINUTE);
     }
 
+    /**
+     * Constructor using year, month, day, hour and minute to initialize its attributes
+     */
     public DateAdapter(int year, int month, int day, int hour, int minute) {
         final Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
@@ -65,30 +74,33 @@ public class DateAdapter {
         this.minute = minute;
     }
 
+    /**
+     * Getter for attributes
+     */
     public LocalDateTime getDate() {
         return date;
     }
-
     public int getYear() {
         return year;
     }
-
     public int getMonth() {
         return month;
     }
-
     public int getDay() {
         return day;
     }
-
     public int getHour() {
         return hour;
     }
-
     public int getMinute() {
         return minute;
     }
 
+    /**
+     * Parse a string to a date
+     * @param s String we want to parse
+     * @return Parsed date
+     */
     public static LocalDateTime toDate(String s) {
 
         Date date;

@@ -66,7 +66,7 @@ public class EventBuilder extends DatabaseObjectBuilder<Event> {
         List<Tag> tags = (List<Tag>) data.getOrDefault(TAGS_LIST_KEY, new ArrayList<>());
         String email = data.getOrDefault(EMAIL_KEY, "").toString();
         //TODO : should serialize / deserialize tags before adding them
-        return new Event(ownerId, UUID.fromString(uuidStr), name, datetime, location, address, description, type, attendees, minAge, price, tags, email);
+        return new Event(UUID.fromString(uuidStr), ownerId, name, datetime, location, address, description, type, attendees, minAge, price, tags, email);
     }
 
     @Override

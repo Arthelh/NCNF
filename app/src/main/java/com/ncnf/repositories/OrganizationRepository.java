@@ -8,6 +8,7 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
+import static com.ncnf.utilities.Helpers.combine;
 import static com.ncnf.utilities.StringCodes.*;
 
 
@@ -25,9 +26,9 @@ public class OrganizationRepository {
     }
 
     /**
-     * Get the organization a user belongs to
-     * @param uuid the user identifier
-     * @return a future organization
+     * Get all the organizations where the user is an administrator
+     * @param uuid User's identifier
+     * @return CompletableFuture containing a list of organizations
      */
     public CompletableFuture<List<Organization>> getUserOrganizations(String uuid) {
         return db.whereArrayContains(ORGANIZATIONS_COLLECTION_KEY, ADMIN_KEY, uuid, Organization.class);
@@ -35,9 +36,9 @@ public class OrganizationRepository {
 
     /**
      * Add a new admin to an organization
-     * @param user_id a user identifier
-     * @param organization_id an organization identifier
-     * @return whether the update succeed
+     * @param user_id User's identifier
+     * @param organization_id Organization's identifier
+     * @return CompletableFuture containing the Firebase's response : true if all the operations succeeded
      */
     public CompletableFuture<Boolean> addUserToOrganization(String user_id, String organization_id) {
         CompletableFuture<Boolean> r1 =
@@ -49,21 +50,20 @@ public class OrganizationRepository {
     }
 
     /**
-     * Fetch an organization given its name
-     * @param name name of the organization
-     * @return an organization
+     * Retrieve all organizations whose name is equal to the given one
+     * @param name Name we want to match
+     * @return CompletableFuture containing a list of organizations that fulfills the condition
      */
     public CompletableFuture<List<Organization>> getByName(String name){
         return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_NAME, name, Organization.class);
     }
 
-
+    /**
+     * Retrieve all organizations whose token is equal to the given one
+     * @param token Token we want to match
+     * @return CompletableFuture containing a list of organizations that fulfills the condition
+     */
     public CompletableFuture<List<Organization>> getOrganizationsWithToken(String token){
         return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_ADMIN_TOKEN, token, Organization.class);
-    }
-
-    private CompletableFuture<Boolean> combine(CompletableFuture<Boolean> u1, CompletableFuture<Boolean> u2) {
-        return u1.thenCombine(u2, (v1, v2) -> v1 && v2)
-                .exceptionally(exception -> false);
     }
 }

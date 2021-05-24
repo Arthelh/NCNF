@@ -62,6 +62,10 @@ public class CacheFileStore extends FileStore {
         return future;
     }
 
+    /**
+     * Store data file on FirebaseStorage
+     * @param data
+     */
     private void storeFile(byte[] data) {
         super.requiresPath();
 
@@ -75,6 +79,11 @@ public class CacheFileStore extends FileStore {
         }
     }
 
+    /**
+     * Create a new directory and a new file from the root on FirebaseStorage
+     * @param directory Directory path where the file will be stored (can be nested directories)
+     * @param filename Name of the created file
+     */
     private File createFile(String directory, String filename) {
         File root = context.getCacheDir();
         File dir = new File(root, directory);
@@ -82,6 +91,10 @@ public class CacheFileStore extends FileStore {
         return new File(dir, filename);
     }
 
+    /**
+     * Check if the context was set up previously
+     * @throws IllegalStateException Exception throw if the context wasn't set properly
+     */
     private void requiresContext() throws IllegalStateException {
         if (this.context == null)
             throw new IllegalStateException("Please set a context before setting the path.");
