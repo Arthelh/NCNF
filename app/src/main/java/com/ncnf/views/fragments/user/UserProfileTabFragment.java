@@ -36,12 +36,12 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.ncnf.R;
-import com.ncnf.authentication.firebase.AuthenticationService;
+import com.ncnf.authentication.firebase.FirebaseAuthentication;
 import com.ncnf.views.activities.bookmark.BookMarkActivity;
 import com.ncnf.views.activities.friends.FriendsActivity;
 import com.ncnf.views.activities.main.MainActivity;
-import com.ncnf.utilities.registration.Registration;
-import com.ncnf.storage.firebase.CacheFileStore;
+import com.ncnf.notifications.firebase.FirebaseNotifications;
+import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.models.User;
 
 import java.io.IOException;
@@ -67,13 +67,13 @@ public class UserProfileTabFragment extends Fragment {
     public User user;
 
     @Inject
-    public Registration registration;
+    public FirebaseNotifications firebaseNotifications;
 
     @Inject
-    public CacheFileStore fileStore;
+    public FirebaseCacheFileStore fileStore;
 
     @Inject
-    public AuthenticationService auth;
+    public FirebaseAuthentication auth;
 
     private LocalDate birthDay;
 
@@ -406,12 +406,12 @@ public class UserProfileTabFragment extends Fragment {
         notification_switch.setChecked(user.getNotifications());
         notification_switch.setOnCheckedChangeListener((view, isChecked) -> {
             if (isChecked) {
-                registration.register().thenAccept(v->successMsg.show()).exceptionally(exception -> {
+                firebaseNotifications.registerToNotifications().thenAccept(v->successMsg.show()).exceptionally(exception -> {
                     errorMsg.show();
                     return null;
                 });
             } else {
-                registration.unregister().thenAccept(v->successMsg.show()).exceptionally(exception -> {
+                firebaseNotifications.unregisterFromNotifications().thenAccept(v->successMsg.show()).exceptionally(exception -> {
                     errorMsg.show();
                     return null;
                 });

@@ -25,8 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.maps.model.LatLng;
 import com.ncnf.R;
 
-import com.ncnf.adapters.EventAdapter;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.adapters.EventListAdapter;
+import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.repositories.EventRepository;
 import com.ncnf.utilities.map.MapUtilities;
 import com.ncnf.utilities.settings.Settings;
 import com.ncnf.models.Event;
@@ -48,14 +49,12 @@ import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
 public class FeedFragment extends Fragment {
 
     @Inject
-    public DatabaseService databaseService;
+    public EventRepository eventRepository;
 
     private RecyclerView.LayoutManager lManager;
     private RecyclerView recycler;
-    private EventAdapter adapter;
+    private EventListAdapter adapter;
     private List<Event> eventList = new ArrayList<>();
-
-    private static final String CHANNEL_NAME = "events_to_be_shown";
 
     public FeedFragment(){
         super();
@@ -88,7 +87,7 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Get the RecyclerView
-        recycler = (RecyclerView) requireView().findViewById(R.id.feed_recycler_view);
+        recycler = requireView().findViewById(R.id.feed_recycler_view);
 
         // Use LinearLayout as the layout manager
         lManager = new LinearLayoutManager(getActivity());
@@ -98,7 +97,7 @@ public class FeedFragment extends Fragment {
         if (eventList.isEmpty()){
             actualizeEvents();
         } else {
-            adapter = new EventAdapter(getContext(), eventList, this::onEventClick, EventAdapter.SortingMethod.DATE);
+            adapter = new EventListAdapter(getContext(), eventList, this::onEventClick, EventListAdapter.SortingMethod.DATE);
             recycler.setAdapter(adapter);
         }
     }
@@ -164,10 +163,10 @@ public class FeedFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.dateOrder :
-                adapter.orderBy(EventAdapter.SortingMethod.DATE);
+                adapter.orderBy(EventListAdapter.SortingMethod.DATE);
                 break;
             case R.id.relevanceOrder :
-                adapter.orderBy(EventAdapter.SortingMethod.RELEVANCE);
+                adapter.orderBy(EventListAdapter.SortingMethod.RELEVANCE);
                 break;
         }
         return true;
@@ -183,7 +182,7 @@ public class FeedFragment extends Fragment {
     private void actualizeEvents(){
         final List<Event> result = new ArrayList<>();
 
-        CompletableFuture<List<Event>> completableFuture = databaseService.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, Event.class);
+        CompletableFuture<List<Event>> completableFuture = eventRepository.getEventsNearBy();
         completableFuture.thenAccept(eventList -> {
 
             for (Event e : eventList){
@@ -191,7 +190,7 @@ public class FeedFragment extends Fragment {
                 if (MapUtilities.position_in_range(Settings.getUserPosition(), eventPosition))
                     result.add(e);
             }
-            adapter = new EventAdapter(getContext(), result, this::onEventClick, EventAdapter.SortingMethod.DATE);
+            adapter = new EventListAdapter(getContext(), result, this::onEventClick, EventListAdapter.SortingMethod.DATE);
             recycler.setAdapter(adapter);
 
         }).exceptionally(e -> {

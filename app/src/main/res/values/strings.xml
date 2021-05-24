@@ -74,7 +74,7 @@
     <string name="date_of_birth">Date of birth...</string>
     <string name="save">Save</string>
     <string name="name">Name</string>
-    <string name="tag">Tag</string>
+    <string name="eventTag">Tag</string>
     <string name="socialObject">Event</string>
     <string name="id">ID</string>
     <string name="data">Data</string>
@@ -86,7 +86,7 @@
     <string name="email_hint">Email...</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="register">Register</string>
-    <string name="registration">Registration</string>
+    <string name="firebaseNotifications">Registration</string>
     <string name="password_hint">Password...</string>
     <string name="i_m_an_organizer">I\'m an organizer</string>
     <string name="home_profile_button">Profile</string>

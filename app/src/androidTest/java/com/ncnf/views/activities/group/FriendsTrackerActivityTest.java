@@ -15,7 +15,7 @@ import androidx.test.uiautomator.UiSelector;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.authentication.firebase.CurrentUserModule;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
 import com.ncnf.utilities.user.LocationService;
 
@@ -70,7 +70,7 @@ public class FriendsTrackerActivityTest {
     public User user = mock(User.class);
 
     @BindValue
-    public DatabaseService dbs = mock(DatabaseService.class);
+    public FirebaseDatabase dbs = mock(FirebaseDatabase.class);
 
     @Before
     public void setup(){

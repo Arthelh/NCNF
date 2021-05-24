@@ -1,6 +1,6 @@
 package com.ncnf.repositories;
 
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
 
@@ -9,20 +9,55 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
-import static com.ncnf.utilities.StringCodes.*;
+import static com.ncnf.utilities.StringCodes.ADMIN_KEY;
+import static com.ncnf.utilities.StringCodes.ORGANIZATIONS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.ORGANIZATION_ADMIN_TOKEN;
+import static com.ncnf.utilities.StringCodes.ORGANIZATION_NAME;
+import static com.ncnf.utilities.StringCodes.ORGANIZATION_UUID;
+import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS;
+import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.USER_ORGANIZATIONS;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 
 public class OrganizationRepository {
 
-    private final DatabaseService db;
+    private final FirebaseDatabase db;
 
     public OrganizationRepository() {
-        this.db = new DatabaseService();
+        this.db = new FirebaseDatabase();
     }
 
     @Inject
-    public OrganizationRepository(DatabaseService db)  {
+    public OrganizationRepository(FirebaseDatabase db)  {
         this.db = db;
+    }
+
+    /**
+     * Loads the Organization from Database
+     * @param uuid the unique identifier of the Organization
+     * @return A CompletableFuture wrapping the loaded Organization
+     */
+    public CompletableFuture<Organization> loadOrganization(String uuid){
+        return this.db.getDocument(ORGANIZATIONS_COLLECTION_KEY + uuid, Organization.class);
+    }
+
+    /**
+     * Stores the Organization to Database
+     * @param organization the Organization object to store
+     * @return A CompletableFuture wrapping a boolean indicating that the request was successful or not
+     */
+    public CompletableFuture<Boolean> storeOrganization(Organization organization){
+        return this.db.setDocument(ORGANIZATIONS_COLLECTION_KEY + organization.getUuid(), organization);
+    }
+
+    /**
+     * Loads multiple Organization objects from Database
+     * @param uuidList the list of Organization unique identifiers to load
+     * @return A CompletableFuture wrapping a list containing the loaded Organization objects
+     */
+    public CompletableFuture<List<Organization>> loadMultipleOrganizations(List<String> uuidList){
+        return this.db.whereIn(ORGANIZATIONS_COLLECTION_KEY, UUID_KEY, uuidList, Organization.class);
     }
 
     /**

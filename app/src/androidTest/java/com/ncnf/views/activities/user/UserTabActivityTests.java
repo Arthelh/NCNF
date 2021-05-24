@@ -10,13 +10,12 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.models.User;
+import com.ncnf.notifications.firebase.FirebaseNotifications;
 import com.ncnf.views.activities.bookmark.BookMarkActivity;
 import com.ncnf.authentication.firebase.FirebaseUserModule;
 import com.ncnf.views.activities.friends.FriendsActivity;
 import com.ncnf.views.activities.main.MainActivity;
-import com.ncnf.utilities.registration.Registration;
 import com.ncnf.authentication.firebase.CurrentUserModule;
-import com.ncnf.views.activities.user.UserTabActivity;
 
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -91,7 +90,7 @@ public class UserTabActivityTests {
     public User user = mockUser;
 
     @BindValue
-    Registration registration = Mockito.mock(Registration.class);
+    FirebaseNotifications firebaseNotifications = Mockito.mock(FirebaseNotifications.class);
 
     @BindValue
     public FirebaseUser firebaseUser = mockFirebaseUser;
@@ -262,8 +261,8 @@ public class UserTabActivityTests {
     @Test
     public void enableNotificationsIsSuccessful() {
         CompletableFuture<Boolean> future = CompletableFuture.completedFuture(true);
-        when(registration.register()).thenReturn(future);
-        when(registration.unregister()).thenReturn(future);
+        when(firebaseNotifications.registerToNotifications()).thenReturn(future);
+        when(firebaseNotifications.unregisterFromNotifications()).thenReturn(future);
 
         onView(withId(R.id.profile_notification_switch)).perform(scrollTo(), click());
 
@@ -283,8 +282,8 @@ public class UserTabActivityTests {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
         future.completeExceptionally(exception);
 
-        when(registration.register()).thenReturn(future);
-        when(registration.unregister()).thenReturn(future);
+        when(firebaseNotifications.registerToNotifications()).thenReturn(future);
+        when(firebaseNotifications.unregisterFromNotifications()).thenReturn(future);
 
         onView(withId(R.id.profile_notification_switch)).perform(scrollTo(), click());
 

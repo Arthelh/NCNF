@@ -37,10 +37,10 @@ import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
-import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.models.SocialObject;
-import com.ncnf.storage.firebase.FileStore;
 import com.ncnf.models.User;
+import com.ncnf.repositories.OrganizationRepository;
+import com.ncnf.storage.firebase.FirebaseFileStore;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.InputValidator;
 
@@ -77,7 +77,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
     public User user;
 
     @Inject
-    public FileStore fileStore;
+    public FirebaseFileStore firebaseFileStore;
 
     @Inject
     public OrganizationRepository organizationRepository;
@@ -246,13 +246,13 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
                                 });
 
 
-                        fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
+                        firebaseFileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
                         pictureView.setDrawingCacheEnabled(true);
                         pictureView.buildDrawingCache();
                         Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
 
-                        // Simultaneously upload the image and save the event.
-                        CompletableFuture.allOf(fileStore.uploadImage(bitmap), user.createEvent(event))
+                        // Simultaneously upload the image and save the group.
+                        CompletableFuture.allOf(firebaseFileStore.uploadImage(bitmap), user.createEvent(event))
                                 .thenAccept(t -> nextStep())
                                 .exceptionally(e -> {
                                     failToCreateEvent(e.getMessage());
