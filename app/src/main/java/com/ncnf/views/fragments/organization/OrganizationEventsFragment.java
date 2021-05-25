@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
-import com.ncnf.adapters.EventAdapter;
+import com.ncnf.adapters.EventListAdapter;
 import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
 import com.ncnf.repositories.OrganizationRepository;
@@ -46,7 +46,7 @@ public class OrganizationEventsFragment extends Fragment {
     private String uuid;
 
     private RecyclerView recyclerView;
-    private EventAdapter adapter;
+    private EventListAdapter adapter;
     private final List<Event> eventsList = new LinkedList<>();
 
     public static final String MY_SHARED_PREFERENCES = "MySharedPrefs" ;
@@ -92,7 +92,7 @@ public class OrganizationEventsFragment extends Fragment {
                 this.eventsList.clear();
                 //TODO get all events
                 this.eventsList.addAll(le);
-                this.adapter = new EventAdapter(getContext(), this.eventsList, this::onEventClick, EventAdapter.SortingMethod.DATE);
+                this.adapter = new EventListAdapter(getContext(), this.eventsList, this::onEventClick, EventListAdapter.SortingMethod.DATE);
                 this.recyclerView.setAdapter(adapter);
             }).exceptionally(e -> {e.printStackTrace(); return null;});
         }).exceptionally(e -> {e.printStackTrace(); return null;});

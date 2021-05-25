@@ -1,11 +1,13 @@
 package com.ncnf.views.fragments.organization;
 
 import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.helpers.RecyclerViewItemCountAssertion;
 import com.ncnf.models.Organization;
 import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.models.User;
@@ -33,11 +35,15 @@ import dagger.hilt.android.testing.UninstallModules;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -98,23 +104,33 @@ public class OrganizationTabFragmentTests {
         onView(withId(R.id.organization_list_recyclerview)).perform(RecyclerViewActions.actionOnItem(
                 hasDescendant(withText("EPFL")), click()
         ));
-
-        onView(withId(R.id.organization_display_email)).check(matches(withText("johnny@bar.com")));
     }
 
     @Test
     public void addValidOrganization() {
         when(organizationRepository.getUserOrganizations(anyString())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
+        when(organizationRepository.getOrganizationsWithToken(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
+        when(organizationRepository.addUserToOrganization(anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
         onView(withId(R.id.user_view_pager)).perform(swipeLeft());
         onView(withId(R.id.add_organization_button)).perform(click());
 
-        // TODO
+        onView(withClassName(endsWith("EditText"))).perform(typeText("token"));
+        onView(withText("Enter")).perform(click());
+
+        onView(withId(R.id.organization_list_recyclerview)).check(new RecyclerViewItemCountAssertion(1));
     }
 
     @Test
     public void addInvalidOrganization() {
-        // TODO
+        when(organizationRepository.getUserOrganizations(anyString())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
+
+        onView(withId(R.id.user_view_pager)).perform(swipeLeft());
+        onView(withId(R.id.add_organization_button)).perform(click());
+
+        onView(withText("Enter")).perform(click());
+        onView(withClassName(endsWith("EditText"))).check(matches(hasErrorText("Token cannot be empty")));
+
     }
 
 }

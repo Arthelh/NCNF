@@ -61,6 +61,7 @@ public class OrganizationTabFragment extends Fragment {
     private TextView emptyView;
     private RecyclerView recycler;
     OrganizationListAdapter adapter;
+    private AlertDialog alertDialog;
 
     private List<Organization> organizations = new LinkedList<>();
     private Bundle savedInstanceState;
@@ -131,7 +132,7 @@ public class OrganizationTabFragment extends Fragment {
             args.putString("organization_id",o.getUuid().toString());
 
             orgProfileFrag = new OrganizationProfileTabs();
-            requireActivity().getSupportFragmentManager().setFragmentResult("organization_id_key",args);
+            requireActivity().getSupportFragmentManager().setFragmentResult("organization_id_key", args);
         }
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
@@ -169,7 +170,6 @@ public class OrganizationTabFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        //No switch case because R.ids won't be supported in switch case stmts soon
         if (id == R.id.add_organization_button) {
             organizationSearchAlertDialogue();
         }
@@ -183,15 +183,10 @@ public class OrganizationTabFragment extends Fragment {
 
         builder.setTitle("Enter name or Id of organization")
                 .setView(organizationNameOrIdInput)
-                .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
+                .setPositiveButton("Enter", null)
                 .setNegativeButton("Cancel", null)
                 .setCancelable(true);
-        AlertDialog alertDialog = builder.create();
+        alertDialog = builder.create();
         alertDialog.show();
         Button theButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
         theButton.setOnClickListener(new PositiveListener(alertDialog, organizationNameOrIdInput));
@@ -207,32 +202,25 @@ public class OrganizationTabFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            //Unused
             if (verifyTextInput(inputText)) {
                 String token = inputText.getText().toString();
                 organizationRepository.getOrganizationsWithToken(token).thenAccept(o -> {
                     int orgSize = o.size();
-                    switch (orgSize){
-                        case 0:
-                            new PopUpAlert().onCreateDialog(savedInstanceState, "ERROR").show();
-                            break;
-                        case 1:
-                            organizationRepository.addUserToOrganization(user.getUuid(), o.get(0).getUuid().toString());
-                            adapter.addOrganization(o.get(0));
-                            updateVisibility();
-                            break;
-                        default:
-                            throw new IllegalStateException("Too many organizations using the same token");
+                    if (o.size() == 1) {
+                        organizationRepository.addUserToOrganization(user.getUuid(), o.get(0).getUuid().toString());
+                        adapter.addOrganization(o.get(0));
+                        updateVisibility();
+                    } else {
+                        throw new IllegalStateException("Too many organizations using the same token");
                     }
                 }).exceptionally(e -> {
                     e.printStackTrace();
-                    displayPopUp(v, "Query failed");
-                                        return null;});
-            } else {
-                displayPopUp(v, "Invalid token input");
+                    displayPopUp(v, "No organization found");
+                    return null;
+                });
+                alertDialog.dismiss();
             }
         }
-        //dialog.dismiss();
     }
 
     private boolean verifyTextInput(EditText input) {
@@ -240,7 +228,6 @@ public class OrganizationTabFragment extends Fragment {
             InputValidator.setErrorMsg(input, "Token cannot be empty");
             return false;
         }
-        //TODO add additional checks
         return true;
     }
 
@@ -256,7 +243,7 @@ public class OrganizationTabFragment extends Fragment {
 
         //TODO CHANGE
 
-        // which view you pass in doesn't matter, it is only used for the window tolken
+        // which view you pass in doesn't matter, it is only used for the window token
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
         ((TextView) popupView.findViewById(R.id.popup_invalid_organization_text)).setText(errorText);
