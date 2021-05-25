@@ -107,7 +107,7 @@ public class FriendsTrackerActivityTest {
         UiDevice device = UiDevice.getInstance(getInstrumentation());
         UiObject marker = device.findObject(new UiSelector().descriptionContains("John"));
 
-        assertTrue("User marker exists", marker.waitForExists(2000));
+        assertTrue("User marker exists", marker.waitForExists(5000));
     }
 
     /**

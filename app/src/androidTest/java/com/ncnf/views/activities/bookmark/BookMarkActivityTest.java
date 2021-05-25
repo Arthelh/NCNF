@@ -89,6 +89,8 @@ public class BookMarkActivityTest {
         onView(withId(R.id.bookmark_view_pager)).perform(swipeLeft());
         onView(withId(R.id.bookmark_view_pager)).perform(swipeRight());
 
+        Thread.sleep(1000);
+
         onView(withId(R.id.bookmark_view_pager)).perform(click());
         onView(withId(R.id.EventPage)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }

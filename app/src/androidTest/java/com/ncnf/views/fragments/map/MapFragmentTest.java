@@ -234,7 +234,7 @@ public final class MapFragmentTest {
             int x = markerRect.centerX();
             int y = markerRect.centerY() - markerRect.height();
             device.click(x, y);
-            Thread.sleep(2000);
+            Thread.sleep(10000);
         } catch (UiObjectNotFoundException | InterruptedException e) {
             Assert.fail("Marker not found.");
         }
@@ -245,5 +245,30 @@ public final class MapFragmentTest {
 
         onView(withId(R.id.map_switch_button)).check(matches(withText(containsString("Switch"))));
 
+    }
+
+        @Test
+    public final void testOrgInfoWindow(){
+        onView(withId(R.id.map_switch_button)).perform(click());
+
+        UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+
+        UiObject marker = device.findObject(new UiSelector().descriptionContains(o1.getName()));
+        try {
+            marker.click();
+            Rect markerRect = marker.getBounds();
+            int x = markerRect.centerX();
+            int y = markerRect.centerY() - markerRect.height();
+            device.click(x, y);
+            Thread.sleep(10000);
+        } catch (UiObjectNotFoundException | InterruptedException e) {
+            Assert.fail("Marker not found.");
+        }
+
+        onView(withId(R.id.organization_display_name)).check(matches(withText(containsString(o1.getName()))));
+
+        Espresso.pressBack();
+
+        onView(withId(R.id.map_switch_button)).check(matches(withText(containsString("Switch"))));
     }
 }
