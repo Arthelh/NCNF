@@ -3,6 +3,8 @@ package com.ncnf.views.fragments.organization;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +77,13 @@ public class OrganizationEventsFragment extends Fragment {
         fetchOrganizationEvents();
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.organization_events_menu, menu);
+        //addOrgButton = menu.findItem(R.id.add_organization_button);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -100,12 +109,12 @@ public class OrganizationEventsFragment extends Fragment {
 
     private void createEvent() {
         Bundle args = new Bundle();
-        args.putString("organization_id", organization.getUuid().toString());
+        args.putString("organization_id", this.uuid);
 
         EventCreateFragment eventCreateFrag = new EventCreateFragment();
         eventCreateFrag.setArguments(args);
 
-        getChildFragmentManager().beginTransaction()
+        getParentFragmentManager().beginTransaction()
                 .replace(((ViewGroup) requireView().getParent()).getId(), eventCreateFrag, null)
                 .addToBackStack(FRAGMENT_ORGANIZATION_TAG)
                 .commit();
