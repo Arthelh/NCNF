@@ -5,7 +5,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Organization;
 import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.models.User;
@@ -49,8 +49,8 @@ public class OrganizationTabFragmentTests {
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(UserTabActivity.class);
 
-    private final DatabaseService databaseService = Mockito.mock(DatabaseService.class);
-    private final User u1 = new User(databaseService, "u1", "johnny", "johnny@bar.com", "John Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, LocalDate.now(), null);
+    private final FirebaseDatabase firebaseDatabase = Mockito.mock(FirebaseDatabase.class);
+    private final User u1 = new User(firebaseDatabase, "u1", "johnny", "johnny@bar.com", "John Smith", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, LocalDate.now(), null);
     private final Organization o1 = new Organization(UUID.randomUUID(), "EPFL", new GeoPoint(0, 0), "Ecublens", "ncnf@epfl.ch", "08008008080", Collections.singletonList("u1"), new ArrayList<>());
     private final List<Organization> organizations = Collections.singletonList(o1);
 

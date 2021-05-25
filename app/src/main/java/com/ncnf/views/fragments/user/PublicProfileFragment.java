@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
-import com.ncnf.storage.firebase.CacheFileStore;
+import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.models.User;
 
 import javax.inject.Inject;
@@ -27,7 +27,7 @@ import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 public class PublicProfileFragment extends Fragment {
 
     @Inject
-    public CacheFileStore fileStore;
+    public FirebaseCacheFileStore fileStore;
 
     private User user;
 

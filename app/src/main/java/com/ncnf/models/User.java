@@ -2,8 +2,8 @@ package com.ncnf.models;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.authentication.firebase.AuthenticationService;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.authentication.firebase.FirebaseAuthentication;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.authentication.firebase.CurrentUserModule;
 
 import java.time.LocalDate;
@@ -27,7 +27,7 @@ import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 public class User {
 
-    private DatabaseService db;
+    private FirebaseDatabase db;
 
     private final String uuid;
     private String username;
@@ -41,10 +41,7 @@ public class User {
     private boolean notifications;
     private GeoPoint loc;
 
-    
-    private final IllegalStateException wrongCredentials = new IllegalStateException("User doesn't have the right credentials to perform current operation");
-
-    public User(DatabaseService db, String uuid, String username, String email, String fullName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> participatingGroups, List<String> savedEventsIds, boolean notifications, LocalDate birthDate, GeoPoint loc) {
+    public User(FirebaseDatabase db, String uuid, String username, String email, String fullName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> participatingGroups, List<String> savedEventsIds, boolean notifications, LocalDate birthDate, GeoPoint loc) {
         if(isInvalidString(uuid) || isInvalidString(email)){
             throw new IllegalArgumentException();
         }
@@ -63,11 +60,11 @@ public class User {
     }
 
     public User(){
-        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), "",FirebaseAuth.getInstance().getCurrentUser().getEmail(),"", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
+        this(new FirebaseDatabase(), FirebaseAuth.getInstance().getUid(), "",FirebaseAuth.getInstance().getCurrentUser().getEmail(),"", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
     }
 
     public User(String username, String email, String fullName, String lastName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> savedEventsIds, LocalDate birthDate, boolean notifications, GeoPoint loc) {
-        this(new DatabaseService(), FirebaseAuth.getInstance().getUid(), username, email, fullName, friendsIds, ownedGroupsIds, new ArrayList<>(), savedEventsIds, notifications, birthDate, loc);
+        this(new FirebaseDatabase(), FirebaseAuth.getInstance().getUid(), username, email, fullName, friendsIds, ownedGroupsIds, new ArrayList<>(), savedEventsIds, notifications, birthDate, loc);
     }
 
     public String getUuid(){
@@ -198,7 +195,6 @@ public class User {
     }
 
     public CompletableFuture<Boolean> addOwnedGroup(Group group){
-
         if(this.ownedGroupsIds.add(group.getUuid().toString())){
             return this.db.updateArrayField(USERS_COLLECTION_KEY + uuid, OWNED_GROUPS_KEY, group.getUuid().toString())
                     .thenCompose(task -> addParticipatingGroup(group));
@@ -269,7 +265,7 @@ public class User {
         CurrentUserModule.signOut();
     }
 
-    public CompletableFuture<Boolean> changeEmail(AuthenticationService auth, String email){
+    public CompletableFuture<Boolean> changeEmail(FirebaseAuthentication auth, String email){
         return auth.changeEmail(email);
     }
 

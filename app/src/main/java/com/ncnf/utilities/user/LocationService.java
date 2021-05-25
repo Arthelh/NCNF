@@ -25,7 +25,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.authentication.firebase.CurrentUserModule;
 import com.ncnf.models.User;
 
@@ -43,7 +43,7 @@ public class LocationService extends Service {
 
     private FusedLocationProviderClient mFusedLocationClient;
 
-    private DatabaseService dbs;
+    private FirebaseDatabase dbs;
 
     private final static long UPDATE_INTERVAL = 3 * 1000;  /* 3 secs */
     private final static long FASTEST_INTERVAL = 2000; /* 2 sec */
@@ -58,7 +58,7 @@ public class LocationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        this.dbs = new DatabaseService();
+        this.dbs = new FirebaseDatabase();
 
 
         this.mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);

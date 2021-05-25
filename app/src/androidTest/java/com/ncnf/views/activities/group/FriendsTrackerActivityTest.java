@@ -20,6 +20,7 @@ import com.ncnf.authentication.firebase.CurrentUserModule;
 import com.ncnf.database.firebase.DatabaseService;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
 import com.ncnf.utilities.user.LocationService;
 

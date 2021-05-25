@@ -32,6 +32,7 @@ import com.ncnf.database.firebase.DatabaseService;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
 import com.ncnf.models.Tag;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
 import com.ncnf.storage.firebase.CacheFileStore;
 import com.ncnf.utilities.GroupAttendeeMarker;
@@ -72,7 +73,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     public User user;
 
     @Inject
-    public DatabaseService dbs;
+    public FirebaseDatabase dbs;
 
     @Inject
     public CacheFileStore fileStore;
