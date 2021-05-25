@@ -2,12 +2,17 @@ package com.ncnf.storage.firebase;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.maps.android.ui.IconGenerator;
+import com.ncnf.utilities.GroupAttendeeMarker;
 
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.CompletableFuture;
@@ -77,6 +82,8 @@ public class FileStore {
         Task<byte[]> download = fileRef.getBytes(MAX_SIZE);
         download.addOnSuccessListener(future::complete);
         download.addOnFailureListener(future::completeExceptionally);
+        Log.d("TAG", "in super download ");
+
 
         return future;
     }
