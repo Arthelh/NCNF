@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.RuntimeExecutionException;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
@@ -78,12 +79,13 @@ public class SearchBarHandler {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //Creates the prediction auto completer, accepts Cities, Addresses
-                try{
-                    FindAutocompletePredictionsRequest predictionsRequest = FindAutocompletePredictionsRequest.builder()
-                            .setCountries(MapUtilities.supported_countries)
-                            .setSessionToken(token)
-                            .setQuery(s.toString()).build();
-                    placesClient.findAutocompletePredictions(predictionsRequest).addOnCompleteListener(task -> {
+
+                FindAutocompletePredictionsRequest predictionsRequest = FindAutocompletePredictionsRequest.builder()
+                        .setCountries(MapUtilities.supported_countries)
+                        .setSessionToken(token)
+                        .setQuery(s.toString()).build();
+                placesClient.findAutocompletePredictions(predictionsRequest).addOnCompleteListener(task -> {
+                    try{
                         if (task.isSuccessful()){
                             FindAutocompletePredictionsResponse predictionsResponse = task.getResult();
                             if (predictionsResponse != null){
@@ -103,15 +105,13 @@ public class SearchBarHandler {
                             FindAutocompletePredictionsResponse predictionsResponse = task.getResult();
                             Log.i("AutoCompleteTask", "Prediction fetching task unsuccessful, status is: " + predictionsResponse.toString());
                         }
-                    });
+                    } catch (RuntimeExecutionException e){
+                        Toast.makeText(context, R.string.map_toolbar_error, Toast.LENGTH_LONG).show();
+                    }
+                });
 
-                    //This decides what to do once the user clicked on one of the given suggestions
-                    createSuggestionsClickListener(placesClient);
-                } catch (Exception e){
-                    Toast.makeText(context, R.string.map_toolbar_error, Toast.LENGTH_LONG).show();
-                } catch (Error r){
-                    Toast.makeText(context, R.string.map_toolbar_error, Toast.LENGTH_LONG).show();
-                }
+                //This decides what to do once the user clicked on one of the given suggestions
+                createSuggestionsClickListener(placesClient);
             }
 
             @Override
@@ -134,7 +134,7 @@ public class SearchBarHandler {
                 materialSearchBar.setText(suggestion);
 
                 //Because apparently just putting mSB.clearSuggestions() does not work
-                new Handler().postDelayed(materialSearchBar::clearSuggestions, 1000);
+                new Handler().postDelayed(materialSearchBar::clearSuggestions, 200);
 
                 //Hides the keyboard
                 InputMethodManager input = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
