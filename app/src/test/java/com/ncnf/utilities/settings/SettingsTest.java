@@ -33,7 +33,6 @@ public class SettingsTest {
     @Test
     public void testSetAndGetMinDate(){
         LocalDate testDate = LocalDate.now().plusDays(1);
-        assertNotEquals("First", testDate, Settings.getMinDate());
         Settings.setMinDate(testDate);
         assertEquals("Second", testDate, Settings.getMinDate());
     }

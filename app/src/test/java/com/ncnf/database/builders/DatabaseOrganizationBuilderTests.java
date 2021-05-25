@@ -62,8 +62,6 @@ public class DatabaseOrganizationBuilderTests {
         data.put(PHONE_NB_KEY, phoneNb);
         data.put(ORGANIZED_EVENTS, events);
 
-        assertNull(builder.toObject(uuid.toString(), data));
-        data.put(ADMIN_KEY, admins);
         Organization org = builder.toObject(uuid.toString(), data);
         Organization org2 = new Organization(uuid, name, location, address, email, phoneNb, admins, events);
         assertNotNull(org);
