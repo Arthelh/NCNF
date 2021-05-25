@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
@@ -19,6 +20,7 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
+import com.ncnf.R;
 import com.ncnf.utilities.settings.Settings;
 
 import java.util.ArrayList;
@@ -76,34 +78,40 @@ public class SearchBarHandler {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //Creates the prediction auto completer, accepts Cities, Addresses
-                FindAutocompletePredictionsRequest predictionsRequest = FindAutocompletePredictionsRequest.builder()
-                        .setCountries(MapUtilities.supported_countries)
-                        .setSessionToken(token)
-                        .setQuery(s.toString()).build();
-                placesClient.findAutocompletePredictions(predictionsRequest).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()){
-                        FindAutocompletePredictionsResponse predictionsResponse = task.getResult();
-                        if (predictionsResponse != null){
-                            //Retrieves the predictions and adds them to the list to be displayed below the search bar
-                            predictionList.clear();
-                            predictionList.addAll(predictionsResponse.getAutocompletePredictions());
-                            List<String> suggestions = new ArrayList<>();
-                            for (AutocompletePrediction a : predictionList){
-                                suggestions.add(a.getFullText(null).toString());
+                try{
+                    FindAutocompletePredictionsRequest predictionsRequest = FindAutocompletePredictionsRequest.builder()
+                            .setCountries(MapUtilities.supported_countries)
+                            .setSessionToken(token)
+                            .setQuery(s.toString()).build();
+                    placesClient.findAutocompletePredictions(predictionsRequest).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()){
+                            FindAutocompletePredictionsResponse predictionsResponse = task.getResult();
+                            if (predictionsResponse != null){
+                                //Retrieves the predictions and adds them to the list to be displayed below the search bar
+                                predictionList.clear();
+                                predictionList.addAll(predictionsResponse.getAutocompletePredictions());
+                                List<String> suggestions = new ArrayList<>();
+                                for (AutocompletePrediction a : predictionList){
+                                    suggestions.add(a.getFullText(null).toString());
+                                }
+                                materialSearchBar.updateLastSuggestions(suggestions);
+                                if (!materialSearchBar.isSuggestionsVisible()){
+                                    materialSearchBar.showSuggestionsList();
+                                }
                             }
-                            materialSearchBar.updateLastSuggestions(suggestions);
-                            if (!materialSearchBar.isSuggestionsVisible()){
-                                materialSearchBar.showSuggestionsList();
-                            }
+                        } else {
+                            FindAutocompletePredictionsResponse predictionsResponse = task.getResult();
+                            Log.i("AutoCompleteTask", "Prediction fetching task unsuccessful, status is: " + predictionsResponse.toString());
                         }
-                    } else {
-                        FindAutocompletePredictionsResponse predictionsResponse = task.getResult();
-                        Log.i("AutoCompleteTask", "Prediction fetching task unsuccessful, status is: " + predictionsResponse.toString());
-                    }
-                });
+                    });
 
-                //This decides what to do once the user clicked on one of the given suggestions
-                createSuggestionsClickListener(placesClient);
+                    //This decides what to do once the user clicked on one of the given suggestions
+                    createSuggestionsClickListener(placesClient);
+                } catch (Exception e){
+                    Toast.makeText(context, R.string.map_toolbar_error, Toast.LENGTH_LONG).show();
+                } catch (Error r){
+                    Toast.makeText(context, R.string.map_toolbar_error, Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
