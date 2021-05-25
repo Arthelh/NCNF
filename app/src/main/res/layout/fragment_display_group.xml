@@ -31,11 +31,12 @@
         android:id="@+id/group_members"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Group Members"
+        android:layout_marginTop="10dp"
+        android:text="Group Members :"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/group_display_name"
-        app:layout_constraintTop_toBottomOf="@+id/group_display_description" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier4"
@@ -47,9 +48,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/group_attendees_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/group_display_description"
         app:layout_constraintTop_toTopOf="@+id/barrier4" />
 
@@ -68,12 +72,41 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" /><![CDATA[
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
+    <TextView
+        android:id="@+id/group_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintStart_toEndOf="@+id/textView2" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Meeting Point : "
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/group_display_description"
+        app:layout_constraintTop_toBottomOf="@+id/group_display_description" />
 
-    />
+    <TextView
+        android:id="@+id/group_owner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="owner"
+        app:layout_constraintBottom_toBottomOf="@+id/textView3"
+        app:layout_constraintStart_toEndOf="@+id/textView3" />
 
-
-]]>
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Group Owner : "
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/group_address" />
 </androidx.constraintlayout.widget.ConstraintLayout>

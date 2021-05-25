@@ -45,7 +45,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -88,8 +90,8 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     private MapView mapView;
 
     private List<String> friendsUUID;
-    private List<GeoPoint> markers;
-    private List<Bitmap> images = new ArrayList<>();
+    private Map<String, GeoPoint> markers;
+    private Map<String, Bitmap> images = new HashMap<>();
 
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private FusedLocationProviderClient myFusedLocationClient;
@@ -118,7 +120,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
         String groupId = getIntent().getStringExtra("GROUP_ID");
 
-        markers = new ArrayList<>();
+        markers = new HashMap<>();
 
         findUserButton = findViewById(R.id.find_user_button);
 
@@ -187,7 +189,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
             for(int i = 0; i < markers.size(); ++i) {
 
-                GroupAttendeeMarker newAttendeeMarker = new GroupAttendeeMarker(new LatLng(markers.get(i).getLatitude(), markers.get(i).getLongitude()), "Friend " + i, "", friendsUUID.get(i), images.get(i));
+                GroupAttendeeMarker newAttendeeMarker = new GroupAttendeeMarker(new LatLng(markers.get(friendsUUID.get(i)).getLatitude(), markers.get(friendsUUID.get(i)).getLongitude()), "Friend " + i, "", friendsUUID.get(i), images.get(friendsUUID.get(i)));
 
                 if(friendsUUID.get(i).equals(user.getUuid())) {
                     newAttendeeMarker.setTitle("This is me");
@@ -229,29 +231,30 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
             String userId = friendsUUID.get(i);
 
-            if(userId == user.getUuid()) {
+            if(userId.equals(user.getUuid())) {
                 if(i >= markers.size()) {
-                    markers.add(user.getLoc());
+
+                    markers.put(userId, user.getLoc());
                     bitmapSetChanged();
                 }
             }
+            else {
+                CompletableFuture<GeoPoint> field = userRepository.getUserPosition(userId);
+                int finalI = i;
+                field.thenAccept(point -> {
 
-            Log.d("TAG", "uuid is " + friendsUUID.get(i));
-            CompletableFuture<GeoPoint> field = userRepository.getUserPosition(friendsUUID.get(i));
-            int finalI = i;
-            field.thenAccept(point -> {
+                    if (!markers.keySet().contains(userId)) {
 
-                if(finalI >= markers.size()) {
-                    markers.add(point);
-                    bitmapSetChanged();
-                }
-                else {
-                    markers.set(finalI, point);
-                    clusterMarkers.get(finalI).setPosition(new LatLng(point.getLatitude(), point.getLongitude()));
-                    groupAttendeeMarkerRenderer.updatePosition(clusterMarkers.get(finalI));
-                }
+                        markers.put(userId, point);
+                        bitmapSetChanged();
+                    } else {
+                        markers.put(userId, point);
+                        clusterMarkers.get(finalI).setPosition(new LatLng(point.getLatitude(), point.getLongitude()));
+                        groupAttendeeMarkerRenderer.updatePosition(clusterMarkers.get(finalI));
+                    }
 
-            });
+                });
+            }
         }
 
     }
@@ -290,7 +293,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
                 saveUserLocation();
 
             }
-            Log.d(TAG, "location null");
+
         });
     }
 
@@ -340,19 +343,18 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     public void getImagesForClusters() {
 
-        Log.d("TAG", "uuid's " + friendsUUID.size());
         for(int i = 0; i < friendsUUID.size(); ++i) {
             fileStore.setContext(getApplicationContext());
             fileStore.setPath(USER_IMAGE_PATH, friendsUUID.get(i) + ".jpg");
             CompletableFuture<byte[]> image = fileStore.download();
 
+            int finalI = i;
             image.thenAccept(data -> {
-                Log.d("TAG", "in exceptionally ");
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                images.add(bitmap);
+                images.put(friendsUUID.get(finalI), bitmap);
                 bitmapSetChanged();
             }).exceptionally(e -> {
-                images.add(decodeResource(getApplicationContext().getResources(), R.drawable.default_profile_picture));
+                images.put(friendsUUID.get(finalI), decodeResource(getApplicationContext().getResources(), R.drawable.default_profile_picture));
                 bitmapSetChanged();
                 return null;
             });
@@ -362,8 +364,8 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     }
 
     private void bitmapSetChanged() {
-        if(images.size() == friendsUUID.size()) {
-            if(markers.size() == friendsUUID.size()) {
+        if(images.keySet().size() == friendsUUID.size()) {
+            if(markers.keySet().size() == friendsUUID.size()) {
                 addMapMarkers();
             }
         }

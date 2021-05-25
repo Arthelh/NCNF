@@ -137,6 +137,8 @@ public class GroupFragmentTest {
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.group_display_name)).check(matches(withText("Group Test")));
         onView(withId(R.id.group_display_description)).check(matches(withText("description here")));
+        onView(withId(R.id.group_address)).check(matches(withText("random address")));
+        onView(withId(R.id.group_owner)).check(matches(withText("owner")));
         onView(withId(R.id.group_attendees_view)).check(matches(isDisplayed()));
     }
 

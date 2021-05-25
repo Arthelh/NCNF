@@ -2,7 +2,6 @@ package com.ncnf.views.fragments.group;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,22 +11,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
-import com.ncnf.adapters.GroupUserRecyclerAdapter;
-import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.adapters.UserListAdapter;
 import com.ncnf.models.Group;
-import com.ncnf.models.SocialObject;
 import com.ncnf.models.User;
 import com.ncnf.repositories.GroupRepository;
 import com.ncnf.repositories.UserRepository;
 import com.ncnf.views.activities.group.FriendsTrackerActivity;
+import com.ncnf.views.fragments.user.PublicProfileFragment;
+import com.ncnf.views.fragments.user.UserProfileTabFragment;
 
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -37,13 +36,11 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
-import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
-import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
-
 @AndroidEntryPoint
 public class GroupDisplayFragment extends Fragment {
 
+    @Inject
+    public User user;
 
     @Inject
     public GroupRepository repository;
@@ -55,9 +52,12 @@ public class GroupDisplayFragment extends Fragment {
     private Group group;
 
     private TextView groupName;
+    private TextView groupAddress;
     private TextView groupDescription;
+    private TextView groupOwner;
+
     private RecyclerView recycler;
-    private GroupUserRecyclerAdapter adapter;
+    private UserListAdapter adapter;
 
     private Button button;
 
@@ -73,6 +73,8 @@ public class GroupDisplayFragment extends Fragment {
 
         groupName = view.findViewById(R.id.group_display_name);
         groupDescription = view.findViewById(R.id.group_display_description);
+        groupAddress = view.findViewById(R.id.group_address);
+        groupOwner = view.findViewById(R.id.group_owner);
 
         recycler = view.findViewById(R.id.group_attendees_view);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -90,27 +92,14 @@ public class GroupDisplayFragment extends Fragment {
                 prepareAllFields();
             });
 
-
-
         }
     }
 
     private void prepareAllFields() {
-        adapter = new GroupUserRecyclerAdapter(new ArrayList<>());
-        recycler.setAdapter(adapter);
 
         groupName.setText(group.getName());
         groupDescription.setText(group.getDescription());
-
-        getUserName(group.getOwnerId());
-
-        for(int i = 0; i < group.getAttendees().size(); ++i) {
-            getUserName(group.getAttendees().get(i));
-        }
-
-    }
-
-    private void getUserName(String uuid) {
+        groupAddress.setText(group.getAddress());
 
         button.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), FriendsTrackerActivity.class);
@@ -118,17 +107,51 @@ public class GroupDisplayFragment extends Fragment {
             startActivity(intent);
         });
 
-        CompletableFuture <String> getName = userRepository.getUserFullName(uuid);
-        getName.thenAccept(s -> {
-            if(s != null && s.length() != 0) {
-                adapter.addUser(s);
+        userRepository.loadUser(group.getOwnerId()).thenAccept(user -> {
+            if(user.getFullName() != null && user.getFullName().length() > 0) {
+                if(user.getUsername() != null && user.getUsername().length() > 0) {
+                    groupOwner.setText(user.getFullName() + " (@" + user.getUsername() + ")");
+                }
+                else {
+                    groupOwner.setText(user.getFullName());
+                }
             }
             else {
-                CompletableFuture <String> getEmail = userRepository.getUserUsername(uuid);
-                getEmail.thenAccept(e -> adapter.addUser(e));
+                if(user.getUsername() != null && user.getUsername().length() > 0) {
+                    groupOwner.setText("@" + user.getUsername());
+                }
+                else {
+                    groupOwner.setText(user.getEmail());
+                }
             }
         });
 
+        List<String> uuids = new ArrayList<>(group.getAttendees());
+        uuids.add(group.getOwnerId());
+        CompletableFuture<List<User>> users = userRepository.loadMultipleUsers(uuids);
+        users.thenAccept(users1 -> {
+            adapter = new UserListAdapter(getContext(), users1, this::showUserPublicProfile);
+            recycler.setAdapter(adapter);
+        });
+
+    }
+
+    private void showUserPublicProfile(User user) {
+
+        FragmentManager fragmentManager = getParentFragmentManager();
+
+        if(user.getUuid().equals(this.user.getUuid())) {
+            UserProfileTabFragment userProfileTabFragment = new UserProfileTabFragment();
+            fragmentManager.beginTransaction().replace(((ViewGroup) requireView().getParent()).getId(), userProfileTabFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+        else {
+            PublicProfileFragment publicProfileFragment = new PublicProfileFragment(user);
+            fragmentManager.beginTransaction().replace(((ViewGroup) requireView().getParent()).getId(), publicProfileFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
 }
