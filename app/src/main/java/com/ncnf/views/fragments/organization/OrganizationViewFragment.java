@@ -60,8 +60,7 @@ public class OrganizationViewFragment extends Fragment {
         organizationRepository.getByUUID(uuid).thenAccept(o -> {
             this.organization = o.get(0);
             fillViews();
-                }
-        ).exceptionally(e -> {
+        }).exceptionally(e -> {
             e.printStackTrace();
             return null;
         });

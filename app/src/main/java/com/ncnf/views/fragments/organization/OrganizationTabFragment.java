@@ -2,7 +2,6 @@ package com.ncnf.views.fragments.organization;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -33,7 +32,6 @@ import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.models.User;
 import com.ncnf.adapters.OrganizationListAdapter;
 import com.ncnf.utilities.InputValidator;
-import com.ncnf.utilities.PopUpAlert;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +40,6 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.ncnf.utilities.StringCodes.FRAGMENT_ORGANIZATION_TAG;
 import static com.ncnf.utilities.StringCodes.generatePerViewID;
 
 @AndroidEntryPoint
@@ -61,7 +58,6 @@ public class OrganizationTabFragment extends Fragment {
     private TextView emptyView;
     private RecyclerView recycler;
     OrganizationListAdapter adapter;
-    private AlertDialog alertDialog;
 
     private List<Organization> organizations = new LinkedList<>();
     private Bundle savedInstanceState;
@@ -97,14 +93,10 @@ public class OrganizationTabFragment extends Fragment {
         adapter = new OrganizationListAdapter(organizations, this::onOrganizationClick);
         recycler.setAdapter(adapter);
 
-        //TODO Handle exceptions
         organizationRepository.getUserOrganizations(user.getUuid()).thenAccept(org -> {
             organizations = org;
             adapter.setOrganizations(organizations);
             updateVisibility();
-        }).exceptionally(e -> {
-            e.printStackTrace();
-            return null;
         });
 
     }
@@ -120,7 +112,6 @@ public class OrganizationTabFragment extends Fragment {
     }
 
     private void onOrganizationClick(Organization o) {
-
         //Check if fragment already exists
         String orgProfileTag = generatePerViewID(o);
         Fragment orgProfileFrag = fm.findFragmentByTag(orgProfileTag);
@@ -129,7 +120,7 @@ public class OrganizationTabFragment extends Fragment {
         if (!(orgProfileFrag instanceof OrganizationViewFragment)) {
 
             Bundle args = new Bundle();
-            args.putString("organization_id",o.getUuid().toString());
+            args.putString("organization_id", o.getUuid().toString());
 
             orgProfileFrag = new OrganizationProfileTabs();
             requireActivity().getSupportFragmentManager().setFragmentResult("organization_id_key", args);
@@ -144,7 +135,6 @@ public class OrganizationTabFragment extends Fragment {
             }
         };
 
-
         recycler.setVisibility(View.INVISIBLE);
         fm.beginTransaction()
               .hide(this)
@@ -153,10 +143,6 @@ public class OrganizationTabFragment extends Fragment {
               .commit();
 
         requireActivity().getOnBackPressedDispatcher().addCallback(callback);
-       /* fm.beginTransaction()
-                .replace(((ViewGroup) requireView().getParent()).getId(), orgViewFrag, orgViewTag)
-                .addToBackStack(FRAGMENT_ORGANIZATION_TAG)
-                .commit();*/
     }
 
     @Override
@@ -166,7 +152,6 @@ public class OrganizationTabFragment extends Fragment {
     }
 
 
-    //TODO OVERRIDE DEFAULT BACK ARROW
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -186,7 +171,7 @@ public class OrganizationTabFragment extends Fragment {
                 .setPositiveButton("Enter", null)
                 .setNegativeButton("Cancel", null)
                 .setCancelable(true);
-        alertDialog = builder.create();
+        AlertDialog alertDialog = builder.create();
         alertDialog.show();
         Button theButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
         theButton.setOnClickListener(new PositiveListener(alertDialog, organizationNameOrIdInput));
@@ -194,9 +179,11 @@ public class OrganizationTabFragment extends Fragment {
 
     class PositiveListener implements View.OnClickListener {
         private final EditText inputText;
+        private final AlertDialog dialog;
 
         public PositiveListener(AlertDialog dialog, EditText inputText) {
             this.inputText = inputText;
+            this.dialog = dialog;
         }
 
         @Override
@@ -205,7 +192,6 @@ public class OrganizationTabFragment extends Fragment {
             if (verifyTextInput(inputText)) {
                 String token = inputText.getText().toString();
                 organizationRepository.getOrganizationsWithToken(token).thenAccept(o -> {
-                    int orgSize = o.size();
                     if (o.size() == 1) {
                         organizationRepository.addUserToOrganization(user.getUuid(), o.get(0).getUuid().toString());
                         adapter.addOrganization(o.get(0));
@@ -214,11 +200,10 @@ public class OrganizationTabFragment extends Fragment {
                         throw new IllegalStateException("Too many organizations using the same token");
                     }
                 }).exceptionally(e -> {
-                    e.printStackTrace();
                     displayPopUp(v, "No organization found");
                     return null;
                 });
-                alertDialog.dismiss();
+                dialog.dismiss();
             }
         }
     }
@@ -234,7 +219,7 @@ public class OrganizationTabFragment extends Fragment {
     private void displayPopUp(View view, String errorText) {
 
         // inflate the layout of the popup window
-        View popupView = layoutInflater.inflate(R.layout.pop_up_invalide_organization, null);
+        View popupView = layoutInflater.inflate(R.layout.popup_invalid_organization, null);
 
         // create the popup window
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -244,7 +229,8 @@ public class OrganizationTabFragment extends Fragment {
         //TODO CHANGE
 
         // which view you pass in doesn't matter, it is only used for the window token
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        //
+        popupWindow.showAtLocation(requireView(), Gravity.CENTER, 0, 0);
 
         ((TextView) popupView.findViewById(R.id.popup_invalid_organization_text)).setText(errorText);
 
