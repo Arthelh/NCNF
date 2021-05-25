@@ -51,7 +51,6 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         getView().findViewById(R.id.homeProfileButton).setOnClickListener(this::gotToProfile);
-        getView().findViewById(R.id.homeCreateEventButton).setOnClickListener(this::goToEventCreation);
         getView().findViewById(R.id.homeEventNewsButton).setOnClickListener(this::goToEventNews);
         getView().findViewById(R.id.homeFriendsButton).setOnClickListener(this::goToFriends);
         getView().findViewById(R.id.track_friends_button).setOnClickListener(v -> gpsIsEnabled());
@@ -59,10 +58,6 @@ public class HomeFragment extends Fragment {
 
     public void gotToProfile(View view){
         goToActivity(UserTabActivity.class);
-    }
-
-    public void goToEventCreation(View view){
-        goToActivity(EventCreateFragment.class);
     }
 
     private void goToActivity(Class<?> activity){

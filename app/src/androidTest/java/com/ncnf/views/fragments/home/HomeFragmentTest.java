@@ -81,18 +81,6 @@ public final class HomeFragmentTest {
         Intents.intended(hasExtra(NEXT_ACTIVITY_EXTRA_KEY, FriendsTrackerActivity.class));
     }
 
-
-    @Test
-    public void createEventActivityOpensTest(){
-        onView(withId(R.id.homeCreateEventButton)).perform(click());
-        onView(withId(android.R.id.button2)).perform(click());
-        onView(withId(R.id.homeCreateEventButton)).perform(click());
-        onView(withId(android.R.id.button1)).check(matches(isClickable()));
-        onView(withId(android.R.id.button1)).perform(click());
-        Intents.intended(hasComponent(LoginActivity.class.getName()));
-        Intents.intended(hasExtra(NEXT_ACTIVITY_EXTRA_KEY, EventCreateFragment.class));
-    }
-
     @Test
     public void eventNewsActivityOpensTest(){
         onView(withId(R.id.homeEventNewsButton)).perform(click());
