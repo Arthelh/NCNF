@@ -13,18 +13,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
-import com.ncnf.R;
-import com.ncnf.database.firebase.DatabaseService;
-import com.ncnf.storage.firebase.CacheFileStore;
-
-import java.util.concurrent.CompletableFuture;
-
-import javax.inject.Inject;
-
-import dagger.hilt.android.AndroidEntryPoint;
-
-import static android.graphics.BitmapFactory.decodeResource;
-import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 
 public class GroupAttendeeMarkerRenderer extends DefaultClusterRenderer<GroupAttendeeMarker> {
 

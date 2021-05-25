@@ -28,13 +28,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.R;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
-import com.ncnf.models.Tag;
 import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
-import com.ncnf.storage.firebase.CacheFileStore;
+import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.utilities.GroupAttendeeMarker;
 import com.ncnf.utilities.GroupAttendeeMarkerRenderer;
 import com.ncnf.utilities.user.LocationService;
@@ -76,7 +75,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     public FirebaseDatabase dbs;
 
     @Inject
-    public CacheFileStore fileStore;
+    public FirebaseCacheFileStore fileStore;
 
     private AppCompatImageButton findUserButton;
 

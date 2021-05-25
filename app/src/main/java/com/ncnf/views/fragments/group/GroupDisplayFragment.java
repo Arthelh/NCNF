@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.adapters.GroupUserRecyclerAdapter;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
 import com.ncnf.models.User;
@@ -46,7 +46,7 @@ public class GroupDisplayFragment extends Fragment {
     public User user;
 
     @Inject
-    public DatabaseService dbs;
+    public FirebaseDatabase dbs;
 
     private String groupID;
     private Group group;

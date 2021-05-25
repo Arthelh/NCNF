@@ -11,7 +11,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.authentication.firebase.CurrentUserModule;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
 import com.ncnf.models.User;
@@ -64,7 +64,7 @@ import static org.mockito.Mockito.when;
 public class GroupFragmentTest {
 
     static private final User user1 = Mockito.mock(User.class);
-    static private final DatabaseService database1 = Mockito.mock(DatabaseService.class);
+    static private final FirebaseDatabase database1 = Mockito.mock(FirebaseDatabase.class);
 
     static private UUID gUuid = UUID.randomUUID();
     static private final Group g = new Group("u1",gUuid, "Group Test", LocalDateTime.now(), new GeoPoint(-0.03, -0.03), "random address", SocialObject.Type.OTHER, new ArrayList<>(), "description here", new ArrayList<>());
@@ -81,7 +81,7 @@ public class GroupFragmentTest {
     public User user = user1;
 
     @BindValue
-    public DatabaseService dbs = database1;
+    public FirebaseDatabase dbs = database1;
 
     @BeforeClass
     static public void injects() {

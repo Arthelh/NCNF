@@ -17,10 +17,9 @@ import androidx.test.uiautomator.UiSelector;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.authentication.firebase.CurrentUserModule;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
-import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
 import com.ncnf.utilities.user.LocationService;
 
@@ -66,7 +65,7 @@ import static org.mockito.Mockito.when;
 public class FriendsTrackerActivityTest {
 
     static private final User user1 = Mockito.mock(User.class);
-    static private final DatabaseService database1 = Mockito.mock(DatabaseService.class);
+    static private final FirebaseDatabase database1 = Mockito.mock(FirebaseDatabase.class);
 
     private static final List<String> users = Collections.singletonList("1");
 
@@ -100,7 +99,7 @@ public class FriendsTrackerActivityTest {
     public User user = user1;
 
     @BindValue
-    public DatabaseService dbs = database1;
+    public FirebaseDatabase dbs = database1;
 
     @BeforeClass
     static public void injects() {
