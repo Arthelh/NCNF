@@ -98,6 +98,8 @@ public class GroupFragmentTest {
         ArrayList<Group> l2 = new ArrayList<>();
         l2.add(g);
 
+        when(repository2.loadUser("u1")).thenReturn(CompletableFuture.completedFuture(user1));
+
         when(user1.getParticipatingGroupsIds()).thenReturn(new ArrayList<>());
         when(user1.getOwnedGroupsIds()).thenReturn(l);
 
@@ -122,6 +124,47 @@ public class GroupFragmentTest {
     }
 
     @Test
+    public void showsUserEmail() {
+        when(user1.getFullName()).thenReturn("");
+        when(user1.getUsername()).thenReturn("");
+        when(user1.getEmail()).thenReturn("test@test.com");
+        onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.group_owner)).check(matches(withText("test@test.com")));
+    }
+
+    @Test
+    public void showsUserFullName() {
+
+        when(user1.getFullName()).thenReturn("John");
+        when(user1.getUsername()).thenReturn("");
+        when(user1.getEmail()).thenReturn("test@test.com");
+
+        onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.group_owner)).check(matches(withText("John")));
+    }
+
+    @Test
+    public void showsUsername() {
+
+        when(user1.getFullName()).thenReturn("");
+        when(user1.getUsername()).thenReturn("johnnn");
+        when(user1.getEmail()).thenReturn("test@test.com");
+
+        onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.group_owner)).check(matches(withText("@johnnn")));
+    }
+
+    @Test
+    public void showsNameAndUserName() {
+        when(user1.getFullName()).thenReturn("John");
+        when(user1.getUsername()).thenReturn("johnnn");
+        when(user1.getEmail()).thenReturn("test@test.com");
+
+        onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.group_owner)).check(matches(withText("John (@johnnn)")));
+    }
+
+    @Test
     public void recyclerViewIsDisplayed(){
         onView(withId(R.id.group_recycler_view)).check(matches(isDisplayed()));
     }
@@ -138,7 +181,6 @@ public class GroupFragmentTest {
         onView(withId(R.id.group_display_name)).check(matches(withText("Group Test")));
         onView(withId(R.id.group_display_description)).check(matches(withText("description here")));
         onView(withId(R.id.group_address)).check(matches(withText("random address")));
-        onView(withId(R.id.group_owner)).check(matches(withText("owner")));
         onView(withId(R.id.group_attendees_view)).check(matches(isDisplayed()));
     }
 
