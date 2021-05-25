@@ -117,8 +117,6 @@ public class FirebaseFileStore {
         Task<byte[]> download = fileRef.getBytes(MAX_SIZE);
         download.addOnSuccessListener(future::complete);
         download.addOnFailureListener(future::completeExceptionally);
-        Log.d("TAG", "in super download ");
-
 
         return future;
     }

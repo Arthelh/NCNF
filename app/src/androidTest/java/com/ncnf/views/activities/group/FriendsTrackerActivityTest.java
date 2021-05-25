@@ -21,6 +21,9 @@ import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
 import com.ncnf.models.User;
+import com.ncnf.repositories.GroupRepository;
+import com.ncnf.repositories.UserRepository;
+import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.utilities.user.LocationService;
 
 import org.junit.After;
@@ -40,6 +43,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
+
+import javax.inject.Inject;
 
 import dagger.hilt.android.testing.BindValue;
 import dagger.hilt.android.testing.HiltAndroidRule;
@@ -65,15 +70,17 @@ import static org.mockito.Mockito.when;
 public class FriendsTrackerActivityTest {
 
     static private final User user1 = Mockito.mock(User.class);
-    static private final FirebaseDatabase database1 = Mockito.mock(FirebaseDatabase.class);
+    static private final User user2 = Mockito.mock(User.class);
+    static private final GroupRepository groupRepository1 = Mockito.mock(GroupRepository.class);
+    static private final UserRepository userRepository1 = Mockito.mock(UserRepository.class);
 
     private static final List<String> users = Collections.singletonList("1");
-
+    static private UUID gUuid = UUID.randomUUID();
     static Intent intent;
     static {
         intent = new Intent(ApplicationProvider.getApplicationContext(), FriendsTrackerActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("GROUP_ID", "u1");
+        bundle.putString("GROUP_ID", gUuid.toString());
         intent.putExtras(bundle);
     }
 
@@ -82,9 +89,7 @@ public class FriendsTrackerActivityTest {
     private static GeoPoint p1 = new GeoPoint(0.03, 0.03);
 
 
-    static private UUID gUuid = UUID.randomUUID();
-
-    static private final Group g = new Group("u1",gUuid, "Group Test", LocalDateTime.now(), new GeoPoint(-0.03, -0.03), "random address", SocialObject.Type.OTHER, new ArrayList<>(), "description here", users);
+    static private final Group g = Mockito.mock(Group.class);
     @Rule
     public final ServiceTestRule mServiceRule = new ServiceTestRule();
 
@@ -99,23 +104,32 @@ public class FriendsTrackerActivityTest {
     public User user = user1;
 
     @BindValue
-    public FirebaseDatabase dbs = database1;
+    public GroupRepository groupRepository = groupRepository1;
+
+    @BindValue
+    public UserRepository userRepository = userRepository1;
+
 
     @BeforeClass
     static public void injects() {
         when(user1.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user1));
+        when(user1.getUuid()).thenReturn("0");
+        when(user2.getUuid()).thenReturn("1");
         ArrayList<Group> l = new ArrayList<>();
         l.add(g);
 
-        when(user1.getParticipatingGroups()).thenReturn(CompletableFuture.completedFuture(l));
+        ArrayList<String> s = new ArrayList<>();
+        s.add("1");
+        when(g.getAttendees()).thenReturn(s);
 
-        when(user1.getParticipatingGroup("u1")).thenReturn(CompletableFuture.completedFuture(g));
-        when(user1.getParticipatingGroupsIds().contains("u1")).thenReturn(true);
+        when(groupRepository1.loadGroup(gUuid.toString())).thenReturn(CompletableFuture.completedFuture(g));
+       // when(user1.getParticipatingGroupsIds().contains("0")).thenReturn(true);
 
-        when(database1.getField(USERS_COLLECTION_KEY + "u1", FULL_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("John"));
-        when(database1.getField(USERS_COLLECTION_KEY + "1", USER_LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(p1));
-        when(database1.getField(USERS_COLLECTION_KEY + "1", FULL_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("Taylor"));
+        when(userRepository1.getUserFullName("0")).thenReturn(CompletableFuture.completedFuture("Johm"));
+        when(userRepository1.getUserPosition("0")).thenReturn(CompletableFuture.completedFuture(new GeoPoint(0, 0)));
 
+        when(userRepository1.getUserFullName("1")).thenReturn(CompletableFuture.completedFuture("Taylor"));
+        when(userRepository1.getUserPosition("1")).thenReturn(CompletableFuture.completedFuture(p1));
     }
 
     @Before
@@ -125,17 +139,13 @@ public class FriendsTrackerActivityTest {
 
         when(user.getEmail()).thenReturn("john@doe.ch");
         when(user.getFullName()).thenReturn("John");
-        when(user.getUuid()).thenReturn("0");
-
-        ArrayList<String> s = new ArrayList<>();
-        s.add("0");
-        when(user.getFriendsIds()).thenReturn(s);
+        //when(user.getUuid()).thenReturn("0");
 
         when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
 
 
-        when(dbs.getField(USERS_COLLECTION_KEY + "0", USER_LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(p1));
-        when(dbs.getField(USERS_COLLECTION_KEY + "0", FULL_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("Taylor"));
+        //when(dbs.getField(USERS_COLLECTION_KEY + "0", USER_LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(p1));
+        //when(dbs.getField(USERS_COLLECTION_KEY + "0", FULL_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("Taylor"));
 
     }
 
@@ -149,13 +159,12 @@ public class FriendsTrackerActivityTest {
 
         onView(withId(R.id.find_user_button)).perform(click());
         UiDevice device = UiDevice.getInstance(getInstrumentation());
-        UiObject marker = device.findObject(new UiSelector().descriptionContains("John"));
+        UiObject marker = device.findObject(new UiSelector().descriptionContains("This is me"));
 
         assertTrue("User marker exists", marker.waitForExists(2000));
     }
 
 
-    /**
     @Test
     public void findsOtherUser() {
 
@@ -163,9 +172,9 @@ public class FriendsTrackerActivityTest {
         UiDevice device = UiDevice.getInstance(getInstrumentation());
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Taylor"));
 
-        assertTrue("User marker exists", marker.waitForExists(30000));
+        assertTrue("User marker exists", marker.waitForExists(10000));
     }
-     **/
+
 
 
     @Test

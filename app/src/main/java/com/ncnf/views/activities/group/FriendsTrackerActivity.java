@@ -33,6 +33,8 @@ import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
 import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
+import com.ncnf.repositories.GroupRepository;
+import com.ncnf.repositories.UserRepository;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.utilities.GroupAttendeeMarker;
 import com.ncnf.utilities.GroupAttendeeMarkerRenderer;
@@ -72,7 +74,10 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     public User user;
 
     @Inject
-    public FirebaseDatabase dbs;
+    public GroupRepository groupRepository;
+
+    @Inject
+    public UserRepository userRepository;
 
     @Inject
     public FirebaseCacheFileStore fileStore;
@@ -124,42 +129,19 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         mapView = findViewById(R.id.friends_map);
         mapView.onCreate(savedInstanceState);
 
-        if(user.getParticipatingGroupsIds().contains(groupId)) {
-            CompletableFuture<Group> thisGroup = user.getParticipatingGroup(groupId);
-
-            thisGroup.thenAccept(group -> {
-                if(group != null) {
-                    friendsUUID = new ArrayList<>(group.getAttendees());
-
-                    getImagesForClusters();
-
-                    meetingPoint = group.getLocation();
-                }
-                else {
-                    Log.d("TAG", "Group is null");
-                }
-            });
-        }
-        else {
-            CompletableFuture<Group> thisGroup = user.getOwnedGroup(groupId);
-
-            thisGroup.thenAccept(group -> {
-                if(group != null) {
-                    friendsUUID = new ArrayList<>(group.getAttendees());
+        CompletableFuture<Group> thisGroup = groupRepository.loadGroup(groupId);
+        thisGroup.thenAccept(group -> {
+            if(group != null) {
+                friendsUUID = new ArrayList<>(group.getAttendees());
+                if(!user.getParticipatingGroupsIds().contains(groupId)) {
                     friendsUUID.add(user.getUuid());
-                    meetingPoint = group.getLocation();
-
-                    getImagesForClusters();
-                    startMap();
-
                 }
-                else {
-                    Log.d("TAG", "Group is null");
-                }
-            });
+                meetingPoint = group.getLocation();
 
-        }
-
+                getImagesForClusters();
+                startMap();
+            }
+        });
 
     }
 
@@ -213,7 +195,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
                 }
 
                 else {
-                    CompletableFuture<String> name = dbs.getField(USERS_COLLECTION_KEY + friendsUUID.get(i), FULL_NAME_KEY);
+                    CompletableFuture<String> name = userRepository.getUserFullName(friendsUUID.get(i));
                     name.thenAccept(s -> {
                         if (s != null) {
                             newAttendeeMarker.setTitle(s);
@@ -254,7 +236,8 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
                 }
             }
 
-            CompletableFuture<GeoPoint> field = dbs.getField(USERS_COLLECTION_KEY + userId, USER_LOCATION_KEY);
+            Log.d("TAG", "uuid is " + friendsUUID.get(i));
+            CompletableFuture<GeoPoint> field = userRepository.getUserPosition(friendsUUID.get(i));
             int finalI = i;
             field.thenAccept(point -> {
 
@@ -313,7 +296,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     private void saveUserLocation() {
         if(user != null) {
-            dbs.updateField(USERS_COLLECTION_KEY + user.getUuid(), USER_LOCATION_KEY, user.getLoc());
+            userRepository.updateUserPosition(user.getUuid(), user.getLoc());
         }
     }
 

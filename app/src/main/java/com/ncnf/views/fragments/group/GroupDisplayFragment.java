@@ -22,6 +22,8 @@ import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
 import com.ncnf.models.User;
+import com.ncnf.repositories.GroupRepository;
+import com.ncnf.repositories.UserRepository;
 import com.ncnf.views.activities.group.FriendsTrackerActivity;
 
 
@@ -42,11 +44,12 @@ import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 @AndroidEntryPoint
 public class GroupDisplayFragment extends Fragment {
 
-    @Inject
-    public User user;
 
     @Inject
-    public FirebaseDatabase dbs;
+    public GroupRepository repository;
+
+    @Inject
+    public UserRepository userRepository;
 
     private String groupID;
     private Group group;
@@ -80,30 +83,14 @@ public class GroupDisplayFragment extends Fragment {
         if(bundle != null) {
             this.groupID = bundle.getString("GROUP_ID");
 
-            // FOR TESTING
-            /**
-            Group g2 = new Group(user.getUuid(), "Group 2 !", LocalDateTime.now(), new GeoPoint(0,0), "Ecublens", "test group", SocialObject.Type.Movie);
-            g2.invite("oFqlaX7uxifmck6AByJ52ZAZqHh1");
-            CompletableFuture<Group> thisGroup = CompletableFuture.completedFuture(g2);
-             */
+            CompletableFuture<Group> thisGroup = repository.loadGroup(groupID);
 
-            if(user.getParticipatingGroupsIds().contains(groupID)) {
+            thisGroup.thenAccept(group -> {
+                this.group = group;
+                prepareAllFields();
+            });
 
-                CompletableFuture<Group> thisGroup = user.getParticipatingGroup(groupID);
-                thisGroup.thenAccept(group -> {
-                    this.group = group;
-                    prepareAllFields();
-                });
-            }
 
-            else if(user.getOwnedGroupsIds().contains(groupID)) {
-
-                CompletableFuture<Group> thisGroup = user.getOwnedGroup(groupID);
-                thisGroup.thenAccept(group -> {
-                    this.group = group;
-                    prepareAllFields();
-                });
-            }
 
         }
     }
@@ -131,13 +118,13 @@ public class GroupDisplayFragment extends Fragment {
             startActivity(intent);
         });
 
-        CompletableFuture <String> getName = dbs.getField(USERS_COLLECTION_KEY + uuid, FULL_NAME_KEY);
+        CompletableFuture <String> getName = userRepository.getUserFullName(uuid);
         getName.thenAccept(s -> {
             if(s != null && s.length() != 0) {
                 adapter.addUser(s);
             }
             else {
-                CompletableFuture <String> getEmail = dbs.getField(USERS_COLLECTION_KEY + uuid, EMAIL_KEY);
+                CompletableFuture <String> getEmail = userRepository.getUserUsername(uuid);
                 getEmail.thenAccept(e -> adapter.addUser(e));
             }
         });

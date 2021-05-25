@@ -15,6 +15,8 @@ import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
 import com.ncnf.models.User;
+import com.ncnf.repositories.GroupRepository;
+import com.ncnf.repositories.UserRepository;
 import com.ncnf.views.activities.group.FriendsTrackerActivity;
 import com.ncnf.views.activities.group.GroupActivity;
 
@@ -64,7 +66,8 @@ import static org.mockito.Mockito.when;
 public class GroupFragmentTest {
 
     static private final User user1 = Mockito.mock(User.class);
-    static private final FirebaseDatabase database1 = Mockito.mock(FirebaseDatabase.class);
+    static private final GroupRepository repository1 = Mockito.mock(GroupRepository.class);
+    static private final UserRepository repository2 = Mockito.mock(UserRepository.class);
 
     static private UUID gUuid = UUID.randomUUID();
     static private final Group g = new Group("u1",gUuid, "Group Test", LocalDateTime.now(), new GeoPoint(-0.03, -0.03), "random address", SocialObject.Type.OTHER, new ArrayList<>(), "description here", new ArrayList<>());
@@ -81,19 +84,28 @@ public class GroupFragmentTest {
     public User user = user1;
 
     @BindValue
-    public FirebaseDatabase dbs = database1;
+    public GroupRepository repository = repository1;
+
+    @BindValue
+    public UserRepository userRepository = repository2;
 
     @BeforeClass
     static public void injects() {
         when(user1.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user1));
-        ArrayList<Group> l = new ArrayList<>();
-        l.add(g);
-        when(user1.getParticipatingGroups()).thenReturn(CompletableFuture.completedFuture(l));
+        ArrayList<String> l = new ArrayList<>();
+        l.add(gUuid.toString());
 
-        when(user1.getParticipatingGroupsIds().contains(gUuid.toString())).thenReturn(true);
-        when(user1.getParticipatingGroup(gUuid.toString())).thenReturn(CompletableFuture.completedFuture(g));
+        ArrayList<Group> l2 = new ArrayList<>();
+        l2.add(g);
 
-        when(database1.getField(USERS_COLLECTION_KEY + "u1", FULL_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("John"));
+        when(user1.getParticipatingGroupsIds()).thenReturn(new ArrayList<>());
+        when(user1.getOwnedGroupsIds()).thenReturn(l);
+
+        when(repository1.loadMultipleGroups(l)).thenReturn(CompletableFuture.completedFuture(l2));
+
+        when(repository1.loadGroup(gUuid.toString())).thenReturn(CompletableFuture.completedFuture(g));
+
+        when(repository2.getUserFullName("u1")).thenReturn(CompletableFuture.completedFuture("John"));
 
     }
 

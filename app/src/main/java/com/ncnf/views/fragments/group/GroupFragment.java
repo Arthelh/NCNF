@@ -28,6 +28,7 @@ import com.ncnf.adapters.GroupsAdapter;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
 import com.ncnf.models.User;
+import com.ncnf.repositories.GroupRepository;
 
 
 import java.time.LocalDateTime;
@@ -45,6 +46,9 @@ public class GroupFragment extends Fragment {
 
     @Inject
     public User user;
+
+    @Inject
+    public GroupRepository repository;
 
     private FragmentManager fragmentManager;
     private RecyclerView recycler;
@@ -75,36 +79,21 @@ public class GroupFragment extends Fragment {
 
     private void setUpGroupsView() {
 
-        // ONLY FOR TESTING
-
-        /**
-         List<Group> testGroups = new ArrayList<>();
-         Group g1 = new Group(user.getUuid(), "A group !", LocalDateTime.now(), new GeoPoint(0,0), "Ecublens", "test group", SocialObject.Type.Movie);
-         testGroups.add(g1);
-         Group g2 = new Group(user.getUuid(), "Group 2 !", LocalDateTime.now(), new GeoPoint(0,0), "Ecublens", "test group", SocialObject.Type.Movie);
-         g2.invite("oFqlaX7uxifmck6AByJ52ZAZqHh1");
-         testGroups.add(g2);
-         **/
-
-
-
         user.loadUserFromDB().thenAccept(user -> {
-            CompletableFuture<List<Group>> groupsFuture = user.getParticipatingGroups();
-            //CompletableFuture<List<Group>> groupsFuture = CompletableFuture.completedFuture(testGroups);
-            groupsFuture.thenAccept(groups -> {
-                CompletableFuture<List<Group>> ownedGroupsFuture = user.getOwnedGroups();
-                ownedGroupsFuture.thenAccept(groups1 -> {
-                    groups.addAll(groups1);
-                    if(groups.isEmpty()) {
-                        isEmpty.setVisibility(View.VISIBLE);
-                    }
-                    else {
-                        adapter = new GroupsAdapter(getContext(), groups, this::openGroupPage);
-                        recycler.setAdapter(adapter);
-                    }
+            List<String> allGroups = new ArrayList<>(user.getOwnedGroupsIds());
+            allGroups.addAll(user.getParticipatingGroupsIds());
+            CompletableFuture<List<Group>> groupsFuture = repository.loadMultipleGroups(allGroups);
 
-                });
+            groupsFuture.thenAccept(groups -> {
+                if(groups.isEmpty()) {
+                    isEmpty.setVisibility(View.VISIBLE);
+                }
+                else {
+                    adapter = new GroupsAdapter(getContext(), groups, this::openGroupPage);
+                    recycler.setAdapter(adapter);
+                }
             });
+
         });
 
     }

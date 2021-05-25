@@ -66,9 +66,6 @@ public class FirebaseCacheFileStore extends FirebaseFileStore {
     public CompletableFuture<byte[]> download() {
         super.requiresPath();
 
-        Log.d("TAG", "in download ");
-
-        /**
         if (file.exists()) {
             try {
                 byte[] data = Files.readAllBytes(file.toPath());
@@ -78,7 +75,7 @@ public class FirebaseCacheFileStore extends FirebaseFileStore {
                 Log.w(LOG_TAG, "Could not read the file: " + file.getPath());
             }
         }
-         **/
+
         CompletableFuture<byte[]> future = super.download();
         future.thenApply(data -> {
             storeFile(data);
