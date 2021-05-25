@@ -58,6 +58,8 @@ public class OrganizationTabFragment extends Fragment {
     private LayoutInflater layoutInflater;
     private FragmentManager fm;
 
+    private MenuItem addOrgButton;
+
     private TextView emptyView;
     private RecyclerView recycler;
     OrganizationListAdapter adapter;
@@ -140,17 +142,20 @@ public class OrganizationTabFragment extends Fragment {
             public void handleOnBackPressed() {
                 fm.popBackStack();
                 recycler.setVisibility(View.VISIBLE);
+                addOrgButton.setVisible(true);
                 this.setEnabled(false);
             }
         };
 
 
         recycler.setVisibility(View.INVISIBLE);
+        addOrgButton.setVisible(false);
+
         fm.beginTransaction()
-              .hide(this)
-              .replace(((ViewGroup) requireView().getParent()).getId(), orgProfileFrag, orgProfileTag)
-              .addToBackStack(null)
-              .commit();
+                .hide(this)
+                .replace(((ViewGroup) requireView().getParent()).getId(), orgProfileFrag, orgProfileTag)
+                .addToBackStack(null)
+                .commit();
 
         requireActivity().getOnBackPressedDispatcher().addCallback(callback);
        /* fm.beginTransaction()
@@ -162,6 +167,7 @@ public class OrganizationTabFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.organization_menu, menu);
+        addOrgButton = menu.findItem(R.id.add_organization_button);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
