@@ -258,7 +258,7 @@ public final class MapFragmentTest {
             marker.click();
             Rect markerRect = marker.getBounds();
             int x = markerRect.centerX();
-            int y = markerRect.centerY() - markerRect.height();
+            int y = markerRect.centerY() - (3 * markerRect.height() / 4);
             device.click(x, y);
             Thread.sleep(10000);
         } catch (UiObjectNotFoundException | InterruptedException e) {
