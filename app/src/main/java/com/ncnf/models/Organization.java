@@ -34,10 +34,6 @@ public class Organization {
     }
 
     public Organization(UUID uuid, String name, GeoPoint location, String address, String email, String phoneNumber, List<String> adminIds, List<String> eventIds) {
-        if(checkCompleteList(adminIds) ){
-            throw new IllegalArgumentException("Organization should have at least one admin created when created");
-        }
-
         this.uuid = uuid;
         this.name = name;
         this.location = location;
