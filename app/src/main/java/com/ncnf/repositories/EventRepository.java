@@ -52,6 +52,10 @@ public class EventRepository {
         return this.db.whereIn(EVENTS_COLLECTION_KEY, UUID_KEY, uuidList, Event.class);
     }
 
+    /**
+     * Returns all events that are happening in a radius set in the settings around the current user position
+     * @return A CompletableFuture wrapping a list containing the nearby Event objects
+     */
     public CompletableFuture<List<Event>> getEventsNearBy(){
         return db.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, Event.class);
     }

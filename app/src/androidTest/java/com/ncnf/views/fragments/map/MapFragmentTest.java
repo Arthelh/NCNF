@@ -24,7 +24,9 @@ import com.google.firebase.firestore.GeoPoint;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
 import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.models.Organization;
 import com.ncnf.repositories.EventRepository;
+import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.views.activities.settings.SettingsActivity;
 import com.ncnf.models.Event;
@@ -72,10 +74,15 @@ import static org.mockito.Mockito.when;
 public final class MapFragmentTest {
 
     static private final EventRepository mockEventRepository = Mockito.mock(EventRepository.class);
+    static private final OrganizationRepository mockOrgRepo = Mockito.mock(OrganizationRepository.class);
 
     static private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
     static private final Event e2 = new Event("u2", "Another Fun event", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
     static private final List<Event> events = Arrays.asList(e1, e2);
+
+    static private final Organization o1 = new Organization("EPFL", new GeoPoint(46.5338f, 6.5914f), "EPFL Route Cantonale 15", "epfl@epfl.ch", "021 123 45 67", "EPFL");
+    static private final Organization o2 = new Organization("UniL", new GeoPoint(46.5211f, 6.5802f), "Route de l'UniL 1", "unil@unil.ch", "021 765 43 21", "UniL");
+    static private final List<Organization> orgs = Arrays.asList(o1, o2);
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private final ActivityScenarioRule activityRule = new ActivityScenarioRule<>(MainActivity.class);
@@ -86,10 +93,16 @@ public final class MapFragmentTest {
     @BindValue
     public EventRepository eventRepository = mockEventRepository;
 
+    @BindValue
+    public OrganizationRepository organizationRepository = mockOrgRepo;
+
     @BeforeClass
     static public void injectEvents() {
         CompletableFuture<List<Event>> future = CompletableFuture.completedFuture(events);
         when(mockEventRepository.getEventsNearBy()).thenReturn(future);
+
+        CompletableFuture<List<Organization>> orgFuture = CompletableFuture.completedFuture(orgs);
+        when(mockOrgRepo.getOrgsNearby()).thenReturn(orgFuture);
     }
 
     @Before
@@ -128,7 +141,7 @@ public final class MapFragmentTest {
         );
         // Venues are shown
         marker = device.findObject(new UiSelector().descriptionContains("UniL"));
-        assertTrue("Venue markers exist", marker.waitForExists(5000));
+        assertTrue("Organization markers exist", marker.waitForExists(5000));
 
         onView(withId(R.id.map_switch_button)).perform(click());
 
@@ -174,9 +187,9 @@ public final class MapFragmentTest {
         onView(withId(R.id.map_switch_button)).perform(click());
 
         marker = device.findObject(new UiSelector().descriptionContains("EPFL"));
-        assertFalse("Venue markers exist", marker.waitForExists(5000));
+        assertFalse("Organization markers exist", marker.waitForExists(5000));
         marker = device.findObject(new UiSelector().descriptionContains("UniL"));
-        assertTrue("Venue markers exist", marker.waitForExists(5000));
+        assertTrue("Organization markers exist", marker.waitForExists(5000));
 
         onView(withId(R.id.menu_settings)).perform(click());
         onView(withId(R.id.distanceSeekBar)).perform(new ViewAction() {
