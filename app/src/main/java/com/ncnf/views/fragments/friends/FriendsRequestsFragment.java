@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
-import com.ncnf.adapters.FriendsRequestAdapter;
+import com.ncnf.adapters.FriendsRequestListAdapter;
 import com.ncnf.repositories.FriendsRepository;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class FriendsRequestsFragment extends Fragment {
     public FirebaseUser user;
 
     private RecyclerView recycler;
-    private FriendsRequestAdapter adapter;
+    private FriendsRequestListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class FriendsRequestsFragment extends Fragment {
         recycler = getView().findViewById(R.id.friends_requests_recycler_view);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.hasFixedSize();
-        adapter = new FriendsRequestAdapter(requireActivity(), new ArrayList<>(), item -> {}, friendsRepository, user.getUid());
+        adapter = new FriendsRequestListAdapter(requireActivity(), new ArrayList<>(), item -> {}, friendsRepository, user.getUid());
         recycler.setAdapter(adapter);
 
         friendsRepository.awaitingRequests(user.getUid()).thenAccept(users -> {

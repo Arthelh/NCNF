@@ -29,10 +29,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
+import com.ncnf.storage.firebase.FirebaseFileStore;
 import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.models.Group;
 import com.ncnf.models.SocialObject;
-import com.ncnf.storage.firebase.FileStore;
 import com.ncnf.models.User;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.InputValidator;
@@ -65,7 +65,7 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
     public User user;
 
     @Inject
-    public FileStore fileStore;
+    public FirebaseFileStore firebaseFileStore;
 
     private SocialObject.Type eventType;
     private LocalDate eventDate = LocalDate.now();
@@ -202,13 +202,13 @@ public class GroupCreateActivity extends AppCompatActivity implements AdapterVie
                                 eventType
                         );
 
-                        fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, group.getUuid()));
+                        firebaseFileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, group.getUuid()));
                         pictureView.setDrawingCacheEnabled(true);
                         pictureView.buildDrawingCache();
                         Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
 
                         // Simultaneously upload the image and save the group.
-                        CompletableFuture.allOf(fileStore.uploadImage(bitmap), user.createGroup(group))
+                        CompletableFuture.allOf(firebaseFileStore.uploadImage(bitmap), user.createGroup(group))
                                 .thenAccept(t -> nextStep())
                                 .exceptionally(e -> {
                                     failToCreateEvent(e.getMessage());

@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ncnf.R;
 import com.ncnf.models.Event;
+import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.utilities.event.EventRelevanceCalculator;
 import com.ncnf.models.SocialObject;
-import com.ncnf.storage.firebase.CacheFileStore;
 import com.ncnf.utilities.DateAdapter;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import java.util.List;
 
 import static android.graphics.BitmapFactory.decodeResource;
 
-public class EventAdapter extends RecyclerView.Adapter<EventAdapter.SocialObjViewHolder> implements Filterable {
+public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.SocialObjViewHolder> implements Filterable {
     private List<Event> events;
     private List<Event> eventsFull;
     private final OnSocialObjListener onSocialObjListener;
@@ -43,7 +43,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.SocialObjVie
         void onEventClick(Event event);
     }
 
-    public EventAdapter(Context context, List<Event> items, OnSocialObjListener onSocialObjListener, SortingMethod sortingMethod) {
+    public EventListAdapter(Context context, List<Event> items, OnSocialObjListener onSocialObjListener, SortingMethod sortingMethod) {
         //ensure proper copy of the List
 
         this.sortingMethod = SortingMethod.DATE;
@@ -162,7 +162,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.SocialObjVie
         }
 
         private void setEventImage(Event event){
-            CacheFileStore fileStore = new CacheFileStore();
+            FirebaseCacheFileStore fileStore = new FirebaseCacheFileStore();
             fileStore.setContext(context);
             fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
             fileStore.downloadImage(image, BitmapFactory.decodeResource(context.getResources(),

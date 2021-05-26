@@ -3,7 +3,7 @@ package com.ncnf.models;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class Event extends SocialObject {
     private static final int MIN_AGE = 0;
     private static final int MAX_AGE = 125;
 
-    private List<Tag> tags;
+    private List<EventTag> eventTags;
     private double price;
     private int minAge;
     private String email;
@@ -41,7 +41,7 @@ public class Event extends SocialObject {
 
         checkConstraints(minAge, price);
 
-        tags = new ArrayList<>();
+        eventTags = new ArrayList<>();
         this.minAge = minAge;
         this.price = price;
         this.email = email;
@@ -68,7 +68,7 @@ public class Event extends SocialObject {
 
         checkConstraints(minAge, price);
 
-        setTags(tags);
+        setEventTags(eventTags);
         this.minAge = minAge;
         this.price = price;
         this.email = email;
@@ -90,7 +90,7 @@ public class Event extends SocialObject {
     public int getMinAge() { return minAge; }
     public double getPrice() { return price; }
     public String getEmail() { return email; }
-    public List<Tag> getTags() { return new ArrayList<Tag>(tags); }
+    public List<EventTag> getEventTags() { return new ArrayList<EventTag>(eventTags); }
 
     /**
      * Setters for the event's attributes
@@ -125,14 +125,12 @@ public class Event extends SocialObject {
      * @return Boolean describing whether or not a tag contains the given string
      */
     public boolean filterTags(String s) {
-
-        for(Tag tag : tags) {
-            if (tag.getName().equals(s) || tag.getName().toLowerCase().contains(s)) {
+        for(EventTag eventTag : eventTags) {
+            if (eventTag.getName().equals(s) || eventTag.getName().toLowerCase().contains(s)) {
                 return true;
             }
         }
         return false;
-
     }
 
     @Override

@@ -9,8 +9,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.ncnf.database.builders.EventBuilder;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.builders.DatabaseEventBuilder;
 import com.ncnf.mocks.MockTask;
 import com.ncnf.models.Event;
 import com.ncnf.models.SocialObject;
@@ -37,10 +36,10 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class DatabaseServiceTest {
+public class FirebaseDatabaseTest {
 
     private FirebaseFirestore db;
-    private static DatabaseService service;
+    private static FirebaseDatabase service;
     private static SocialObject socialObject;
     private static Task task;
 
@@ -55,7 +54,7 @@ public class DatabaseServiceTest {
     @Before
     public void setup() {
         db = Mockito.mock(FirebaseFirestore.class, Mockito.RETURNS_DEEP_STUBS);
-        service = new DatabaseService(db);
+        service = new FirebaseDatabase(db);
 
         socialObject = new Event(ownerID, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
         task = new MockTask<SocialObject>(socialObject, null);
@@ -117,7 +116,7 @@ public class DatabaseServiceTest {
     @Test
     public void getDocumentWorks(){
         Event event = new Event(UUID.randomUUID().toString(), name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
-        Map<String, Object> data = new EventBuilder().toMap(event);
+        Map<String, Object> data = new DatabaseEventBuilder().toMap(event);
 
         DocumentSnapshot document = Mockito.mock(DocumentSnapshot.class);
         when(document.getData()).thenReturn(data);
@@ -224,7 +223,7 @@ public class DatabaseServiceTest {
 
         String uuid = UUID.randomUUID().toString();
         Event event = new Event(uuid, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
-        Map<String, Object> data = new EventBuilder().toMap(event);
+        Map<String, Object> data = new DatabaseEventBuilder().toMap(event);
 
         QueryDocumentSnapshot document = Mockito.mock(QueryDocumentSnapshot.class);
         when(document.getData()).thenReturn(data);
@@ -264,7 +263,7 @@ public class DatabaseServiceTest {
     public void withFieldLikeWorks(){
         String uuid = UUID.randomUUID().toString();
         Event event = new Event(uuid, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
-        Map<String, Object> data = new EventBuilder().toMap(event);
+        Map<String, Object> data = new DatabaseEventBuilder().toMap(event);
 
         QueryDocumentSnapshot document = Mockito.mock(QueryDocumentSnapshot.class);
         when(document.getData()).thenReturn(data);
@@ -315,7 +314,7 @@ public class DatabaseServiceTest {
     public void whereArrayContains(){
         String uuid = UUID.randomUUID().toString();
         Event event = new Event(uuid, name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
-        Map<String, Object> data = new EventBuilder().toMap(event);
+        Map<String, Object> data = new DatabaseEventBuilder().toMap(event);
 
         QueryDocumentSnapshot document = Mockito.mock(QueryDocumentSnapshot.class);
         when(document.getData()).thenReturn(data);
@@ -362,7 +361,7 @@ public class DatabaseServiceTest {
     public void whereEqualTo(){
         String uuid = UUID.randomUUID().toString();
         Event event = new Event(uuid, name, date, geoPoint,address,description, type, 0, 0L, "test@email.com");
-        Map<String, Object> data = new EventBuilder().toMap(event);
+        Map<String, Object> data = new DatabaseEventBuilder().toMap(event);
 
         QueryDocumentSnapshot document = Mockito.mock(QueryDocumentSnapshot.class);
         when(document.getData()).thenReturn(data);

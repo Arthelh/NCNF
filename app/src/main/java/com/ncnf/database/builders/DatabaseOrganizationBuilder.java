@@ -18,7 +18,7 @@ import static com.ncnf.utilities.StringCodes.PHONE_NB_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 
-public class OrganizationBuilder extends DatabaseObjectBuilder<Organization>{
+public class DatabaseOrganizationBuilder extends DatabaseObjectBuilder<Organization>{
 
     @Override
     public Organization toObject(String uuid, Map<String, Object> data) {

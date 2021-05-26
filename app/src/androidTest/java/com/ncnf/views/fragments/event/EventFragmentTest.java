@@ -6,7 +6,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Event;
 import com.ncnf.models.SocialObject;
 import com.ncnf.views.activities.main.MainActivity;
@@ -42,7 +42,7 @@ import static org.mockito.Mockito.when;
 @HiltAndroidTest
 public class EventFragmentTest {
 
-    static private final DatabaseService db = Mockito.mock(DatabaseService.class);
+    static private final FirebaseDatabase db = Mockito.mock(FirebaseDatabase.class);
     static private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
     static private final List<Event> events = Arrays.asList(e1);
 
@@ -52,7 +52,7 @@ public class EventFragmentTest {
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(MainActivity.class));
 
     @BindValue
-    public DatabaseService databaseService = db;
+    public FirebaseDatabase firebaseDatabase = db;
 
     @BeforeClass
     static public void injectEvents() {

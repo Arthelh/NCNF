@@ -18,9 +18,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseUser;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
-import com.ncnf.adapters.FriendsAdapter;
+import com.ncnf.adapters.FriendsListAdapter;
 import com.ncnf.models.User;
-import com.ncnf.adapters.UserAdapter;
+import com.ncnf.adapters.UserListAdapter;
 import com.ncnf.repositories.FriendsRepository;
 import com.ncnf.views.fragments.user.PublicProfileFragment;
 
@@ -43,7 +43,7 @@ public class FriendsFragment extends Fragment {
     private RecyclerView recycler;
     private TextView emptyRecyclerText;
     private MaterialButton addFriendButton;
-    private UserAdapter adapter;
+    private UserListAdapter adapter;
 
     private boolean isAddFriendView;
     private FragmentManager fragmentManager;
@@ -93,7 +93,7 @@ public class FriendsFragment extends Fragment {
         this.materialSearchBar.setVisibility(View.GONE);
 
         // Remove items in recycler
-        adapter = new FriendsAdapter(requireActivity(), new ArrayList<>(), this::showUserPublicProfile, this.friendsRepository, this.user.getUid(), FriendsAdapter.FriendsType.REMOVABLE);
+        adapter = new FriendsListAdapter(requireActivity(), new ArrayList<>(), this::showUserPublicProfile, this.friendsRepository, this.user.getUid(), FriendsListAdapter.FriendsType.REMOVABLE);
         recycler.setAdapter(adapter);
         hideEmptyRecyclerText();
 
@@ -118,7 +118,7 @@ public class FriendsFragment extends Fragment {
         materialSearchBar.setVisibility(View.VISIBLE);
 
         // Remove items in recycler
-        adapter = new FriendsAdapter(requireActivity(), new ArrayList<>(), item -> {}, this.friendsRepository, this.user.getUid(), FriendsAdapter.FriendsType.ADDABLE);
+        adapter = new FriendsListAdapter(requireActivity(), new ArrayList<>(), item -> {}, this.friendsRepository, this.user.getUid(), FriendsListAdapter.FriendsType.ADDABLE);
         recycler.setAdapter(adapter);
         hideEmptyRecyclerText();
 

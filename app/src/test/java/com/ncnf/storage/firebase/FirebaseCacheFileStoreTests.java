@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.ncnf.mocks.MockTask;
-import com.ncnf.storage.firebase.CacheFileStore;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,13 +20,15 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class CacheFileStoreTests {
+public class FirebaseCacheFileStoreTests {
 
     private final byte[] data = new byte[] {42, 24};
     private final String directory = "events";
@@ -46,7 +48,7 @@ public class CacheFileStoreTests {
         folder.create();
         when(context.getCacheDir()).thenReturn(folder.getRoot());
 
-        CacheFileStore fileStore = new CacheFileStore(storage);
+        FirebaseCacheFileStore fileStore = new FirebaseCacheFileStore(storage);
         fileStore.setContext(context);
         fileStore.setPath(directory, filename);
 
@@ -82,7 +84,7 @@ public class CacheFileStoreTests {
 
         when(context.getCacheDir()).thenReturn(folder.getRoot());
 
-        CacheFileStore fileStore = new CacheFileStore(storage);
+        FirebaseCacheFileStore fileStore = new FirebaseCacheFileStore(storage);
         fileStore.setContext(context);
         fileStore.setPath(directory, filename);
         CompletableFuture<byte[]> future = fileStore.download();
@@ -98,10 +100,41 @@ public class CacheFileStoreTests {
     public void throwsExceptionIfNoContext() {
         FirebaseStorage storage = Mockito.mock(FirebaseStorage.class, Mockito.RETURNS_DEEP_STUBS);
 
-        CacheFileStore fileStore = new CacheFileStore(storage);
+        FirebaseCacheFileStore fileStore = new FirebaseCacheFileStore(storage);
 
         assertThrows(IllegalStateException.class, () -> {
            fileStore.setPath(directory, filename);
         });
+    }
+
+    @Test
+    public void uploadDeletesTheCache() throws IOException {
+        FirebaseStorage storage = Mockito.mock(FirebaseStorage.class, Mockito.RETURNS_DEEP_STUBS);
+        StorageReference fileRef = Mockito.mock(StorageReference.class);
+        Context context = Mockito.mock(Context.class);
+        UploadTask task = Mockito.mock(UploadTask.class);
+
+        when(storage.getReference().child(anyString()).child(anyString())).thenReturn(fileRef);
+        when(fileRef.putBytes(any(byte[].class))).thenReturn(task);
+        when(task.addOnSuccessListener(any())).thenReturn(task);
+        when(task.addOnFailureListener(any())).thenReturn(task);
+
+        TemporaryFolder folder = new TemporaryFolder();
+        folder.create();
+        File dir = folder.newFolder(directory);
+        File file = new File(dir, filename);
+        file.createNewFile();
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(data);
+        fos.close();
+
+        when(context.getCacheDir()).thenReturn(folder.getRoot());
+
+        FirebaseCacheFileStore fileStore = new FirebaseCacheFileStore(storage);
+        fileStore.setContext(context);
+        fileStore.setPath(directory, filename);
+        CompletableFuture<Boolean> future = fileStore.upload(new byte[0]);
+
+        assertFalse(file.exists());
     }
 }

@@ -25,7 +25,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
 import com.ncnf.utilities.user.LocationService;
 
@@ -55,7 +55,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     public User user;
 
     @Inject
-    public DatabaseService dbs;
+    public FirebaseDatabase dbs;
 
     private AppCompatImageButton findUserButton;
 

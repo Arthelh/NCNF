@@ -2,22 +2,23 @@ package com.ncnf.authentication.firebase;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.ncnf.authentication.Authentication;
 
 import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
 
-public class AuthenticationService implements AuthenticationServiceInterface {
+public class FirebaseAuthentication implements Authentication {
 
     private FirebaseAuth auth;
 
     @Inject
-    public AuthenticationService(){
+    public FirebaseAuthentication(){
         this(true);
     }
 
-    protected AuthenticationService(boolean getAuth){
+    protected FirebaseAuthentication(boolean getAuth){
         if(getAuth){
             this.auth = FirebaseAuth.getInstance();
         }

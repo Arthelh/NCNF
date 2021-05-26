@@ -1,11 +1,11 @@
-package com.ncnf.database.firebase;
+package com.ncnf.database;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public interface DatabaseServiceInterface {
+public interface Database {
 
 
     /**

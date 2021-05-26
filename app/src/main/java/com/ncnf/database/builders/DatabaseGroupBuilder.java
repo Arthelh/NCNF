@@ -28,7 +28,7 @@ import static com.ncnf.utilities.StringCodes.TYPE_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 
-public class GroupBuilder extends DatabaseObjectBuilder<Group>{
+public class DatabaseGroupBuilder extends DatabaseObjectBuilder<Group>{
     @Override
     public Group toObject(String uuid, @NotNull Map data) {
         Objects.requireNonNull(data);

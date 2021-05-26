@@ -1,8 +1,7 @@
 package com.ncnf.repositories;
 
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
-import com.ncnf.repositories.FriendsRepository;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,7 +32,7 @@ public class FriendsRepositoryTests {
     private final static String uuid = "my_uuid";
     private final static String other_uuid = "other_uuid";
 
-    private final DatabaseService mockDatabase = Mockito.mock(DatabaseService.class);
+    private final FirebaseDatabase mockDatabase = Mockito.mock(FirebaseDatabase.class);
     private final FriendsRepository friends = new FriendsRepository(mockDatabase);
 
     private List<User> users;

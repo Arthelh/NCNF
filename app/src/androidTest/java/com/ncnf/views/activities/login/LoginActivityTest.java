@@ -8,8 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.ncnf.R;
-import com.ncnf.authentication.firebase.AuthenticationService;
-import com.ncnf.views.activities.login.LoginActivity;
+import com.ncnf.authentication.firebase.FirebaseAuthentication;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -53,7 +52,7 @@ public class LoginActivityTest {
     private final ActivityScenarioRule activityTestRule = new ActivityScenarioRule(LoginActivity.class);
 
     @BindValue
-    AuthenticationService mockedAuth = mock(AuthenticationService.class);
+    FirebaseAuthentication mockedAuth = mock(FirebaseAuthentication.class);
 
     String invalidEmail = "test";
     String validEmail = "test@test.com";

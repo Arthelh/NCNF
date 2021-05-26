@@ -12,10 +12,11 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.ncnf.database.Database;
 import com.ncnf.database.builders.DatabaseObjectBuilder;
-import com.ncnf.database.builders.EventBuilder;
-import com.ncnf.database.builders.GroupBuilder;
-import com.ncnf.database.builders.UserBuilder;
+import com.ncnf.database.builders.DatabaseEventBuilder;
+import com.ncnf.database.builders.DatabaseGroupBuilder;
+import com.ncnf.database.builders.DatabaseUserBuilder;
 import com.ncnf.models.Event;
 import com.ncnf.models.Group;
 import com.ncnf.models.User;
@@ -31,26 +32,26 @@ import javax.inject.Inject;
 
 import static com.ncnf.utilities.StringCodes.GEOHASH_KEY;
 
-public class DatabaseService implements DatabaseServiceInterface {
+public class FirebaseDatabase implements Database {
 
     private final FirebaseFirestore db;
     private final Map<Class, DatabaseObjectBuilder> registry = new HashMap<>();
 
-    public DatabaseService(){
+    public FirebaseDatabase(){
         this.db = FirebaseFirestore.getInstance();
         initRegistry();
     }
 
     @Inject
-    protected DatabaseService(FirebaseFirestore db)  {
+    protected FirebaseDatabase(FirebaseFirestore db)  {
         this.db = db;
         initRegistry();
     }
 
     private void initRegistry(){
-        registry.put(User.class, new UserBuilder());
-        registry.put(Event.class, new EventBuilder());
-        registry.put(Group.class, new GroupBuilder());
+        registry.put(User.class, new DatabaseUserBuilder());
+        registry.put(Event.class, new DatabaseEventBuilder());
+        registry.put(Group.class, new DatabaseGroupBuilder());
     }
 
     @Override

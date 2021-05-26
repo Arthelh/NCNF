@@ -3,6 +3,7 @@ package com.ncnf.utilities.settings;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 
 public class Settings {
 
@@ -70,17 +71,28 @@ public class Settings {
     }
 
     /**
-     * Setter for the user's position
+     * Sets the current user position to the given LatLng values
+     * @param userPosition A LatLng object with the coordinates to set
      */
     public static void setUserPosition(LatLng userPosition) {
         Settings.userPosition = new LatLng(userPosition.latitude, userPosition.longitude);
     }
 
     /**
-     * Getter for the user's position
+     * Returns the current position of the user, represented as a LatLng
+     * @return A LatLng object with the coordinates of the user
      */
     public static LatLng getUserPosition(){
         return new LatLng(Settings.userPosition.latitude, Settings.userPosition.longitude);
+    }
+
+    /**
+     * Returns a boolean telling if the given date is included in the current date range
+     * @param date The date to decide for
+     * @return True if minDate <= date <= maxDate, false otherwise
+     */
+    public static boolean dateInRange(ChronoLocalDate date){
+        return (minDate.isBefore(date) || minDate.isEqual(date)) && (maxDate.isEqual(date) || maxDate.isAfter(date));
     }
 
 }

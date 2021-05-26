@@ -15,7 +15,7 @@ import com.ncnf.models.Organization;
 import java.util.LinkedList;
 import java.util.List;
 
-public class OrganizationAdapter extends RecyclerView.Adapter<OrganizationAdapter.OrganizationViewHolder> {
+public class OrganizationListAdapter extends RecyclerView.Adapter<OrganizationListAdapter.OrganizationViewHolder> {
 
     private final List<Organization> items;
     private final OrganizationListener organizationListener;
@@ -24,7 +24,7 @@ public class OrganizationAdapter extends RecyclerView.Adapter<OrganizationAdapte
         void onEventClick(Organization organization);
     }
 
-    public OrganizationAdapter(List<Organization> items, OrganizationListener organizationListener) {
+    public OrganizationListAdapter(List<Organization> items, OrganizationListener organizationListener) {
         //ensure proper copy of the List
         this.items = new LinkedList<>(items);
         this.organizationListener = organizationListener;

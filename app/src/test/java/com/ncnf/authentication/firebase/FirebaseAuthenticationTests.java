@@ -28,14 +28,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class AuthenticationServiceTests {
+public class FirebaseAuthenticationTests {
 
     FirebaseAuth mockedAuth;
     FirebaseUser mockedUser;
 
     Task<AuthResult> failureTask;
     Task<AuthResult> successTask;
-    AuthenticationService service;
+    FirebaseAuthentication service;
 
     String email = "test@test.com";
     String password = "test1234";
@@ -45,7 +45,7 @@ public class AuthenticationServiceTests {
     public void setup(){
         mockedAuth = mock(FirebaseAuth.class);
 
-        service = new AuthenticationService(false);
+        service = new FirebaseAuthentication(false);
         service.setAuth(mockedAuth);
 
         failureTask = new Task<AuthResult>() {

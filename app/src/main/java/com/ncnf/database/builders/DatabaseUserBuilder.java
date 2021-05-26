@@ -1,7 +1,7 @@
 package com.ncnf.database.builders;
 
 import com.google.firebase.Timestamp;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,10 +27,10 @@ import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
 import static com.ncnf.utilities.StringCodes.USERNAME_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
-public class UserBuilder extends DatabaseObjectBuilder<User>{
+public class DatabaseUserBuilder extends DatabaseObjectBuilder<User>{
 
     @Inject
-    DatabaseService db;
+    FirebaseDatabase db;
 
     @Override
     public User toObject(String uuid, @NotNull Map<String, Object> data) {
