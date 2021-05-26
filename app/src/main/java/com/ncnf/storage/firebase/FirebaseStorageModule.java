@@ -13,6 +13,9 @@ import dagger.hilt.android.components.ActivityComponent;
 @InstallIn(ActivityComponent.class)
 public class FirebaseStorageModule {
 
+    /**
+     * Get an instance of FirebaseStorage
+     */
     @Provides
     public static FirebaseStorage getFirebaseStorage() {
         return FirebaseStorage.getInstance();

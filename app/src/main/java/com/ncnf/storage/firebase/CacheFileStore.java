@@ -37,6 +37,9 @@ public class CacheFileStore extends FileStore {
         this.file = createFile(directory, filename);
     }
 
+    /**
+     * Setter for the context
+     */
     public void setContext(Context context) {
         this.context = context;
     }

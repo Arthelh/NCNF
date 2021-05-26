@@ -50,7 +50,6 @@ public class MapHandler {
      * and handling the retrieval of the events and organizations to be displayed
      * @param context The activity the map will be displayed in
      * @param mMap The Google Map to display
-     * @param venueProvider A provider for the organizers, or venues.
      * @param fragmentManager A children fragment manager from the MapFragment
      * @param databaseService the service to query the database
      */

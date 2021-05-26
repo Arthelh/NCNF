@@ -7,7 +7,7 @@ public interface AuthenticationServiceInterface {
     /**
      * Register a new user in Firebase Authentication system using the given email and password
      * and logs in the new user.
-     * @param email New user's email
+     * @param email    New user's email
      * @param password New user's password
      * @return CompletableFuture containing the Firebase's response : true if successful
      */
@@ -15,7 +15,7 @@ public interface AuthenticationServiceInterface {
 
     /**
      * Log in an existing user using the given email and password.
-     * @param email User's email
+     * @param email    User's email
      * @param password User's password
      * @return CompletableFuture containing the Firebase's response : true if successful
      */
@@ -31,4 +31,11 @@ public interface AuthenticationServiceInterface {
      * @return CompletableFuture containing the Firebase's response : true if successful
      */
     CompletableFuture<Boolean> delete();
+
+    /**
+     * Change the email (logging credentials) for the current user.
+     * @param email New email of the user
+     * @return CompletableFuture containing the Firebase's response : true if successful
+     */
+    CompletableFuture<Boolean> changeEmail(String email);
 }

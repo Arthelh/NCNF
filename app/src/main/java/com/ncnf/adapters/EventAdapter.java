@@ -63,15 +63,24 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.SocialObjVie
         this.context = context;
     }
 
+    /**
+     * Getter for event list
+     */
     public List<SocialObject> getEvents() {
         return Collections.unmodifiableList(events);
     }
 
+    /**
+     * Setter for event list (also notify recycler view)
+     */
     public void setEvents(List<Event> events) {
         this.events = events;
         notifyDataSetChanged();
     }
 
+    /**
+     * Add an event and sort the list
+     */
     public void addEvent(Event Event) {
         // Add the Event at the beginning of the list
         events.add(0, Event);

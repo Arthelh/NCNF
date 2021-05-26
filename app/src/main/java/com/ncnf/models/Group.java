@@ -83,5 +83,4 @@ public class Group extends SocialObject {
     public CompletableFuture<Boolean> store(DatabaseService db){
         return db.setDocument(GROUPS_COLLECTION_KEY + this.getUuid(), this);
     }
-
 }

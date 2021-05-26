@@ -45,10 +45,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
         this.auth.signOut();
     }
 
-    /**
-     * TODO : should we monitor fail cases or what ?
-     * @return
-     */
+    /**TODO : should we monitor fail cases or what ? */
     @Override
     public CompletableFuture<Boolean> delete() {
         CompletableFuture<Boolean> futureResponse = new CompletableFuture<>();
@@ -58,6 +55,7 @@ public class AuthenticationService implements AuthenticationServiceInterface {
         return futureResponse;
     }
 
+    @Override
     public CompletableFuture<Boolean> changeEmail(String email){
         CompletableFuture<Boolean> futureResponse = new CompletableFuture<>();
 

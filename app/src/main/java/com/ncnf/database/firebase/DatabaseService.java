@@ -246,13 +246,14 @@ public class DatabaseService implements DatabaseServiceInterface {
         return this.updateField(documentPath, arrayField, FieldValue.arrayRemove(value));
     }
 
-    public <T> CompletableFuture<List<T>> geoQuery(LatLng location, double radius, String path, Class<T> type){
+    @Override
+    public <T> CompletableFuture<List<T>> geoQuery(LatLng location, double radius, String collectionPath, Class<T> collectionType){
         radius *= (radius < 1000) ? 1000 : 1; //Check if radius is still in km, convert to m
 
         List<GeoQueryBounds> bounds = GeoFireUtils.getGeoHashQueryBounds(new GeoLocation(location.latitude, location.longitude), radius);
         final List<Task<QuerySnapshot>> tasks = new ArrayList<>();
         for (GeoQueryBounds b : bounds){
-            Query q = db.collection(path)
+            Query q = db.collection(collectionPath)
                     .orderBy(GEOHASH_KEY)
                     .startAt(b.startHash)
                     .endAt(b.endHash);
@@ -271,7 +272,7 @@ public class DatabaseService implements DatabaseServiceInterface {
                             matchingDocs.addAll(snap.getDocuments());
                         }
                         for (DocumentSnapshot doc : matchingDocs){
-                            result.add((T) registry.get(type).toObject(doc.getId(), doc.getData()));
+                            result.add((T) registry.get(collectionType).toObject(doc.getId(), doc.getData()));
                         }
                         futureResponse.complete(result);
                     } else {

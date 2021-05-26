@@ -23,6 +23,11 @@ public class UserRepository {
         this.db = db;
     }
 
+    /**
+     * Load a user (identified by the given UUID) from Firebase.Firestore
+     * @param uuid
+     * @return
+     */
     public CompletableFuture<User> loadUser(String uuid){
         return this.db.getDocument(USERS_COLLECTION_KEY + uuid, User.class);
     }
