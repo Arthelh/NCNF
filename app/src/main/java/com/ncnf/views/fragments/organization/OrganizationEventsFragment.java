@@ -1,6 +1,5 @@
 package com.ncnf.views.fragments.organization;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,7 +34,6 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static android.content.Context.MODE_PRIVATE;
 import static com.ncnf.utilities.StringCodes.FRAGMENT_ORGANIZATION_TAG;
 
 @AndroidEntryPoint
@@ -51,17 +49,13 @@ public class OrganizationEventsFragment extends Fragment {
     private EventListAdapter adapter;
     private final List<Event> eventsList = new LinkedList<>();
 
-    public static final String MY_SHARED_PREFERENCES = "MySharedPrefs" ;
-    SharedPreferences myPreferences;
-
-
     public OrganizationEventsFragment() {}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        myPreferences = requireContext().getSharedPreferences(MY_SHARED_PREFERENCES , MODE_PRIVATE);
-        this.uuid = myPreferences.getString("organization_id", null);
+        //if it is null it should fail
+        this.uuid = this.getArguments().getString("organization_id");
         return inflater.inflate(R.layout.fragment_organization_events, container, false);
     }
 

@@ -3,6 +3,7 @@ package com.ncnf.views.fragments.organization;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -32,6 +32,7 @@ import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.models.User;
 import com.ncnf.adapters.OrganizationListAdapter;
 import com.ncnf.utilities.InputValidator;
+import com.ncnf.views.activities.organization.OrganizationProfileActivity;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,8 +40,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-
-import static com.ncnf.utilities.StringCodes.generatePerViewID;
 
 @AndroidEntryPoint
 public class OrganizationTabFragment extends Fragment {
@@ -57,19 +56,19 @@ public class OrganizationTabFragment extends Fragment {
 
     private MenuItem addOrgButton;
 
+    public static final String ORGANIZATION_UUID_KEY = "organization_id";
+
     private TextView emptyView;
     private RecyclerView recycler;
     OrganizationListAdapter adapter;
 
     private List<Organization> organizations = new LinkedList<>();
-    private Bundle savedInstanceState;
 
     public OrganizationTabFragment() {
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.savedInstanceState = savedInstanceState;
         this.layoutInflater = inflater;
         this.fm = getParentFragmentManager();
         setHasOptionsMenu(true);
@@ -114,40 +113,9 @@ public class OrganizationTabFragment extends Fragment {
     }
 
     private void onOrganizationClick(Organization o) {
-        //Check if fragment already exists
-        String orgProfileTag = generatePerViewID(o);
-        Fragment orgProfileFrag = fm.findFragmentByTag(orgProfileTag);
-
-        //It doesn't so create new corresponding Fragment
-        if (!(orgProfileFrag instanceof OrganizationViewFragment)) {
-
-            Bundle args = new Bundle();
-            args.putString("organization_id", o.getUuid().toString());
-
-            orgProfileFrag = new OrganizationProfileTabs();
-            requireActivity().getSupportFragmentManager().setFragmentResult("organization_id_key", args);
-        }
-
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                fm.popBackStack();
-                recycler.setVisibility(View.VISIBLE);
-                addOrgButton.setVisible(true);
-                this.setEnabled(false);
-            }
-        };
-
-        recycler.setVisibility(View.INVISIBLE);
-        addOrgButton.setVisible(false);
-
-        fm.beginTransaction()
-                .hide(this)
-                .replace(((ViewGroup) requireView().getParent()).getId(), orgProfileFrag, orgProfileTag)
-                .addToBackStack(null)
-                .commit();
-
-        requireActivity().getOnBackPressedDispatcher().addCallback(callback);
+        Intent intent = new Intent(this.getContext(), OrganizationProfileActivity.class);
+        intent.putExtra(ORGANIZATION_UUID_KEY, o.getUuid().toString());
+        startActivity(intent);
     }
 
     @Override

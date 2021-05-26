@@ -40,16 +40,12 @@ public class OrganizationViewFragment extends Fragment {
     private TextView orgAddress;
     private ImageView orgPicture;
 
-    public static final String MY_SHARED_PREFERENCES = "MySharedPrefs" ;
-    SharedPreferences myPreferences;
-
     public OrganizationViewFragment(){ }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myPreferences = requireContext().getSharedPreferences(MY_SHARED_PREFERENCES , MODE_PRIVATE);
-        this.uuid = myPreferences.getString("organization_id", null);
+        this.uuid = this.getArguments().getString("organization_id");
         return inflater.inflate(R.layout.fragment_organization_view, container, false);
     }
 
