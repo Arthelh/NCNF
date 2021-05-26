@@ -33,16 +33,19 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
 import com.ncnf.models.SocialObject;
 import com.ncnf.models.User;
+import com.ncnf.repositories.EventRepository;
 import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.storage.firebase.FirebaseFileStore;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.InputValidator;
+import com.ncnf.views.activities.organization.OrganizationProfileActivity;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -67,6 +70,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.POPUP_POSITIVE_BUTTON;
 import static com.ncnf.utilities.StringCodes.POPUP_TITLE;
+import static com.ncnf.views.fragments.organization.OrganizationTabFragment.ORGANIZATION_UUID_KEY;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
@@ -74,15 +78,21 @@ import static java.lang.Integer.parseInt;
 public class EventCreateFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     @Inject
-    public User user;
+    public FirebaseUser user;
+
+    @Inject
+    public EventRepository eventRepository;
 
     @Inject
     public FirebaseFileStore firebaseFileStore;
 
     @Inject
     public OrganizationRepository organizationRepository;
+
     private Organization organization;
     private String uuid;
+    private String userEmail;
+    private String userUUID;
 
     private SocialObject.Type eventType;
     private LocalDate eventDate = LocalDate.now();
@@ -101,15 +111,13 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
     EditText minAge;
     EditText eventPrice;
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        requireActivity().getSupportFragmentManager().setFragmentResultListener("request Key", getViewLifecycleOwner(), new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                uuid = result.getString("organization_id");
-            }
+        requireActivity().getSupportFragmentManager().setFragmentResultListener("request Key", getViewLifecycleOwner(), (requestKey, result) -> {
+            uuid = result.getString("organization_id");
         });
+        userEmail = user.getEmail();
+        userUUID = user.getUid();
         return inflater.inflate(R.layout.fragment_event_creation, container, false);
     }
 
@@ -130,7 +138,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
 
         //Date Selection
         Button dateSelection = v.findViewById(R.id.set_event_date_button);
-        TextView dateDisplay = (TextView) v.findViewById(R.id.display_event_date);
+        TextView dateDisplay = v.findViewById(R.id.display_event_date);
         dateSelection.setFocusable(false);
 
         dateSelection.setOnClickListener(view -> {
@@ -176,10 +184,8 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
         //Email default setting
         CheckBox useDefault = v.findViewById(R.id.use_personal_email_checkbox);
         useDefault.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked) {
-                if(user != null) {
-                    eventEmail.setText(user.getEmail());
-                }
+            if (isChecked) {
+                eventEmail.setText(userEmail);
             }
             else {
                 eventEmail.setText("");
@@ -188,11 +194,11 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
 
         // Select event type
 
-        Spinner spinner = (Spinner) v.findViewById(R.id.select_event_type);
+        Spinner spinner = v.findViewById(R.id.select_event_type);
         spinner.setOnItemSelectedListener(EventCreateFragment.this);
         List<String> options = Stream.of(SocialObject.Type.values()).map(SocialObject.Type::name).collect(Collectors.toList());
 
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, options);
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, options);
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(typeAdapter);
 
@@ -211,62 +217,42 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
             }
         });
 
-        validate.setOnClickListener(new View.OnClickListener() {
+        validate.setOnClickListener(v1 -> {
+            if (checkAllFieldsAreFilledAndCorrect()) {
+                UUID eventUUID = UUID.randomUUID();
 
-            @Override
-            public void onClick(View v) {
-                if (checkAllFieldsAreFilledAndCorrect()) {
+                DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());
+                Event event = new Event(organization.getName(),
+                        eventUUID,
+                        eventName.getText().toString(),
+                        LocalDateTime.of(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute()),
+                        getLocationFromAddress(eventAddress.getText().toString()),
+                        eventAddress.getText().toString(),
+                        eventDescription.getText().toString(),
+                        eventType,
+                        new LinkedList<>(),
+                        parseInt(minAge.getText().toString()),
+                        parseDouble(eventPrice.getText().toString()),
+                        new LinkedList<>(),
+                        eventEmail.getText().toString());
 
-                    if (user != null) {
+                firebaseFileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
+                pictureView.setDrawingCacheEnabled(true);
+                pictureView.buildDrawingCache();
+                Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
 
-                        UUID eventUUID = UUID.randomUUID();
-
-                        //TODO: for now some fields aren't used and it only creates group -> should be extended afterward
-                        DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());
-                        Event event = new Event(organization.getName(),
-                                eventUUID,
-                                eventName.getText().toString(),
-                                LocalDateTime.of(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute()),
-                                getLocationFromAddress(eventAddress.getText().toString()),
-                                eventAddress.getText().toString(),
-                                eventDescription.getText().toString(),
-                                eventType,
-                                new LinkedList<>(),
-                                parseInt(minAge.getText().toString()),
-                                parseDouble(eventPrice.getText().toString()),
-                                new LinkedList<>(),
-                                eventEmail.getText().toString());
-
-
-                        organizationRepository.addEventToOrganization(organization.getUuid().toString(),eventUUID.toString())
-                                .thenAccept(res -> nextStep())
-                                .exceptionally(e -> {
-                                    failToCreateEvent(e.getMessage());
-                                    return null;
-                                });
-
-
-                        firebaseFileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
-                        pictureView.setDrawingCacheEnabled(true);
-                        pictureView.buildDrawingCache();
-                        Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
-
-                        // Simultaneously upload the image and save the group.
-                        CompletableFuture.allOf(firebaseFileStore.uploadImage(bitmap), user.createEvent(event))
-                                .thenAccept(t -> nextStep())
-                                .exceptionally(e -> {
-                                    failToCreateEvent(e.getMessage());
-                                    return null;
-                                });
-                    }
-                    else {
-                        Log.d(DEBUG_TAG, "Can't create new event if not logged in");
-                    }
-                }
+                // Simultaneously upload the image and save the group.
+                CompletableFuture.allOf(
+                        firebaseFileStore.uploadImage(bitmap),
+                        eventRepository.storeEvent(event),
+                        organizationRepository.addEventToOrganization(organization.getUuid().toString(), eventUUID.toString())
+                ).thenAccept(t -> nextStep()).exceptionally(e -> {
+                    failToCreateEvent(e.getMessage());
+                    return null;
+                });
             }
         });
     }
-
 
     //Helpers
     public GeoPoint getLocationFromAddress(String strAddress){
@@ -307,7 +293,6 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
         }
     }
 
-    //TODO : decide what next step is
     private void nextStep(){
         FragmentManager fm = getParentFragmentManager();
         fm.popBackStack();
@@ -336,14 +321,6 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
         if(!interm) {
             return false;
         }
-
-        // TODO : find a way to reject invalid addresses
-        /**
-         if(getLocationFromAddress(eventAddress.getText().toString()) == null) {
-         eventAddress.setError("Invalid address");
-         return false;
-         }
-         **/
 
         if(!(InputValidator.verifyEmailInput(eventEmail.getText().toString()))) {
             eventEmail.setError("Please enter a correct email address.");
