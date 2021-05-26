@@ -222,7 +222,8 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
                 UUID eventUUID = UUID.randomUUID();
 
                 DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());
-                Event event = new Event(organization.getName(),
+                Event event = new Event(
+                        organization.getUuid().toString(),
                         eventUUID,
                         eventName.getText().toString(),
                         LocalDateTime.of(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute()),

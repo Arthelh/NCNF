@@ -10,11 +10,13 @@ import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 
 import static com.ncnf.utilities.StringCodes.ADMIN_KEY;
+import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.ORGANIZATIONS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.ORGANIZATION_ADMIN_TOKEN;
 import static com.ncnf.utilities.StringCodes.ORGANIZATION_NAME;
 import static com.ncnf.utilities.StringCodes.ORGANIZATION_UUID;
 import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS;
+import static com.ncnf.utilities.StringCodes.OWNER_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.USER_ORGANIZATIONS;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
@@ -102,7 +104,7 @@ public class OrganizationRepository {
     }
 
     public CompletableFuture<List<Event>> getOrganizationEvents(String organization_id) {
-        return db.getField(ORGANIZATIONS_COLLECTION_KEY + organization_id, ORGANIZED_EVENTS);
+        return db.whereEqualTo(EVENTS_COLLECTION_KEY, OWNER_KEY, organization_id, Event.class);
     }
 
 

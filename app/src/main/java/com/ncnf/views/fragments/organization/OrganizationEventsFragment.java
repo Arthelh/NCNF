@@ -93,7 +93,6 @@ public class OrganizationEventsFragment extends Fragment {
         organizationRepository.getByUUID(this.uuid).thenAccept(o -> {
             organizationRepository.getOrganizationEvents(o.get(0).getUuid().toString()).thenAccept(le -> {
                 this.eventsList.clear();
-                //TODO get all events
                 this.eventsList.addAll(le);
                 this.adapter = new EventListAdapter(getContext(), this.eventsList, this::onEventClick, EventListAdapter.SortingMethod.DATE);
                 this.recyclerView.setAdapter(adapter);
