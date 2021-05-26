@@ -1,6 +1,11 @@
 package com.ncnf.views.fragments.organization;
 
+import android.view.InputDevice;
+import android.view.MotionEvent;
+
+import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
@@ -14,6 +19,7 @@ import com.ncnf.helpers.RecyclerViewItemCountAssertion;
 import com.ncnf.models.Organization;
 import com.ncnf.models.User;
 import com.ncnf.repositories.OrganizationRepository;
+import com.ncnf.views.activities.organization.OrganizationProfileActivity;
 import com.ncnf.views.activities.user.UserTabActivity;
 
 import org.junit.Assert;
@@ -41,6 +47,7 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -102,22 +109,17 @@ public class OrganizationTabFragmentTests {
 
     @Test
     public void clickOnOrganization() throws InterruptedException {
+        Intents.init();
+
         when(organizationRepository.getUserOrganizations(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
         when(organizationRepository.getByUUID(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
 
         onView(withId(R.id.user_view_pager)).perform(swipeLeft());
+        Thread.sleep(2000); // necessary because of the swipe
+        onView(withText("EPFL")).perform(click());
+        Intents.intended(hasComponent(OrganizationProfileActivity.class.getName()));
 
-        // Sometimes, the click on an item doesn't work.
-        // Therefore, the test tries a few times before failing.
-        UiDevice device = UiDevice.getInstance(getInstrumentation());
-        UiObject textView = device.findObject(new UiSelector().text("ncnf@epfl.ch"));
-        int n = 0;
-        while(!textView.waitForExists(1000)) {
-            onView(withId(R.id.organization_list_recyclerview)).perform(RecyclerViewActions.actionOnItem(
-                    hasDescendant(withText("EPFL")), click()
-            ));
-            if (n++ > 5) Assert.fail("Click on an organization fails");
-        }
+        Intents.release();
     }
 
     @Test
@@ -160,5 +162,4 @@ public class OrganizationTabFragmentTests {
         onView(withText("Enter")).perform(click());
         onView(withId(R.id.popup_invalid_organization_text)).check(matches(withText("No organization found")));
     }
-
 }

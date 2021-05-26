@@ -102,7 +102,7 @@ public class OrganizationRepository {
     }
 
     public CompletableFuture<List<Event>> getOrganizationEvents(String organization_id) {
-        return db.getField(ORGANIZATIONS_COLLECTION_KEY+ organization_id, ORGANIZED_EVENTS);
+        return db.getField(ORGANIZATIONS_COLLECTION_KEY + organization_id, ORGANIZED_EVENTS);
     }
 
 

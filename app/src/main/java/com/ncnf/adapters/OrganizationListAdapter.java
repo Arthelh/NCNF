@@ -77,12 +77,7 @@ public class OrganizationListAdapter extends RecyclerView.Adapter<OrganizationLi
             organizationName.setText(o.getName());
             //TODO Set picture
             //organizationPicture s
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onOrganizationClick(o);
-                }
-            });
+            itemView.setOnClickListener(v -> listener.onOrganizationClick(o));
         }
     }
 }
