@@ -73,7 +73,7 @@ public class EventFragmentTest {
 
     @Test
     public void test_address(){
-        onView(withId(R.id.eventLocation)).check(matches(withText(containsString(e1.getAddress()))));
+        onView(withId(R.id.eventAddress)).check(matches(withText(containsString(e1.getAddress()))));
     }
 
     @Test
@@ -83,6 +83,6 @@ public class EventFragmentTest {
 
     @Test
     public void test_owner(){
-        onView(withId(R.id.eventOwner)).check(matches(withText(containsString(e1.getEmail()))));
+        onView(withId(R.id.eventOrganization)).check(matches(withText(containsString(e1.getEmail()))));
     }
 }
