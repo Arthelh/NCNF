@@ -17,17 +17,8 @@
             android:layout_height="300dp"
             android:background="@color/navigation_bar_background"
             android:orientation="vertical"
-            android:paddingTop="20dp">
+            android:paddingTop="30dp">
 
-            <TextView
-                android:id="@+id/profileText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Profile"
-                android:textColor="#fff"
-                android:textSize="25dp"
-                android:textStyle="bold" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -36,7 +27,7 @@
                 android:gravity="center">
 
                 <include
-                    android:id="@+id/public_profile_picture"
+                    android:id="@+id/profile_picture"
                     layout="@layout/user_picture_view"
                     android:visibility="visible" />
 
