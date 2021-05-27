@@ -15,6 +15,7 @@
     <string name="map_settings_button">Settings</string>
     <string name="map_marker_arrow">Arrow</string>
     <string name="map_feed_button">Back to Map</string>
+    <string name="map_toolbar_error">Error trying to find a place. Please check network connection and try again.</string>
 
     <!-- String used for Feed Fragment -->
     <string name="feed_event_button">Back to Feed</string>
