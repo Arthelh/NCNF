@@ -91,15 +91,5 @@ public class PublicProfileFragment extends Fragment {
 
             email.setEnabled(false);
         }
-
-
-
-
-
-
-
-
-
-
     }
 }
