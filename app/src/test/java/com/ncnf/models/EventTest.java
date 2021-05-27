@@ -29,7 +29,7 @@ public class EventTest {
     LocalDateTime date = LocalDateTime.of(2021, 3, 11, 12, 0);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    SocialObject.Type type = SocialObject.Type.Conference;
+    Event.Type type = Event.Type.Conference;
     String description = "SocialObject description goes here";
     String ownerID = "00";
     UUID uuid = UUID.randomUUID();
@@ -46,7 +46,7 @@ public class EventTest {
     @Before
     public void setup(){
         db = Mockito.mock(FirebaseDatabase.class);
-        mainEvent = new Event(uuid, ownerID, name, date, geoPoint, address, description, type, attendees, minAge, price, eventTags, "test@email.com");
+        mainEvent = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, eventTags, "test@email.com");
         response = CompletableFuture.completedFuture(true);
     }
 
@@ -87,7 +87,7 @@ public class EventTest {
         eventTags.add(eventTag);
 
 
-        Event event = new Event(uuid, ownerID, name, date, geoPoint, address, description, type, attendees, minAge, price, eventTags, "test@email.com");
+        Event event = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, eventTags, "test@email.com");
         assertEquals(event.getUuid(), uuid);
         assertEquals(event.getOwnerId(), ownerID);
         assertEquals(event.getDate(), date);

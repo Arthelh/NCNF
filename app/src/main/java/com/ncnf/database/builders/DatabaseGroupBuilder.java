@@ -40,13 +40,11 @@ public class DatabaseGroupBuilder extends DatabaseObjectBuilder<Group>{
         LocalDateTime datetime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         GeoPoint location = (GeoPoint) data.get(LOCATION_KEY);
         String address = data.get(ADDRESS_KEY).toString();
-        String typeStr = data.get(TYPE_KEY).toString();
-        SocialObject.Type type = SocialObject.Type.valueOf(typeStr);
         List<String> attendees = (List<String>) data.get(ATTENDEES_KEY);
         String description = (String) data.get(DESCRIPTION_KEY);
         List<String> invited = (List<String>) data.get(INVITED_KEY);
 
-        return new Group(ownerId, UUID.fromString(uuidStr), name, datetime, location, address, type, attendees, description, invited);
+        return new Group(ownerId, UUID.fromString(uuidStr), name, datetime, location, address, attendees, description, invited);
     }
 
     @Override
@@ -57,7 +55,6 @@ public class DatabaseGroupBuilder extends DatabaseObjectBuilder<Group>{
         map.put(NAME_KEY, group.getName());
         Date date = Date.from(group.getDate().atZone(ZoneId.systemDefault()).toInstant());
         map.put(DATE_KEY, new Timestamp(date));
-        map.put(TYPE_KEY, group.getType().toString());
         map.put(ATTENDEES_KEY, group.getAttendees());
         map.put(DESCRIPTION_KEY, group.getDescription());
         map.put(LOCATION_KEY, group.getLocation());

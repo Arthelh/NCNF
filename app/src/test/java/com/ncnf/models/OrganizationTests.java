@@ -1,7 +1,7 @@
 package com.ncnf.models;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Organization;
 
 import org.junit.Assert;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 
 public class OrganizationTests {
 
-    DatabaseService db = mock(DatabaseService.class);
+    FirebaseDatabase db = mock(FirebaseDatabase.class);
 
     @Test
     public void constructorEqualsHashTest(){

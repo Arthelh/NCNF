@@ -18,6 +18,14 @@ public class Event extends SocialObject {
     private static final int MIN_AGE = 0;
     private static final int MAX_AGE = 125;
 
+    /**
+     * Possible type for a social object
+     */
+    public enum Type {
+        NOTHING, Movie, Museum, Conference, Opera, OTHER
+    }
+
+    private Type type;
     private List<EventTag> eventTags;
     private double price;
     private int minAge;
@@ -37,11 +45,12 @@ public class Event extends SocialObject {
      * @param email Contact email of the event
      */
     public Event(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type, int minAge, double price, String email) {
-        super(ownerId, name, date, location, address, type, description);
+        super(ownerId, name, date, location, address, description);
 
         checkConstraints(minAge, price);
 
         eventTags = new ArrayList<>();
+        this.type = type;
         this.minAge = minAge;
         this.price = price;
         this.email = email;
@@ -64,11 +73,12 @@ public class Event extends SocialObject {
      * @param email Contact email of the event
      */
     public Event(String ownerId, UUID uuid, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<EventTag> tags, String email) {
-        super(uuid, ownerId, name, date, location, address, type, attendees, description);
+        super(uuid, ownerId, name, date, location, address, attendees, description);
 
         checkConstraints(minAge, price);
 
         setEventTags(tags);
+        this.type = type;
         this.minAge = minAge;
         this.price = price;
         this.email = email;
@@ -90,7 +100,10 @@ public class Event extends SocialObject {
     public int getMinAge() { return minAge; }
     public double getPrice() { return price; }
     public String getEmail() { return email; }
-    public List<EventTag> getEventTags() { return new ArrayList<EventTag>(eventTags); }
+    public Type getType() {
+        return type;
+    }
+    public List<EventTag> getEventTags() { return new ArrayList<>(eventTags); }
 
     /**
      * Setters for the event's attributes
@@ -100,6 +113,9 @@ public class Event extends SocialObject {
         this.minAge = minAge;
     }
     public void setPrice(double price) { this.price = price; }
+    public void setType(Type type) {
+        this.type = type;
+    }
     public void setEmail(String email) { this.email = email; }
     public void setEventTags(List<EventTag> eventTags) {
         this.eventTags = new ArrayList<>(eventTags);

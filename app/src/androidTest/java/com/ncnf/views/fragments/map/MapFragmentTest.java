@@ -19,11 +19,9 @@ import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.GeoPoint;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
-import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Organization;
 import com.ncnf.repositories.EventRepository;
 import com.ncnf.repositories.OrganizationRepository;
@@ -59,14 +57,12 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -76,8 +72,8 @@ public final class MapFragmentTest {
     static private final EventRepository mockEventRepository = Mockito.mock(EventRepository.class);
     static private final OrganizationRepository mockOrgRepo = Mockito.mock(OrganizationRepository.class);
 
-    static private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
-    static private final Event e2 = new Event("u2", "Another Fun event", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
+    static private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", Event.Type.Conference, 0, 0, "email@test.com");
+    static private final Event e2 = new Event("u2", "Another Fun event", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", Event.Type.Conference, 0, 0, "email@test.com");
     static private final List<Event> events = Arrays.asList(e1, e2);
 
     static private final Organization o1 = new Organization("EPFL", new GeoPoint(46.5338f, 6.5914f), "EPFL Route Cantonale 15", "epfl@epfl.ch", "021 123 45 67", "EPFL");
@@ -102,7 +98,7 @@ public final class MapFragmentTest {
         when(mockEventRepository.getEventsNearBy()).thenReturn(future);
 
         CompletableFuture<List<Organization>> orgFuture = CompletableFuture.completedFuture(orgs);
-        when(mockOrgRepo.getOrgsNearby()).thenReturn(orgFuture);
+        when(mockOrgRepo.getOrganizationsNearby()).thenReturn(orgFuture);
     }
 
     @Before

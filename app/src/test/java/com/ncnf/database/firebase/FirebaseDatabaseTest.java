@@ -9,6 +9,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.ncnf.database.Database;
 import com.ncnf.database.builders.DatabaseEventBuilder;
 import com.ncnf.mocks.MockTask;
 import com.ncnf.models.Event;
@@ -47,7 +48,7 @@ public class FirebaseDatabaseTest {
     LocalDateTime date = LocalDateTime.of(2021, 03, 11, 12, 0);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    SocialObject.Type type = SocialObject.Type.Conference;
+    Event.Type type = Event.Type.Conference;
     String description = "SocialObject description goes here";
     String ownerID = "00";
 
@@ -409,7 +410,7 @@ public class FirebaseDatabaseTest {
     public void whereInWorks(){
         String uuid = UUID.randomUUID().toString();
         Event event = new Event(uuid, name, date, geoPoint,address,description, type, 0, 0L, "test@email.com");
-        Map<String, Object> data = new EventBuilder().toMap(event);
+        Map<String, Object> data = new DatabaseEventBuilder().toMap(event);
 
         QueryDocumentSnapshot document = Mockito.mock(QueryDocumentSnapshot.class);
         when(document.getData()).thenReturn(data);

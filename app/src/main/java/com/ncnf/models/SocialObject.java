@@ -18,18 +18,12 @@ public abstract class SocialObject implements Comparable<SocialObject> {
     public static final String IMAGE_PATH = "/events/images";
     public static final String IMAGE_NAME = "banner_%s";
 
-    /**
-     * Possible type for a social object
-     */
-    public enum Type {
-        NOTHING, Movie, Museum, Conference, Opera, OTHER
-    }
+
 
     private UUID uuid;
     private String ownerId;
     private String name;
     private LocalDateTime date;
-    private Type type;
     private List<String> attendees;
     private int numOfAttendees;
     private String description;
@@ -44,32 +38,29 @@ public abstract class SocialObject implements Comparable<SocialObject> {
      * @param location Location where the socialObject will take place (GPS coordinates)
      * @param address Address corresponding the location of the socialObject
      * @param description Description of the socialObject
-     * @param type Type of socialObject : Concert, Movie, Museum, etc.
      */
-    public SocialObject(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, Type type, String description) {
-        this(UUID.randomUUID(), ownerId, name, date, location, address, type, new ArrayList<>(), description);
+    public SocialObject(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description) {
+        this(UUID.randomUUID(), ownerId, name, date, location, address, new ArrayList<>(), description);
     }
 
     /**
      * Public constructor used to create an event from an already existing socialObject
-     *  @param uuid Unique identifier of the socialObject
+     * @param uuid Unique identifier of the socialObject
      * @param ownerId Identifier of the owner of this socialObject
      * @param name Name of the socialObject
      * @param date Date during which the socialObject will take place
      * @param location Location where the socialObject will take place (GPS coordinates)
      * @param address Address corresponding the location of the socialObject
-     * @param type Type of socialObject : Concert, Movie, Museum, etc.
      * @param attendees List of IDs of the people attending the socialObject
      * @param description Description of the socialObject
      */
-    public SocialObject(UUID uuid, String ownerId, String name, LocalDateTime date, GeoPoint location, String address, Type type, List<String> attendees, String description) {
+    public SocialObject(UUID uuid, String ownerId, String name, LocalDateTime date, GeoPoint location, String address, List<String> attendees, String description) {
         this.uuid = uuid;
         this.ownerId = ownerId;
         this.name = name;
         this.date = date;
         this.location = location;
         this.address = address;
-        this.type = type;
         this.attendees = attendees;
         this.numOfAttendees = attendees.size();
         this.description = description;
@@ -93,9 +84,6 @@ public abstract class SocialObject implements Comparable<SocialObject> {
     public java.lang.String getAddress() {
         return address;
     }
-    public Type getType() {
-        return type;
-    }
     public List<String> getAttendees() {
         return Collections.unmodifiableList(attendees);
     }
@@ -117,9 +105,6 @@ public abstract class SocialObject implements Comparable<SocialObject> {
     }
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
-    }
-    public void setType(Type type) {
-        this.type = type;
     }
     public void setName(String name) {
         this.name = name;

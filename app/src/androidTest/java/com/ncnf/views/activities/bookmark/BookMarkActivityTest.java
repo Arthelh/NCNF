@@ -47,11 +47,11 @@ public class BookMarkActivityTest {
     private static final User mockUser = Mockito.mock(User.class);
 
     List<Event> events = new ArrayList<>();
-    private final Event event = new Event("EPFL", "EPFL event", LocalDateTime.of(2021, 03, 11, 0, 0), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", SocialObject.Type.Conference, 0, 0, "test@email.com");
+    private final Event event = new Event("EPFL", "EPFL event", LocalDateTime.of(2021, 03, 11, 0, 0), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", Event.Type.Conference, 0, 0, "test@email.com");
     private CompletableFuture<List<Event>> eventsFuture;
 
     List<Group> groups = new ArrayList<>();
-    private final Group group = new Group("EPFL", "EPFL event", LocalDateTime.of(2021, 03, 11, 0, 0), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", SocialObject.Type.Conference);
+    private final Group group = new Group("EPFL", "EPFL event", LocalDateTime.of(2021, 03, 11, 0, 0), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here");
     private CompletableFuture<List<Group>> groupsFuture;
 
     @BindValue

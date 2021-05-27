@@ -14,7 +14,6 @@ import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 public class Group extends SocialObject {
 
     private final List<String> invited;
-    private final  List<String> attendees;
 
     /**
      * Public constructor used to create a new group
@@ -24,41 +23,31 @@ public class Group extends SocialObject {
      * @param location Meeting point of the group (GPS coordinates)
      * @param address Address corresponding the location of the group
      * @param description Description of the group
-     * @param type Type of group : Concert, Movie, Museum, etc.
      */
-    public Group(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type) {
-        super(ownerId, name, date, location, address, type, description);
+    public Group(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description) {
+        super(ownerId, name, date, location, address, description);
         invited = new ArrayList<>();
-        attendees = new ArrayList<>();
     }
 
     /**
      * Public constructor used to create an group from an already existing group
-     * @param id Unique identifier of the group
      * @param ownerId Identifier of the owner of this group
+     * @param id Unique identifier of the group
      * @param name Name of the group
      * @param date Date during which the group will take place
      * @param location Meeting point of the group (GPS coordinates)
      * @param address Address corresponding the location of the group
-     * @param description Description of the group
-     * @param type Type of group : Concert, Movie, Museum, etc.
      * @param attendees List of IDs of the people attending the event
+     * @param description Description of the group
      * @param invited List of IDs of the people
      */
-    public Group(String ownerId, UUID id, String name, LocalDateTime date, GeoPoint location, String address, Type type, List<String> attendees, String description, List<String> invited) {
-        super(id, ownerId, name, date, location, address, type, attendees, description);
+    public Group(String ownerId, UUID id, String name, LocalDateTime date, GeoPoint location, String address, List<String> attendees, String description, List<String> invited) {
+        super(id, ownerId, name, date, location, address, attendees, description);
         if(invited == null) {
             this.invited = new ArrayList<>();
         }
         else {
             this.invited = invited;
-        }
-
-        if(attendees == null) {
-            this.attendees = new ArrayList<>();
-        }
-        else {
-            this.attendees = attendees;
         }
     }
 
@@ -75,10 +64,6 @@ public class Group extends SocialObject {
      */
     public List<String> getInvited() {
         return invited;
-    }
-
-    public List<String> getAttendees() {
-        return attendees;
     }
 
     @Override

@@ -49,8 +49,8 @@ public class DatabaseEventBuilder extends DatabaseObjectBuilder<Event> {
         LocalDateTime datetime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         GeoPoint location = (GeoPoint) data.getOrDefault(LOCATION_KEY, new GeoPoint(0, 0));
         String address = data.getOrDefault(ADDRESS_KEY, "").toString();
-        String typeStr = data.getOrDefault(TYPE_KEY, SocialObject.Type.NOTHING).toString();
-        SocialObject.Type type = SocialObject.Type.valueOf(typeStr);
+        String typeStr = data.getOrDefault(TYPE_KEY, Event.Type.NOTHING).toString();
+        Event.Type type = Event.Type.valueOf(typeStr);
         List<String> attendees = (List<String>) data.getOrDefault(ATTENDEES_KEY, new ArrayList<>());
         String description = (String) data.getOrDefault(DESCRIPTION_KEY, "");
 

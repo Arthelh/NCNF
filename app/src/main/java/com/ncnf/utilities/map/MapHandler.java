@@ -185,7 +185,7 @@ public class MapHandler {
     private void queryAndAddOrgs(){
         final List<Organization> result = new ArrayList<>();
 
-        CompletableFuture<List<Organization>> completableFuture = organizationRepository.getOrgsNearby();
+        CompletableFuture<List<Organization>> completableFuture = organizationRepository.getOrganizationsNearby();
         completableFuture.thenAccept(organizations -> {
 
             result.addAll(organizations);

@@ -94,7 +94,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
     private String userEmail;
     private String userUUID;
 
-    private SocialObject.Type eventType;
+    private Event.Type eventType;
     private LocalDate eventDate = LocalDate.now();
     private LocalTime eventTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
     private int selYear, selMonth, selDay, selHour, selMin;
@@ -196,7 +196,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
 
         Spinner spinner = v.findViewById(R.id.select_event_type);
         spinner.setOnItemSelectedListener(EventCreateFragment.this);
-        List<String> options = Stream.of(SocialObject.Type.values()).map(SocialObject.Type::name).collect(Collectors.toList());
+        List<String> options = Stream.of(Event.Type.values()).map(Event.Type::name).collect(Collectors.toList());
 
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, options);
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -318,7 +318,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
     private boolean checkAllFieldsAreFilledAndCorrect() {
 
         EditText[] fields = new EditText[] {eventName, eventDescription, eventEmail, eventAddress};
-        boolean interm = Arrays.stream(fields).map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != SocialObject.Type.NOTHING;
+        boolean interm = Arrays.stream(fields).map(InputValidator::verifyGenericInput).reduce(true, (a, b) -> a && b) && eventType != Event.Type.NOTHING;
         if(!interm) {
             return false;
         }
@@ -342,7 +342,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
-        eventType = SocialObject.Type.valueOf(item);
+        eventType = Event.Type.valueOf(item);
     }
 
     @Override

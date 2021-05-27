@@ -1,6 +1,7 @@
 package com.ncnf.models;
 
 import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.authentication.firebase.FirebaseAuthentication;
 import com.ncnf.database.firebase.FirebaseDatabase;
 
 import org.junit.Assert;
@@ -37,15 +38,16 @@ import static org.mockito.Mockito.when;
 public class UserTests {
 
     FirebaseDatabase db = mock(FirebaseDatabase.class);
+    FirebaseAuthentication auth = mock(FirebaseAuthentication.class);
     String ownerID = "ownerId";
     String name = "name";
     LocalDateTime date = LocalDateTime.now();
     GeoPoint geoPoint = new GeoPoint(0,0);
     String address = "address";
     String description = "description";
-    SocialObject.Type type = SocialObject.Type.Movie;
+    Event.Type type = Event.Type.Movie;
     Event event = new Event(ownerID, name, date, geoPoint, address, description, type, 0 , 0, "test@email.com");
-    Group group = new Group(ownerID, name, date, geoPoint, address, description, type);
+    Group group = new Group(ownerID, name, date, geoPoint, address, description);
     CompletableFuture<Boolean> response = CompletableFuture.completedFuture(true);
 
 

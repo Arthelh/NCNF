@@ -45,8 +45,8 @@ public class EventRepositoryTests {
 
     @Before
     public void setup() {
-        Event event1 = new Event("ownerId1", "name1", LocalDateTime.now(),  new GeoPoint(0., 0.), "address", "description", SocialObject.Type.OTHER, 0, 0, "test@email.com");
-        Event event2 = new Event("ownerId2", "name2", LocalDateTime.now(),  new GeoPoint(0., 0.), "address", "description", SocialObject.Type.OTHER, 0, 0, "test@email.com");
+        Event event1 = new Event("ownerId1", "name1", LocalDateTime.now(),  new GeoPoint(0., 0.), "address", "description", Event.Type.OTHER, 0, 0, "test@email.com");
+        Event event2 = new Event("ownerId2", "name2", LocalDateTime.now(),  new GeoPoint(0., 0.), "address", "description", Event.Type.OTHER, 0, 0, "test@email.com");
         events = Arrays.asList(event1, event2);
     }
 

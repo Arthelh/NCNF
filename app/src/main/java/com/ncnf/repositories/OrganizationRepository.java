@@ -20,7 +20,6 @@ import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS;
 import static com.ncnf.utilities.StringCodes.OWNER_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.USER_ORGANIZATIONS;
-import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 
 public class OrganizationRepository {
@@ -73,9 +72,24 @@ public class OrganizationRepository {
         return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_NAME, name, Organization.class);
     }
 
-    public CompletableFuture<List<Organization>> getByUUID(String uuid){
-        return db.whereEqualTo(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_UUID, uuid, Organization.class);
+    /**
+     * Retrieve all organizations whose uuid is equal to the given one
+     * @param organization_id Identifier we want to match
+     * @return CompletableFuture containing a list of organizations that fulfills the condition
+     */
+    public CompletableFuture<List<Organization>> getByUUID(String organization_id){
+        return db.whereEqualTo(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_UUID, organization_id, Organization.class);
     }
+
+    /**
+     * Retrieve all events organized by the organization with thr given ID
+     * @param organization_id Organization whose events are wanted
+     * @return CompletableFuture containing a list of the wanted events
+     */
+    public CompletableFuture<List<Event>> getOrganizationEvents(String organization_id) {
+        return db.whereEqualTo(EVENTS_COLLECTION_KEY, OWNER_KEY, organization_id, Event.class);
+    }
+
 
     /**
      * Retrieve all organizations whose token is equal to the given one
@@ -95,7 +109,7 @@ public class OrganizationRepository {
      * Returns all organization that are in a radius set in the settings around the current user position
      * @return A CompletableFuture wrapping a list containing the nearby Organization objects
      */
-    public CompletableFuture<List<Organization>> getOrgsNearby(){
+    public CompletableFuture<List<Organization>> getOrganizationsNearby(){
         return db.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, ORGANIZATIONS_COLLECTION_KEY, Organization.class);
     }
 }
