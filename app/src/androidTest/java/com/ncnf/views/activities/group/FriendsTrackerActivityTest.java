@@ -125,11 +125,11 @@ public class FriendsTrackerActivityTest {
         when(groupRepository1.loadGroup(gUuid.toString())).thenReturn(CompletableFuture.completedFuture(g));
        // when(user1.getParticipatingGroupsIds().contains("0")).thenReturn(true);
 
-        when(userRepository1.getUserFullName("0")).thenReturn(CompletableFuture.completedFuture("Johm"));
-        when(userRepository1.getUserPosition("0")).thenReturn(CompletableFuture.completedFuture(new GeoPoint(0, 0)));
+        when(userRepository1.getUserFullName(eq("0"))).thenReturn(CompletableFuture.completedFuture("Johm"));
+        when(userRepository1.getUserPosition(eq("0"))).thenReturn(CompletableFuture.completedFuture(new GeoPoint(0, 0)));
 
-        when(userRepository1.getUserFullName("1")).thenReturn(CompletableFuture.completedFuture("Taylor"));
-        when(userRepository1.getUserPosition("1")).thenReturn(CompletableFuture.completedFuture(p1));
+        when(userRepository1.getUserFullName(eq("1"))).thenReturn(CompletableFuture.completedFuture("Taylor"));
+        when(userRepository1.getUserPosition(eq("1"))).thenReturn(CompletableFuture.completedFuture(p1));
     }
 
     @Before
@@ -139,13 +139,8 @@ public class FriendsTrackerActivityTest {
 
         when(user.getEmail()).thenReturn("john@doe.ch");
         when(user.getFullName()).thenReturn("John");
-        //when(user.getUuid()).thenReturn("0");
 
         when(user.getLoc()).thenReturn(new GeoPoint(0, 0));
-
-
-        //when(dbs.getField(USERS_COLLECTION_KEY + "0", USER_LOCATION_KEY)).thenReturn(CompletableFuture.completedFuture(p1));
-        //when(dbs.getField(USERS_COLLECTION_KEY + "0", FULL_NAME_KEY)).thenReturn(CompletableFuture.completedFuture("Taylor"));
 
     }
 

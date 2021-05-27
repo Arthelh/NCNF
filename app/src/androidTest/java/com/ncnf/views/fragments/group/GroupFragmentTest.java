@@ -74,7 +74,6 @@ public class GroupFragmentTest {
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
 
-    @InjectMocks
     private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(GroupActivity.class);
 
     @Rule
@@ -98,7 +97,7 @@ public class GroupFragmentTest {
         ArrayList<Group> l2 = new ArrayList<>();
         l2.add(g);
 
-        when(repository2.loadUser("u1")).thenReturn(CompletableFuture.completedFuture(user1));
+        when(repository2.loadUser(eq("u1"))).thenReturn(CompletableFuture.completedFuture(user1));
 
         when(user1.getParticipatingGroupsIds()).thenReturn(new ArrayList<>());
         when(user1.getOwnedGroupsIds()).thenReturn(l);
@@ -107,20 +106,8 @@ public class GroupFragmentTest {
 
         when(repository1.loadGroup(gUuid.toString())).thenReturn(CompletableFuture.completedFuture(g));
 
-        when(repository2.getUserFullName("u1")).thenReturn(CompletableFuture.completedFuture("John"));
+        when(repository2.getUserFullName(eq("u1"))).thenReturn(CompletableFuture.completedFuture("John"));
 
-    }
-
-    @Before
-    public void setup() {
-
-        Intents.init();
-    }
-
-
-    @After
-    public void cleanup(){
-        Intents.release();
     }
 
     @Test
@@ -195,10 +182,14 @@ public class GroupFragmentTest {
 
     @Test
     public void mapActivityOpens(){
+        Intents.init();
+
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.group_display_name)).check(matches(withText("Group Test")));
         onView(withId(R.id.open_map_button)).perform(click());
         Intents.intended(hasComponent(FriendsTrackerActivity.class.getName()));
+
+        Intents.release();
     }
 
 }

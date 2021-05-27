@@ -59,6 +59,7 @@ import static android.content.ContentValues.TAG;
 import static android.graphics.BitmapFactory.decodeResource;
 import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.GROUP_ID_EXTRA_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
@@ -118,7 +119,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         setContentView(R.layout.activity_friends_tracker);
         friendsUUID = new ArrayList<>();
 
-        String groupId = getIntent().getStringExtra("GROUP_ID");
+        String groupId = getIntent().getStringExtra(GROUP_ID_EXTRA_KEY);
 
         markers = new HashMap<>();
 
@@ -364,10 +365,9 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     }
 
     private void bitmapSetChanged() {
-        if(images.keySet().size() == friendsUUID.size()) {
-            if(markers.keySet().size() == friendsUUID.size()) {
-                addMapMarkers();
-            }
+        if(images.keySet().size() == friendsUUID.size() && markers.keySet().size() == friendsUUID.size()) {
+            addMapMarkers();
+
         }
     }
 
