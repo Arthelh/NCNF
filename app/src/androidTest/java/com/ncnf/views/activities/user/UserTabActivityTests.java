@@ -106,11 +106,6 @@ public class UserTabActivityTests {
     }
 
     @Test
-    public void titleIsVisible() {
-        onView(withId(R.id.profileText)).check(matches(withText("Profile")));
-    }
-
-    @Test
     public void fieldsAreDisabled() {
         onView(withId(R.id.userProfileFullName)).check(matches(not(isEnabled())));
         onView(withId(R.id.userProfileUsername)).check(matches(not(isEnabled())));
