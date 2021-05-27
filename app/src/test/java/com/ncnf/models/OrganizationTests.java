@@ -36,18 +36,12 @@ public class OrganizationTests {
         Organization o1 = new Organization(uuid,"Test1", new GeoPoint(1,1), "address", "foo@bar.com", "phone", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
         Organization o2 = new Organization(uuid,"Test 2", new GeoPoint(1,1), "address", "foo@bar.com", "phone", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            Organization o = new Organization(uuid,"Test1", new GeoPoint(1,1), "address", "foo@bar.com", "phone", new ArrayList<>(), new ArrayList<>());
-        });
-
-
         assertTrue(org1.equals(org1));
         assertFalse(org1.equals(org2));
         assertFalse(org1.equals(null));
         assertFalse(org1.equals(new ArrayList<>()));
         assertTrue(o1.equals(o2));
         assertTrue(o1.hashCode() == Objects.hash(uuid));
-
     }
 
     @Test

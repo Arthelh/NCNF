@@ -1,7 +1,7 @@
 package com.ncnf.repositories;
 
 import com.ncnf.database.firebase.FirebaseDatabase;
-import com.ncnf.models.Group;
+import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
 import com.ncnf.utilities.settings.Settings;
 
@@ -10,8 +10,17 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
-import static com.ncnf.utilities.Helpers.combine;
-import static com.ncnf.utilities.StringCodes.*;
+import static com.ncnf.utilities.StringCodes.ADMIN_KEY;
+import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.ORGANIZATIONS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.ORGANIZATION_ADMIN_TOKEN;
+import static com.ncnf.utilities.StringCodes.ORGANIZATION_NAME;
+import static com.ncnf.utilities.StringCodes.ORGANIZATION_UUID;
+import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS;
+import static com.ncnf.utilities.StringCodes.OWNER_KEY;
+import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.USER_ORGANIZATIONS;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 
 public class OrganizationRepository {
@@ -51,6 +60,10 @@ public class OrganizationRepository {
         return combine(r1, r2);
     }
 
+    public CompletableFuture<Boolean> addEventToOrganization(String organization_id, String event_id){
+        return db.updateArrayField(ORGANIZATIONS_COLLECTION_KEY + organization_id, ORGANIZED_EVENTS, event_id);
+    }
+
     /**
      * Retrieve all organizations whose name is equal to the given one
      * @param name Name we want to match
@@ -58,6 +71,10 @@ public class OrganizationRepository {
      */
     public CompletableFuture<List<Organization>> getByName(String name){
         return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_NAME, name, Organization.class);
+    }
+
+    public CompletableFuture<List<Organization>> getByUUID(String uuid){
+        return db.whereEqualTo(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_UUID, uuid, Organization.class);
     }
 
     /**

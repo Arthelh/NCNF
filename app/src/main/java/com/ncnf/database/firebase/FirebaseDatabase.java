@@ -54,6 +54,7 @@ public class FirebaseDatabase implements Database {
      * Initialization of the different builders for our objects
      */
     private void initRegistry(){
+        registry.put(Organization.class, new DatabaseOrganizationBuilder());
         registry.put(User.class, new DatabaseUserBuilder());
         registry.put(Event.class, new DatabaseEventBuilder());
         registry.put(Group.class, new DatabaseGroupBuilder());
