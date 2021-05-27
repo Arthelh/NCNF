@@ -157,7 +157,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Soci
             fileStore.setContext(context);
             fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
             fileStore.downloadImage(image, BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.default_event_bg));
+                    R.drawable.default_event_header_picture));
         }
     }
 
