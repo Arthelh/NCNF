@@ -46,7 +46,7 @@ public class DatabaseGroupBuilder extends DatabaseObjectBuilder<Group>{
         String description = (String) data.get(DESCRIPTION_KEY);
         List<String> invited = (List<String>) data.get(INVITED_KEY);
 
-        return new Group(UUID.fromString(uuidStr), ownerId, name, datetime, location, address, type, attendees, description, invited);
+        return new Group(ownerId, UUID.fromString(uuidStr), name, datetime, location, address, type, attendees, description, invited);
     }
 
     @Override

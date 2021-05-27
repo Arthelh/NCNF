@@ -102,32 +102,33 @@ public class LocationService extends Service {
 
         Log.d(TAG, "getLocation: getting location information.");
         mFusedLocationClient.requestLocationUpdates(mLocationRequestHighAccuracy, new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
 
-                Log.d(TAG, "onLocationResult: got location result.");
+                        Log.d(TAG, "onLocationResult: got location result.");
 
-                Location location = locationResult.getLastLocation();
+                        Location location = locationResult.getLastLocation();
 
-                if (location != null) {
-                    User user = CurrentUserModule.getCurrentUser();
-                    if(user != null && user.getUuid() != null) {
+                        if (location != null) {
+                            User user = CurrentUserModule.getCurrentUser();
 
-                        user.loadUserFromDB().thenAccept(user1 -> {
-                            if (user1 != null) {
-                                GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-                                dbs.updateField(USERS_COLLECTION_KEY + user1.getUuid(), LOCATION_KEY, geoPoint).thenAccept(bool ->{
-                                    if(bool){
+                            if(user != null) {
+
+                                user.loadUserFromDB().thenAccept(user1 -> {
+                                    if (user1 != null) {
+                                        GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                                        saveUserLocation(geoPoint, user1.getUuid());
                                         user1.setLocation(geoPoint);
+                                    } else {
+                                        stopSelf();
                                     }
-                                }).exceptionally(exception -> {
-                                    stopSelf();
-                                    return null;
                                 });
-                            } else {
+                            }
+                            else {
                                 stopSelf();
                             }
-                        });
+
+                        }
                     }
                 },
                 Looper.myLooper()); // Looper.myLooper tells this to repeat forever until thread is destroyed
@@ -142,9 +143,13 @@ public class LocationService extends Service {
                             "\n latitude: " + location.getLatitude() +
                             "\n longitude: " + location.getLongitude());
                 }
-            }
-        },
-        Looper.myLooper()); // Looper.myLooper tells this to repeat forever until thread is destroyed
+            });
+        }catch (Exception e){
+            Log.e(TAG, "saveUserLocation: User instance is null, stopping location service.");
+            Log.e(TAG, "saveUserLocation: Exception: "  + e.getMessage() );
+            stopSelf();
+        }
+
     }
 
     public class LocationServiceBinder extends Binder {

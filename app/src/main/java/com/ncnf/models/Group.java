@@ -43,10 +43,10 @@ public class Group extends SocialObject {
      * @param description Description of the group
      * @param type Type of group : Concert, Movie, Museum, etc.
      * @param attendees List of IDs of the people attending the event
-     * @param invited List of ID of the people
+     * @param invited List of IDs of the people
      */
     public Group(String ownerId, UUID id, String name, LocalDateTime date, GeoPoint location, String address, Type type, List<String> attendees, String description, List<String> invited) {
-        super(ownerId, id, name, date, location, address, type, attendees, description);
+        super(id, ownerId, name, date, location, address, type, attendees, description);
         if(invited == null) {
             this.invited = new ArrayList<>();
         }
@@ -98,7 +98,7 @@ public class Group extends SocialObject {
      * @param db Database service used to store the event
      * @return CompletableFuture containing the Firebase's response : true if successful
      */
-    public CompletableFuture<Boolean> store(DatabaseService db){
+    public CompletableFuture<Boolean> store(FirebaseDatabase db){
         return db.setDocument(GROUPS_COLLECTION_KEY + this.getUuid(), this);
     }
 }

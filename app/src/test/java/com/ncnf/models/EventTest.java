@@ -46,7 +46,7 @@ public class EventTest {
     @Before
     public void setup(){
         db = Mockito.mock(FirebaseDatabase.class);
-        mainEvent = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, eventTags, "test@email.com");
+        mainEvent = new Event(uuid, ownerID, name, date, geoPoint, address, description, type, attendees, minAge, price, eventTags, "test@email.com");
         response = CompletableFuture.completedFuture(true);
     }
 
@@ -87,7 +87,7 @@ public class EventTest {
         eventTags.add(eventTag);
 
 
-        Event event = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, eventTags, "test@email.com");
+        Event event = new Event(uuid, ownerID, name, date, geoPoint, address, description, type, attendees, minAge, price, eventTags, "test@email.com");
         assertEquals(event.getUuid(), uuid);
         assertEquals(event.getOwnerId(), ownerID);
         assertEquals(event.getDate(), date);

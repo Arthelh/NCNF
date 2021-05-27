@@ -26,8 +26,6 @@ import static com.ncnf.utilities.StringCodes.DATE_KEY;
 import static com.ncnf.utilities.StringCodes.DESCRIPTION_KEY;
 import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
 import static com.ncnf.utilities.StringCodes.GEOHASH_KEY;
-import static com.ncnf.utilities.StringCodes.LAT_KEY;
-import static com.ncnf.utilities.StringCodes.LNG_KEY;
 import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
 import static com.ncnf.utilities.StringCodes.MIN_AGE_KEY;
 import static com.ncnf.utilities.StringCodes.NAME_KEY;

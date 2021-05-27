@@ -94,8 +94,8 @@ public class User {
      * @param notifications Boolean indicating whether the user receives notification or not
      * @param location User's location
      */
-        this(new FirebaseDatabase(), FirebaseAuth.getInstance().getUid(), username, email, fullName, friendsIds, ownedGroupsIds, new ArrayList<>(), savedEventsIds, notifications, birthDate, loc);
     public User(String username, String email, String fullName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> savedEventsIds, LocalDate birthDate, boolean notifications, GeoPoint location) {
+        this(new FirebaseDatabase(), FirebaseAuth.getInstance().getUid(), username, email, fullName, friendsIds, ownedGroupsIds, new ArrayList<>(), savedEventsIds, notifications, birthDate, location);
     }
 
     /**

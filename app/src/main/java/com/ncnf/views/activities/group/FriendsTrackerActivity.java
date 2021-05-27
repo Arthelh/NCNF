@@ -235,7 +235,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             if(userId.equals(user.getUuid())) {
                 if(i >= markers.size()) {
 
-                    markers.put(userId, user.getLoc());
+                    markers.put(userId, user.getLocation());
                     bitmapSetChanged();
                 }
             }
@@ -300,7 +300,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     private void saveUserLocation() {
         if(user != null) {
-            userRepository.updateUserPosition(user.getUuid(), user.getLoc());
+            userRepository.updateUserPosition(user.getUuid(), user.getLocation());
         }
     }
 

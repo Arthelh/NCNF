@@ -49,8 +49,8 @@ public class Event extends SocialObject {
 
     /**
      * Public constructor used to create an event from an already existing event
-     * @param uuid Unique identifier of the event
      * @param ownerId Identifier of the owner of this event
+     * @param uuid Unique identifier of the event
      * @param name Name of the event
      * @param date Date during which the event will take place
      * @param location Location where the event will take place (GPS coordinates)
@@ -63,12 +63,12 @@ public class Event extends SocialObject {
      * @param tags List of the event's tags
      * @param email Contact email of the event
      */
-    public Event(UUID uuid, String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<Tag> tags, String email) {
+    public Event(String ownerId, UUID uuid, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<EventTag> tags, String email) {
         super(uuid, ownerId, name, date, location, address, type, attendees, description);
 
         checkConstraints(minAge, price);
 
-        setEventTags(eventTags);
+        setEventTags(tags);
         this.minAge = minAge;
         this.price = price;
         this.email = email;
@@ -101,22 +101,22 @@ public class Event extends SocialObject {
     }
     public void setPrice(double price) { this.price = price; }
     public void setEmail(String email) { this.email = email; }
-    public void setTags(List<Tag> tags) {
-        this.tags = new ArrayList<>(tags);
+    public void setEventTags(List<EventTag> eventTags) {
+        this.eventTags = new ArrayList<>(eventTags);
     }
 
     /**
      * Method to add a new tag to the event
-     * @param newTag
-     * @return
+     * @param newEventTag New Tag to add to the event
      */
-    public boolean addTag(Tag newTag) {
-        for(int i = 0; i < tags.size(); ++i) {
-            if(tags.get(i).equals(newTag)) {
-                return true;
+    public void addTag(EventTag newEventTag) {
+
+        for(int i = 0; i < eventTags.size(); ++i) {
+            if(eventTags.get(i).equals(newEventTag)) {
+                return;
             }
         }
-        return tags.add(newTag);
+        eventTags.add(newEventTag);
     }
 
     /**
@@ -150,7 +150,7 @@ public class Event extends SocialObject {
      * @param db Database service used to store the event
      * @return CompletableFuture containing the Firebase's response : true if successful
      */
-    public CompletableFuture<Boolean> store(@NonNull DatabaseService db){
+    public CompletableFuture<Boolean> store(@NonNull FirebaseDatabase db){
         return db.setDocument(EVENTS_COLLECTION_KEY + this.getUuid(), this);
     }
 }
