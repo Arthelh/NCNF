@@ -51,7 +51,6 @@ public class UserTabActivity extends AppCompatActivity {
                 case 1:
                     return new OrganizationTabFragment();
                 default:
-                    //TODO default case
                     throw new IllegalStateException();
             }
         }

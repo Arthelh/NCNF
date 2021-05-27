@@ -5,12 +5,12 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.rule.GrantPermissionRule;
 
 import com.ncnf.R;
+import com.ncnf.views.activities.group.GroupActivity;
 import com.ncnf.views.activities.login.LoginActivity;
 import com.ncnf.views.activities.friends.FriendsActivity;
 import com.ncnf.views.activities.main.MainActivity;
-import com.ncnf.views.activities.group.GroupCreateActivity;
+import com.ncnf.views.fragments.organization.EventCreateFragment;
 import com.ncnf.views.activities.event.EventNewsActivity;
-import com.ncnf.views.activities.group.FriendsTrackerActivity;
 import com.ncnf.views.activities.user.UserTabActivity;
 
 import org.junit.After;
@@ -76,25 +76,13 @@ public final class HomeFragmentTest {
 
 
     @Test
-    public void friendsTrackerActivityOpensTest() {
+    public void groupActivityOpensTest() {
         onView(withId(R.id.track_friends_button)).perform(click());
         onView(withId(android.R.id.button2)).perform(click());
         onView(withId(R.id.track_friends_button)).perform(click());
         onView(withId(android.R.id.button1)).check(matches(isClickable())).perform(click());
         Intents.intended(hasComponent(LoginActivity.class.getName()));
-        Intents.intended(hasExtra(NEXT_ACTIVITY_EXTRA_KEY, FriendsTrackerActivity.class));
-    }
-
-
-    @Test
-    public void createEventActivityOpensTest(){
-        onView(withId(R.id.homeCreateEventButton)).perform(click());
-        onView(withId(android.R.id.button2)).perform(click());
-        onView(withId(R.id.homeCreateEventButton)).perform(click());
-        onView(withId(android.R.id.button1)).check(matches(isClickable()));
-        onView(withId(android.R.id.button1)).perform(click());
-        Intents.intended(hasComponent(LoginActivity.class.getName()));
-        Intents.intended(hasExtra(NEXT_ACTIVITY_EXTRA_KEY, GroupCreateActivity.class));
+        Intents.intended(hasExtra(NEXT_ACTIVITY_EXTRA_KEY, GroupActivity.class));
     }
 
     @Test

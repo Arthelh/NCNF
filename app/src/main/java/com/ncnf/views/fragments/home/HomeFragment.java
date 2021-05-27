@@ -19,11 +19,12 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
+import com.ncnf.views.activities.group.FriendsTrackerActivity;
+import com.ncnf.views.activities.group.GroupActivity;
 import com.ncnf.views.activities.login.LoginActivity;
 import com.ncnf.views.activities.friends.FriendsActivity;
-import com.ncnf.views.activities.group.FriendsTrackerActivity;
 
-import com.ncnf.views.activities.group.GroupCreateActivity;
+import com.ncnf.views.fragments.organization.EventCreateFragment;
 import com.ncnf.views.activities.event.EventNewsActivity;
 import com.ncnf.views.activities.user.UserTabActivity;
 
@@ -51,7 +52,6 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         getView().findViewById(R.id.homeProfileButton).setOnClickListener(this::gotToProfile);
-        getView().findViewById(R.id.homeCreateEventButton).setOnClickListener(this::goToEventCreation);
         getView().findViewById(R.id.homeEventNewsButton).setOnClickListener(this::goToEventNews);
         getView().findViewById(R.id.homeFriendsButton).setOnClickListener(this::goToFriends);
         getView().findViewById(R.id.track_friends_button).setOnClickListener(v -> gpsIsEnabled());
@@ -59,10 +59,6 @@ public class HomeFragment extends Fragment {
 
     public void gotToProfile(View view){
         goToActivity(UserTabActivity.class);
-    }
-
-    public void goToEventCreation(View view){
-        goToActivity(GroupCreateActivity.class);
     }
 
     private void goToActivity(Class<?> activity){
@@ -143,7 +139,7 @@ public class HomeFragment extends Fragment {
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             locationServicesEnabled = true;
-            goToActivity(FriendsTrackerActivity.class);
+            goToActivity(GroupActivity.class);
         } else {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -157,7 +153,7 @@ public class HomeFragment extends Fragment {
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
                 if(locationServicesEnabled){
-                    goToActivity(FriendsTrackerActivity.class);
+                    goToActivity(GroupActivity.class);
                 }
                 else {
                     getLocationPermission();

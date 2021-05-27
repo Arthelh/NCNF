@@ -136,6 +136,7 @@
     <string name="friend_request_decline_text">The request was declined !</string>
     <string name="add_to_calendar_button" />
     <string name="add_organization_button_text">Add Organization</string>
+    <string name="add_event_organization_button">Create Event</string>
 
 
 </resources>
