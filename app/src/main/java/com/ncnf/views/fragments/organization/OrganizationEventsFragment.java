@@ -1,5 +1,6 @@
 package com.ncnf.views.fragments.organization;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import com.ncnf.adapters.EventListAdapter;
 import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
 import com.ncnf.repositories.OrganizationRepository;
+import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.views.fragments.event.EventFragment;
 
 import java.util.LinkedList;
@@ -65,10 +67,11 @@ public class OrganizationEventsFragment extends Fragment {
 
         this.recyclerView = view.findViewById(R.id.organization_events_recyclerview);
 
-        RecyclerView.LayoutManager lManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager lManager = new LinearLayoutManager(requireActivity());
         this.recyclerView.setLayoutManager(lManager);
 
         fetchOrganizationEvents();
+
     }
 
     @Override
@@ -115,39 +118,29 @@ public class OrganizationEventsFragment extends Fragment {
 
     //TODO put into another class
     private void onEventClick(Event e) {
-        Fragment fragment = new EventFragment(e);
-        Window globalWindow = requireActivity().getWindow();
-        FragmentManager fragmentManager = getChildFragmentManager();
 
-        ConstraintLayout feedContainer = globalWindow.findViewById(R.id.organization_events_container);
-        FrameLayout feedFrame = globalWindow.findViewById(R.id.organization_event_fragment);
-        //Button feedButton = globalWindow.findViewById(R.id.feed_event_button);
+        //It doesn't so create new corresponding Fragment
+        EventFragment eventFrag = new EventFragment(e);
 
-        this.recyclerView.setVisibility(View.INVISIBLE);
-
-        feedContainer.setBackgroundResource(R.drawable.main_background_gradient);
-        feedContainer.setVisibility(View.VISIBLE);
-        feedFrame.setVisibility(View.VISIBLE);
-        //feedButton.setVisibility(View.VISIBLE);
-
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.organization_events_recyclerview, fragment).commit();
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                destroyChildFragment(fragmentManager, fragment, feedContainer, this);
+                getParentFragmentManager().popBackStack();
+                recyclerView.setVisibility(View.VISIBLE);
+                this.setEnabled(false);
             }
         };
+
+        recyclerView.setVisibility(View.INVISIBLE);
+
+        getParentFragmentManager().beginTransaction()
+                .hide(this)
+                .replace(((ViewGroup) requireView().getParent()).getId(), eventFrag)
+                .addToBackStack(null)
+                .commit();
+
         requireActivity().getOnBackPressedDispatcher().addCallback(callback);
     }
-
-    private void destroyChildFragment(FragmentManager fragmentManager, Fragment fragment, ConstraintLayout feedContainer, OnBackPressedCallback callback) {
-        fragmentManager.beginTransaction().remove(fragment).commit();
-        feedContainer.setVisibility(View.GONE);
-        this.recyclerView.setVisibility(View.VISIBLE);
-        callback.setEnabled(false);
-    }
-
 
 }

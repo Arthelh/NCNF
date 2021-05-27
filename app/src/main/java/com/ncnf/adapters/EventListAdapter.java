@@ -1,6 +1,7 @@
 package com.ncnf.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +15,15 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.ncnf.R;
 import com.ncnf.models.Event;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.utilities.event.EventRelevanceCalculator;
 import com.ncnf.models.SocialObject;
 import com.ncnf.utilities.DateAdapter;
+import com.ncnf.views.activities.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
