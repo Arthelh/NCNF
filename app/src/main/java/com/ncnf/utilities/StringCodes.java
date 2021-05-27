@@ -77,10 +77,11 @@ public class StringCodes {
      * Keys related to organizations
      */
     public static final String ORGANIZATIONS_COLLECTION_KEY = "organizations/";
+    public static final String ORGANIZATION_UUID = "uuid";
     public static final String ORGANIZATION_NAME = "name";
     public static final String ORGANIZATION_EMAIL = "email";
     public static final String ORGANIZATION_ADMIN_TOKEN = "token";
-    public static final String ORGANIZED_EVENTS_KEY = "organized_events";
+    public static final String ORGANIZED_EVENTS = "organized_events";
     public static final String PHONE_NB_KEY = "phone_number";
     public static final String ADMIN_KEY = "admins";
 

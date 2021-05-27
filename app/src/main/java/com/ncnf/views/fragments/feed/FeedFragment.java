@@ -51,7 +51,6 @@ public class FeedFragment extends Fragment {
     @Inject
     public EventRepository eventRepository;
 
-    private RecyclerView.LayoutManager lManager;
     private RecyclerView recycler;
     private EventListAdapter adapter;
     private List<Event> eventList = new ArrayList<>();
@@ -90,7 +89,7 @@ public class FeedFragment extends Fragment {
         recycler = requireView().findViewById(R.id.feed_recycler_view);
 
         // Use LinearLayout as the layout manager
-        lManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager lManager = new LinearLayoutManager(getActivity());
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter

@@ -1,5 +1,6 @@
 package com.ncnf.utilities.map;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -61,7 +62,10 @@ public class  MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Cl
             }
         } else {
             Organization org = item.getOrg();
-            fragment = new OrganizationViewFragment(org);
+            Bundle bundle = new Bundle();
+            bundle.putString("organization_id", item.getOrg().getUuid().toString());
+            fragment = new OrganizationViewFragment();
+            fragment.setArguments(bundle);
         }
 
         ConstraintLayout feedContainer = globalWindow.findViewById(R.id.map_feed_container);
