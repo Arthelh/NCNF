@@ -19,7 +19,7 @@ import static com.ncnf.utilities.StringCodes.ADMIN_KEY;
 import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
 import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
 import static com.ncnf.utilities.StringCodes.NAME_KEY;
-import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS_KEY;
+import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS;
 import static com.ncnf.utilities.StringCodes.PHONE_NB_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 import static org.junit.Assert.assertEquals;
@@ -60,10 +60,8 @@ public class DatabaseOrganizationBuilderTests {
         data.put(ADDRESS_KEY, address);
         data.put(EMAIL_KEY, email);
         data.put(PHONE_NB_KEY, phoneNb);
-        data.put(ORGANIZED_EVENTS_KEY, events);
+        data.put(ORGANIZED_EVENTS, events);
 
-        assertNull(builder.toObject(uuid.toString(), data));
-        data.put(ADMIN_KEY, admins);
         Organization org = builder.toObject(uuid.toString(), data);
         Organization org2 = new Organization(uuid, name, location, address, email, phoneNb, admins, events);
         assertNotNull(org);

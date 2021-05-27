@@ -45,6 +45,9 @@
             android:parentActivityName=".views.activities.main.MainActivity"
             tools:ignore="MissingClass" />
         <activity android:name=".views.activities.settings.SettingsActivity" />
+
+        <activity android:name=".views.activities.organization.OrganizationProfileActivity"
+            android:parentActivityName=".views.activities.user.UserTabActivity"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -70,7 +73,7 @@
             android:name="com.google.android.wearable.standalone"
             android:value="true" /> <!-- FEED -->
         <activity
-            android:name=".views.activities.group.GroupCreateActivity"
+            android:name=".views.fragments.organization.EventCreateFragment"
             android:label="@string/title_event_creation"
             android:parentActivityName=".views.activities.main.MainActivity" />
         <activity

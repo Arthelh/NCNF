@@ -1,17 +1,28 @@
 package com.ncnf.views.fragments.organization;
 
+import android.view.InputDevice;
+import android.view.MotionEvent;
+
+import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.uiautomator.UiDevice;
+import androidx.test.uiautomator.UiObject;
+import androidx.test.uiautomator.UiSelector;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
-import com.ncnf.database.firebase.FirebaseDatabase;
-import com.ncnf.models.Organization;
-import com.ncnf.repositories.OrganizationRepository;
-import com.ncnf.models.User;
-import com.ncnf.views.activities.user.UserTabActivity;
 import com.ncnf.authentication.firebase.CurrentUserModule;
+import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.helpers.RecyclerViewItemCountAssertion;
+import com.ncnf.models.Organization;
+import com.ncnf.models.User;
+import com.ncnf.repositories.OrganizationRepository;
+import com.ncnf.views.activities.organization.OrganizationProfileActivity;
+import com.ncnf.views.activities.user.UserTabActivity;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,12 +43,19 @@ import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -89,33 +107,59 @@ public class OrganizationTabFragmentTests {
 
     }
 
-    //@Test
-    public void clickOnOrganization() {
+    @Test
+    public void clickOnOrganization() throws InterruptedException {
+        Intents.init();
+
         when(organizationRepository.getUserOrganizations(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
+        when(organizationRepository.getByUUID(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
 
         onView(withId(R.id.user_view_pager)).perform(swipeLeft());
+        Thread.sleep(2000); // necessary because of the swipe
+        onView(withText("EPFL")).perform(click());
+        Intents.intended(hasComponent(OrganizationProfileActivity.class.getName()));
 
-        onView(withId(R.id.organization_list_recyclerview)).perform(RecyclerViewActions.actionOnItem(
-                hasDescendant(withText("EPFL")), click()
-        ));
-
-        // TODO
-        // onView(withId(R.id.organization_display_email)).check(matches(withText("johnny@bar.com")));
+        Intents.release();
     }
 
     @Test
     public void addValidOrganization() {
         when(organizationRepository.getUserOrganizations(anyString())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
+        when(organizationRepository.getOrganizationsWithToken(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
+        when(organizationRepository.addUserToOrganization(anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
         onView(withId(R.id.user_view_pager)).perform(swipeLeft());
         onView(withId(R.id.add_organization_button)).perform(click());
 
-        // TODO
+        onView(withClassName(endsWith("EditText"))).perform(typeText("token"), closeSoftKeyboard());
+        onView(withText("Enter")).perform(click());
+
+        onView(withId(R.id.organization_list_recyclerview)).check(new RecyclerViewItemCountAssertion(1));
+    }
+
+    @Test
+    public void typeEmptyString() {
+        when(organizationRepository.getUserOrganizations(anyString())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
+
+        onView(withId(R.id.user_view_pager)).perform(swipeLeft());
+        onView(withId(R.id.add_organization_button)).perform(click());
+
+        onView(withText("Enter")).perform(click());
+        onView(withClassName(endsWith("EditText"))).check(matches(hasErrorText("Token cannot be empty")));
     }
 
     @Test
     public void addInvalidOrganization() {
-        // TODO
-    }
+        when(organizationRepository.getUserOrganizations(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
+        CompletableFuture future = new CompletableFuture();
+        future.completeExceptionally(new Exception("No organization found"));
+        when(organizationRepository.getOrganizationsWithToken(anyString())).thenReturn(future);
 
+        onView(withId(R.id.user_view_pager)).perform(swipeLeft());
+        onView(withId(R.id.add_organization_button)).perform(click());
+
+        onView(withClassName(endsWith("EditText"))).perform(typeText("wrong token"), closeSoftKeyboard());
+        onView(withText("Enter")).perform(click());
+        onView(withId(R.id.popup_invalid_organization_text)).check(matches(withText("No organization found")));
+    }
 }
