@@ -60,7 +60,7 @@ public class EventFragment extends Fragment {
     }
 
     private void initSaveCalendar(View view){
-        Button addToCalendar = view.findViewById(R.id.button_calendar);
+        Button addToCalendar = view.findViewById(R.id.eventAddToCalendarButton);
         addToCalendar.setOnClickListener(v -> {
             Intent calendarIntent = SaveToCalendar.createCalendarIntent(event);
             if (calendarIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
@@ -70,29 +70,31 @@ public class EventFragment extends Fragment {
     }
 
     private void initViews(View view){
-        ImageView imageView = view.findViewById(R.id.eventImage);
+        ImageView headerImageView = view.findViewById(R.id.eventHeaderPicture);
         fileStore.setContext(this.getContext());
         fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
-        fileStore.downloadImage(imageView, BitmapFactory.decodeResource(this.getContext().getResources(),
-                R.drawable.default_event_bg));
+        fileStore.downloadImage(headerImageView, BitmapFactory.decodeResource(this.getContext().getResources(),
+                R.drawable.default_event_header_picture));
 
         TextView name = view.findViewById(R.id.eventName);
         name.setText(event.getName());
 
         TextView date = view.findViewById(R.id.eventDate);
-        date.setText("Event takes place on : " + new DateAdapter(event.getDate()).toString());
+        date.setText(new DateAdapter(event.getDate()).toString());
 
-        CalendarView calendar = view.findViewById(R.id.show_event_date);
-        calendar.setDate(event.getDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        TextView address = view.findViewById(R.id.eventAddress);
+        address.setText(event.getAddress());
 
-        TextView loc = view.findViewById(R.id.eventLocation);
-        loc.setText("Event held at : " + event.getAddress());
+        TextView description = view.findViewById(R.id.eventDescription);
+        description.setText(event.getDescription());
 
-        TextView desc = view.findViewById(R.id.eventDescription);
-        desc.setText(event.getDescription());
+        ImageView organizationImageView = view.findViewById(R.id.personal_profile_picture);
+        fileStore.setContext(this.getContext());
+        fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
+        fileStore.downloadImage(organizationImageView, BitmapFactory.decodeResource(this.getContext().getResources(),
+                R.drawable.default_profile_picture));
 
-        TextView owner = view.findViewById(R.id.eventOwner);
-
-        owner.setText("Event hosted by " + event.getEmail());
+        TextView organization = view.findViewById(R.id.eventOrganization);
+        organization.setText(event.getEmail());
     }
 }
