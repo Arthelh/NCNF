@@ -6,7 +6,6 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.models.Event;
 import com.ncnf.models.EventTag;
-import com.ncnf.models.SocialObject;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -3,7 +3,6 @@ package com.ncnf.utilities.event;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.models.Event;
 import com.ncnf.models.EventTag;
-import com.ncnf.models.SocialObject;
 
 import org.junit.Test;
 

@@ -19,7 +19,6 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static android.graphics.BitmapFactory.decodeFile;
 import static android.graphics.BitmapFactory.decodeResource;
 import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 

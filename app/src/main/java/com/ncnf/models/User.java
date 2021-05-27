@@ -57,7 +57,7 @@ public class User {
      * @param birthDate User's birthdate
      * @param location User's location
      */
-    public User(FirebaseDatabase db, String uuid, String username, String email, String fullName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> participatingGroups, List<String> savedEventsIds, boolean notifications, LocalDate birthDate, GeoPoint loc) {
+    public User(FirebaseDatabase db, String uuid, String username, String email, String fullName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> participatingGroups, List<String> savedEventsIds, boolean notifications, LocalDate birthDate, GeoPoint location) {
         if(isInvalidString(uuid) || isInvalidString(email)){
             throw new IllegalArgumentException();
         }
@@ -72,7 +72,7 @@ public class User {
         this.birthDate = birthDate;
         this.notifications = notifications;
         this.participatingGroupsIds = participatingGroups;
-        this.location = location;
+        this.location = this.location;
     }
 
     /**

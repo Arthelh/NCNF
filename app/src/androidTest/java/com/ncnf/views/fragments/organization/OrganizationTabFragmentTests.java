@@ -1,15 +1,9 @@
 package com.ncnf.views.fragments.organization;
 
-import android.view.InputDevice;
-import android.view.MotionEvent;
+import android.widget.Button;
 
-import androidx.test.espresso.ViewAction;
-import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.uiautomator.UiDevice;
-import androidx.test.uiautomator.UiObject;
-import androidx.test.uiautomator.UiSelector;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
@@ -22,7 +16,6 @@ import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.views.activities.organization.OrganizationProfileActivity;
 import com.ncnf.views.activities.user.UserTabActivity;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -48,13 +41,11 @@ import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.anyString;
@@ -123,14 +114,14 @@ public class OrganizationTabFragmentTests {
     }
 
     @Test
-    public void addValidOrganization() {
+    public void addValidOrganization() throws InterruptedException {
         when(organizationRepository.getUserOrganizations(anyString())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
         when(organizationRepository.getOrganizationsWithToken(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
         when(organizationRepository.addUserToOrganization(anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
         onView(withId(R.id.user_view_pager)).perform(swipeLeft());
         onView(withId(R.id.add_organization_button)).perform(click());
-
+        Thread.sleep(2000);
         onView(withClassName(endsWith("EditText"))).perform(typeText("token"), closeSoftKeyboard());
         onView(withText("Enter")).perform(click());
 
@@ -138,24 +129,25 @@ public class OrganizationTabFragmentTests {
     }
 
     @Test
-    public void typeEmptyString() {
+    public void typeEmptyString() throws InterruptedException {
         when(organizationRepository.getUserOrganizations(anyString())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
 
         onView(withId(R.id.user_view_pager)).perform(swipeLeft());
+        Thread.sleep(2000);
         onView(withId(R.id.add_organization_button)).perform(click());
-
         onView(withText("Enter")).perform(click());
         onView(withClassName(endsWith("EditText"))).check(matches(hasErrorText("Token cannot be empty")));
     }
 
     @Test
-    public void addInvalidOrganization() {
+    public void addInvalidOrganization() throws InterruptedException {
         when(organizationRepository.getUserOrganizations(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
         CompletableFuture future = new CompletableFuture();
         future.completeExceptionally(new Exception("No organization found"));
         when(organizationRepository.getOrganizationsWithToken(anyString())).thenReturn(future);
 
         onView(withId(R.id.user_view_pager)).perform(swipeLeft());
+        Thread.sleep(2000);
         onView(withId(R.id.add_organization_button)).perform(click());
 
         onView(withClassName(endsWith("EditText"))).perform(typeText("wrong token"), closeSoftKeyboard());

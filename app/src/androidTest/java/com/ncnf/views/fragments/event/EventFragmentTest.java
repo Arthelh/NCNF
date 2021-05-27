@@ -8,7 +8,6 @@ import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Event;
-import com.ncnf.models.SocialObject;
 import com.ncnf.views.activities.main.MainActivity;
 
 import org.junit.Before;

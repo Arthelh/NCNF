@@ -3,7 +3,6 @@ package com.ncnf.database.builders;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.models.Group;
-import com.ncnf.models.SocialObject;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +23,6 @@ import static com.ncnf.utilities.StringCodes.INVITED_KEY;
 import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
 import static com.ncnf.utilities.StringCodes.NAME_KEY;
 import static com.ncnf.utilities.StringCodes.OWNER_KEY;
-import static com.ncnf.utilities.StringCodes.TYPE_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 

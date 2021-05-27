@@ -6,11 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
-import com.ncnf.models.User;
-
-import java.util.Collection;
 
 public class GroupAttendeeMarker implements ClusterItem {
 

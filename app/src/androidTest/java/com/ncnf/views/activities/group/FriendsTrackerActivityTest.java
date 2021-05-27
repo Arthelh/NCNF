@@ -17,13 +17,10 @@ import androidx.test.uiautomator.UiSelector;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.authentication.firebase.CurrentUserModule;
-import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Group;
-import com.ncnf.models.SocialObject;
 import com.ncnf.models.User;
 import com.ncnf.repositories.GroupRepository;
 import com.ncnf.repositories.UserRepository;
-import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.utilities.user.LocationService;
 
 import org.junit.After;
@@ -35,16 +32,12 @@ import org.junit.rules.RuleChain;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
-
-import javax.inject.Inject;
 
 import dagger.hilt.android.testing.BindValue;
 import dagger.hilt.android.testing.HiltAndroidRule;
@@ -55,15 +48,10 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
-import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
-import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
 @UninstallModules(CurrentUserModule.class)

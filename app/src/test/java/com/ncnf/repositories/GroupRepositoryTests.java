@@ -16,10 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.eq;
-
 public class GroupRepositoryTests {
     private final FirebaseDatabase mockDatabase = Mockito.mock(FirebaseDatabase.class);
     private final GroupRepository groupRepository = new GroupRepository(mockDatabase);

@@ -28,10 +28,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.R;
-import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Group;
-import com.ncnf.models.SocialObject;
-import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
 import com.ncnf.repositories.GroupRepository;
 import com.ncnf.repositories.UserRepository;
@@ -41,15 +38,11 @@ import com.ncnf.utilities.GroupAttendeeMarkerRenderer;
 import com.ncnf.utilities.user.LocationService;
 
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 import javax.inject.Inject;
 
@@ -57,12 +50,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 import static android.content.ContentValues.TAG;
 import static android.graphics.BitmapFactory.decodeResource;
-import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
-import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.GROUP_ID_EXTRA_KEY;
-import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
-import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
 
 
 @AndroidEntryPoint

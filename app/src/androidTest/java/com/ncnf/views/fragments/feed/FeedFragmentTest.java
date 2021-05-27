@@ -10,7 +10,6 @@ import com.ncnf.R;
 import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.models.Event;
-import com.ncnf.models.SocialObject;
 
 import org.junit.Before;
 import org.junit.BeforeClass;

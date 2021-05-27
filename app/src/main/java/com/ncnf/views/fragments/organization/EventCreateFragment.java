@@ -13,7 +13,6 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentResultListener;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
@@ -39,13 +37,11 @@ import com.ncnf.R;
 import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
 import com.ncnf.models.SocialObject;
-import com.ncnf.models.User;
 import com.ncnf.repositories.EventRepository;
 import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.storage.firebase.FirebaseFileStore;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.InputValidator;
-import com.ncnf.views.activities.organization.OrganizationProfileActivity;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -67,10 +63,8 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static android.app.Activity.RESULT_OK;
-import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.POPUP_POSITIVE_BUTTON;
 import static com.ncnf.utilities.StringCodes.POPUP_TITLE;
-import static com.ncnf.views.fragments.organization.OrganizationTabFragment.ORGANIZATION_UUID_KEY;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
@@ -169,7 +163,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
                 selHour = hourOfDay;
                 selMin = minute;
                 eventTime = LocalTime.of(selHour, selMin);
-                String text = (hourOfDay < 10) ? "0" + hourOfDay + ":" : String.valueOf(hourOfDay) + ":";
+                String text = (hourOfDay < 10) ? "0" + hourOfDay + ":" : hourOfDay + ":";
                 text += (minute < 10) ? "0" + minute : String.valueOf(minute);
                 timeDisplay.setText(text);
             }, 0, 0, true);

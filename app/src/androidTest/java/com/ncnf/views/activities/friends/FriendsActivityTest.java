@@ -42,12 +42,10 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertTrue;
 
 @HiltAndroidTest
 @UninstallModules({FirebaseUserModule.class})
@@ -159,7 +157,7 @@ public class FriendsActivityTest {
         onView(withId(R.id.friends_recycler_view)).check(new RecyclerViewItemCountAssertion(1));
         onView(withId(R.id.friends_recycler_view))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, CustomRecyclerViewAction.clickOnButtonInRecyclerViewItem(R.id.friend_card_button)));
-        verify(friendsRepository).request(anyString(), anyString());;
+        verify(friendsRepository).request(anyString(), anyString());
     }
 
     @Test

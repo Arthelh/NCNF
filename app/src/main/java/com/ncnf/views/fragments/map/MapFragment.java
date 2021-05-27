@@ -26,7 +26,6 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
-import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.repositories.EventRepository;
 import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.utilities.map.MapHandler;

@@ -28,7 +28,6 @@ import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.views.activities.settings.SettingsActivity;
 import com.ncnf.models.Event;
-import com.ncnf.models.SocialObject;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -62,8 +61,6 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest

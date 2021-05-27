@@ -1,7 +1,5 @@
 package com.ncnf.storage.firebase;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 
 import dagger.Module;
