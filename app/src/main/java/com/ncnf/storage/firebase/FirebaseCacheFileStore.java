@@ -75,6 +75,7 @@ public class FirebaseCacheFileStore extends FirebaseFileStore {
                 Log.w(LOG_TAG, "Could not read the file: " + file.getPath());
             }
         }
+
         CompletableFuture<byte[]> future = super.download();
         future.thenApply(data -> {
             storeFile(data);

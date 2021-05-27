@@ -1,12 +1,10 @@
 package com.ncnf.utilities.settings;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.ncnf.utilities.settings.Settings;
 
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -18,13 +16,12 @@ import static org.junit.Assert.assertTrue;
 public class SettingsTest {
 
     @Test
-    public void settings_base_test(){
+    public void settingsBaseTest(){
         assertThat(Settings.MAX_ACCEPTED_DISTANCE, is(100));
     }
 
     @Test
-    public void test_set_and_get_distance(){
-        //assertThat(Settings.getCurrentMaxDistance(), is(25));
+    public void testSetAndGetDistance(){
         int new_value = 50;
         Settings.setCurrentMaxDistance(new_value);
         assertThat(Settings.getCurrentMaxDistance(), is(new_value));
@@ -32,7 +29,8 @@ public class SettingsTest {
 
     @Test
     public void testSetAndGetMinDate(){
-        LocalDate testDate = LocalDate.now().plusDays(1);
+        LocalDate testDate = LocalDate.now().plusDays(7);
+        assertNotEquals("First", testDate, Settings.getMinDate());
         Settings.setMinDate(testDate);
         assertEquals("Second", testDate, Settings.getMinDate());
     }

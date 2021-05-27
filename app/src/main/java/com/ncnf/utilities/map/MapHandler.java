@@ -15,8 +15,9 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.models.Organization;
 import com.ncnf.repositories.EventRepository;
+import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.utilities.settings.Settings;
 import com.ncnf.models.Event;
 import com.ncnf.models.SocialObject;
@@ -29,13 +30,13 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
-import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
 
 public class MapHandler {
 
     private final Activity context;
     private final GoogleMap mMap;
     private final EventRepository eventRepository;
+    private final OrganizationRepository organizationRepository;
 
     private ClusterManager<CustomMapMarker> clusterManager;
 
@@ -54,10 +55,12 @@ public class MapHandler {
      * @param fragmentManager A children fragment manager from the MapFragment
      * @param eventRepository the service to query the database
      */
-    public MapHandler(AppCompatActivity context, GoogleMap mMap, FragmentManager fragmentManager, EventRepository eventRepository){
+    public MapHandler(AppCompatActivity context, GoogleMap mMap, FragmentManager fragmentManager, EventRepository eventRepository, OrganizationRepository organizationRepository){
         this.context = context;
         this.mMap = mMap;
         this.eventRepository = eventRepository;
+        this.organizationRepository = organizationRepository;
+
         if (mMap != null) { //This is just for MapHandler Unit test
             MarkerInfoWindowManager markerInfoWindowManager = new MarkerInfoWindowManager(context, context.getWindow(), fragmentManager);
 
@@ -88,7 +91,7 @@ public class MapHandler {
             queryAndAddEvents();
             mMap.setContentDescription("MAP_WITH_EVENTS");
         } else {
-            addVenueMarkers();
+            queryAndAddOrgs();
             mMap.setContentDescription("MAP_WITH_VENUES");
         }
         clusterManager.cluster();
@@ -104,7 +107,7 @@ public class MapHandler {
         if (eventsShown){
             queryAndAddEvents();
         } else {
-            addVenueMarkers();
+            queryAndAddOrgs();
         }
         clusterManager.cluster();
     }
@@ -140,21 +143,19 @@ public class MapHandler {
                 desc.append(p.getName()).append("\n");
             }
             String description = desc.toString();
-            clusterManager.addItem(new CustomMapMarker(k, description, eventMap.get(k).get(0).getAddress(), list, true));
+            clusterManager.addItem(new CustomMapMarker(k, description, eventMap.get(k).get(0).getAddress(), list, null, true));
         }
         clusterManager.cluster();
     }
 
-    private void addVenueMarkers(){
-        // TODO: Link to the database
-        VenueProvider venueProvider = new VenueProvider();
-        List<Venue> venues = venueProvider.getAll();
-        for (Venue p : venues) {
-            LatLng venue_position = new LatLng(p.getLatitude(), p.getLongitude());
+    private void addOrganizationMarkers(List<Organization> list){
+        for (Organization o : list) {
+            LatLng venue_position = new LatLng(o.getLocation().getLatitude(), o.getLocation().getLongitude());
             if (MapUtilities.position_in_range(venue_position, Settings.getUserPosition())){
-                clusterManager.addItem(new CustomMapMarker(venue_position, p.getName(), p.getName(), new ArrayList<>(), false));
+                clusterManager.addItem(new CustomMapMarker(venue_position, o.getName(), o.getAddress(), new ArrayList<>(), o, false));
             }
         }
+        clusterManager.cluster();
     }
 
     private void queryAndAddEvents(){
@@ -165,6 +166,23 @@ public class MapHandler {
 
             result.addAll(eventList);
             addEventMarkers(result);
+
+        }).exceptionally(e -> {
+
+            Log.d(DEBUG_TAG, e.getMessage());
+            return null;
+
+        });
+    }
+
+    private void queryAndAddOrgs(){
+        final List<Organization> result = new ArrayList<>();
+
+        CompletableFuture<List<Organization>> completableFuture = organizationRepository.getOrgsNearby();
+        completableFuture.thenAccept(organizations -> {
+
+            result.addAll(organizations);
+            addOrganizationMarkers(result);
 
         }).exceptionally(e -> {
 

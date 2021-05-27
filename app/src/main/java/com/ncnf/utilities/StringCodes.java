@@ -23,6 +23,7 @@ public class StringCodes {
     public static final String NEXT_ACTIVITY_EXTRA_KEY = "next_activity";
     public final static String POPUP_TITLE = "Connection Error";
     public final static String POPUP_POSITIVE_BUTTON = "Retry";
+    public final static String GROUP_ID_EXTRA_KEY = "GROUP_ID";
 
     /**
      * Keys related to users
