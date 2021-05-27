@@ -10,99 +10,6 @@
     android:orientation="vertical"
     android:background="@color/white">
 
-    <RelativeLayout
-        android:id="@+id/public_profile_header"
-        android:layout_width="match_parent"
-        android:layout_height="380dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="@color/navigation_bar_background"
-            android:orientation="vertical"
-            android:paddingTop="30dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:gravity="center">
-
-                <include
-                    android:id="@+id/public_profile_picture"
-                    layout="@layout/user_picture_view"
-                    android:visibility="visible" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="400dp"
-            android:layout_height="150dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="250dp"
-            android:scrollbars="vertical"
-            app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="@color/unselected_icon_color">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:padding="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="15dp"
-                    android:layout_marginStart="24dp"
-                    android:background="@drawable/ic_outline_portrait_24"
-                    android:padding="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/publicProfileFullName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="20dp"
-                    android:background="@android:color/transparent"
-                    android:text="Jane Doe"
-                    android:textColor="#fff"
-                    android:textSize="21sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/publicProfileUsername"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@android:color/transparent"
-                    android:text="\@jane_doe"
-                    android:textColor="#fff"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/publicProfileFullName" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-    </RelativeLayout>
-
     <ScrollView
         android:id="@+id/scrollable"
         android:layout_width="match_parent"
@@ -110,62 +17,163 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="255dp"
-            android:orientation="vertical"
-            android:paddingTop="20dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/public_profile_header"
+                android:layout_width="match_parent"
+                android:layout_height="380dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:background="@color/navigation_bar_background"
+                    android:orientation="vertical"
+                    android:paddingTop="30dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20dp"
+                        android:gravity="center">
+
+                        <include
+                            android:id="@+id/public_profile_picture"
+                            layout="@layout/user_picture_view"
+                            android:visibility="visible" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="400dp"
+                    android:layout_height="150dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="250dp"
+                    android:scrollbars="vertical"
+                    app:cardCornerRadius="20dp"
+                    app:cardBackgroundColor="@color/unselected_icon_color">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:padding="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_margin="15dp"
+                            android:layout_marginStart="24dp"
+                            android:background="@drawable/ic_outline_portrait_24"
+                            android:padding="0dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/publicProfileFullName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="20dp"
+                            android:background="@android:color/transparent"
+                            android:text="Jane Doe"
+                            android:textColor="#fff"
+                            android:textSize="21sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/publicProfileUsername"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="28dp"
+                            android:layout_marginBottom="20dp"
+                            android:background="@android:color/transparent"
+                            android:text="\@jane_doe"
+                            android:textColor="#fff"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/publicProfileFullName" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="50dp"
-                android:paddingRight="50dp">
+                android:layout_height="255dp"
+                android:orientation="vertical"
+                android:paddingTop="20dp">
 
-                <ImageView
-                    android:id="@+id/email_icon_public_profile"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_email_black" />
-
-                <TextView
-                    android:id="@+id/publicProfileEmail"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:color/transparent"
-                    android:hint="jane@doe.com"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:orientation="horizontal"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="50dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:orientation="horizontal"
-                android:paddingLeft="50dp"
-                android:paddingRight="50dp">
+                    <ImageView
+                        android:id="@+id/email_icon_public_profile"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_email_black" />
 
-                <ImageView
-                    android:id="@+id/birthday_icon_public_profile"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_baseline_cake_24" />
+                    <TextView
+                        android:id="@+id/publicProfileEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@android:color/transparent"
+                        android:hint="jane@doe.com"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/publicProfileBirthDay"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:hint="27.05.2021"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="50dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:layout_marginTop="25dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="50dp">
 
+                    <ImageView
+                        android:id="@+id/birthday_icon_public_profile"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_baseline_cake_24" />
+
+                    <TextView
+                        android:id="@+id/publicProfileBirthDay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:hint="27.05.2021"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="50dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
