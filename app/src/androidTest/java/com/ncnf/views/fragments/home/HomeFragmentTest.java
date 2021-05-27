@@ -2,6 +2,7 @@ package com.ncnf.views.fragments.home;
 
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.rule.GrantPermissionRule;
 
 import com.ncnf.R;
 import com.ncnf.views.activities.login.LoginActivity;
@@ -34,6 +35,9 @@ import static com.ncnf.utilities.StringCodes.NEXT_ACTIVITY_EXTRA_KEY;
 public final class HomeFragmentTest {
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+
+    @Rule
+    public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(MainActivity.class));

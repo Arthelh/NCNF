@@ -18,12 +18,12 @@ import static org.junit.Assert.assertTrue;
 public class SettingsTest {
 
     @Test
-    public void settings_base_test(){
+    public void settingsBaseTest(){
         assertThat(Settings.MAX_ACCEPTED_DISTANCE, is(100));
     }
 
     @Test
-    public void test_set_and_get_distance(){
+    public void testSetAndGetDistance(){
         //assertThat(Settings.getCurrentMaxDistance(), is(25));
         int new_value = 50;
         Settings.setCurrentMaxDistance(new_value);
