@@ -9,8 +9,10 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
+import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_KEY;
 import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_TOKEN_KEY;
+import static com.ncnf.utilities.StringCodes.USERNAME_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
@@ -93,5 +95,13 @@ public class UserRepository {
      */
     public CompletableFuture<GeoPoint> getUserPosition(String uuid){
         return this.db.getField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY);
+    }
+
+    public CompletableFuture<String> getUserFullName(String uuid){
+        return this.db.getField(USERS_COLLECTION_KEY + uuid, FULL_NAME_KEY);
+    }
+
+    public CompletableFuture<String> getUserUsername(String uuid){
+        return this.db.getField(USERS_COLLECTION_KEY + uuid, USERNAME_KEY);
     }
 }

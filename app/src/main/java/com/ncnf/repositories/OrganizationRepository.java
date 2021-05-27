@@ -3,6 +3,7 @@ package com.ncnf.repositories;
 import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Group;
 import com.ncnf.models.Organization;
+import com.ncnf.utilities.settings.Settings;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -66,5 +67,18 @@ public class OrganizationRepository {
      */
     public CompletableFuture<List<Organization>> getOrganizationsWithToken(String token){
         return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_ADMIN_TOKEN, token, Organization.class);
+    }
+
+    private CompletableFuture<Boolean> combine(CompletableFuture<Boolean> u1, CompletableFuture<Boolean> u2) {
+        return u1.thenCombine(u2, (v1, v2) -> v1 && v2)
+                .exceptionally(exception -> false);
+    }
+
+    /**
+     * Returns all organization that are in a radius set in the settings around the current user position
+     * @return A CompletableFuture wrapping a list containing the nearby Organization objects
+     */
+    public CompletableFuture<List<Organization>> getOrgsNearby(){
+        return db.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, ORGANIZATIONS_COLLECTION_KEY, Organization.class);
     }
 }

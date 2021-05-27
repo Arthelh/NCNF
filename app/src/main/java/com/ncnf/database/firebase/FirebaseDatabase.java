@@ -16,9 +16,11 @@ import com.ncnf.database.Database;
 import com.ncnf.database.builders.DatabaseObjectBuilder;
 import com.ncnf.database.builders.DatabaseEventBuilder;
 import com.ncnf.database.builders.DatabaseGroupBuilder;
+import com.ncnf.database.builders.DatabaseOrganizationBuilder;
 import com.ncnf.database.builders.DatabaseUserBuilder;
 import com.ncnf.models.Event;
 import com.ncnf.models.Group;
+import com.ncnf.models.Organization;
 import com.ncnf.models.User;
 
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ public class FirebaseDatabase implements Database {
         registry.put(User.class, new DatabaseUserBuilder());
         registry.put(Event.class, new DatabaseEventBuilder());
         registry.put(Group.class, new DatabaseGroupBuilder());
+        registry.put(Organization.class, new DatabaseOrganizationBuilder());
     }
 
     @Override

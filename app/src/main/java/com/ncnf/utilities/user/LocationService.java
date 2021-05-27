@@ -30,8 +30,9 @@ import com.ncnf.authentication.firebase.CurrentUserModule;
 import com.ncnf.models.User;
 
 import static android.content.ContentValues.TAG;
-import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
+
 
 /**
  * This class was done thanks to the youtube Tutorial by CodingWithMitch.
@@ -128,9 +129,18 @@ public class LocationService extends Service {
                             }
                         });
                     }
-                    else {
-                        stopSelf();
-                    }
+                },
+                Looper.myLooper()); // Looper.myLooper tells this to repeat forever until thread is destroyed
+    }
+
+    private void saveUserLocation(final GeoPoint location, String uuid){
+
+        try{
+            dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, location).thenAccept(aBoolean -> {
+                if (aBoolean) {
+                    Log.d(TAG, "onComplete: \ninserted user location into database." +
+                            "\n latitude: " + location.getLatitude() +
+                            "\n longitude: " + location.getLongitude());
                 }
             }
         },

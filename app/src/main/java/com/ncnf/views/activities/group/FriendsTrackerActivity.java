@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -24,22 +26,42 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.R;
 import com.ncnf.database.firebase.FirebaseDatabase;
+import com.ncnf.models.Group;
+import com.ncnf.models.SocialObject;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
+import com.ncnf.repositories.GroupRepository;
+import com.ncnf.repositories.UserRepository;
+import com.ncnf.storage.firebase.FirebaseCacheFileStore;
+import com.ncnf.utilities.GroupAttendeeMarker;
+import com.ncnf.utilities.GroupAttendeeMarkerRenderer;
 import com.ncnf.utilities.user.LocationService;
 
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static android.content.ContentValues.TAG;
+import static android.graphics.BitmapFactory.decodeResource;
+import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
+import static com.ncnf.utilities.StringCodes.GROUP_ID_EXTRA_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
 
 
@@ -55,7 +77,13 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     public User user;
 
     @Inject
-    public FirebaseDatabase dbs;
+    public GroupRepository groupRepository;
+
+    @Inject
+    public UserRepository userRepository;
+
+    @Inject
+    public FirebaseCacheFileStore fileStore;
 
     private AppCompatImageButton findUserButton;
 
@@ -63,43 +91,37 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     private MapView mapView;
 
     private List<String> friendsUUID;
-    private List<Marker> markers;
+    private Map<String, GeoPoint> markers;
+    private Map<String, Bitmap> images = new HashMap<>();
 
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private FusedLocationProviderClient myFusedLocationClient;
 
     private Handler handler = new Handler();
-    // private Handler handler2 = new Handler();
     private Runnable runnable;
-    // private Runnable runnable2;
     private static final int LOCATION_UPDATE_INTERVAL = 3000;
 
-    private int counter;
+    //private Marker marker;
+    private Marker meetingPointMarker;
 
-    // for testing
-    //private static final String uuid = "MSpKLkyyrrN3PC5KmxkoD05Vy1m2";
-    //private static final String uuid2 = "xsohP7PYdDQZ69STCpznOZt0Zfg2";
-
-    private Marker marker;
+    private GeoPoint meetingPoint;
 
     private LatLngBounds bounds;
+
+    private ClusterManager clusterManager;
+    private GroupAttendeeMarkerRenderer groupAttendeeMarkerRenderer;
+    private ArrayList<GroupAttendeeMarker> clusterMarkers = new ArrayList<>();
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_tracker);
-
-        //dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, new GeoPoint(46.5201852, 6.5637122));
-        //dbs.updateField(USERS_COLLECTION_KEY + uuid2, USER_LOCATION_KEY, new GeoPoint(46.516981, 6.57144331));
-
-        counter = 0;
-
         friendsUUID = new ArrayList<>();
-        markers = new ArrayList<>();
 
-        //friendsUUID.add(uuid);
-        //friendsUUID.add(uuid2);
+        String groupId = getIntent().getStringExtra(GROUP_ID_EXTRA_KEY);
+
+        markers = new HashMap<>();
 
         findUserButton = findViewById(R.id.find_user_button);
 
@@ -109,12 +131,35 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
         mapView = findViewById(R.id.friends_map);
         mapView.onCreate(savedInstanceState);
+
+        CompletableFuture<Group> thisGroup = groupRepository.loadGroup(groupId);
+        thisGroup.thenAccept(group -> {
+            if(group != null) {
+                friendsUUID = new ArrayList<>(group.getAttendees());
+                if(!user.getParticipatingGroupsIds().contains(groupId)) {
+                    friendsUUID.add(user.getUuid());
+                }
+                meetingPoint = group.getLocation();
+
+                getImagesForClusters();
+                startMap();
+            }
+        });
+
+    }
+
+    private void startMap() {
+
         mapView.getMapAsync(googleMap -> {
             mMap = googleMap;
             onMapReady(mMap);
             getLastKnownLocation();
 
-            //changeUserLocs();
+            if(meetingPoint != null) {
+                meetingPointMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(meetingPoint.getLatitude(), meetingPoint.getLongitude())));
+                meetingPointMarker.setTitle("Meeting Point");
+            }
+
 
             findUserButton.setOnClickListener(v -> {
                 if(user.getLocation() != null) {
@@ -123,7 +168,51 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             });
         });
 
+    }
 
+    private void addMapMarkers() {
+
+        if(mMap != null) {
+
+            if(clusterManager == null) {
+                clusterManager = new ClusterManager<GroupAttendeeMarker>(this, mMap);
+            }
+
+            if(groupAttendeeMarkerRenderer == null) {
+                groupAttendeeMarkerRenderer = new GroupAttendeeMarkerRenderer(
+                        this,
+                        mMap,
+                        clusterManager
+                );
+
+                clusterManager.setRenderer(groupAttendeeMarkerRenderer);
+            }
+
+            for(int i = 0; i < markers.size(); ++i) {
+
+                GroupAttendeeMarker newAttendeeMarker = new GroupAttendeeMarker(new LatLng(markers.get(friendsUUID.get(i)).getLatitude(), markers.get(friendsUUID.get(i)).getLongitude()), "Friend " + i, "", friendsUUID.get(i), images.get(friendsUUID.get(i)));
+
+                if(friendsUUID.get(i).equals(user.getUuid())) {
+                    newAttendeeMarker.setTitle("This is me");
+                    groupAttendeeMarkerRenderer.updateName(newAttendeeMarker);
+                }
+
+                else {
+                    CompletableFuture<String> name = userRepository.getUserFullName(friendsUUID.get(i));
+                    name.thenAccept(s -> {
+                        if (s != null) {
+                            newAttendeeMarker.setTitle(s);
+                            groupAttendeeMarkerRenderer.updateName(newAttendeeMarker);
+                        }
+                    });
+                }
+
+                clusterManager.addItem(newAttendeeMarker);
+                clusterMarkers.add(newAttendeeMarker);
+
+            }
+            clusterManager.cluster();
+        }
     }
 
     private void startLocationUpdates() {
@@ -133,60 +222,42 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         }, LOCATION_UPDATE_INTERVAL);
     }
 
-    // ONLY FOR TESTING / DEMOS
-    /**
-    private void changeUserLocs() {
-        handler2.postDelayed(runnable2 = new Runnable() {
-            @Override
-            public void run() {
-                dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, new GeoPoint(46.51612823811807 + counter*0.0005, 6.560711384991796)).thenAccept(aBoolean -> {
-                    dbs.updateField(USERS_COLLECTION_KEY + uuid2, USER_LOCATION_KEY, new GeoPoint(46.51612823811807, 6.560711384991796+ counter*0.0005)).thenAccept(aBoolean1 -> {
-                        counter += 1;
-                    });
-                });
-                handler2.postDelayed(runnable2, 2*LOCATION_UPDATE_INTERVAL);
-            }
-        }, 2*LOCATION_UPDATE_INTERVAL);
-    }
-     **/
-
     private void stopLocationUpdates(){
         handler.removeCallbacks(runnable);
-        //handler2.removeCallbacks(runnable2);
     }
 
     private void getUserLocations() {
-        this.friendsUUID = user.getFriendsIds();
+
         for(int i = 0; i < friendsUUID.size(); ++i) {
 
             String userId = friendsUUID.get(i);
 
-            CompletableFuture<GeoPoint> field = dbs.getField(USERS_COLLECTION_KEY + userId, USER_LOCATION_KEY);
-            int finalI = i;
-            field.thenAccept(point -> {
-                if(finalI >= markers.size()) {
-                    markers.add(mMap.addMarker(new MarkerOptions().position(new LatLng(point.getLatitude(), point.getLongitude()))));
-                    CompletableFuture<String> name = dbs.getField(USERS_COLLECTION_KEY + userId, FULL_NAME_KEY);
-                    name.thenAccept(s -> {
-                        if(s != null) {
-                            markers.get(finalI).setTitle(s);
-                        }
-                    });
+            if(userId.equals(user.getUuid())) {
+                if(i >= markers.size()) {
+
+                    markers.put(userId, user.getLoc());
+                    bitmapSetChanged();
                 }
-                else {
-                    markers.get(finalI).setPosition(new LatLng(point.getLatitude(), point.getLongitude()));
-                }
-            });
-        }
-        if(marker == null) {
-            if(user.getLocation() != null) {
-                marker = mMap.addMarker(new MarkerOptions().position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude())));
-                marker.setTitle(user.getFullName());
+            }
+            else {
+                CompletableFuture<GeoPoint> field = userRepository.getUserPosition(userId);
+                int finalI = i;
+                field.thenAccept(point -> {
+
+                    if (!markers.keySet().contains(userId)) {
+
+                        markers.put(userId, point);
+                        bitmapSetChanged();
+                    } else {
+                        markers.put(userId, point);
+                        clusterMarkers.get(finalI).setPosition(new LatLng(point.getLatitude(), point.getLongitude()));
+                        groupAttendeeMarkerRenderer.updatePosition(clusterMarkers.get(finalI));
+                    }
+
+                });
             }
         }
-        else {
-            marker.setPosition(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()));
-        }
+
     }
 
     private void setMapCamera(GeoPoint point) {
@@ -218,24 +289,18 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
                 user.setLocation(geoPoint);
 
-                if (marker == null) {
-                    marker = mMap.addMarker(new MarkerOptions().position(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude())));
-                    marker.setTitle(user.getFullName());
-                } else {
-                    marker.setPosition(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude()));
-                }
                 startLocationService();
                 setMapCamera(geoPoint);
                 saveUserLocation();
 
             }
-            Log.d(TAG, "location null");
+
         });
     }
 
     private void saveUserLocation() {
         if(user != null) {
-            dbs.updateField(USERS_COLLECTION_KEY + user.getUuid(), USER_LOCATION_KEY, user.getLocation());
+            userRepository.updateUserPosition(user.getUuid(), user.getLoc());
         }
     }
 
@@ -268,13 +333,42 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     private boolean isLocationServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
-            if("com.ncnf.utilities.user.LocationService".equals(service.service.getClassName())) {
+            if("com.ncnf.user.LocationService".equals(service.service.getClassName())) {
                 Log.d(TAG, "isLocationServiceRunning: location service is already running.");
                 return true;
             }
         }
         Log.d(TAG, "isLocationServiceRunning: location service is not running.");
         return false;
+    }
+
+    public void getImagesForClusters() {
+
+        for(int i = 0; i < friendsUUID.size(); ++i) {
+            fileStore.setContext(getApplicationContext());
+            fileStore.setPath(USER_IMAGE_PATH, friendsUUID.get(i) + ".jpg");
+            CompletableFuture<byte[]> image = fileStore.download();
+
+            int finalI = i;
+            image.thenAccept(data -> {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                images.put(friendsUUID.get(finalI), bitmap);
+                bitmapSetChanged();
+            }).exceptionally(e -> {
+                images.put(friendsUUID.get(finalI), decodeResource(getApplicationContext().getResources(), R.drawable.default_profile_picture));
+                bitmapSetChanged();
+                return null;
+            });
+
+        }
+
+    }
+
+    private void bitmapSetChanged() {
+        if(images.keySet().size() == friendsUUID.size() && markers.keySet().size() == friendsUUID.size()) {
+            addMapMarkers();
+
+        }
     }
 
     @Override

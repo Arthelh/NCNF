@@ -14,6 +14,7 @@ import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 public class Group extends SocialObject {
 
     private final List<String> invited;
+    private final  List<String> attendees;
 
     /**
      * Public constructor used to create a new group
@@ -28,6 +29,7 @@ public class Group extends SocialObject {
     public Group(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type) {
         super(ownerId, name, date, location, address, type, description);
         invited = new ArrayList<>();
+        attendees = new ArrayList<>();
     }
 
     /**
@@ -43,9 +45,21 @@ public class Group extends SocialObject {
      * @param attendees List of IDs of the people attending the event
      * @param invited List of ID of the people
      */
-    public Group(UUID id, String ownerId, String name, LocalDateTime date, GeoPoint location, String address, Type type, List<String> attendees, String description, List<String> invited) {
-        super(id, ownerId, name, date, location, address, type, attendees, description);
-        this.invited = invited;
+    public Group(String ownerId, UUID id, String name, LocalDateTime date, GeoPoint location, String address, Type type, List<String> attendees, String description, List<String> invited) {
+        super(ownerId, id, name, date, location, address, type, attendees, description);
+        if(invited == null) {
+            this.invited = new ArrayList<>();
+        }
+        else {
+            this.invited = invited;
+        }
+
+        if(attendees == null) {
+            this.attendees = new ArrayList<>();
+        }
+        else {
+            this.attendees = attendees;
+        }
     }
 
     /**
@@ -61,6 +75,10 @@ public class Group extends SocialObject {
      */
     public List<String> getInvited() {
         return invited;
+    }
+
+    public List<String> getAttendees() {
+        return attendees;
     }
 
     @Override

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textview.MaterialTextView;
 import com.ncnf.R;
 import com.ncnf.models.Organization;
 
@@ -18,10 +19,10 @@ public class OrganizationViewFragment extends Fragment {
 
     private final Organization organization;
 
-    private EditText orgName;
-    private EditText orgEmail;
-    private EditText orgPhone;
-    private EditText orgAddress;
+    private MaterialTextView orgName;
+    private MaterialTextView orgEmail;
+    private MaterialTextView orgPhone;
+    private MaterialTextView orgAddress;
     private ImageView orgPicture;
 
     public OrganizationViewFragment(Organization organization){
