@@ -56,7 +56,6 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <ImageView
-                    android:id="@+id/editProfilePictureButton"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_margin="15dp"
