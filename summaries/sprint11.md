@@ -10,6 +10,7 @@
 
 ## Eloi 
 
+This week, I worked on finishing the javadoc and the tests from last week. I also started the group creation UI and back-end : I didn't have time to finish it before the meeting, several tests are missing but the main part is done. 
 
 
 ## Emmanuelle
