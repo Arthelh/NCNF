@@ -107,10 +107,10 @@ public class UserProfileTabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         emailMessage = new TextView(getActivity());
 
-        email = requireView().findViewById(R.id.userProfileEmail);
-        fullName = requireView().findViewById(R.id.userProfileFullName);
-        username = requireView().findViewById(R.id.userProfileUsername);
-        birthDate = requireView().findViewById(R.id.userProfileBirthDay);
+        email = requireView().findViewById(R.id.user_profile_email);
+        fullName = requireView().findViewById(R.id.user_profile_full_name);
+        username = requireView().findViewById(R.id.user_profile_username);
+        birthDate = requireView().findViewById(R.id.user_profile_birthDay);
 
         email.setEnabled(false);
         email.setOnClickListener(this::changeEmail);
@@ -124,14 +124,14 @@ public class UserProfileTabFragment extends Fragment {
         notification_switch = requireView().findViewById(R.id.profile_notification_switch);
 
         profilePicture = requireView().findViewById(R.id.personal_profile_picture);
-        editProfileButton = requireView().findViewById(R.id.editProfileButton);
+        editProfileButton = requireView().findViewById(R.id.edit_profile_button);
 
         initUser();
 
         requireView().findViewById(R.id.friends_profile_button).setOnClickListener(this::openFriendsTab);
         requireView().findViewById(R.id.bookmark_profile_button).setOnClickListener(this::openBookmark);
-        requireView().findViewById(R.id.editProfileButton).setOnClickListener(this::changeProfileState);
-        requireView().findViewById(R.id.editProfilePictureButton).setOnClickListener(this::changeProfilePicture);
+        requireView().findViewById(R.id.edit_profile_button).setOnClickListener(this::changeProfileState);
+        requireView().findViewById(R.id.edit_profile_picture_button).setOnClickListener(this::changeProfilePicture);
     }
 
     private void setUpDate() {

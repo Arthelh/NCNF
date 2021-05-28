@@ -75,7 +75,7 @@ public final class MapFragmentTest {
 
     static private final Organization o1 = new Organization("EPFL", new GeoPoint(46.5338f, 6.5914f), "EPFL Route Cantonale 15", "epfl@epfl.ch", "021 123 45 67", "EPFL");
     static private final Organization o2 = new Organization("UniL", new GeoPoint(46.5211f, 6.5802f), "Route de l'UniL 1", "unil@unil.ch", "021 765 43 21", "UniL");
-    static private final List<Organization> orgs = Arrays.asList(o1, o2);
+    static private final List<Organization> organizations = Arrays.asList(o1, o2);
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     private final ActivityScenarioRule activityRule = new ActivityScenarioRule<>(MainActivity.class);
@@ -94,7 +94,7 @@ public final class MapFragmentTest {
         CompletableFuture<List<Event>> future = CompletableFuture.completedFuture(events);
         when(mockEventRepository.getEventsNearBy()).thenReturn(future);
 
-        CompletableFuture<List<Organization>> orgFuture = CompletableFuture.completedFuture(orgs);
+        CompletableFuture<List<Organization>> orgFuture = CompletableFuture.completedFuture(organizations);
         when(mockOrgRepo.getOrganizationsNearby()).thenReturn(orgFuture);
     }
 
