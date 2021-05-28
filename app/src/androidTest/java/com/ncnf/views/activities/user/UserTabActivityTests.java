@@ -155,24 +155,7 @@ public class UserTabActivityTests {
         Intents.intended(hasAction(Intent.ACTION_PICK));
     }
 
-    @Test
-    public void changeBirthDateWorks() throws InterruptedException {
-        when(user.saveUserToDB()).thenReturn(CompletableFuture.completedFuture(true));
-        onView(withId(R.id.edit_profile_button)).perform(click());
-        onView(withId(R.id.user_profile_birthDay)).check(matches(isEnabled()));
 
-        onView(withId(R.id.user_profile_birthDay)).perform(click());
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
-        onView(withId(android.R.id.button1)).perform(click());
-        Thread.sleep(1000);
-        onView(withId(R.id.user_profile_username)).perform(replaceText("new username"));
-
-        onView(withId(R.id.edit_profile_button)).perform(click());
-        onView(withId(R.id.user_profile_birthDay)).check(matches(not(isEnabled())));
-
-        onView(Matchers.allOf(withId(com.google.android.material.R.id.snackbar_text), withText("Changes successfully saved")))
-                .check(matches(isDisplayed()));
-    }
 
     @Test
     public void changeFieldsWorks(){
@@ -187,7 +170,6 @@ public class UserTabActivityTests {
         onView(withId(R.id.user_profile_full_name)).check(matches(not(isEnabled())));
         onView(withId(R.id.user_profile_username)).check(matches(not(isEnabled())));
         onView(withId(R.id.user_profile_email)).check(matches(not(isEnabled())));
-        onView(withId(R.id.user_profile_birthDay)).check(matches(not(isEnabled())));
 
         onView(Matchers.allOf(withId(com.google.android.material.R.id.snackbar_text), withText("Changes successfully saved")))
                 .check(matches(isDisplayed()));
@@ -218,30 +200,6 @@ public class UserTabActivityTests {
         onView(withId(R.id.user_profile_username)).check(matches(isEnabled()));
         onView(withId(R.id.user_profile_email)).check(matches(isEnabled()));
         onView(withId(R.id.user_profile_birthDay)).check(matches(isEnabled()));
-    }
-
-    @Test
-    public void changingFieldsWorks(){
-
-        onView(withId(R.id.edit_profile_button)).perform(click());
-        onView(withId(R.id.user_profile_username)).perform(replaceText("new username"));
-        onView(withId(R.id.user_profile_full_name)).perform(replaceText("new full name"));
-
-        onView(withId(R.id.user_profile_birthDay)).perform(click());
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
-        onView(withId(android.R.id.button1)).perform(click());
-
-        when(user.saveUserToDB()).thenReturn(CompletableFuture.completedFuture(true));
-
-        onView(withId(R.id.edit_profile_button)).perform(click());
-
-        onView(withId(R.id.user_profile_full_name)).check(matches(not(isEnabled())));
-        onView(withId(R.id.user_profile_username)).check(matches(not(isEnabled())));
-        onView(withId(R.id.user_profile_email)).check(matches(not(isEnabled())));
-        onView(withId(R.id.user_profile_birthDay)).check(matches(not(isEnabled())));
-
-        onView(withId(R.id.user_profile_username)).check(matches(withText("@new username")));
-        onView(withId(R.id.user_profile_full_name)).perform(replaceText("new full name"));
     }
 
     @Test
