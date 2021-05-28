@@ -42,8 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         LoginActivity.FragmentSelector fragmentSelector = new LoginActivity.FragmentSelector(this, nextActivity);
         ViewPager2 viewPager = findViewById(R.id.loginViewPager);
         viewPager.setAdapter(fragmentSelector);
-
-
+        
         TabLayout tabs = findViewById(R.id.loginTabs);
         new TabLayoutMediator(tabs, viewPager,
                 (tab, position) -> tab.setText(fragmentSelector.getPageTitle(position))
