@@ -120,8 +120,8 @@ public class OrganizationTabFragmentTests {
         when(organizationRepository.addUserToOrganization(anyString(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
         onView(withId(R.id.user_view_pager)).perform(swipeLeft());
-        onView(withId(R.id.add_organization_button)).perform(click());
         Thread.sleep(2000);
+        onView(withId(R.id.add_organization_button)).perform(click());
         onView(withClassName(endsWith("EditText"))).perform(typeText("token"), closeSoftKeyboard());
         onView(withText("Enter")).perform(click());
 
