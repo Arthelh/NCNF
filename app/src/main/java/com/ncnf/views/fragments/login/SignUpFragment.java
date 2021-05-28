@@ -44,13 +44,9 @@ public class SignUpFragment extends Fragment {
     @Inject
     FirebaseAuthentication auth;
 
-    private Boolean isOrganizer = false;
-
     private EditText email;
     private EditText password;
     private EditText confirmPassword;
-    private TextView exceptionText;
-    private Button organizerButton;
     private Button registerButton;
 
     private final Class<?> activity;
@@ -75,13 +71,6 @@ public class SignUpFragment extends Fragment {
         showProgressBar(false);
 
         registerButton.setOnClickListener(v -> signUp());
-        organizerButton.setOnClickListener(v -> {
-            if(isOrganizer){
-                setPrivateUserView();
-            } else {
-                setOrganizerView();
-            }
-        });
     }
 
     public void signUp() {
@@ -120,8 +109,6 @@ public class SignUpFragment extends Fragment {
         this.email = getView().findViewById(R.id.signUpEmail);
         this.password = getView().findViewById(R.id.signUpPassword);
         this.confirmPassword = getView().findViewById(R.id.signUpConfirmPassword);
-        this.exceptionText = getView().findViewById(R.id.InformationSignUp);
-        this.organizerButton = getView().findViewById(R.id.organizerButton);
         this.registerButton = getView().findViewById(R.id.signUpRegisterButton);
     }
 
@@ -160,12 +147,12 @@ public class SignUpFragment extends Fragment {
     }
 
     private void showProgressBar(Boolean show){
-        ProgressBar bar = getView().findViewById(R.id.progressBar);
-        if(show){
-            bar.setVisibility(View.VISIBLE);
-        } else {
-            bar.setVisibility(View.INVISIBLE);
-        }
+//        ProgressBar bar = getView().findViewById(R.id.progressBar);
+//        if(show){
+//            bar.setVisibility(View.VISIBLE);
+//        } else {
+//            bar.setVisibility(View.INVISIBLE);
+//        }
     }
 
     private void setException(String s){
@@ -179,19 +166,4 @@ public class SignUpFragment extends Fragment {
         popup.show();
 //        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
-
-    private void setOrganizerView(){
-        isOrganizer = true;
-        ((TextView)getActivity().findViewById(R.id.InformationSignUp)).setText("Organizer Registration");
-        email.setHint("Business Email..");
-        organizerButton.setText("I'm a regular user...");
-    }
-
-    private void setPrivateUserView(){
-        isOrganizer = false;
-        ((TextView)getActivity().findViewById(R.id.InformationSignUp)).setText("Register");
-        email.setHint("Email..");
-        organizerButton.setText("I'm an organizer...");
-    }
-
 }

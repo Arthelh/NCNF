@@ -39,7 +39,6 @@ public class SignInFragment extends Fragment {
 
     private EditText email;
     private EditText password;
-    private TextView exceptionText;
     private Button loginButton;
     private final Class<?> activity;
 
@@ -114,17 +113,16 @@ public class SignInFragment extends Fragment {
     private void getItemsFromView(){
         this.email = getView().findViewById(R.id.signInEmail);
         this.password = getView().findViewById(R.id.signInPassword);
-        this.exceptionText = getView().findViewById(R.id.exceptionSignIn);
         this.loginButton = getView().findViewById(R.id.signInLoginButton);
     }
 
     private void showProgressBar(Boolean show){
-        ProgressBar bar = getView().findViewById(R.id.progressBar2);
-        if(show){
-            bar.setVisibility(View.VISIBLE);
-        } else {
-            bar.setVisibility(View.INVISIBLE);
-        }
+//        ProgressBar bar = getView().findViewById(R.id.progressBar2);
+//        if(show){
+//            bar.setVisibility(View.VISIBLE);
+//        } else {
+//            bar.setVisibility(View.INVISIBLE);
+//        }
     }
 
     private void setException(String s){
