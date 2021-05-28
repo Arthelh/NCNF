@@ -53,6 +53,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -232,6 +233,7 @@ public final class MapFragmentTest {
             Assert.fail("Marker not found.");
         }
 
+        onView(withId(R.id.map_feed_container)).check(matches(isDisplayed()));
         onView(allOf(withId(R.id.set_event_name), withText("TestGeo"))).perform(click());
 
         Espresso.pressBack();
