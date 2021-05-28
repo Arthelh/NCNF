@@ -96,11 +96,10 @@ public class SignUpFragment extends Fragment {
             Intent intent = new Intent(getActivity(), activity);
             startActivity(intent);
         }).exceptionally(exception -> {
-            Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + exception.getMessage());
-            setException(exception.getMessage());
+            Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + exception.getCause().getMessage());
+            setException(exception.getCause().getMessage());
             Log.d(DEBUG_TAG, "Deleting user.");
             this.auth.delete();
-            setException("Couldn't create a new user : please try again");
             return null;
         }).thenRun(() -> showProgressBar(false));
     }
