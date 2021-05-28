@@ -3,6 +3,7 @@ package com.ncnf.views.fragments.event;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,11 @@ import com.ncnf.R;
 import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Event;
 import com.ncnf.models.SocialObject;
+import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.SaveToCalendar;
+import com.ncnf.utilities.StringCodes;
 
 import java.time.ZoneId;
 
@@ -36,9 +39,9 @@ public class EventFragment extends Fragment {
     public FirebaseCacheFileStore fileStore;
 
     private final Event event;
-    
+
     @Inject
-    public FirebaseDatabase dbs;
+    public OrganizationRepository organizationRepository;
 
     public EventFragment(Event event){
         this.event = event;
@@ -70,31 +73,44 @@ public class EventFragment extends Fragment {
     }
 
     private void initViews(View view){
+        // Set Header Image
         ImageView headerImageView = view.findViewById(R.id.eventHeaderPicture);
         fileStore.setContext(this.getContext());
         fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
         fileStore.downloadImage(headerImageView, BitmapFactory.decodeResource(this.getContext().getResources(),
                 R.drawable.default_event_header_picture));
 
-        TextView name = view.findViewById(R.id.eventName);
-        name.setText(event.getName());
-
-        TextView date = view.findViewById(R.id.eventDate);
-        date.setText(new DateAdapter(event.getDate()).toString());
-
-        TextView address = view.findViewById(R.id.eventAddress);
-        address.setText(event.getAddress());
-
-        TextView description = view.findViewById(R.id.eventDescription);
-        description.setText(event.getDescription());
-
+        // Set Organization Image
         ImageView organizationImageView = view.findViewById(R.id.personal_profile_picture);
         fileStore.setContext(this.getContext());
         fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
         fileStore.downloadImage(organizationImageView, BitmapFactory.decodeResource(this.getContext().getResources(),
                 R.drawable.default_profile_picture));
 
-        TextView organization = view.findViewById(R.id.eventOrganization);
-        organization.setText(event.getEmail());
+        // Set Event name
+        TextView name = view.findViewById(R.id.eventName);
+        name.setText(event.getName());
+
+        // Set Event Date
+        TextView date = view.findViewById(R.id.eventDate);
+        date.setText(new DateAdapter(event.getDate()).toString());
+
+        // Set Event address
+        TextView address = view.findViewById(R.id.eventAddress);
+        address.setText(event.getAddress());
+
+        // Set Event description
+        TextView description = view.findViewById(R.id.eventDescription);
+        description.setText(event.getDescription());
+
+        // Set Organization Name
+        TextView organizationName = view.findViewById(R.id.eventOrganization);
+        organizationRepository.loadOrganization(event.getOwnerId()).thenAccept(organization -> {
+            organizationName.setText(organization.getName());
+        }).exceptionally(e -> {
+            Log.d(StringCodes.DEBUG_TAG, e.getMessage());
+            return null;
+        });
+
     }
 }
