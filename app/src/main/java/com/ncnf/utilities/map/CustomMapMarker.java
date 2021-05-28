@@ -63,18 +63,20 @@ public class CustomMapMarker implements ClusterItem {
         }
     }
 
+    /**
+     * Getters for attributes
+     */
+
     @NonNull
     @Override
     public LatLng getPosition() {
         return position;
     }
-
     @Nullable
     @Override
     public String getTitle() {
         return title;
     }
-
     @Nullable
     @Override
     public String getSnippet() {

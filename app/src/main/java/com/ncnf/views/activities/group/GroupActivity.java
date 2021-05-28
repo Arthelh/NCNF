@@ -4,16 +4,10 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 
 import com.ncnf.models.User;
 import com.ncnf.views.fragments.group.GroupFragment;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.function.Consumer;
 
 import javax.inject.Inject;
 

@@ -27,7 +27,7 @@ public class GroupTest {
     LocalDateTime date = LocalDateTime.of(2021, 03, 11, 12, 0);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    SocialObject.Type type = SocialObject.Type.Conference;
+    Event.Type type = Event.Type.Conference;
     String description = "SocialObject description goes here";
     String ownerId = "00";
     UUID uuid = UUID.randomUUID();
@@ -41,7 +41,7 @@ public class GroupTest {
     @Before
     public void setup(){
         db = Mockito.mock(FirebaseDatabase.class);
-        mainEvent = new Group(ownerId,name, date, geoPoint,address,description, type);
+        mainEvent = new Group(ownerId,name, date, geoPoint,address,description);
         response = CompletableFuture.completedFuture(true);
     }
 
@@ -61,16 +61,15 @@ public class GroupTest {
 
     @Test
     public void privateEventGeneratesCorrectly() {
-        Group event = new Group(ownerId,name, date, geoPoint,address,description, type);
-        assertEquals(event.getOwnerId(), ownerId);
-        assertEquals(event.getDate(), date);
-        assertEquals(event.getName(), name);
-        assertEquals(event.getLocation(), geoPoint);
-        assertEquals(event.getType(), type);
-        assertEquals(event.getDescription(), description);
-        assertEquals(event.getNumOfAttendees(), 0);
-        assertEquals(event.getAttendees().size(), 0);
-        assertEquals(event.getInvited().size(), 0);
+        Group group = new Group(ownerId,name, date, geoPoint,address,description);
+        assertEquals(group.getOwnerId(), ownerId);
+        assertEquals(group.getDate(), date);
+        assertEquals(group.getName(), name);
+        assertEquals(group.getLocation(), geoPoint);
+        assertEquals(group.getDescription(), description);
+        assertEquals(group.getNumOfAttendees(), 0);
+        assertEquals(group.getAttendees().size(), 0);
+        assertEquals(group.getInvited().size(), 0);
 
     }
 
@@ -79,27 +78,26 @@ public class GroupTest {
         attendees.add("Attendee1");
         invited.add("Invited1");
 
-        Group event = new Group(ownerId, uuid, name, date, geoPoint, address, type, attendees, description, invited);
-        assertEquals(event.getUuid(), uuid);
-        assertEquals(event.getOwnerId(), ownerId);
-        assertEquals(event.getDate(), date);
-        assertEquals(event.getName(), name);
-        assertEquals(event.getLocation(), geoPoint);
-        assertEquals(event.getType(), type);
-        assertEquals(event.getDescription(), description);
+        Group group = new Group(ownerId, uuid, name, date, geoPoint, address, attendees, description, invited);
+        assertEquals(group.getUuid(), uuid);
+        assertEquals(group.getOwnerId(), ownerId);
+        assertEquals(group.getDate(), date);
+        assertEquals(group.getName(), name);
+        assertEquals(group.getLocation(), geoPoint);
+        assertEquals(group.getDescription(), description);
 
-        assertEquals(event.getNumOfAttendees(), 1);
-        assertEquals(event.getAttendees().get(0), "Attendee1");
-        assertEquals(event.getAttendees().size(), 1);
+        assertEquals(group.getNumOfAttendees(), 1);
+        assertEquals(group.getAttendees().get(0), "Attendee1");
+        assertEquals(group.getAttendees().size(), 1);
 
-        assertEquals(event.getInvited().size(), 1);
-        assertEquals(event.getInvited().get(0), "Invited1");
+        assertEquals(group.getInvited().size(), 1);
+        assertEquals(group.getInvited().get(0), "Invited1");
 
     }
 
     @Test
     public void inviteWorks() {
-        Group event = new Group("00",name, date, geoPoint,address,description, type);
+        Group event = new Group("00",name, date, geoPoint,address,description);
         event.invite("Sarah");
         assertEquals(event.getInvited().size(), 1);
         assertEquals(event.getInvited().get(0), "Sarah");
@@ -107,24 +105,16 @@ public class GroupTest {
 
     @Test
     public void compareToWorks() {
-        Group event = new Group("00",name, date, geoPoint,address,description, type);
+        Group event = new Group("00",name, date, geoPoint,address,description);
         LocalDateTime date2 = LocalDateTime.of(2021, 03, 30, 12, 00);
-        Group event2 = new Group("00",name, date2, geoPoint,address,description, type);
+        Group event2 = new Group("00",name, date2, geoPoint,address,description);
 
         assertEquals(event.compareTo(event2), -19);
     }
 
     @Test
-    public void setType(){
-        Group event = new Group("00",name, date, geoPoint,address,description, type);
-        assertEquals(type, event.getType());
-        event.setType(SocialObject.Type.Movie);
-        assertEquals(SocialObject.Type.Movie, event.getType());
-    }
-
-    @Test
     public void setAddress(){
-        Group event = new Group("00",name, date, geoPoint,address,description, type);
+        Group event = new Group("00",name, date, geoPoint,address,description);
         assertEquals(address, event.getAddress());
         event.setAddress("this is the new address");
         assertEquals("this is the new address", event.getAddress());

@@ -29,7 +29,7 @@ public class EventTest {
     LocalDateTime date = LocalDateTime.of(2021, 3, 11, 12, 0);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    SocialObject.Type type = SocialObject.Type.Conference;
+    Event.Type type = Event.Type.Conference;
     String description = "SocialObject description goes here";
     String ownerID = "00";
     UUID uuid = UUID.randomUUID();
@@ -150,7 +150,7 @@ public class EventTest {
     }
 
     @Test
-    public void basicSettersWork() {
+    public void basicSettersGettersWork() {
         Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
         List<String> attendees = new ArrayList<>();
         LocalDateTime newDate = LocalDateTime.of(2021, 3, 12, 12, 0);
@@ -164,24 +164,19 @@ public class EventTest {
         event.setOwnerId("EPFL-IC");
         event.setLocation(newGeoPoint);
         event.setDescription("Another description");
+        event.setEmail("newEmail@test.ch");
 
         assertEquals(event.getDate(), newDate);
         assertEquals(event.getName(), "Christmas Party");
         assertEquals(event.getLocation(), newGeoPoint);
         assertEquals(event.getDescription(), "Another description");
         assertEquals(event.getOwnerId(), "EPFL-IC");
+        assertEquals(event.getEmail(), "newEmail@test.ch");
         assertEquals(event.getNumOfAttendees(), 1);
         assertTrue(event.getAttendees().size() == attendees.size());
         for(int i = 0; i < attendees.size(); ++i) {
             assertEquals(attendees.get(i), event.getAttendees().get(i));
         }
-    }
-
-    @Test
-    public void gettersWork() {
-
-        Event event = new Event("ownerId", name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
-//        assertEquals(event.getImageName(), "swan_lake");
     }
 
     @Test

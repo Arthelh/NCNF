@@ -1,7 +1,6 @@
 package com.ncnf.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,22 +14,17 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 import com.ncnf.R;
 import com.ncnf.models.Event;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.utilities.event.EventRelevanceCalculator;
 import com.ncnf.models.SocialObject;
 import com.ncnf.utilities.DateAdapter;
-import com.ncnf.views.activities.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import static android.graphics.BitmapFactory.decodeResource;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.SocialObjViewHolder> implements Filterable {
     private List<Event> events;
@@ -67,15 +61,24 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Soci
         this.context = context;
     }
 
+    /**
+     * Getter for event list
+     */
     public List<SocialObject> getEvents() {
         return Collections.unmodifiableList(events);
     }
 
+    /**
+     * Setter for event list (also notify recycler view)
+     */
     public void setEvents(List<Event> events) {
         this.events = events;
         notifyDataSetChanged();
     }
 
+    /**
+     * Add an event and sort the list
+     */
     public void addEvent(Event Event) {
         // Add the Event at the beginning of the list
         events.add(0, Event);

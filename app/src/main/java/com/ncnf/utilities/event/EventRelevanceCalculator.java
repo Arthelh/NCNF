@@ -15,15 +15,23 @@ public class EventRelevanceCalculator {
     private final List<Event> events = new ArrayList<>();
     private final List<Event> sortedList;
 
+    /**
+     * Public constructor for the calculator
+     * @param l initial event list
+     */
     public EventRelevanceCalculator(List<Event> l) {
 
         for (Event e : l) {
             if (e != null)
-                this.events.add((Event) e);
+                this.events.add(e);
         }
         sortedList = new ArrayList<>(sortedList());
     }
 
+    /**
+     * Sort the initial list given the different tag of each event
+     * @return Sorted event list
+     */
     private List<Event> sortedList() {
         List<Event> l = new ArrayList<>();
         Map<EventTag, Integer> m = new HashMap<>();
@@ -74,6 +82,9 @@ public class EventRelevanceCalculator {
         return l;
     }
 
+    /**
+     * Getter for the eventList
+     */
     public List<Event> getSortedList() {
         return sortedList;
     }

@@ -8,7 +8,6 @@ import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Event;
-import com.ncnf.models.SocialObject;
 import com.ncnf.views.activities.main.MainActivity;
 
 import org.junit.Before;
@@ -43,7 +42,7 @@ import static org.mockito.Mockito.when;
 public class EventFragmentTest {
 
     static private final FirebaseDatabase db = Mockito.mock(FirebaseDatabase.class);
-    static private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", SocialObject.Type.Conference, 0, 0, "email@test.com");
+    static private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", Event.Type.Conference, 0, 0, "email@test.com");
     static private final List<Event> events = Arrays.asList(e1);
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);

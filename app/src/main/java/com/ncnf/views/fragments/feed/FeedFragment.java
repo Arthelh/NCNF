@@ -26,7 +26,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.ncnf.R;
 
 import com.ncnf.adapters.EventListAdapter;
-import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.repositories.EventRepository;
 import com.ncnf.utilities.map.MapUtilities;
 import com.ncnf.utilities.settings.Settings;
@@ -43,7 +42,6 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
-import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
 
 @AndroidEntryPoint
 public class FeedFragment extends Fragment {

@@ -50,6 +50,9 @@ public class FirebaseDatabase implements Database {
         initRegistry();
     }
 
+    /**
+     * Initialization of the different builders for our objects
+     */
     private void initRegistry(){
         registry.put(Organization.class, new DatabaseOrganizationBuilder());
         registry.put(User.class, new DatabaseUserBuilder());
@@ -165,14 +168,14 @@ public class FirebaseDatabase implements Database {
     }
 
     @Override
-    public <T, R> CompletableFuture<List<R>> whereArrayContains(String collectionPath, String field, T value, Class<R> type) {
+    public <T, R> CompletableFuture<List<R>> whereArrayContains(String collectionPath, String arrayField, T value, Class<R> collectionType) {
         CompletableFuture<List<R>> futureResponse = new CompletableFuture<>();
 
-        this.db.collection(collectionPath).whereArrayContains(field, value).get().addOnCompleteListener(task -> {
+        this.db.collection(collectionPath).whereArrayContains(arrayField, value).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 List<R> result = new ArrayList<>();
                 for(DocumentSnapshot document : task.getResult().getDocuments()){
-                    result.add((R) registry.get(type).toObject(document.getId(), document.getData()));
+                    result.add((R) registry.get(collectionType).toObject(document.getId(), document.getData()));
                 }
 
                 futureResponse.complete(result);
@@ -185,14 +188,14 @@ public class FirebaseDatabase implements Database {
     }
 
     @Override
-    public <T, R> CompletableFuture<List<R>> whereEqualTo(String collectionPath, String field, T value, Class<R> type) {
+    public <T, R> CompletableFuture<List<R>> whereEqualTo(String collectionPath, String field, T value, Class<R> collectionType) {
         CompletableFuture<List<R>> futureResponse = new CompletableFuture<>();
 
         this.db.collection(collectionPath).whereEqualTo(field, value).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 List<R> result = new ArrayList<>();
                 for(DocumentSnapshot document : task.getResult().getDocuments()){
-                    result.add((R) registry.get(type).toObject(document.getId(), document.getData()));
+                    result.add((R) registry.get(collectionType).toObject(document.getId(), document.getData()));
                 }
 
                 futureResponse.complete(result);
@@ -205,7 +208,7 @@ public class FirebaseDatabase implements Database {
     }
 
     @Override
-    public <T, R> CompletableFuture<List<R>> whereIn(String collectionPath, String field, List<T> values, Class<R> type) {
+    public <T, R> CompletableFuture<List<R>> whereIn(String collectionPath, String field, List<T> values, Class<R> collectionType) {
         CompletableFuture<List<R>> futureResponse = new CompletableFuture<>();
 
         if(values == null) {
@@ -218,7 +221,7 @@ public class FirebaseDatabase implements Database {
         
         List<CompletableFuture<List<R>>> futures = values
                 .stream()
-                .map(value -> this.whereEqualTo(collectionPath, field, value, type))
+                .map(value -> this.whereEqualTo(collectionPath, field, value, collectionType))
                 .collect(Collectors.toList());
 
         return CompletableFuture
@@ -251,13 +254,14 @@ public class FirebaseDatabase implements Database {
         return this.updateField(documentPath, arrayField, FieldValue.arrayRemove(value));
     }
 
-    public <T> CompletableFuture<List<T>> geoQuery(LatLng location, double radius, String path, Class<T> type){
+    @Override
+    public <T> CompletableFuture<List<T>> geoQuery(LatLng location, double radius, String collectionPath, Class<T> collectionType){
         radius *= (radius < 1000) ? 1000 : 1; //Check if radius is still in km, convert to m
 
         List<GeoQueryBounds> bounds = GeoFireUtils.getGeoHashQueryBounds(new GeoLocation(location.latitude, location.longitude), radius);
         final List<Task<QuerySnapshot>> tasks = new ArrayList<>();
         for (GeoQueryBounds b : bounds){
-            Query q = db.collection(path)
+            Query q = db.collection(collectionPath)
                     .orderBy(GEOHASH_KEY)
                     .startAt(b.startHash)
                     .endAt(b.endHash);
@@ -276,7 +280,7 @@ public class FirebaseDatabase implements Database {
                             matchingDocs.addAll(snap.getDocuments());
                         }
                         for (DocumentSnapshot doc : matchingDocs){
-                            result.add((T) registry.get(type).toObject(doc.getId(), doc.getData()));
+                            result.add((T) registry.get(collectionType).toObject(doc.getId(), doc.getData()));
                         }
                         futureResponse.complete(result);
                     } else {

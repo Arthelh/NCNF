@@ -12,6 +12,9 @@ import dagger.hilt.android.components.ActivityComponent;
 @InstallIn(ActivityComponent.class)
 public class FirebaseUserModule {
 
+    /**
+     * Get the current FirebaseUser
+     */
     @Provides
     public static FirebaseUser getFirebaseUser() {
         return FirebaseAuth.getInstance().getCurrentUser();

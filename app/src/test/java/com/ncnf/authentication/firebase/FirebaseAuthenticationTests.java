@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -29,6 +30,7 @@ import static org.mockito.Mockito.when;
 public class FirebaseAuthenticationTests {
 
     FirebaseAuth mockedAuth;
+    FirebaseUser mockedUser;
 
     Task<AuthResult> failureTask;
     Task<AuthResult> successTask;
@@ -251,6 +253,5 @@ public class FirebaseAuthenticationTests {
         }
 
         verify(mockedAuth).signInWithEmailAndPassword(anyString(), anyString());
-
     }
 }

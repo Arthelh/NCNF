@@ -39,9 +39,25 @@ public class User {
     private List<String> savedEventsIds;
     private LocalDate birthDate;
     private boolean notifications;
-    private GeoPoint loc;
+    private GeoPoint location;
 
-    public User(FirebaseDatabase db, String uuid, String username, String email, String fullName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> participatingGroups, List<String> savedEventsIds, boolean notifications, LocalDate birthDate, GeoPoint loc) {
+
+    /**
+     * Public constructor used to create an already existing user
+     * @param db Database service used to store and load user's attributes, etc.
+     * @param uuid User's unique identifier
+     * @param username User's username
+     * @param email User's email
+     * @param fullName User's full name
+     * @param friendsIds List of ID of the User's friends
+     * @param ownedGroupsIds List of ID of the User's owned group
+     * @param participatingGroups
+     * @param savedEventsIds List of ID of the User's saved event
+     * @param notifications Boolean indicating whether the user receives notification or not
+     * @param birthDate User's birthdate
+     * @param location User's location
+     */
+    public User(FirebaseDatabase db, String uuid, String username, String email, String fullName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> participatingGroups, List<String> savedEventsIds, boolean notifications, LocalDate birthDate, GeoPoint location) {
         if(isInvalidString(uuid) || isInvalidString(email)){
             throw new IllegalArgumentException();
         }
@@ -56,94 +72,97 @@ public class User {
         this.birthDate = birthDate;
         this.notifications = notifications;
         this.participatingGroupsIds = participatingGroups;
-        this.loc = loc;
+        this.location = this.location;
     }
 
+    /**
+     * Public constructor with all attributes set to default values
+     */
     public User(){
         this(new FirebaseDatabase(), FirebaseAuth.getInstance().getUid(), "",FirebaseAuth.getInstance().getCurrentUser().getEmail(),"", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false, null, null);
     }
 
-    public User(String username, String email, String fullName, String lastName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> savedEventsIds, LocalDate birthDate, boolean notifications, GeoPoint loc) {
-        this(new FirebaseDatabase(), FirebaseAuth.getInstance().getUid(), username, email, fullName, friendsIds, ownedGroupsIds, new ArrayList<>(), savedEventsIds, notifications, birthDate, loc);
+    /**
+     * Public constructor used to create a new user
+     * @param username User's username
+     * @param email User's email
+     * @param fullName User's full name
+     * @param friendsIds List of ID of the User's friends
+     * @param ownedGroupsIds List of ID of the User's owned group
+     * @param savedEventsIds List of ID of the User's saved event
+     * @param birthDate User's birthdate
+     * @param notifications Boolean indicating whether the user receives notification or not
+     * @param location User's location
+     */
+    public User(String username, String email, String fullName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> savedEventsIds, LocalDate birthDate, boolean notifications, GeoPoint location) {
+        this(new FirebaseDatabase(), FirebaseAuth.getInstance().getUid(), username, email, fullName, friendsIds, ownedGroupsIds, new ArrayList<>(), savedEventsIds, notifications, birthDate, location);
     }
 
+    /**
+     * Getters for attributes
+     */
     public String getUuid(){
         return uuid;
     }
-
     public String getUsername() {
         return username;
     }
-
     public String getEmail(){
         return email;
     }
-
     public String getFullName() {
         return fullName;
     }
-
     public List<String> getFriendsIds() {
         return Collections.unmodifiableList(friendsIds);
     }
-
     public List<String> getOwnedGroupsIds() {
         return Collections.unmodifiableList(ownedGroupsIds);
     }
-
     public List<String> getParticipatingGroupsIds() {
         return Collections.unmodifiableList(participatingGroupsIds);
     }
-
     public List<String> getSavedEventsIds() {
         return Collections.unmodifiableList(savedEventsIds);
     }
-
     public LocalDate getBirthDate() {
         return birthDate;
     }
-
-    public GeoPoint getLoc() { return loc; }
-
+    public GeoPoint getLocation() { return location; }
     public boolean getNotifications() {
         return notifications;
     }
 
+    /**
+     * Getters for attributes
+     */
     public void setUsername(String username){
         this.username = username;
     }
-
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-
     public void setFriendsIds(List<String> friendsIds) {
         this.friendsIds = friendsIds;
     }
-
-    public void setLoc(GeoPoint loc) { this.loc = loc; }
-
+    public void setLocation(GeoPoint location){
+        this.location = location;
+    }
     public void setEmail(String email){
         this.email = email;
     }
-
-    
     public void setParticipatingGroupsIds(List<String> participatingGroupsIds) {
         this.participatingGroupsIds = new ArrayList<>(participatingGroupsIds);
     }
-
     public void setOwnedGroupsIds(List<String> ownedGroupsIds) {
         this.ownedGroupsIds = new ArrayList<>(ownedGroupsIds);
     }
-
     public void setSavedEventsIds(List<String> savedEventsIds) {
         this.savedEventsIds = new ArrayList<>(savedEventsIds);
     }
-
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
-
     public void setNotifications(boolean notifications) {
         this.notifications = notifications;
     }
@@ -174,7 +193,7 @@ public class User {
             this.savedEventsIds = response.getSavedEventsIds();
             this.birthDate = response.getBirthDate();
             this.notifications = response.getNotifications();
-            this.loc = response.getLoc();
+            this.location = response.getLocation();
 
             return this;
         }).exceptionally(exception -> {

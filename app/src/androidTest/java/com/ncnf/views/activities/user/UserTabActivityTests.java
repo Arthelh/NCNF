@@ -39,8 +39,10 @@ import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -50,11 +52,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.ncnf.views.activities.friends.FriendsActivityTest.friendsRepository;
+import static com.ncnf.views.fragments.user.UserProfileTabFragment.email_popup_input_text;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
@@ -107,24 +109,24 @@ public class UserTabActivityTests {
 
     @Test
     public void titleIsVisible() {
-        onView(withId(R.id.profileText)).check(matches(withText("Profile")));
+        onView(withId(R.id.profile_text)).check(matches(withText("Profile")));
     }
 
     @Test
     public void fieldsAreDisabled() {
-        onView(withId(R.id.userProfileFullName)).check(matches(not(isEnabled())));
-        onView(withId(R.id.userProfileUsername)).check(matches(not(isEnabled())));
-        onView(withId(R.id.userProfileEmail)).check(matches(not(isEnabled())));
-        onView(withId(R.id.userProfileBirthDay)).check(matches(not(isEnabled())));
+        onView(withId(R.id.user_profile_full_name)).check(matches(not(isEnabled())));
+        onView(withId(R.id.user_profile_username)).check(matches(not(isEnabled())));
+        onView(withId(R.id.user_profile_email)).check(matches(not(isEnabled())));
+        onView(withId(R.id.user_profile_birthDay)).check(matches(not(isEnabled())));
     }
 
     @Test
     public void saveIsEnabledAfterChange() {
-        onView(withId(R.id.editProfileButton)).perform(click());
-        onView(withId(R.id.userProfileFullName)).check(matches(isEnabled()));
-        onView(withId(R.id.userProfileUsername)).check(matches(isEnabled()));
-        onView(withId(R.id.userProfileEmail)).check(matches(isEnabled()));
-        onView(withId(R.id.userProfileBirthDay)).check(matches(isEnabled()));
+        onView(withId(R.id.edit_profile_button)).perform(click());
+        onView(withId(R.id.user_profile_full_name)).check(matches(isEnabled()));
+        onView(withId(R.id.user_profile_username)).check(matches(isEnabled()));
+        onView(withId(R.id.user_profile_email)).check(matches(isEnabled()));
+        onView(withId(R.id.user_profile_birthDay)).check(matches(isEnabled()));
     }
 
     @Test
@@ -149,29 +151,25 @@ public class UserTabActivityTests {
 
     @Test
     public void openGalleryTest(){
-        onView(withId(R.id.editProfilePictureButton)).perform(click());
+        onView(withId(R.id.edit_profile_picture_button)).perform(click());
         Intents.intended(hasAction(Intent.ACTION_PICK));
     }
+
+
 
     @Test
     public void changeFieldsWorks(){
         when(user.saveUserToDB()).thenReturn(CompletableFuture.completedFuture(true));
 
 
-        onView(withId(R.id.editProfileButton)).perform(click());
-        onView(withId(R.id.userProfileUsername)).perform(replaceText("new username"));
-        onView(withId(R.id.userProfileFullName)).perform(replaceText("new full name"));
+        onView(withId(R.id.edit_profile_button)).perform(click());
+        onView(withId(R.id.user_profile_username)).perform(replaceText("new username"));
+        onView(withId(R.id.user_profile_full_name)).perform(replaceText("new full name"));
 
-        onView(withId(R.id.userProfileBirthDay)).perform(click());
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
-        onView(withId(android.R.id.button1)).perform(click());
-
-        onView(withId(R.id.editProfileButton)).perform(click());
-
-        onView(withId(R.id.userProfileFullName)).check(matches(not(isEnabled())));
-        onView(withId(R.id.userProfileUsername)).check(matches(not(isEnabled())));
-        onView(withId(R.id.userProfileEmail)).check(matches(not(isEnabled())));
-        onView(withId(R.id.userProfileBirthDay)).check(matches(not(isEnabled())));
+        onView(withId(R.id.edit_profile_button)).perform(click());
+        onView(withId(R.id.user_profile_full_name)).check(matches(not(isEnabled())));
+        onView(withId(R.id.user_profile_username)).check(matches(not(isEnabled())));
+        onView(withId(R.id.user_profile_email)).check(matches(not(isEnabled())));
 
         onView(Matchers.allOf(withId(com.google.android.material.R.id.snackbar_text), withText("Changes successfully saved")))
                 .check(matches(isDisplayed()));
@@ -184,66 +182,46 @@ public class UserTabActivityTests {
 
         when(user.saveUserToDB()).thenReturn(future);
 
-        onView(withId(R.id.editProfileButton)).perform(click());
-        onView(withId(R.id.userProfileUsername)).perform(replaceText("new username"));
-        onView(withId(R.id.userProfileFullName)).perform(replaceText("new full name"));
+        onView(withId(R.id.edit_profile_button)).perform(click());
+        onView(withId(R.id.user_profile_username)).perform(replaceText("new username"));
+        onView(withId(R.id.user_profile_full_name)).perform(replaceText("new full name"));
 
-        onView(withId(R.id.userProfileBirthDay)).perform(click());
+        onView(withId(R.id.user_profile_birthDay)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
         onView(withId(android.R.id.button1)).perform(click());
 
-        onView(withId(R.id.editProfileButton)).perform(click());
+        onView(withId(R.id.edit_profile_button)).perform(click());
 
 
         onView(withId(android.R.id.message)).check(matches(withText(containsString("Fail to save your profile changes.\n Please disconnect, reconnect and try again"))));
         onView(withId(android.R.id.button1)).perform(click());
 
-        onView(withId(R.id.userProfileFullName)).check(matches(isEnabled()));
-        onView(withId(R.id.userProfileUsername)).check(matches(isEnabled()));
-        onView(withId(R.id.userProfileEmail)).check(matches(isEnabled()));
-        onView(withId(R.id.userProfileBirthDay)).check(matches(isEnabled()));
+        onView(withId(R.id.user_profile_full_name)).check(matches(isEnabled()));
+        onView(withId(R.id.user_profile_username)).check(matches(isEnabled()));
+        onView(withId(R.id.user_profile_email)).check(matches(isEnabled()));
+        onView(withId(R.id.user_profile_birthDay)).check(matches(isEnabled()));
     }
 
-    @Test
-    public void changingFieldsWorks(){
-
-        onView(withId(R.id.editProfileButton)).perform(click());
-        onView(withId(R.id.userProfileUsername)).perform(replaceText("new username"));
-        onView(withId(R.id.userProfileFullName)).perform(replaceText("new full name"));
-
-        onView(withId(R.id.userProfileBirthDay)).perform(click());
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
-        onView(withId(android.R.id.button1)).perform(click());
-
-        when(user.saveUserToDB()).thenReturn(CompletableFuture.completedFuture(true));
-
-        onView(withId(R.id.editProfileButton)).perform(click());
-
-        onView(withId(R.id.userProfileFullName)).check(matches(not(isEnabled())));
-        onView(withId(R.id.userProfileUsername)).check(matches(not(isEnabled())));
-        onView(withId(R.id.userProfileEmail)).check(matches(not(isEnabled())));
-        onView(withId(R.id.userProfileBirthDay)).check(matches(not(isEnabled())));
-
-        onView(withId(R.id.userProfileUsername)).check(matches(withText("@new username")));
-        onView(withId(R.id.userProfileFullName)).perform(replaceText("new full name"));
-    }
-/*
     @Test
     public void changeFieldsWorksWithEmail(){
         when(user.getEmail()).thenReturn("email@email.com");
         when(user.changeEmail(any(), anyString())).thenReturn(CompletableFuture.completedFuture(true));
 
-        onView(withId(R.id.editProfileButton)).perform(click());
+        onView(withId(R.id.edit_profile_button)).perform(click());
 
-        onView(withId(R.id.userProfileEmail)).perform(click());
+        onView(withId(R.id.user_profile_email)).perform(click());
         onView(withId(android.R.id.message)).check(matches(withText("Please enter your new email")));
-        onView(withId(input.getId())).perform(typeText("e"), closeSoftKeyboard());
+        onView(withId(android.R.id.button2)).perform(click());
+
+        onView(withId(R.id.user_profile_email)).perform(click());
+        onView(withId(android.R.id.message)).check(matches(withText("Please enter your new email")));
+        onView(withId(email_popup_input_text)).perform(typeText("e"), closeSoftKeyboard());
         onView(withId(android.R.id.button1)).perform(click());
 
         onView(withId(android.R.id.message)).check(matches(withText("The email you entered is incorrect : please enter a correct email address")));
 
 
-        onView(withId(android.R.id.input)).perform(typeText("email@email.com"), closeSoftKeyboard());
+        onView(withId(email_popup_input_text)).perform(typeText("email@email.com"), closeSoftKeyboard());
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(android.R.id.message)).check(matches(withText("Please enter an email address different than your current email address")));
 
@@ -251,12 +229,10 @@ public class UserTabActivityTests {
         onView(withId(android.R.id.button1)).perform(click());
 
         onView(withId(android.R.id.button1)).perform(click());
-
         onView(withId(com.google.android.material.R.id.snackbar_text)).check(matches(withText("Email successfully changed")));
 
-        onView(withId(R.id.userProfileEmail)).check(matches(withText("newEmail@email.com")));
+        onView(withId(R.id.user_profile_email)).check(matches(withText("newEmail@email.com")));
     }
-    */
 
     @Test
     public void enableNotificationsIsSuccessful() {

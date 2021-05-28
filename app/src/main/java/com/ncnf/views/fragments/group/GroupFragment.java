@@ -1,41 +1,29 @@
 package com.ncnf.views.fragments.group;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.adapters.GroupsAdapter;
 import com.ncnf.models.Group;
-import com.ncnf.models.SocialObject;
 import com.ncnf.models.User;
 import com.ncnf.repositories.GroupRepository;
 
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 import javax.inject.Inject;
 
