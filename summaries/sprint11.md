@@ -18,6 +18,10 @@ This week, I worked on improving the UI for the friends tracking activity, inclu
 
 ## Jérémie 
 
+This week, I worked mainly on improving the aesthetics of the UI for displaying Events and Users. I matched the existing UI of the UserProfile to have aconsistent presentation accross the application. My two PRs are ready but waiting for reviews and for Cirrus to run the tests.
+
+It took me a little bit more than the expected time but overall this was a good week.
+
 
 
 ## Keran (Scrum Master)
