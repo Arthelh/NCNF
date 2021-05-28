@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.views.activities.group.GroupActivity;
+import com.ncnf.views.activities.group.GroupCreationActivity;
 import com.ncnf.views.activities.login.LoginActivity;
 import com.ncnf.views.activities.friends.FriendsActivity;
 
@@ -52,11 +53,8 @@ public class HomeFragment extends Fragment {
         getView().findViewById(R.id.homeProfileButton).setOnClickListener(this::gotToProfile);
         getView().findViewById(R.id.homeEventNewsButton).setOnClickListener(this::goToEventNews);
         getView().findViewById(R.id.homeFriendsButton).setOnClickListener(this::goToFriends);
+        getView().findViewById(R.id.create_group).setOnClickListener(this::goToGroupCreation);
         getView().findViewById(R.id.track_friends_button).setOnClickListener(v -> gpsIsEnabled());
-    }
-
-    public void gotToProfile(View view){
-        goToActivity(UserTabActivity.class);
     }
 
     private void goToActivity(Class<?> activity){
@@ -68,12 +66,20 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void goToFriends(View view){
+    private void gotToProfile(View view){
+        goToActivity(UserTabActivity.class);
+    }
+
+    private void goToGroupCreation(View view){
+        goToActivity(GroupCreationActivity.class);
+    }
+
+    private void goToFriends(View view){
         goToActivity(FriendsActivity.class);
     }
 
     // Temporary
-    public void goToEventNews(View view){
+    private void goToEventNews(View view){
         Intent intent = new Intent(getContext(), EventNewsActivity.class);
         intent.putExtra(UUID_KEY, "361f8d6f-ccf0-4ee3-a596-d62a910874f6");
         startActivity(intent);
