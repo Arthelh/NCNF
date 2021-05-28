@@ -161,13 +161,15 @@ public class UserTabActivityTests {
 
 
         onView(withId(R.id.edit_profile_button)).perform(click());
-        onView(withId(R.id.user_profile_username)).perform(replaceText("new username"));
-        onView(withId(R.id.user_profile_full_name)).perform(replaceText("new full name"));
 
         Thread.sleep(1000);
+
         onView(withId(R.id.user_profile_birthDay)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
         onView(withId(android.R.id.button1)).perform(click());
+
+        onView(withId(R.id.user_profile_username)).perform(replaceText("new username"));
+        onView(withId(R.id.user_profile_full_name)).perform(replaceText("new full name"));
 
         onView(withId(R.id.edit_profile_button)).perform(click());
 
