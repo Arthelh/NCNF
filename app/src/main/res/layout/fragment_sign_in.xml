@@ -32,7 +32,6 @@
             android:hint="@string/email_hint"
             android:inputType="textEmailAddress"
             android:padding="12dp"
-            android:textColor="#fff"
             android:textSize="18sp"
             android:elevation="5dp"/>
 
@@ -47,7 +46,6 @@
             android:hint="@string/password_hint"
             android:inputType="textPassword"
             android:padding="12dp"
-            android:textColor="#fff"
             android:textSize="18sp"
             android:elevation="5dp"/>
 
