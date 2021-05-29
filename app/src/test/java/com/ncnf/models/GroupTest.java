@@ -67,9 +67,8 @@ public class GroupTest {
         assertEquals(group.getName(), name);
         assertEquals(group.getLocation(), geoPoint);
         assertEquals(group.getDescription(), description);
-        assertEquals(group.getNumOfAttendees(), 0);
-        assertEquals(group.getAttendees().size(), 0);
-        assertEquals(group.getInvited().size(), 0);
+        assertEquals(group.getMembers().size(), 0);
+        assertEquals(group.getMembers().size(), 0);
 
     }
 
@@ -78,29 +77,26 @@ public class GroupTest {
         attendees.add("Attendee1");
         invited.add("Invited1");
 
-        Group group = new Group(ownerId, uuid, name, date, geoPoint, address, attendees, description, invited);
+        Group group = new Group(ownerId, uuid, name, date, geoPoint, address, description, invited);
         assertEquals(group.getUuid(), uuid);
         assertEquals(group.getOwnerId(), ownerId);
         assertEquals(group.getDate(), date);
         assertEquals(group.getName(), name);
         assertEquals(group.getLocation(), geoPoint);
         assertEquals(group.getDescription(), description);
+        assertEquals(group.getMembers().size(), 1);
 
-        assertEquals(group.getNumOfAttendees(), 1);
-        assertEquals(group.getAttendees().get(0), "Attendee1");
-        assertEquals(group.getAttendees().size(), 1);
-
-        assertEquals(group.getInvited().size(), 1);
-        assertEquals(group.getInvited().get(0), "Invited1");
+        assertEquals(group.getMembers().size(), 1);
+        assertEquals(group.getMembers().get(0), "Invited1");
 
     }
 
     @Test
     public void inviteWorks() {
         Group event = new Group("00",name, date, geoPoint,address,description);
-        event.invite("Sarah");
-        assertEquals(event.getInvited().size(), 1);
-        assertEquals(event.getInvited().get(0), "Sarah");
+        event.addMember("Sarah");
+        assertEquals(event.getMembers().size(), 1);
+        assertEquals(event.getMembers().get(0), "Sarah");
     }
 
     @Test

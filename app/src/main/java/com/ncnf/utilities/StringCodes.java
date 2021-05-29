@@ -72,6 +72,7 @@ public class StringCodes {
     public static final String GROUPS_COLLECTION_KEY = "groups/";
     public static final String OWNED_GROUPS_KEY = "owned_groups";
     public static final String PARTICIPATING_GROUPS_KEY = "participating_groups";
+    public static final String MEMBERS_KEY = "members";
     /**
      * Keys related to organizations
      */

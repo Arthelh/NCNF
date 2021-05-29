@@ -51,7 +51,7 @@ public class GroupFragmentTest {
     static private final UserRepository repository2 = Mockito.mock(UserRepository.class);
 
     static private UUID gUuid = UUID.randomUUID();
-    static private final Group g = new Group("u1",gUuid, "Group Test", LocalDateTime.now(), new GeoPoint(-0.03, -0.03), "random address", new ArrayList<>(), "description here", new ArrayList<>());
+    static private final Group g = new Group("u1",gUuid, "Group Test", LocalDateTime.now(), new GeoPoint(-0.03, -0.03), "random address", "description here", new ArrayList<>());
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
 

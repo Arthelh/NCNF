@@ -124,7 +124,7 @@ public class GroupDisplayFragment extends Fragment {
             }
         });
 
-        List<String> uuids = new ArrayList<>(group.getAttendees());
+        List<String> uuids = new ArrayList<>(group.getMembers());
         uuids.add(group.getOwnerId());
         CompletableFuture<List<User>> users = userRepository.loadMultipleUsers(uuids);
         users.thenAccept(users1 -> {
