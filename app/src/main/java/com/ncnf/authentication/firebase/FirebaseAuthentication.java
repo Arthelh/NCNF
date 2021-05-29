@@ -46,10 +46,7 @@ public class FirebaseAuthentication implements Authentication {
         this.auth.signOut();
     }
 
-    /**
-     * TODO : should we monitor fail cases or what ?
-     * @return
-     */
+    /**TODO : should we monitor fail cases or what ? */
     @Override
     public CompletableFuture<Boolean> delete() {
         CompletableFuture<Boolean> futureResponse = new CompletableFuture<>();

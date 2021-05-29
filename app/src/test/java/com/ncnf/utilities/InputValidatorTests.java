@@ -97,5 +97,4 @@ public class InputValidatorTests {
     public void validPasswordTest(){
         assertTrue(isValidPassword(validPassword));
     }
-
 }

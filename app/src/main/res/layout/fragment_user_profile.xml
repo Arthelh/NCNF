@@ -20,7 +20,7 @@
             android:paddingTop="20dp">
 
             <TextView
-                android:id="@+id/profileText"
+                android:id="@+id/profile_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -92,7 +92,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/editProfileButton"
+                    android:id="@+id/edit_profile_button"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="15dp"
@@ -109,7 +109,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/editProfilePictureButton"
+                    android:id="@+id/edit_profile_picture_button"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_margin="15dp"
@@ -126,7 +126,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/userProfileFullName"
+                    android:id="@+id/user_profile_full_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -137,13 +137,13 @@
                     android:textColor="#fff"
                     android:textSize="21sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/editProfileButton"
+                    app:layout_constraintEnd_toStartOf="@+id/edit_profile_button"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/editProfilePictureButton"
+                    app:layout_constraintStart_toEndOf="@+id/edit_profile_picture_button"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/userProfileUsername"
+                    android:id="@+id/user_profile_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
@@ -154,10 +154,10 @@
                     android:textColor="#fff"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/editProfileButton"
+                    app:layout_constraintEnd_toStartOf="@+id/edit_profile_button"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/editProfilePictureButton"
-                    app:layout_constraintTop_toBottomOf="@+id/userProfileFullName" />
+                    app:layout_constraintStart_toEndOf="@+id/edit_profile_picture_button"
+                    app:layout_constraintTop_toBottomOf="@+id/user_profile_full_name" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -189,7 +189,7 @@
                     android:src="@drawable/ic_email_black" />
 
                 <TextView
-                    android:id="@+id/userProfileEmail"
+                    android:id="@+id/user_profile_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -216,7 +216,7 @@
                     android:src="@drawable/ic_baseline_cake_24" />
 
                 <TextView
-                    android:id="@+id/userProfileBirthDay"
+                    android:id="@+id/user_profile_birthDay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"

@@ -118,7 +118,7 @@ public class LocationService extends Service {
                                     if (user1 != null) {
                                         GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                                         saveUserLocation(geoPoint, user1.getUuid());
-                                        user1.setLoc(geoPoint);
+                                        user1.setLocation(geoPoint);
                                     } else {
                                         stopSelf();
                                     }
@@ -159,7 +159,4 @@ public class LocationService extends Service {
             return LocationService.this;
         }
     }
-
-
-
 }

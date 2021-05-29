@@ -37,17 +37,30 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         this.listener = listener;
     }
 
+
+    /**
+     * Add a list of users to the user list
+     * @param newUsers List of users to add
+     */
     public void setUsers(List<User> newUsers) {
         this.users.clear();
         this.users.addAll(newUsers);
         notifyDataSetChanged();
     }
 
+    /**
+     * Add a User to the user list and notify the observers
+     * @param u User to add
+     */
     public void addItem(User u){
         this.users.add(u);
         notifyDataSetChanged();
     }
 
+    /**
+     * Remove a User to the user list and notify the observers
+     * @param u User to remove
+     */
     public void removeItem(User u){
         this.users.remove(u);
         notifyDataSetChanged();

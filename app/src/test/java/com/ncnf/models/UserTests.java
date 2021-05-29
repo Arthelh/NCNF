@@ -1,6 +1,7 @@
 package com.ncnf.models;
 
 import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.authentication.firebase.FirebaseAuthentication;
 import com.ncnf.database.firebase.FirebaseDatabase;
 
 import org.junit.Assert;
@@ -37,15 +38,16 @@ import static org.mockito.Mockito.when;
 public class UserTests {
 
     FirebaseDatabase db = mock(FirebaseDatabase.class);
+    FirebaseAuthentication auth = mock(FirebaseAuthentication.class);
     String ownerID = "ownerId";
     String name = "name";
     LocalDateTime date = LocalDateTime.now();
     GeoPoint geoPoint = new GeoPoint(0,0);
     String address = "address";
     String description = "description";
-    SocialObject.Type type = SocialObject.Type.Movie;
+    Event.Type type = Event.Type.Movie;
     Event event = new Event(ownerID, name, date, geoPoint, address, description, type, 0 , 0, "test@email.com");
-    Group group = new Group(ownerID, name, date, geoPoint, address, description, type);
+    Group group = new Group(ownerID, name, date, geoPoint, address, description);
     CompletableFuture<Boolean> response = CompletableFuture.completedFuture(true);
 
 
@@ -117,6 +119,7 @@ public class UserTests {
         String uuid = "uuid";
         String username = "username";
         String email = "email";
+        String newEmail = "newEmail";
         String full_name = "full_name";
         List<String> friends = new ArrayList<>();
         friends.add("friend1");
@@ -127,7 +130,7 @@ public class UserTests {
         LocalDate date = LocalDate.now();
         List<String> groups = new ArrayList<>();
         groups.add("group1");
-
+        GeoPoint location = new GeoPoint(0,0);
         List<String> empty = new ArrayList<>();
 
         User user = new User(this.db, "1234567890", "", email,"", empty, empty, new ArrayList<>(), empty, false, null, null);
@@ -141,6 +144,8 @@ public class UserTests {
         assertEquals(user.getParticipatingGroupsIds(), empty);
         assertEquals(user.getBirthDate(), null);
         assertFalse(user.getNotifications());
+        assertEquals(user.getLocation(), null);
+
 
         user.setUsername(username);
         user.setFullName(full_name);
@@ -150,6 +155,8 @@ public class UserTests {
         user.setBirthDate(date);
         user.setNotifications(true);
         user.setParticipatingGroupsIds(groups);
+        user.setLocation(location);
+        user.setEmail(newEmail);
 
         assertEquals(user.getUuid(), "1234567890");
         assertEquals(user.getUsername(), username);
@@ -160,6 +167,8 @@ public class UserTests {
         assertEquals(user.getBirthDate(), date);
         assertTrue(user.getNotifications());
         assertEquals(user.getParticipatingGroupsIds(), groups);
+        assertEquals(user.getLocation(), location);
+        assertEquals(user.getEmail(), newEmail);
     }
 
     @Test
@@ -404,5 +413,25 @@ public class UserTests {
             Assert.fail("Something went wrong with the future");
         }
 
+    }
+
+    @Test
+    public void changeEmailWorks(){
+        User user = new User(this.db, ownerID, "test", "foo@bar.com","", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Collections.singleton(ownerID)), new ArrayList<>(), false, null, null);
+        when(auth.changeEmail(anyString())).thenReturn(CompletableFuture.completedFuture(true));
+        CompletableFuture<Boolean> future = user.changeEmail(auth, "new Email");
+        try{
+            assertTrue(future.get());
+        } catch(Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
+
+        when(auth.changeEmail(anyString())).thenReturn(CompletableFuture.completedFuture(false));
+        future = user.changeEmail(auth, "new Email");
+        try{
+            assertFalse(future.get());
+        } catch(Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
     }
 }

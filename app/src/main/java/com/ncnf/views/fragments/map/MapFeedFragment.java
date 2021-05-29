@@ -2,7 +2,6 @@ package com.ncnf.views.fragments.map;
 
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.FrameLayout;
 
 import androidx.activity.OnBackPressedCallback;
