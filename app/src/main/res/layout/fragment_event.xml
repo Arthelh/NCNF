@@ -108,6 +108,18 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.24" />
 
+            <Button
+                android:id="@+id/button_publish_event_news"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="@string/button_publish_news"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button_calendar"
+                tools:text="Publish news" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
