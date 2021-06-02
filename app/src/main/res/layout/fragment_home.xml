@@ -21,13 +21,6 @@
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
                 android:text="@string/home_profile_button" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/homeEventNewsButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:text="@string/home_events_news_button" />
             
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/homeFriendsButton"
