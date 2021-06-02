@@ -22,12 +22,16 @@ import com.ncnf.models.SocialObject;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.SaveToCalendar;
+import com.ncnf.views.fragments.organization.EventCreateFragment;
 
 import java.time.ZoneId;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+
+import static com.ncnf.utilities.StringCodes.FRAGMENT_ORGANIZATION_TAG;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 @AndroidEntryPoint
 public class EventFragment extends Fragment {
@@ -56,7 +60,7 @@ public class EventFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         initSaveCalendar(view);
-
+        initPublishButtons(view);
     }
 
     private void initSaveCalendar(View view){
@@ -94,5 +98,22 @@ public class EventFragment extends Fragment {
         TextView owner = view.findViewById(R.id.eventOwner);
 
         owner.setText("Event hosted by " + event.getEmail());
+    }
+
+    private void initPublishButtons(View view) {
+        Button button = view.findViewById(R.id.button_publish_event_news);
+
+        button.setOnClickListener(b -> {
+            Bundle args = new Bundle();
+            args.putString(UUID_KEY, event.getUuid().toString());
+
+            Fragment frag = new EventNewsFragment();
+            frag.setArguments(args);
+
+            getParentFragmentManager().beginTransaction()
+                .replace(((ViewGroup) requireView().getParent()).getId(), frag, null)
+                .addToBackStack(null)
+                .commit();
+        });
     }
 }
