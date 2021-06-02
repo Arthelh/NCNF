@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -179,20 +180,24 @@ public class FeedFragment extends Fragment {
     private void actualizeEvents(){
         final List<Event> result = new ArrayList<>();
 
+        ProgressBar spinner = requireView().findViewById(R.id.feed_spinner);
+        spinner.setVisibility(View.VISIBLE);
+
         CompletableFuture<List<Event>> completableFuture = eventRepository.getEventsNearBy();
         completableFuture.thenAccept(eventList -> {
 
             for (Event e : eventList){
                 LatLng eventPosition = new LatLng(e.getLocation().getLatitude(), e.getLocation().getLongitude());
-                if (MapUtilities.position_in_range(Settings.getUserPosition(), eventPosition))
+                if (MapUtilities.position_in_range(Settings.getUserPosition(), eventPosition) && Settings.dateInRange(e.getDate().toLocalDate()))
                     result.add(e);
             }
+            spinner.setVisibility(View.GONE);
             adapter = new EventListAdapter(getContext(), result, this::onEventClick, EventListAdapter.SortingMethod.DATE);
             recycler.setAdapter(adapter);
 
         }).exceptionally(e -> {
-
             Log.d(DEBUG_TAG, e.getMessage());
+            spinner.setVisibility(View.GONE);
             return null;
 
         });
