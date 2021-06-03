@@ -86,6 +86,12 @@ public class StringCodes {
     public static final String ADMIN_KEY = "admins";
 
     /**
+     * Keys related to images
+     */
+    public static final int IMG_PICK_CODE = 1000;
+
+
+    /**
      * Keys related to tests
      */
     public static final String EMPTY_FIELD_STRING = "One of the fields is empty.";

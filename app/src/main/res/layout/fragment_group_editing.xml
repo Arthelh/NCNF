@@ -15,7 +15,7 @@ android:orientation="vertical"
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="270dp"
             android:background="@color/navigation_bar_background"
             android:orientation="vertical"
             android:paddingTop="20dp">
@@ -37,7 +37,7 @@ android:orientation="vertical"
                 android:gravity="center">
 
                 <include
-                    android:id="@+id/public_profile_picture"
+                    android:id="@+id/group_picture"
                     layout="@layout/user_picture_view"
                     android:visibility="visible" />
 
@@ -53,11 +53,11 @@ android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:textColor="@color/white"
                         android:hint="Group Name"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="50dp"
-                        android:textSize="18dp"
-                        android:maxLength="30"
+                        android:paddingLeft="10dp"
+                        android:textSize="20dp"
+                        android:maxLength="20"
                         android:textStyle="bold" />
 
 
@@ -73,12 +73,11 @@ android:orientation="vertical"
         android:id="@+id/scrollable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:layout_width="350dp"
-            android:layout_height="150dp"
+            android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:scrollbars="vertical"
             app:cardCornerRadius="20dp"
@@ -88,16 +87,16 @@ android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:counterEnabled="true"
-            app:counterMaxLength="500"
+            app:counterMaxLength="200"
             app:passwordToggleEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text"
+                android:id="@+id/group_bio_edit"
                 android:hint="Group bio"
                 android:layout_width="match_parent"
                 android:backgroundTint="@android:color/transparent"
-                android:layout_height="120dp"
-                android:maxLength="1000"
+                android:layout_height="80dp"
+                android:maxLength="200"
                 android:gravity="top|left"
                 android:inputType="textMultiLine|textNoSuggestions"/>
 
@@ -108,10 +107,11 @@ android:orientation="vertical"
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -127,66 +127,86 @@ android:orientation="vertical"
                         android:layout_height="36dp"
                         android:src="@drawable/ic_baseline_place_24" />
 
-                    <com.mancj.materialsearchbar.MaterialSearchBar
+                    <TextView
+                        android:id="@+id/meeting_point_group_creation"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:mt_placeholder="Set the Meeting Point"/>
+                        android:layout_height="wrap_content"
+                        android:hint="Set the meeting point"
+                        android:gravity="center"
+                        android:textSize="18dp"
+                        android:inputType="textMultiLine"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="10dp"
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_weight="1"
-                        android:layout_marginTop="10dp"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/calendar_icon_group_creation"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/date_group_editing_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="20dp"
-                            android:src="@drawable/ic_baseline_place_24" />
+                            android:background="#00000000"
+                            android:padding="0dp"
+                            app:icon="@drawable/ic_round_calendar_today_24"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconSize="40dp"
+                            app:iconTint="@color/quantum_grey800" />
 
                         <TextView
+                            android:id="@+id/date_text_group_creation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="Meeting Time"
-                            android:textSize="20dp"
                             android:layout_gravity="center"
-                            android:layout_marginTop="30dp"/>
+                            android:layout_marginTop="20dp"
+                            android:hint="Set a meeting date"
+                            android:textSize="20dp"
+                            android:gravity="center"/>
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_weight="1"
-                        android:layout_marginTop="10dp"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/time_icon_group_creation"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/time_group_editing_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="20dp"
-                            android:src="@drawable/ic_baseline_access_time_24" />
+                            android:background="#00000000"
+                            android:padding="0dp"
+                            app:icon="@drawable/ic_baseline_access_time_24"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconSize="40dp"
+                            app:iconTint="@color/quantum_grey800" />
 
                         <TextView
+                            android:id="@+id/time_text_group_creation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="Meeting Time"
-                            android:textSize="20dp"
                             android:layout_gravity="center"
-                            android:layout_marginTop="30dp"/>
+                            android:layout_marginTop="20dp"
+                            android:hint="Set a meeting time"
+                            android:textSize="20dp"
+                            android:gravity="center"/>
 
                     </LinearLayout>
 

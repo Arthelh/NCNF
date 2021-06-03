@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.ncnf.views.activities.event.EventNewsActivity;
 import com.ncnf.views.activities.user.UserTabActivity;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.NEXT_ACTIVITY_EXTRA_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 

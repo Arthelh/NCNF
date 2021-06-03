@@ -10,7 +10,8 @@
         android:id="@+id/next_step_group_creation_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_margin="16dp"
+        android:layout_marginEnd="180dp"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/circle_button_shape"
         app:backgroundTint="@color/quantum_pink"
         app:icon="@drawable/ic_baseline_arrow_forward_24"
@@ -20,15 +21,45 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/close_group_creation_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/circle_button_shape"
+        app:backgroundTint="@color/quantum_pink"
+        app:icon="@drawable/ic_close_black_48dp"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/next_step_group_creation_button" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/create_group_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/circle_button_shape"
+        app:backgroundTint="@color/quantum_pink"
+        app:icon="@drawable/ic_outline_check_24"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/next_step_group_creation_button" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/group_creation_fragment_container"
-        android:name="com.ncnf.views.fragments.group.GroupEditingFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

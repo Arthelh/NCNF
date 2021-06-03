@@ -26,7 +26,8 @@ public class Group extends SocialObject {
      */
     public Group(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description) {
         super(ownerId, name, date, location, address, description);
-        members = new ArrayList<>();
+        this.members = new ArrayList<>();
+        this.members.add(ownerId);
     }
 
     /**
@@ -43,6 +44,7 @@ public class Group extends SocialObject {
     public Group(String ownerId, UUID id, String name, LocalDateTime date, GeoPoint location, String address, String description, List<String> members) {
         super(id, ownerId, name, date, location, address, description);
         this.members = members == null ? new ArrayList<>() : members;
+        this.addMember(ownerId);
     }
 
     /**
@@ -51,7 +53,7 @@ public class Group extends SocialObject {
      */
     public void addMember(String userId) {
 
-        if(userId != null){
+        if(userId != null && !members.contains(userId)){
             members.add(userId);
         }
     }

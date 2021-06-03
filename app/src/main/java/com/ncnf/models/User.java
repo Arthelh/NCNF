@@ -72,7 +72,7 @@ public class User {
         this.birthDate = birthDate;
         this.notifications = notifications;
         this.participatingGroupsIds = participatingGroups;
-        this.location = this.location;
+        this.location = location;
     }
 
     /**
