@@ -13,26 +13,41 @@ import java.util.Objects;
 
 public class InputValidator {
 
-    static public boolean verifyEmailInput(String emailInputString) {
+    public static boolean verifyEmailInput(String emailInputString) {
         return  emailInputString != null &&
                 !emailInputString.isEmpty() &&
                 PatternsCompat.EMAIL_ADDRESS.matcher(emailInputString).matches();
     }
 
-    static public boolean verifyPhoneNumberInput(String phoneNumberInputString) {
+    /**
+     * Check if the given string is a phone number
+     * @param phoneNumberInputString String we want to check
+     * @return True if the string fulfills the condition, false otherwise
+     */
+    public static boolean verifyPhoneNumberInput(String phoneNumberInputString) {
         String phonePattern = "^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\\s*$";
         return  phoneNumberInputString != null &&
                 !phoneNumberInputString.equals("") &&
                 phoneNumberInputString.matches(phonePattern);
     }
 
-    static public boolean verifyWebAddress(String webAddressInputString) {
+    /**
+     * Check if the given string is an email
+     * @param webAddressInputString String we want to check
+     * @return True if the string fulfills the condition, false otherwise
+     */
+    public static boolean verifyWebAddress(String webAddressInputString) {
         return  webAddressInputString != null &&
                 !webAddressInputString.equals("") &&
                 PatternsCompat.WEB_URL.matcher(webAddressInputString).matches();
     }
 
-    static public boolean verifyPostalCode(String postalCodeInputString) {
+    /**
+     * Check if the given string is an postal code
+     * @param postalCodeInputString String we want to check
+     * @return True if the string fulfills the condition, false otherwise
+     */
+    public static boolean verifyPostalCode(String postalCodeInputString) {
         if (postalCodeInputString == null) return false;
         try {
             int code = Integer.parseInt(postalCodeInputString);
@@ -42,7 +57,12 @@ public class InputValidator {
         }
     }
 
-    static public boolean verifyGenericInput(EditText textField){
+    /**
+     * Check if text in the given EditText corresponds to it input type
+     * @param textField EditText whose text should be checked
+     * @return True if the string fulfills the condition, false otherwise
+     */
+    public static boolean verifyGenericInput(EditText textField){
         if(textField == null) {
             throw new IllegalArgumentException("EditText passed as argument cannot be null");
         }
@@ -59,7 +79,7 @@ public class InputValidator {
         }
 
         switch(inputType) {
-            case (InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_CLASS_TEXT):
+            case (InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS):
                 if (!verifyEmailInput(inputText)) textField.setError("Please enter a correct email address");
                 break;
             case InputType.TYPE_CLASS_PHONE:
@@ -68,7 +88,7 @@ public class InputValidator {
             case InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS: // Postal Address
                 if (!verifyPostalCode(inputText)) textField.setError("Please enter a valid postal code");
                 break;
-            case (InputType.TYPE_TEXT_VARIATION_URI | InputType.TYPE_CLASS_TEXT):
+            case (InputType.TYPE_TEXT_VARIATION_URI):
                 if (!verifyWebAddress(inputText)) textField.setError("Please enter a valid url");
                 break;
         }
@@ -76,7 +96,12 @@ public class InputValidator {
         return textField.getError() == null;
     }
 
-    static public void setErrorMsg(View v, String error){
+    /**
+     * Set the error of the given view
+     * @param v View whose error must be set up
+     * @param error Error message
+     */
+    public static void setErrorMsg(View v, String error){
         if(v instanceof Button){
             ((Button) v).setError(error);
         } else if(v instanceof EditText){
@@ -84,19 +109,39 @@ public class InputValidator {
         }
     }
 
+    /**
+     * Check password's validity
+     * @param password Password string to check
+     * @return True if password is not too long (according to StringCodes.PASSWORD_MINIMUM_LENGTH)
+     */
     public static boolean isValidPassword(String password){
         return password.length() >= StringCodes.PASSWORD_MINIMUM_LENGTH;
     }
 
+    /**
+     * Verify a string's validity
+     * @param s String that must be checked
+     * @return False if null or empty, true otherwise
+     */
     public static boolean isInvalidString(String s){
-        return s == null || s.length() == 0;
+        return s == null || s.isEmpty();
     }
 
+    /**
+     * Verify a list's validity
+     * @param l List that must be checked
+     * @return False if null or empty, true otherwise
+     */
     public static boolean isInvalidArray(List l){
         return l == null || l.isEmpty();
     }
 
+    /**
+     * Check if a list contains a null object
+     * @param l List that must be checked
+     * @return False if the list null/empty or if it contains a null object, true otherwise
+     */
     public static boolean checkCompleteList(List<String> l){
-        return (l == null) || l.stream().anyMatch(Objects::isNull) || l.isEmpty();
+        return isInvalidArray(l) || l.stream().anyMatch(Objects::isNull);
     }
 }

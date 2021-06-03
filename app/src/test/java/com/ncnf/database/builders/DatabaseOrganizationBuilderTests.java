@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static com.ncnf.utilities.StringCodes.ADDRESS_KEY;
-import static com.ncnf.utilities.StringCodes.ADMIN_KEY;
 import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
 import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
 import static com.ncnf.utilities.StringCodes.NAME_KEY;
@@ -24,7 +23,6 @@ import static com.ncnf.utilities.StringCodes.PHONE_NB_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class DatabaseOrganizationBuilderTests {

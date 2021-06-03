@@ -14,7 +14,6 @@ import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -108,10 +107,10 @@ public class UserProfileTabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         emailMessage = new TextView(getActivity());
 
-        email = requireView().findViewById(R.id.userProfileEmail);
-        fullName = requireView().findViewById(R.id.userProfileFullName);
-        username = requireView().findViewById(R.id.userProfileUsername);
-        birthDate = requireView().findViewById(R.id.userProfileBirthDay);
+        email = requireView().findViewById(R.id.user_profile_email);
+        fullName = requireView().findViewById(R.id.user_profile_full_name);
+        username = requireView().findViewById(R.id.user_profile_username);
+        birthDate = requireView().findViewById(R.id.user_profile_birthDay);
 
         email.setEnabled(false);
         email.setOnClickListener(this::changeEmail);
@@ -125,14 +124,14 @@ public class UserProfileTabFragment extends Fragment {
         notification_switch = requireView().findViewById(R.id.profile_notification_switch);
 
         profilePicture = requireView().findViewById(R.id.personal_profile_picture);
-        editProfileButton = requireView().findViewById(R.id.editProfileButton);
+        editProfileButton = requireView().findViewById(R.id.edit_profile_button);
 
         initUser();
 
         requireView().findViewById(R.id.friends_profile_button).setOnClickListener(this::openFriendsTab);
         requireView().findViewById(R.id.bookmark_profile_button).setOnClickListener(this::openBookmark);
-        requireView().findViewById(R.id.editProfileButton).setOnClickListener(this::changeProfileState);
-        requireView().findViewById(R.id.editProfilePictureButton).setOnClickListener(this::changeProfilePicture);
+        requireView().findViewById(R.id.edit_profile_button).setOnClickListener(this::changeProfileState);
+        requireView().findViewById(R.id.edit_profile_picture_button).setOnClickListener(this::changeProfilePicture);
     }
 
     private void setUpDate() {
@@ -164,9 +163,9 @@ public class UserProfileTabFragment extends Fragment {
 
                 email.setText(user.getEmail());
 
-                String firstNameStr = user.getFullName();
-                if(!firstNameStr.isEmpty()){
-                    fullName.setText(firstNameStr);
+                String fullNameStr = user.getFullName();
+                if(!fullNameStr.isEmpty()){
+                    fullName.setText(fullNameStr);
                 }
 
                 String usernameStr = user.getUsername();
@@ -313,19 +312,18 @@ public class UserProfileTabFragment extends Fragment {
     private void setUpDialog(String message){
         final EditText input = new EditText(this.getContext());
         input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setId(email_popup_input_text);
         input.setHint("type your email here");
 
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         input.setLayoutParams(lp);
 
-
-    AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this.getActivity());
         alertDialog.setTitle("Change Email");
         alertDialog.setMessage(message);
         alertDialog.setIcon(R.drawable.ic_email_black);
         alertDialog.setView(input);
+
 
         alertDialog.setPositiveButton("Next", (dialog1, which1) -> {
             dialog1.cancel();
@@ -334,7 +332,7 @@ public class UserProfileTabFragment extends Fragment {
             if(checkEmail(emailDialog, newEmail)){
                 AlertDialog.Builder confirmDialog = new AlertDialog.Builder(this.getActivity());
                 confirmDialog.setTitle("Confirm email");
-                confirmDialog.setView(mkEmailString(user.getEmail(), newEmail));
+                confirmDialog.setMessage(make(user.getEmail(), newEmail));
                 confirmDialog.setPositiveButton("Confirm", (dialog, which) -> {
                     user.changeEmail(auth, newEmail).thenAccept(bool ->{
                         if(bool){
@@ -425,13 +423,7 @@ public class UserProfileTabFragment extends Fragment {
         username.setText(ss);
     }
 
-    private TextView mkEmailString(String email1, String email2){
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(10,20,10,10);
-
-        emailMessage.setLayoutParams(params);
-        emailMessage.setGravity(Gravity.CENTER);
-
+    private Spannable make(String email1, String email2){
         String start = "Do you want to switch from\n";
         String middle = " to ";
         String end = " ?";
@@ -443,8 +435,6 @@ public class UserProfileTabFragment extends Fragment {
 
         sb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), finalString.indexOf(email2), finalString.indexOf(email2) + email2.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         sb.setSpan(new AbsoluteSizeSpan(50), finalString.indexOf(email2), finalString.indexOf(email2) + email2.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-
-        emailMessage.setText(sb, TextView.BufferType.SPANNABLE);
-        return emailMessage;
+        return sb;
     }
 }

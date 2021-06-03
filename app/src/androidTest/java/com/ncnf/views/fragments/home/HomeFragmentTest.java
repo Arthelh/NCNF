@@ -9,8 +9,6 @@ import com.ncnf.views.activities.group.GroupActivity;
 import com.ncnf.views.activities.login.LoginActivity;
 import com.ncnf.views.activities.friends.FriendsActivity;
 import com.ncnf.views.activities.main.MainActivity;
-import com.ncnf.views.fragments.organization.EventCreateFragment;
-import com.ncnf.views.activities.event.EventNewsActivity;
 import com.ncnf.views.activities.user.UserTabActivity;
 
 import org.junit.After;
@@ -83,11 +81,5 @@ public final class HomeFragmentTest {
         onView(withId(android.R.id.button1)).check(matches(isClickable())).perform(click());
         Intents.intended(hasComponent(LoginActivity.class.getName()));
         Intents.intended(hasExtra(NEXT_ACTIVITY_EXTRA_KEY, GroupActivity.class));
-    }
-
-    @Test
-    public void eventNewsActivityOpensTest(){
-        onView(withId(R.id.homeEventNewsButton)).perform(click());
-        Intents.intended(hasComponent(EventNewsActivity.class.getName()));
     }
 }

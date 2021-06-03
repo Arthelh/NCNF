@@ -122,6 +122,10 @@ public class MapHandler {
         clusterManager.cluster();
     }
 
+    /**
+     * Add the marker on the map for each event in the list (either its own marker or marker for a cluster of event)
+     * @param events List of events we want to add an marker
+     */
     private void addEventMarkers(List<Event> events){
         Map<LatLng, List<Event>> eventMap = new HashMap<>();
         for (Event p : events) {
@@ -158,6 +162,9 @@ public class MapHandler {
         clusterManager.cluster();
     }
 
+    /**
+     * Fetch the user's nearby events
+     */
     private void queryAndAddEvents(){
         final List<Event> result = new ArrayList<>();
 
@@ -178,7 +185,7 @@ public class MapHandler {
     private void queryAndAddOrgs(){
         final List<Organization> result = new ArrayList<>();
 
-        CompletableFuture<List<Organization>> completableFuture = organizationRepository.getOrgsNearby();
+        CompletableFuture<List<Organization>> completableFuture = organizationRepository.getOrganizationsNearby();
         completableFuture.thenAccept(organizations -> {
 
             result.addAll(organizations);
@@ -192,7 +199,9 @@ public class MapHandler {
         });
     }
 
-    //This makes it so that markers cluster as soon as 2 of them are close enough
+    /**
+     * Set the clustering of markers on the map
+     */
     private class CustomRender<T extends ClusterItem> extends DefaultClusterRenderer<T>{
         public CustomRender(Context context, GoogleMap map, ClusterManager clusterManager){
             super(context, map, clusterManager);

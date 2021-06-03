@@ -1,6 +1,5 @@
 package com.ncnf.views.fragments.organization;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,16 +7,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.FrameLayout;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +20,6 @@ import com.ncnf.adapters.EventListAdapter;
 import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
 import com.ncnf.repositories.OrganizationRepository;
-import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.views.fragments.event.EventFragment;
 
 import java.util.LinkedList;
@@ -116,12 +109,10 @@ public class OrganizationEventsFragment extends Fragment {
                 .commit();
     }
 
-    //TODO put into another class
     private void onEventClick(Event e) {
 
         //It doesn't so create new corresponding Fragment
         EventFragment eventFrag = new EventFragment(e);
-
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override

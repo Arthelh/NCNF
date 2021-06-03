@@ -46,7 +46,7 @@ public class FirebaseDatabaseTest {
     LocalDateTime date = LocalDateTime.of(2021, 03, 11, 12, 0);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    SocialObject.Type type = SocialObject.Type.Conference;
+    Event.Type type = Event.Type.Conference;
     String description = "SocialObject description goes here";
     String ownerID = "00";
 
@@ -403,21 +403,38 @@ public class FirebaseDatabaseTest {
         assertTrue(future.isCompletedExceptionally());
     }
 
-    /*
+
     @Test
     public void whereInWorks(){
-        CompletableFuture future = CompletableFuture.completedFuture(Arrays.asList(socialObject));
-        when(service.whereEqualTo(anyString(), anyString(), any(), any())).thenReturn(future);
+        String uuid = UUID.randomUUID().toString();
+        Event event = new Event(uuid, name, date, geoPoint,address,description, type, 0, 0L, "test@email.com");
+        Map<String, Object> data = new DatabaseEventBuilder().toMap(event);
 
-        CompletableFuture<List<SocialObject>> listFuture = service.whereIn("/events", "field", Arrays.asList("value"), SocialObject.class);
+        QueryDocumentSnapshot document = Mockito.mock(QueryDocumentSnapshot.class);
+        when(document.getData()).thenReturn(data);
+        when(document.getId()).thenReturn(uuid);
+
+        QuerySnapshot querySnapshot = Mockito.mock(QuerySnapshot.class);
+        when(querySnapshot.getDocuments()).thenReturn(Arrays.asList(document));
+        Task<QuerySnapshot> task = new MockTask(querySnapshot, null, true);
+
+        Query query = Mockito.mock(Query.class);
+        when(query.get()).thenReturn(task);
+
+
+        CollectionReference mockCollection = Mockito.mock(CollectionReference.class);
+        when(db.collection(anyString())).thenReturn(mockCollection);
+        when(mockCollection.whereEqualTo(anyString(), anyString())).thenReturn(query);
+
+        CompletableFuture<List<Event>> listFuture = service.whereIn("/events", "field", Arrays.asList("value"), Event.class);
 
         try {
-            assertEquals(listFuture.get().get(0), socialObject);
+            assertEquals(listFuture.get().get(0), event);
         } catch (Exception e){
             Assert.fail("The future did not complete correctly !");
         }
     }
-    */
+
 
     @Test
     public void whereInFailsOnEmpty(){
