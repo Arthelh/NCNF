@@ -130,9 +130,7 @@ public class GroupCreationActivityTest {
         onView(Matchers.allOf(withId(com.google.android.material.R.id.snackbar_text), withText(containsString("Please fill every field"))))
                 .check(matches(isDisplayed()));
     }
-
-
-    /*
+    
     @Test
     public void writingInAllField() throws InterruptedException {
         onView(withId(R.id.create_group_button)).check(matches(not(isEnabled())));
@@ -244,7 +242,6 @@ public class GroupCreationActivityTest {
         Intents.intended(hasComponent(GroupActivity.class.getName()));
 
     }
-    */
 
     /**
      * To perform the following test, you must uncomment line 114 and comment line 115
@@ -272,6 +269,7 @@ public class GroupCreationActivityTest {
 
         onView(withId(R.id.friends_group_selector_text)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
+
     */
 
     @Test
