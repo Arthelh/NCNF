@@ -9,6 +9,8 @@ import com.ncnf.R;
 import com.ncnf.views.fragments.login.SignInFragment;
 import com.ncnf.views.fragments.login.SignUpFragment;
 
+import java.util.Objects;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.ncnf.utilities.StringCodes.NEXT_ACTIVITY_EXTRA_KEY;
@@ -24,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
