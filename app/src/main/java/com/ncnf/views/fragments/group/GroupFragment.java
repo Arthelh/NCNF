@@ -1,5 +1,6 @@
 package com.ncnf.views.fragments.group;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +24,7 @@ import com.ncnf.models.Group;
 import com.ncnf.models.User;
 import com.ncnf.repositories.GroupRepository;
 import com.ncnf.repositories.UserRepository;
+import com.ncnf.views.activities.group.GroupCreationActivity;
 
 
 import java.util.ArrayList;
@@ -49,6 +52,8 @@ public class GroupFragment extends Fragment {
     private RecyclerView recycler;
     private GroupsAdapter adapter;
 
+    private Button newGroup;
+
     private TextView isEmpty;
 
     @Override
@@ -66,6 +71,12 @@ public class GroupFragment extends Fragment {
         // Setup RecyclerView
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.hasFixedSize();
+
+        newGroup = requireView().findViewById(R.id.new_group_button);
+        newGroup.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), GroupCreationActivity.class);
+            startActivity(intent);
+        });
 
         isEmpty = view.findViewById(R.id.no_owned_group);
 

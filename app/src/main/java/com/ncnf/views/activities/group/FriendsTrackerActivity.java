@@ -220,20 +220,19 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             String userId = friendsUUID.get(i);
 
             if(userId.equals(user.getUuid())) {
-                if(i >= markers.size()) {
+                if(!markers.keySet().contains(userId)) {
                     markers.put(userId, user.getLocation());
                     bitmapSetChanged();
-                }
-                else {
+                } else {
                     markers.put(userId, user.getLocation());
                     clusterMarkers.get(i).setPosition(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()));
                     groupAttendeeMarkerRenderer.updatePosition(clusterMarkers.get(i));
                 }
-            }
-            else {
+            } else {
                 CompletableFuture<GeoPoint> field = userRepository.getUserPosition(userId);
                 int finalI = i;
                 field.thenAccept(point -> {
+                    if(point != null) {
                         if (!markers.keySet().contains(userId)) {
 
                             markers.put(userId, point);
@@ -243,9 +242,10 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
                             clusterMarkers.get(finalI).setPosition(new LatLng(point.getLatitude(), point.getLongitude()));
                             groupAttendeeMarkerRenderer.updatePosition(clusterMarkers.get(finalI));
 
+                        }
                     }
 
-                }).exceptionally(throwable -> null);
+                }).exceptionally(throwable -> {throwable.printStackTrace(); return null;});
             }
         }
 
@@ -359,9 +359,8 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     }
 
     private void bitmapSetChanged() {
-        if(images.keySet().size() == friendsUUID.size() && markers.keySet().size() == friendsUUID.size()) {
+        if(images.keySet().size() == friendsUUID.size()) {
             addMapMarkers();
-
         }
     }
 
