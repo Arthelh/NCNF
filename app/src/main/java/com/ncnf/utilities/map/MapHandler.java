@@ -178,12 +178,13 @@ public class MapHandler {
         completableFuture.thenAccept(eventList -> {
 
             result.addAll(eventList);
-            spinner.setVisibility(View.INVISIBLE);
+            spinner.setVisibility(View.GONE);
             addEventMarkers(result);
 
         }).exceptionally(e -> {
 
             Log.d(DEBUG_TAG, e.getMessage());
+            spinner.setVisibility(View.GONE);
             return null;
 
         });
