@@ -18,15 +18,14 @@ import java.util.List;
 public class FriendsSelectorList extends UserListAdapter{
 
     private final String uuid;
-    private final List<String> membersId;
+    private final List<User> members;
 
     public FriendsSelectorList(Context context, List<User> users, OnItemClickListener onClick, String my_uuid) {
 
         super(context, users, onClick);
 
         this.uuid = my_uuid;
-        this.membersId = new ArrayList<>();
-        this.membersId.add(my_uuid);
+        this.members = new ArrayList<>();
     }
 
     @NonNull
@@ -57,17 +56,17 @@ public class FriendsSelectorList extends UserListAdapter{
             if(!this.inGroup){
                 this.friendCardButton.setIconResource(R.drawable.ic_outline_check_box_24);
                 this.inGroup = true;
-                membersId.add(u.getUuid());
+                members.add(u);
             } else {
                 this.friendCardButton.setIconResource(R.drawable.ic_round_check_box_outline_blank_24);
                 this.inGroup = false;
-                membersId.remove(u.getUuid());
+                members.remove(u);
             }
         }
     }
 
-    public List<String> getMembersId() {
-        return Collections.unmodifiableList(membersId);
+    public List<User> getMembers() {
+        return Collections.unmodifiableList(members);
     }
 }
 

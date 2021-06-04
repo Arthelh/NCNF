@@ -88,8 +88,8 @@ public class FriendSelectionGroupFragment extends Fragment {
         });
     }
 
-    public List<String> getMembersIds(){
-        return ((FriendsSelectorList)this.adapter).getMembersId();
+    public List<User> getMembers(){
+        return ((FriendsSelectorList)this.adapter).getMembers();
     }
 
 

@@ -1,36 +1,28 @@
 package com.ncnf.views.activities.group;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.snapshot.BooleanNode;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Group;
 import com.ncnf.models.User;
-import com.ncnf.repositories.FriendsRepository;
 import com.ncnf.repositories.GroupRepository;
+import com.ncnf.repositories.UserRepository;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.views.fragments.group.FriendSelectionGroupFragment;
 import com.ncnf.views.fragments.group.GroupEditingFragment;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -42,6 +34,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
+import static com.ncnf.utilities.Helpers.combine;
 import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 
@@ -49,13 +42,16 @@ import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 public class GroupCreationActivity extends AppCompatActivity {
 
     @Inject
-    public User user;
-
-    @Inject
     public GroupRepository groupRepository;
 
     @Inject
+    public User user;
+
+    @Inject
     public FirebaseCacheFileStore fileStore;
+
+    @Inject
+    public FirebaseDatabase databaseService;
 
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -93,11 +89,12 @@ public class GroupCreationActivity extends AppCompatActivity {
         createButton.setOnClickListener(this::createGroup);
 
         firstStep = true;
+
     }
 
     private void createGroup(View view) {
-        List<String> members = ((FriendSelectionGroupFragment)this.friendSelectorFragment).getMembersIds();
-        if(members.size() == 1){
+        List<User> members = ((FriendSelectionGroupFragment)this.friendSelectorFragment).getMembers();
+        if(members.size() == 0){
             Snackbar.make(findViewById(android.R.id.content), "You can't create a group with nobody in it.", LENGTH_SHORT).show();
         } else {
             LocalTime time = this.groupEditionFragment.getGroupTime();
@@ -108,7 +105,7 @@ public class GroupCreationActivity extends AppCompatActivity {
             String description = this.groupEditionFragment.getGroupDescription();
             Group group = new Group(this.user.getUuid(), name, LocalDateTime.of(date, time), meetingPoint, address, description);
             for(int i = 0; i < members.size(); ++i){
-                group.addMember(members.get(i));
+                group.addMember(members.get(i).getUuid());
             }
             CompletableFuture<Boolean> groupStored = groupRepository.storeGroup(group);
             CompletableFuture<Boolean> imageStored;
@@ -119,8 +116,23 @@ public class GroupCreationActivity extends AppCompatActivity {
             } else {
                 imageStored = CompletableFuture.completedFuture(true);
             }
+            this.user.setDB(this.databaseService);
             CompletableFuture<Boolean> ownedStored = this.user.addOwnedGroup(group);
-            CompletableFuture<Boolean> participantsStored = this
+            CompletableFuture<Boolean> participatingStored = this.user.addParticipatingGroup(group);
+
+            for(int i = 0; i < members.size(); ++i){
+                User u = members.get(i);
+                u.setDB(this.databaseService);
+                participatingStored = combine(participatingStored, u.addParticipatingGroup(group));
+            }
+            CompletableFuture<Boolean> allDone = combine(combine(combine(groupStored, imageStored), ownedStored), participatingStored);
+            allDone.thenAccept(bool -> {
+                gotToGroupActivity();
+            }).exceptionally(e -> {
+                Snackbar.make(findViewById(android.R.id.content), "Fail to create the group : please retry.", LENGTH_SHORT).show();
+                e.printStackTrace();
+                return null;
+            });
 
         }
     }
@@ -134,7 +146,6 @@ public class GroupCreationActivity extends AppCompatActivity {
     private void switchViews(View view) {
 
         if(firstStep){
-
             LocalTime time = this.groupEditionFragment.getGroupTime();
             LocalDate date = this.groupEditionFragment.getGroupDate();
             GeoPoint meetingPoint = this.groupEditionFragment.getMeetingPointLocation();
