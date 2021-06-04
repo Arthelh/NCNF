@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
+import com.ncnf.views.activities.bookmark.BookMarkActivity;
 import com.ncnf.views.activities.group.GroupActivity;
 import com.ncnf.views.activities.group.GroupCreationActivity;
 import com.ncnf.views.activities.login.LoginActivity;
@@ -38,7 +39,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Intent intent = getActivity().getIntent();
         if(intent != null && intent.getExtras() != null) {
-            boolean gotDisconnected = (boolean) intent.getExtras().get("disconnected");
+            boolean gotDisconnected = intent.getExtras().getBoolean("disconnected");
             if (gotDisconnected) {
                 Snackbar.make(requireActivity().findViewById(android.R.id.content), "Successfully disconnected", LENGTH_SHORT).show();
             }
@@ -54,6 +55,19 @@ public class HomeFragment extends Fragment {
         getView().findViewById(R.id.homeFriendsButton).setOnClickListener(this::goToFriends);
         getView().findViewById(R.id.create_group).setOnClickListener(this::goToGroupCreation);
         getView().findViewById(R.id.track_friends_button).setOnClickListener(v -> gpsIsEnabled());
+        getView().findViewById(R.id.bookmark_home_button).setOnClickListener(this::goToBookmark);
+    }
+
+    private void gotToProfile(View view){
+        goToActivity(UserTabActivity.class);
+    }
+
+    private void goToFriends(View view){
+        goToActivity(FriendsActivity.class);
+    }
+
+    private void goToBookmark(View view){
+        goToActivity(BookMarkActivity.class);
     }
 
     private void goToActivity(Class<?> activity){
@@ -65,18 +79,9 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void gotToProfile(View view){
-        goToActivity(UserTabActivity.class);
-    }
-
     private void goToGroupCreation(View view){
         goToActivity(GroupCreationActivity.class);
     }
-
-    private void goToFriends(View view){
-        goToActivity(FriendsActivity.class);
-    }
-
     private boolean isConnected(){
         return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
