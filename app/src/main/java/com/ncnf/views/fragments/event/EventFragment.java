@@ -15,13 +15,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Event;
+import com.ncnf.models.Organization;
 import com.ncnf.models.SocialObject;
+import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.SaveToCalendar;
+import com.ncnf.views.fragments.organization.EventCreateFragment;
 
 import java.time.ZoneId;
 
@@ -29,11 +33,20 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+import static com.ncnf.utilities.StringCodes.FRAGMENT_ORGANIZATION_TAG;
+import static com.ncnf.utilities.StringCodes.UUID_KEY;
+
 @AndroidEntryPoint
 public class EventFragment extends Fragment {
 
     @Inject
     public FirebaseCacheFileStore fileStore;
+
+    @Inject
+    public FirebaseUser user;
+
+    @Inject
+    public OrganizationRepository organizationRepository;
 
     private final Event event;
     
@@ -56,7 +69,7 @@ public class EventFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         initSaveCalendar(view);
-
+        initPublishButtons(view);
     }
 
     private void initSaveCalendar(View view){
@@ -94,5 +107,33 @@ public class EventFragment extends Fragment {
         TextView owner = view.findViewById(R.id.eventOwner);
 
         owner.setText("Event hosted by " + event.getEmail());
+    }
+
+    private void initPublishButtons(View view) {
+        // By default, the button is gone
+        Button button = view.findViewById(R.id.button_publish_event_news);
+        button.setVisibility(View.GONE);
+
+        // On button click, open the news publish form
+        button.setOnClickListener(b -> {
+            Bundle args = new Bundle();
+            args.putString(UUID_KEY, event.getUuid().toString());
+
+            Fragment frag = new EventNewsFragment();
+            frag.setArguments(args);
+
+            getParentFragmentManager().beginTransaction()
+                .replace(((ViewGroup) requireView().getParent()).getId(), frag, null)
+                .addToBackStack(null)
+                .commit();
+        });
+
+        // The button is visible only to admin of the organization
+        organizationRepository.getByUUID(event.getOwnerId()).thenAccept(organizations -> {
+            Organization organization = organizations.get(0);
+            if (organization.getAdminIds().contains(user.getUid())) {
+                button.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

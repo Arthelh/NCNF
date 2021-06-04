@@ -109,12 +109,10 @@ public class OrganizationEventsFragment extends Fragment {
                 .commit();
     }
 
-    //TODO put into another class
     private void onEventClick(Event e) {
 
         //It doesn't so create new corresponding Fragment
         EventFragment eventFrag = new EventFragment(e);
-
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
