@@ -15,6 +15,18 @@
         android:layout_alignParentTop="true"
         android:scrollbars="vertical" />
 
+    <ProgressBar
+        android:id="@+id/feed_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:elevation="10dp"
+        android:indeterminate="true"
+        android:indeterminateBehavior="repeat"
+        android:indeterminateDrawable="@drawable/circular_progress_spinner"
+        android:visibility="gone" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/feed_event_container"
         android:layout_width="match_parent"
