@@ -8,74 +8,77 @@
     android:background="@color/app_background"
     android:orientation="vertical"
     android:padding="10dp">
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="50dp"
-            android:src="@drawable/ic_baseline_person_add_alt_1_24" />
-
-        <EditText
-            android:id="@+id/signUpEmail"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:background="@drawable/shape_text_edit"
-            android:hint="@string/email_hint"
-            android:inputType="textEmailAddress"
-            android:padding="12dp"
-            android:textSize="18sp"
-            android:elevation="5dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/signUpPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/shape_text_edit"
-            android:hint="@string/password_hint"
-            android:inputType="textPassword"
-            android:padding="12dp"
-            android:textSize="18sp"
-            android:elevation="5dp"/>
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:src="@drawable/ic_baseline_person_add_alt_1_24" />
 
-        <EditText
-            android:id="@+id/signUpConfirmPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/shape_text_edit"
-            android:hint="@string/confirm_password"
-            android:inputType="textPassword"
-            android:padding="12dp"
-            android:textSize="18sp"
-            android:elevation="5dp"/>
+            <EditText
+                android:id="@+id/signUpEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:background="@drawable/shape_text_edit"
+                android:hint="@string/email_hint"
+                android:inputType="textEmailAddress"
+                android:padding="12dp"
+                android:textSize="18sp"
+                android:elevation="5dp"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/signUpRegisterButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="50dp"
-            android:backgroundTint="@color/black"
-            android:padding="10dp"
-            android:text="@string/register"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            android:textStyle="normal" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/signUpPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/shape_text_edit"
+                android:hint="@string/password_hint"
+                android:inputType="textPassword"
+                android:padding="12dp"
+                android:textSize="18sp"
+                android:elevation="5dp"/>
+
+            <EditText
+                android:id="@+id/signUpConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/shape_text_edit"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                android:padding="12dp"
+                android:textSize="18sp"
+                android:elevation="5dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/signUpRegisterButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:backgroundTint="@color/black"
+                android:padding="10dp"
+                android:text="@string/register"
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/sign_up_spinner"
