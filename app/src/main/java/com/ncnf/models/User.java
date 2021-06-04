@@ -192,10 +192,10 @@ public class User {
             this.username = response.getUsername();
             this.email = response.getEmail();
             this.fullName = response.getFullName();
-            this.friendsIds = response.getFriendsIds();
-            this.ownedGroupsIds = response.getOwnedGroupsIds();
-            this.participatingGroupsIds = response.getParticipatingGroupsIds();
-            this.savedEventsIds = response.getSavedEventsIds();
+            this.friendsIds = new ArrayList<>(response.getFriendsIds());
+            this.ownedGroupsIds = new ArrayList<>(response.getOwnedGroupsIds());
+            this.participatingGroupsIds = new ArrayList<>(response.getParticipatingGroupsIds());
+            this.savedEventsIds = new ArrayList<>(response.getSavedEventsIds());
             this.birthDate = response.getBirthDate();
             this.notifications = response.getNotifications();
             this.location = response.getLocation();
