@@ -82,6 +82,8 @@ public class EventFragmentTest {
     public void setup(){
         when(user.getUid()).thenReturn("u1");
         when(organizationRepository.getByUUID(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
+        when(organizationRepository.loadOrganization(anyString())).thenReturn(CompletableFuture.completedFuture(o1));
+
 
         onView(withId(R.id.navigation_feed)).perform(click());
         onView(withId(R.id.feed_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
@@ -96,7 +98,7 @@ public class EventFragmentTest {
     @Test
     public void test_address(){
         setup();
-        onView(withId(R.id.eventLocation)).check(matches(withText(containsString(e1.getAddress()))));
+        onView(withId(R.id.eventAddress)).check(matches(withText(containsString(e1.getAddress()))));
     }
 
     @Test
@@ -108,24 +110,6 @@ public class EventFragmentTest {
     @Test
     public void test_owner(){
         setup();
-        onView(withId(R.id.eventOwner)).check(matches(withText(containsString(e1.getEmail()))));
-    }
-
-    @Test
-    public void publishNewsIsVisible() {
-        setup();
-        onView(withId(R.id.button_publish_event_news)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-    }
-
-    @Test
-    public void publishNewsIsHidden() {
-        // the user is not an admin of the event's organization
-        when(user.getUid()).thenReturn("not an admin");
-        when(organizationRepository.getByUUID(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
-
-        onView(withId(R.id.navigation_feed)).perform(click());
-        onView(withId(R.id.feed_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-
-        onView(withId(R.id.button_publish_event_news)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
+        onView(withId(R.id.eventOrganization)).check(matches(withText(containsString(o1.getName()))));
     }
 }

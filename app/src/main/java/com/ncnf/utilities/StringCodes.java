@@ -72,6 +72,7 @@ public class StringCodes {
     public static final String GROUPS_COLLECTION_KEY = "groups/";
     public static final String OWNED_GROUPS_KEY = "owned_groups";
     public static final String PARTICIPATING_GROUPS_KEY = "participating_groups";
+    public static final String MEMBERS_KEY = "members";
     /**
      * Keys related to organizations
      */
@@ -84,6 +85,12 @@ public class StringCodes {
     public static final String ORGANIZED_EVENTS = "organized_events";
     public static final String PHONE_NB_KEY = "phone_number";
     public static final String ADMIN_KEY = "admins";
+
+    /**
+     * Keys related to images
+     */
+    public static final int IMG_PICK_CODE = 1000;
+
 
     /**
      * Keys related to tests

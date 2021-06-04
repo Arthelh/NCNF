@@ -128,7 +128,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         CompletableFuture<Group> thisGroup = groupRepository.loadGroup(groupId);
         thisGroup.thenAccept(group -> {
             if(group != null) {
-                friendsUUID = new ArrayList<>(group.getAttendees());
+                friendsUUID = new ArrayList<>(group.getMembers());
                 if(!user.getParticipatingGroupsIds().contains(groupId)) {
                     friendsUUID.add(user.getUuid());
                 }

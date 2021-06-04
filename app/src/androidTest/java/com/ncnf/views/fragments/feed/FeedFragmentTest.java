@@ -79,6 +79,7 @@ public class FeedFragmentTest {
         when(eventRepository.getEventsNearBy()).thenReturn(CompletableFuture.completedFuture(events));
         when(user.getUid()).thenReturn("u1");
         when(organizationRepository.getByUUID(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
+        when(organizationRepository.loadOrganization(anyString())).thenReturn(CompletableFuture.completedFuture(o1));
     }
 
     @Before

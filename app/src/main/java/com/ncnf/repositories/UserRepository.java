@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_KEY;
 import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_TOKEN_KEY;
+import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
 import static com.ncnf.utilities.StringCodes.USERNAME_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
@@ -103,5 +104,15 @@ public class UserRepository {
 
     public CompletableFuture<String> getUserUsername(String uuid){
         return this.db.getField(USERS_COLLECTION_KEY + uuid, USERNAME_KEY);
+    }
+
+    /**
+     * Add an event to the User's bookmark
+     * @param uuid the unique identifier of the User
+     * @param eventUuid the unique identifier of the Event to add
+     * @return A CompletableFuture wrapping a boolean indicating that the request was successful or not
+     */
+    public CompletableFuture<Boolean> addBookmarkEventToUser(String uuid, String eventUuid){
+        return this.db.updateArrayField(USERS_COLLECTION_KEY + uuid, SAVED_EVENTS_KEY, eventUuid);
     }
 }

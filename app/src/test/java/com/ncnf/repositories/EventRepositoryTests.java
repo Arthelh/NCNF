@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
@@ -54,6 +55,31 @@ public class EventRepositoryTests {
         }
     }
 
+    @Test
+    public void storeEventsWorks(){
+        when(mockDatabase.setDocument(anyString(),any())).thenReturn(CompletableFuture.completedFuture(true));
+
+        CompletableFuture<Boolean> boolFuture = eventRepository.storeEvent(events.get(0));
+
+        try {
+            assertThat(boolFuture.get(), is(true));
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly !");
+        }
+    }
+
+    @Test
+    public void loadMultipleEventsWorks(){
+        when(this.mockDatabase.whereIn(anyString(), anyString(), anyList(), any())).thenReturn(CompletableFuture.completedFuture(events));
+        CompletableFuture<List<Event>> eventList = eventRepository.loadMultipleEvents(Arrays.asList("uuid1", "uuid2"));
+
+        try {
+            assertThat(eventList.get(), is(events));
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly !");
+        }
+
+    }
 
     @Test
     public void getEventsNearbyWorks(){
@@ -63,6 +89,19 @@ public class EventRepositoryTests {
 
         try {
             assertThat(eventList.get(), is(events));
+        } catch (ExecutionException | InterruptedException e) {
+            Assert.fail("The future did not complete correctly !");
+        }
+    }
+    
+    @Test
+    public void addNewsWorks(){
+        when(this.mockDatabase.updateArrayField(anyString(), anyString(), any())).thenReturn(CompletableFuture.completedFuture(true));
+
+        CompletableFuture<Boolean> boolFuture = eventRepository.addNews("uuid", "value");
+
+        try {
+            assertThat(boolFuture.get(), is(true));
         } catch (ExecutionException | InterruptedException e) {
             Assert.fail("The future did not complete correctly !");
         }

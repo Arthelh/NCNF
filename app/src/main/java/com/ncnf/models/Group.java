@@ -13,7 +13,7 @@ import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 
 public class Group extends SocialObject {
 
-    private final List<String> invited;
+    private final List<String> members;
 
     /**
      * Public constructor used to create a new group
@@ -26,7 +26,8 @@ public class Group extends SocialObject {
      */
     public Group(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description) {
         super(ownerId, name, date, location, address, description);
-        invited = new ArrayList<>();
+        this.members = new ArrayList<>();
+        this.members.add(0, ownerId);
     }
 
     /**
@@ -37,33 +38,40 @@ public class Group extends SocialObject {
      * @param date Date during which the group will take place
      * @param location Meeting point of the group (GPS coordinates)
      * @param address Address corresponding the location of the group
-     * @param attendees List of IDs of the people attending the event
      * @param description Description of the group
-     * @param invited List of IDs of the people
+     * @param members List of IDs of the people
      */
-    public Group(String ownerId, UUID id, String name, LocalDateTime date, GeoPoint location, String address, List<String> attendees, String description, List<String> invited) {
-        super(id, ownerId, name, date, location, address, attendees, description);
-        if(invited == null) {
-            this.invited = new ArrayList<>();
-        }
-        else {
-            this.invited = invited;
+    public Group(String ownerId, UUID id, String name, LocalDateTime date, GeoPoint location, String address, String description, List<String> members) {
+        super(id, ownerId, name, date, location, address, description);
+        this.members = members == null ? new ArrayList<>() : members;
+        addMember(ownerId);
+    }
+
+    /**
+     * Add a user as member of the group
+     * @param userId ID of the user to add
+     */
+    public void addMember(String userId) {
+        if(userId != null && !members.contains(userId)){
+            members.add(userId);
         }
     }
 
     /**
-     * Add a user to the invited list
-     * @param userId ID of the user to add
+     * Remove member of the group
+     * @param userId ID of the user to remove
      */
-    public void invite(String userId) {
-        invited.add(userId);
+    public void removeMember(String userId){
+        if(userId != null){
+            members.remove(userId);
+        }
     }
 
     /**
      * Getter for the attribute
      */
-    public List<String> getInvited() {
-        return invited;
+    public List<String> getMembers() {
+        return members;
     }
 
     @Override

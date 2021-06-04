@@ -7,6 +7,7 @@ import com.ncnf.database.firebase.FirebaseDatabase;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -30,6 +31,7 @@ public class Event extends SocialObject {
     private double price;
     private int minAge;
     private String email;
+    private List<String> attendees;
 
     /**
      * Public constructor used to create a new event
@@ -54,6 +56,7 @@ public class Event extends SocialObject {
         this.minAge = minAge;
         this.price = price;
         this.email = email;
+        this.attendees = new ArrayList<>();
     }
 
     /**
@@ -73,7 +76,7 @@ public class Event extends SocialObject {
      * @param email Contact email of the event
      */
     public Event(String ownerId, UUID uuid, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type, List<String> attendees, int minAge, double price, List<EventTag> tags, String email) {
-        super(uuid, ownerId, name, date, location, address, attendees, description);
+        super(uuid, ownerId, name, date, location, address, description);
 
         checkConstraints(minAge, price);
 
@@ -82,6 +85,7 @@ public class Event extends SocialObject {
         this.minAge = minAge;
         this.price = price;
         this.email = email;
+        this.attendees = attendees;
     }
 
     /**
@@ -104,6 +108,12 @@ public class Event extends SocialObject {
         return type;
     }
     public List<EventTag> getEventTags() { return new ArrayList<>(eventTags); }
+    public List<String> getAttendees() {
+        return Collections.unmodifiableList(attendees);
+    }
+    public int getNumOfAttendees() {
+        return this.attendees.size();
+    }
 
     /**
      * Setters for the event's attributes
@@ -119,6 +129,9 @@ public class Event extends SocialObject {
     public void setEmail(String email) { this.email = email; }
     public void setEventTags(List<EventTag> eventTags) {
         this.eventTags = new ArrayList<>(eventTags);
+    }
+    public void setAttendees(List<String> attendees) {
+        this.attendees = new ArrayList<>(attendees);
     }
 
     /**

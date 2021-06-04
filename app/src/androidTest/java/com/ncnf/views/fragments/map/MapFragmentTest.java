@@ -108,6 +108,7 @@ public final class MapFragmentTest {
 
         CompletableFuture<List<Organization>> orgFuture = CompletableFuture.completedFuture(organizations);
         when(mockOrgRepo.getOrganizationsNearby()).thenReturn(orgFuture);
+        when(mockOrgRepo.loadOrganization(anyString())).thenReturn(CompletableFuture.completedFuture(o1));
 
         when(mockUser.getUid()).thenReturn("u1");
         when(mockOrgRepo.getByUUID(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
@@ -219,16 +220,6 @@ public final class MapFragmentTest {
         });
         onView(withId(R.id.validateButton)).perform(click());
 
-    }
-
-    @Test
-    public final void testSearchBar(){
-        onView(withId(R.id.searchBarMap)).perform(click());
-        onView(withClassName(containsString(EditText.class.getSimpleName()))).perform(typeText("Boulevard"));
-        onView(withId(R.id.searchBarMap)).check((view, noViewFoundException) -> {
-            assertTrue(((MaterialSearchBar) view).isSuggestionsEnabled());
-            assertTrue(((MaterialSearchBar) view).isSearchOpened());
-        });
     }
 
     @Ignore
