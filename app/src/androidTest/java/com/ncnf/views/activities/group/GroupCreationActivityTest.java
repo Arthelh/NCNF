@@ -135,7 +135,7 @@ public class GroupCreationActivityTest {
                 .check(matches(isDisplayed()));
     }
 
-    /*
+
 
     @Test
     public void writingInAllField(){
@@ -268,18 +268,9 @@ public class GroupCreationActivityTest {
     }
     */
 
-
-
     @Test
     public void importingPhotosWorks(){
         onView(withId(R.id.group_picture)).perform(click());
         Intents.intended(hasAction(Intent.ACTION_PICK));
     }
-/*
-    @Test
-    public void closeButtonWorks(){
-        onView(withId(R.id.close_group_creation_button)).perform(click());
-        Intents.intended(hasComponent(MainActivity.class.getName()));
-    }
-    */
 }
