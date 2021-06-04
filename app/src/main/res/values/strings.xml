@@ -138,8 +138,6 @@
     <string name="add_organization_button_text">Add Organization</string>
     <string name="add_event_organization_button">Create Event</string>
     <string name="button_publish_news">Publish news</string>
-    <string name="home_profile_button">Profile</string>
-    <string name="home_friends_button">Friends</string>
     <string name="home_groups_button">Groups</string>
     <string name="home_bookmark_button">Bookmark</string>
 
