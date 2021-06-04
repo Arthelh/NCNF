@@ -27,12 +27,10 @@ public class GroupTest {
     LocalDateTime date = LocalDateTime.of(2021, 03, 11, 12, 0);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    Event.Type type = Event.Type.Conference;
     String description = "SocialObject description goes here";
     String ownerId = "00";
     UUID uuid = UUID.randomUUID();
-    List<String> attendees = new ArrayList<>();
-    List<String> invited = new ArrayList<>();
+    List<String> members = new ArrayList<>();
 
     FirebaseDatabase db;
     Group mainEvent;
@@ -67,27 +65,22 @@ public class GroupTest {
         assertEquals(group.getName(), name);
         assertEquals(group.getLocation(), geoPoint);
         assertEquals(group.getDescription(), description);
-        assertEquals(group.getMembers().size(), 0);
-        assertEquals(group.getMembers().size(), 0);
-
+        assertEquals(group.getMembers().size(), 1);
     }
 
     @Test
     public void secondaryConstructorTest(){
-        attendees.add("Attendee1");
-        invited.add("Invited1");
+        members.add("Invited1");
 
-        Group group = new Group(ownerId, uuid, name, date, geoPoint, address, description, invited);
+        Group group = new Group(ownerId, uuid, name, date, geoPoint, address, description, members);
         assertEquals(group.getUuid(), uuid);
         assertEquals(group.getOwnerId(), ownerId);
         assertEquals(group.getDate(), date);
         assertEquals(group.getName(), name);
         assertEquals(group.getLocation(), geoPoint);
         assertEquals(group.getDescription(), description);
-        assertEquals(group.getMembers().size(), 1);
-
-        assertEquals(group.getMembers().size(), 1);
-        assertEquals(group.getMembers().get(0), "Invited1");
+        assertEquals(group.getMembers().size(), 2);
+        assertEquals(group.getMembers().get(0), ownerId);
 
     }
 
@@ -95,8 +88,8 @@ public class GroupTest {
     public void inviteWorks() {
         Group event = new Group("00",name, date, geoPoint,address,description);
         event.addMember("Sarah");
-        assertEquals(event.getMembers().size(), 1);
-        assertEquals(event.getMembers().get(0), "Sarah");
+        assertEquals(event.getMembers().size(), 2);
+        assertEquals(event.getMembers().get(0), "00");
     }
 
     @Test
