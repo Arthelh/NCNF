@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
+import com.ncnf.views.activities.bookmark.BookMarkActivity;
 import com.ncnf.views.activities.group.GroupActivity;
 import com.ncnf.views.activities.login.LoginActivity;
 import com.ncnf.views.activities.friends.FriendsActivity;
@@ -50,10 +51,19 @@ public class HomeFragment extends Fragment {
         getView().findViewById(R.id.homeProfileButton).setOnClickListener(this::gotToProfile);
         getView().findViewById(R.id.homeFriendsButton).setOnClickListener(this::goToFriends);
         getView().findViewById(R.id.track_friends_button).setOnClickListener(v -> gpsIsEnabled());
+        getView().findViewById(R.id.bookmark_home_button).setOnClickListener(this::goToBookmark);
     }
 
-    public void gotToProfile(View view){
+    private void gotToProfile(View view){
         goToActivity(UserTabActivity.class);
+    }
+
+    private void goToFriends(View view){
+        goToActivity(FriendsActivity.class);
+    }
+
+    private void goToBookmark(View view){
+        goToActivity(BookMarkActivity.class);
     }
 
     private void goToActivity(Class<?> activity){
@@ -63,10 +73,6 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getContext(), activity);
             startActivity(intent);
         }
-    }
-
-    public void goToFriends(View view){
-        goToActivity(FriendsActivity.class);
     }
 
     private boolean isConnected(){
