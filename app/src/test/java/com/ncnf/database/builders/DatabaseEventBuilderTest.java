@@ -25,8 +25,8 @@ import static com.ncnf.utilities.StringCodes.ATTENDEES_KEY;
 import static com.ncnf.utilities.StringCodes.DATE_KEY;
 import static com.ncnf.utilities.StringCodes.DESCRIPTION_KEY;
 import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
-import static com.ncnf.utilities.StringCodes.INVITED_KEY;
 import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
+import static com.ncnf.utilities.StringCodes.MEMBERS_KEY;
 import static com.ncnf.utilities.StringCodes.MIN_AGE_KEY;
 import static com.ncnf.utilities.StringCodes.NAME_KEY;
 import static com.ncnf.utilities.StringCodes.OWNER_KEY;
@@ -36,6 +36,7 @@ import static com.ncnf.utilities.StringCodes.TYPE_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 import static com.ncnf.utilities.StringCodes.VISIBILITY_KEY;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DatabaseEventBuilderTest {
 
@@ -117,20 +118,20 @@ public class DatabaseEventBuilderTest {
         group.put(ATTENDEES_KEY, this.attendees);
         group.put(DESCRIPTION_KEY, this.description);
         group.put(OWNER_KEY, this.ownerId);
-        group.put(INVITED_KEY, invited);
+        group.put(MEMBERS_KEY, invited);
 
-        Group event = groupBuilder.toObject(uuid, group);
+        Group group1 = groupBuilder.toObject(uuid, group);
 
-        assertEquals(event.getUuid().toString(), uuid);
-        assertEquals(event.getName(), name);
+        assertEquals(group1.getUuid().toString(), uuid);
+        assertEquals(group1.getName(), name);
 
-        assertDateEquals(event.getDate(), date);
-        assertEquals(event.getLocation(), location);
-        assertEquals(event.getAddress(), address);
-        assertEquals(event.getAttendees().get(0), attendees.get(0));
-        assertEquals(event.getDescription(), description);
-        assertEquals(event.getOwnerId(), ownerId);
-        assertEquals(event.getInvited().get(0), "invited");
+        assertDateEquals(group1.getDate(), date);
+        assertEquals(group1.getLocation(), location);
+        assertEquals(group1.getAddress(), address);
+        assertEquals(group1.getDescription(), description);
+        assertEquals(group1.getOwnerId(), ownerId);
+        assertTrue(group1.getMembers().contains("invited"));
+        assertTrue(group1.getMembers().contains(ownerId));
 
     }
 
@@ -138,7 +139,7 @@ public class DatabaseEventBuilderTest {
     public void groupToMapWorks() {
         UUID uuid = UUID.randomUUID();
 
-        Group group = new Group(ownerId, uuid, name, date, location, address, attendees, description, invited);
+        Group group = new Group(ownerId, uuid, name, date, location, address, description, invited);
         Map<String, Object> map = groupBuilder.toMap(group);
         assertEquals(groupBuilder.toObject(uuid.toString(), map), group);
 

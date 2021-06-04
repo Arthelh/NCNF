@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.fragments.group.FriendSelectionGroupFragment">
+
+    <TextView
+        android:id="@+id/friends_group_selector_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/friends_empty_text"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:visibility="visible"
+        android:layout_marginTop="150dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="center"
+            android:textSize="22dp"
+            android:textColor="@color/white"
+            android:background="@color/navigation_bar_background"
+            android:text="Add members to the group" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/friends_selector_group_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</FrameLayout>

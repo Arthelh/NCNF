@@ -58,6 +58,7 @@ import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH
 
 import static com.ncnf.utilities.InputValidator.verifyEmailInput;
 import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
+import static com.ncnf.utilities.StringCodes.IMG_PICK_CODE;
 import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 
 @AndroidEntryPoint
@@ -90,7 +91,6 @@ public class UserProfileTabFragment extends Fragment {
 
     private boolean isEditing = false;
 
-    private static final int IMG_PICK_CODE = 1000;
     public static final int email_popup_input_text = 1000000000; //needed for tests
     private final char usernamePrefix = '@';
     TextView emailMessage;
@@ -228,9 +228,8 @@ public class UserProfileTabFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == AppCompatActivity.RESULT_OK && requestCode == IMG_PICK_CODE){
             Uri imageUri = data.getData();
-            Bitmap bitmap = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri);
                 fileStore.uploadImage(bitmap).thenAccept(bool -> {
                     if(bool){
                         profilePicture.setImageURI(imageUri);

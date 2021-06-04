@@ -24,8 +24,6 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         getSupportFragmentManager().beginTransaction().add(R.id.group_fragment_holder, new GroupFragment()).commit();
-
-
     }
 
 

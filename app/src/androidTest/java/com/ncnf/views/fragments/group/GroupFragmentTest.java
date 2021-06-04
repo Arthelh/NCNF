@@ -39,6 +39,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -51,7 +52,7 @@ public class GroupFragmentTest {
     static private final UserRepository repository2 = Mockito.mock(UserRepository.class);
 
     static private UUID gUuid = UUID.randomUUID();
-    static private final Group g = new Group("u1",gUuid, "Group Test", LocalDateTime.now(), new GeoPoint(-0.03, -0.03), "random address", new ArrayList<>(), "description here", new ArrayList<>());
+    static private final Group g = new Group("u1",gUuid, "Group Test", LocalDateTime.now(), new GeoPoint(-0.03, -0.03), "random address", "description here", new ArrayList<>());
 
     private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
 
@@ -140,7 +141,7 @@ public class GroupFragmentTest {
     @Test
     public void correctTextIsDisplayed(){
         onView(withId(R.id.group_name)).check(matches(withText("Group Test")));
-        onView(withId(R.id.group_num)).check(matches(withText("1 participant")));
+        onView(withId(R.id.group_num)).check(matches(withText("2 members")));
     }
 
     @Test

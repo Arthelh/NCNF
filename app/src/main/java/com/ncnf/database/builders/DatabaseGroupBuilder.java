@@ -19,8 +19,8 @@ import static com.ncnf.utilities.StringCodes.ADDRESS_KEY;
 import static com.ncnf.utilities.StringCodes.ATTENDEES_KEY;
 import static com.ncnf.utilities.StringCodes.DATE_KEY;
 import static com.ncnf.utilities.StringCodes.DESCRIPTION_KEY;
-import static com.ncnf.utilities.StringCodes.INVITED_KEY;
 import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
+import static com.ncnf.utilities.StringCodes.MEMBERS_KEY;
 import static com.ncnf.utilities.StringCodes.NAME_KEY;
 import static com.ncnf.utilities.StringCodes.OWNER_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
@@ -38,11 +38,10 @@ public class DatabaseGroupBuilder extends DatabaseObjectBuilder<Group>{
         LocalDateTime datetime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         GeoPoint location = (GeoPoint) data.get(LOCATION_KEY);
         String address = data.get(ADDRESS_KEY).toString();
-        List<String> attendees = (List<String>) data.get(ATTENDEES_KEY);
         String description = (String) data.get(DESCRIPTION_KEY);
-        List<String> invited = (List<String>) data.get(INVITED_KEY);
+        List<String> invited = (List<String>) data.get(MEMBERS_KEY);
 
-        return new Group(ownerId, UUID.fromString(uuidStr), name, datetime, location, address, attendees, description, invited);
+        return new Group(ownerId, UUID.fromString(uuidStr), name, datetime, location, address, description, invited);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class DatabaseGroupBuilder extends DatabaseObjectBuilder<Group>{
         map.put(NAME_KEY, group.getName());
         Date date = Date.from(group.getDate().atZone(ZoneId.systemDefault()).toInstant());
         map.put(DATE_KEY, new Timestamp(date));
-        map.put(ATTENDEES_KEY, group.getAttendees());
+        map.put(MEMBERS_KEY, group.getMembers());
         map.put(DESCRIPTION_KEY, group.getDescription());
         map.put(LOCATION_KEY, group.getLocation());
         map.put(ADDRESS_KEY, group.getAddress());
