@@ -2,6 +2,7 @@ package com.ncnf.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.ncnf.utilities.InputValidator;
 import java.util.List;
 
 import static android.graphics.BitmapFactory.decodeResource;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserViewHolder> {
@@ -32,6 +34,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
     }
 
     public UserListAdapter(Context context, List<User> users, OnItemClickListener listener) {
+        Log.d(DEBUG_TAG, "hello there");
+
         this.context = context;
         this.users = users;
         this.listener = listener;

@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 
 import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.NEWS_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 public class EventRepository {
@@ -58,6 +59,10 @@ public class EventRepository {
      */
     public CompletableFuture<List<Event>> getEventsNearBy(){
         return db.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, Event.class);
+    }
+
+    public CompletableFuture<Boolean> addNews(String uuid, String value) {
+        return db.updateArrayField(EVENTS_COLLECTION_KEY + uuid, NEWS_KEY, value);
     }
 
 }

@@ -72,7 +72,7 @@ public class User {
         this.birthDate = birthDate;
         this.notifications = notifications;
         this.participatingGroupsIds = participatingGroups;
-        this.location = this.location;
+        this.location = location;
     }
 
     /**
@@ -160,6 +160,11 @@ public class User {
     public void setSavedEventsIds(List<String> savedEventsIds) {
         this.savedEventsIds = new ArrayList<>(savedEventsIds);
     }
+
+    public void setDB(FirebaseDatabase db){
+        this.db = db;
+    }
+
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
@@ -187,10 +192,10 @@ public class User {
             this.username = response.getUsername();
             this.email = response.getEmail();
             this.fullName = response.getFullName();
-            this.friendsIds = response.getFriendsIds();
-            this.ownedGroupsIds = response.getOwnedGroupsIds();
-            this.participatingGroupsIds = response.getParticipatingGroupsIds();
-            this.savedEventsIds = response.getSavedEventsIds();
+            this.friendsIds = new ArrayList<>(response.getFriendsIds());
+            this.ownedGroupsIds = new ArrayList<>(response.getOwnedGroupsIds());
+            this.participatingGroupsIds = new ArrayList<>(response.getParticipatingGroupsIds());
+            this.savedEventsIds = new ArrayList<>(response.getSavedEventsIds());
             this.birthDate = response.getBirthDate();
             this.notifications = response.getNotifications();
             this.location = response.getLocation();
@@ -214,6 +219,9 @@ public class User {
     }
 
     public CompletableFuture<Boolean> addOwnedGroup(Group group){
+        if(this.ownedGroupsIds.contains(group.getUuid())){
+            return CompletableFuture.completedFuture(true);
+        }
         if(this.ownedGroupsIds.add(group.getUuid().toString())){
             return this.db.updateArrayField(USERS_COLLECTION_KEY + uuid, OWNED_GROUPS_KEY, group.getUuid().toString())
                     .thenCompose(task -> addParticipatingGroup(group));
@@ -222,6 +230,10 @@ public class User {
     }
 
     public CompletableFuture<Boolean> addParticipatingGroup(Group group){
+        if(this.participatingGroupsIds.contains(group.getUuid())){
+            return CompletableFuture.completedFuture(true);
+        }
+
         if(this.participatingGroupsIds.add(group.getUuid().toString())){
             return this.db.updateArrayField(USERS_COLLECTION_KEY + uuid, PARTICIPATING_GROUPS_KEY, group.getUuid().toString());
         }

@@ -7,6 +7,7 @@
     <string name="main_event_creation_button">Create Event</string>
     <string name="main_placeholder_event_view">PH Event</string>
     <string name="find_your_friends_button">Find your friends</string>
+    <string name="create_group_button">Create a new group</string>
 
     <!-- Strings used for Map Activity -->
     <string name="map_switch_button">Switch between Events and Venues</string>
@@ -137,6 +138,7 @@
     <string name="add_to_calendar_button" />
     <string name="add_organization_button_text">Add Organization</string>
     <string name="add_event_organization_button">Create Event</string>
+    <string name="button_publish_news">Publish news</string>
 
 
 </resources>

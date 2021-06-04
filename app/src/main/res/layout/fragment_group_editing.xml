@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".views.fragments.group.GroupEditingFragment"
+android:background="@color/white"
+android:orientation="vertical"
+    android:id="@+id/groupEditingRoot">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:background="@color/navigation_bar_background"
+            android:orientation="vertical"
+            android:paddingTop="20dp">
+
+            <TextView
+                android:id="@+id/profile_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="New Group"
+                android:textColor="#fff"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:paddingLeft="20dp"
+                android:gravity="center">
+
+                <include
+                    android:id="@+id/group_picture"
+                    layout="@layout/user_picture_view"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:gravity="center">
+
+                    <EditText
+                        android:id="@+id/group_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/white"
+                        android:hint="Group Name"
+                        android:paddingLeft="10dp"
+                        android:textSize="20dp"
+                        android:maxLength="20"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/scrollable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="350dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:scrollbars="vertical"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="@color/unselected_icon_color">
+
+            <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:counterEnabled="true"
+            app:counterMaxLength="200"
+            app:passwordToggleEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/group_bio_edit"
+                android:hint="Group bio"
+                android:layout_width="match_parent"
+                android:backgroundTint="@android:color/transparent"
+                android:layout_height="80dp"
+                android:maxLength="200"
+                android:gravity="top|left"
+                android:inputType="textMultiLine|textNoSuggestions"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <ImageView
+                        android:id="@+id/email_icon_user_profile"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_baseline_place_24" />
+
+                    <TextView
+                        android:id="@+id/meeting_point_group_creation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Set the meeting point"
+                        android:gravity="center"
+                        android:textSize="18dp"
+                        android:inputType="textMultiLine"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/date_group_editing_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="20dp"
+                            android:background="#00000000"
+                            android:padding="0dp"
+                            app:icon="@drawable/ic_round_calendar_today_24"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconSize="40dp"
+                            app:iconTint="@color/quantum_grey800" />
+
+                        <TextView
+                            android:id="@+id/date_text_group_creation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="20dp"
+                            android:hint="Set a meeting date"
+                            android:textSize="20dp"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/time_group_editing_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="20dp"
+                            android:background="#00000000"
+                            android:padding="0dp"
+                            app:icon="@drawable/ic_baseline_access_time_24"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconSize="40dp"
+                            app:iconTint="@color/quantum_grey800" />
+
+                        <TextView
+                            android:id="@+id/time_text_group_creation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="20dp"
+                            android:hint="Set a meeting time"
+                            android:textSize="20dp"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>

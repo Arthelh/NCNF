@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +21,15 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.views.activities.group.GroupActivity;
+import com.ncnf.views.activities.group.GroupCreationActivity;
 import com.ncnf.views.activities.login.LoginActivity;
 import com.ncnf.views.activities.friends.FriendsActivity;
 
-import com.ncnf.views.activities.event.EventNewsActivity;
 import com.ncnf.views.activities.user.UserTabActivity;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.NEXT_ACTIVITY_EXTRA_KEY;
-import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 public class HomeFragment extends Fragment {
 
@@ -50,13 +51,9 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         getView().findViewById(R.id.homeProfileButton).setOnClickListener(this::gotToProfile);
-        getView().findViewById(R.id.homeEventNewsButton).setOnClickListener(this::goToEventNews);
         getView().findViewById(R.id.homeFriendsButton).setOnClickListener(this::goToFriends);
+        getView().findViewById(R.id.create_group).setOnClickListener(this::goToGroupCreation);
         getView().findViewById(R.id.track_friends_button).setOnClickListener(v -> gpsIsEnabled());
-    }
-
-    public void gotToProfile(View view){
-        goToActivity(UserTabActivity.class);
     }
 
     private void goToActivity(Class<?> activity){
@@ -68,15 +65,16 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void goToFriends(View view){
-        goToActivity(FriendsActivity.class);
+    private void gotToProfile(View view){
+        goToActivity(UserTabActivity.class);
     }
 
-    // Temporary
-    public void goToEventNews(View view){
-        Intent intent = new Intent(getContext(), EventNewsActivity.class);
-        intent.putExtra(UUID_KEY, "361f8d6f-ccf0-4ee3-a596-d62a910874f6");
-        startActivity(intent);
+    private void goToGroupCreation(View view){
+        goToActivity(GroupCreationActivity.class);
+    }
+
+    private void goToFriends(View view){
+        goToActivity(FriendsActivity.class);
     }
 
     private boolean isConnected(){

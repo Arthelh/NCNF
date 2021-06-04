@@ -18,14 +18,10 @@ public abstract class SocialObject implements Comparable<SocialObject> {
     public static final String IMAGE_PATH = "/events/images";
     public static final String IMAGE_NAME = "banner_%s";
 
-
-
     private UUID uuid;
     private String ownerId;
     private String name;
     private LocalDateTime date;
-    private List<String> attendees;
-    private int numOfAttendees;
     private String description;
     private GeoPoint location;
     private String address;
@@ -40,7 +36,7 @@ public abstract class SocialObject implements Comparable<SocialObject> {
      * @param description Description of the socialObject
      */
     public SocialObject(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description) {
-        this(UUID.randomUUID(), ownerId, name, date, location, address, new ArrayList<>(), description);
+        this(UUID.randomUUID(), ownerId, name, date, location, address, description);
     }
 
     /**
@@ -51,18 +47,15 @@ public abstract class SocialObject implements Comparable<SocialObject> {
      * @param date Date during which the socialObject will take place
      * @param location Location where the socialObject will take place (GPS coordinates)
      * @param address Address corresponding the location of the socialObject
-     * @param attendees List of IDs of the people attending the socialObject
      * @param description Description of the socialObject
      */
-    public SocialObject(UUID uuid, String ownerId, String name, LocalDateTime date, GeoPoint location, String address, List<String> attendees, String description) {
+    public SocialObject(UUID uuid, String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description) {
         this.uuid = uuid;
         this.ownerId = ownerId;
         this.name = name;
         this.date = date;
         this.location = location;
         this.address = address;
-        this.attendees = attendees;
-        this.numOfAttendees = (attendees == null) ? 0 : attendees.size();
         this.description = description;
     }
 
@@ -83,12 +76,6 @@ public abstract class SocialObject implements Comparable<SocialObject> {
     }
     public java.lang.String getAddress() {
         return address;
-    }
-    public List<String> getAttendees() {
-        return Collections.unmodifiableList(attendees);
-    }
-    public int getNumOfAttendees() {
-        return numOfAttendees;
     }
     public String getDescription() {
         return description;
@@ -118,10 +105,6 @@ public abstract class SocialObject implements Comparable<SocialObject> {
     public void setAddress(String address) {
         this.address = address;
     }
-    public void setAttendees(List<String> attendees) {
-        this.attendees = new ArrayList<>(attendees);
-        numOfAttendees = attendees.size();
-    }
     public void setDescription(String description) {
         this.description = description;
     }
@@ -132,9 +115,4 @@ public abstract class SocialObject implements Comparable<SocialObject> {
      * @return CompletableFuture containing the Firebase's response : true if successful
      */
     abstract public CompletableFuture<Boolean> store(FirebaseDatabase db);
-
-    //TODO WTF is this doing here? Why is there a static method, that takes a DBS, in an abstract class, where it only is used for events??????
-    public static CompletableFuture<Boolean> addNews(FirebaseDatabase db, String uuid, String value) {
-        return db.updateArrayField(EVENTS_COLLECTION_KEY + uuid, NEWS_KEY, value);
-    }
 }

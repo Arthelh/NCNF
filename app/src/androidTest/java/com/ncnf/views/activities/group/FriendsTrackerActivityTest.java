@@ -108,7 +108,7 @@ public class FriendsTrackerActivityTest {
 
         ArrayList<String> s = new ArrayList<>();
         s.add("1");
-        when(g.getAttendees()).thenReturn(s);
+        when(g.getMembers()).thenReturn(s);
 
         when(groupRepository1.loadGroup(gUuid.toString())).thenReturn(CompletableFuture.completedFuture(g));
        // when(user1.getParticipatingGroupsIds().contains("0")).thenReturn(true);
