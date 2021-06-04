@@ -125,9 +125,6 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         thisGroup.thenAccept(group -> {
             if(group != null) {
                 friendsUUID = new ArrayList<>(group.getAttendees());
-                if(!user.getParticipatingGroupsIds().contains(groupId)) {
-                    friendsUUID.add(user.getUuid());
-                }
                 meetingPoint = group.getLocation();
 
                 getImagesForClusters();
@@ -135,6 +132,10 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             }
         });
 
+    }
+
+    public void setFriendsUUID(List<String> newIds) {
+        this.friendsUUID = new ArrayList<>(newIds);
     }
 
     private void startMap() {
@@ -331,6 +332,9 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         return false;
     }
 
+    /**
+     * function getImagesForClusters gets the profile pictures of all users in the group from the database
+     */
     public void getImagesForClusters() {
 
         for(int i = 0; i < friendsUUID.size(); ++i) {

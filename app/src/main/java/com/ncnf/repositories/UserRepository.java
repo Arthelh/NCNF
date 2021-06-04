@@ -12,6 +12,8 @@ import javax.inject.Inject;
 import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_KEY;
 import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_TOKEN_KEY;
+import static com.ncnf.utilities.StringCodes.OWNED_GROUPS_KEY;
+import static com.ncnf.utilities.StringCodes.PARTICIPATING_GROUPS_KEY;
 import static com.ncnf.utilities.StringCodes.USERNAME_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
@@ -97,11 +99,31 @@ public class UserRepository {
         return this.db.getField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY);
     }
 
+    /**
+     * get the User's full name
+     * @param uuid the unique identifier of the User
+     * @return A CompletableFuture wrapping the user's full name
+     */
     public CompletableFuture<String> getUserFullName(String uuid){
         return this.db.getField(USERS_COLLECTION_KEY + uuid, FULL_NAME_KEY);
     }
 
+    /**
+     * get the User's username
+     * @param uuid the unique identifier of the User
+     * @return A CompletableFuture wrapping the user's username
+     */
     public CompletableFuture<String> getUserUsername(String uuid){
         return this.db.getField(USERS_COLLECTION_KEY + uuid, USERNAME_KEY);
+    }
+
+    /**
+     * update the user's participating groups
+     * @param uuid the unique identifier of the User
+     * @param participatingGroups the new list of participating groups
+     * @return A CompletableFuture wrapping a boolean indicating that the request was successful or not
+     */
+    public CompletableFuture<Boolean> updateParticipatingGroups(String uuid, List<String> participatingGroups) {
+        return this.db.updateField(USERS_COLLECTION_KEY + uuid, PARTICIPATING_GROUPS_KEY, participatingGroups);
     }
 }

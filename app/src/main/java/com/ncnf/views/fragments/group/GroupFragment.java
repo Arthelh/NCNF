@@ -14,16 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.adapters.GroupsAdapter;
 import com.ncnf.models.Group;
 import com.ncnf.models.User;
 import com.ncnf.repositories.GroupRepository;
+import com.ncnf.repositories.UserRepository;
 
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 import javax.inject.Inject;
 
@@ -33,10 +37,13 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class GroupFragment extends Fragment {
 
     @Inject
-    public User user;
+    public FirebaseUser user;
 
     @Inject
     public GroupRepository repository;
+
+    @Inject
+    public UserRepository userRepository;
 
     private FragmentManager fragmentManager;
     private RecyclerView recycler;
@@ -67,7 +74,7 @@ public class GroupFragment extends Fragment {
 
     private void setUpGroupsView() {
 
-        user.loadUserFromDB().thenAccept(user -> {
+        userRepository.loadUser(user.getUid()).thenAccept(user -> {
             List<String> allGroups = new ArrayList<>(user.getOwnedGroupsIds());
             allGroups.addAll(user.getParticipatingGroupsIds());
             CompletableFuture<List<Group>> groupsFuture = repository.loadMultipleGroups(allGroups);
@@ -87,18 +94,29 @@ public class GroupFragment extends Fragment {
     }
 
     private void openGroupPage(Group g) {
-        GroupDisplayFragment nextFrag= new GroupDisplayFragment();
+
         Bundle bundle = new Bundle();
         bundle.putString("GROUP_ID", g.getUuid().toString());
-        nextFrag.setArguments(bundle);
 
+        if(g.getOwnerId().equals(user.getUid())) {
+            GroupDisplayFragmentOwner nextFrag= new GroupDisplayFragmentOwner();
+            nextFrag.setArguments(bundle);
 
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(((ViewGroup)getView().getParent()).getId(), nextFrag, "findThisFragment")
-                .addToBackStack("tag")
-                .commit();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(((ViewGroup)getView().getParent()).getId(), nextFrag, "findThisFragment")
+                    .addToBackStack("tag")
+                    .commit();
 
+        }
+        else {
+            GroupDisplayFragment nextFrag= new GroupDisplayFragment();
+            nextFrag.setArguments(bundle);
 
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(((ViewGroup)getView().getParent()).getId(), nextFrag, "findThisFragment")
+                    .addToBackStack("tag")
+                    .commit();
+        }
     }
 
 

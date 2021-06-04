@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.ncnf.utilities.StringCodes.ADDRESS_KEY;
-import static com.ncnf.utilities.StringCodes.ATTENDEES_KEY;
+import static com.ncnf.utilities.StringCodes.MEMBERS_KEY;
 import static com.ncnf.utilities.StringCodes.DATE_KEY;
 import static com.ncnf.utilities.StringCodes.DESCRIPTION_KEY;
 import static com.ncnf.utilities.StringCodes.INVITED_KEY;
@@ -38,7 +38,7 @@ public class DatabaseGroupBuilder extends DatabaseObjectBuilder<Group>{
         LocalDateTime datetime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         GeoPoint location = (GeoPoint) data.get(LOCATION_KEY);
         String address = data.get(ADDRESS_KEY).toString();
-        List<String> attendees = (List<String>) data.get(ATTENDEES_KEY);
+        List<String> attendees = (List<String>) data.get(MEMBERS_KEY);
         String description = (String) data.get(DESCRIPTION_KEY);
         List<String> invited = (List<String>) data.get(INVITED_KEY);
 
@@ -53,7 +53,7 @@ public class DatabaseGroupBuilder extends DatabaseObjectBuilder<Group>{
         map.put(NAME_KEY, group.getName());
         Date date = Date.from(group.getDate().atZone(ZoneId.systemDefault()).toInstant());
         map.put(DATE_KEY, new Timestamp(date));
-        map.put(ATTENDEES_KEY, group.getAttendees());
+        map.put(MEMBERS_KEY, group.getAttendees());
         map.put(DESCRIPTION_KEY, group.getDescription());
         map.put(LOCATION_KEY, group.getLocation());
         map.put(ADDRESS_KEY, group.getAddress());

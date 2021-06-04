@@ -7,15 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.ncnf.R;
 import com.ncnf.adapters.UserListAdapter;
 import com.ncnf.models.Group;
@@ -24,27 +28,24 @@ import com.ncnf.repositories.GroupRepository;
 import com.ncnf.repositories.UserRepository;
 import com.ncnf.utilities.Helpers;
 import com.ncnf.views.activities.group.FriendsTrackerActivity;
-import com.ncnf.views.activities.group.GroupActivity;
 import com.ncnf.views.activities.main.MainActivity;
-import com.ncnf.views.fragments.home.HomeFragment;
 import com.ncnf.views.fragments.user.PublicProfileFragment;
 import com.ncnf.views.fragments.user.UserProfileTabFragment;
-
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static android.content.ContentValues.TAG;
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
 
 @AndroidEntryPoint
-public class GroupDisplayFragment extends Fragment {
+public class GroupDisplayFragmentOwner extends Fragment {
 
     @Inject
     public User user;
@@ -58,37 +59,41 @@ public class GroupDisplayFragment extends Fragment {
     private String groupID;
     private Group group;
 
-    private TextView groupName;
+    private EditText groupName;
     private TextView groupAddress;
-    private TextView groupDescription;
+    private EditText groupDescription;
     private TextView groupOwner;
 
     private RecyclerView recycler;
     private UserListAdapter adapter;
 
     private Button button;
-    private Button leaveGroupButton;
+    private Button deleteGroupButton;
+
+    private MaterialButton editGroupButton;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_display_group, container, false);
+        return inflater.inflate(R.layout.fragment_display_group_owner, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        groupName = view.findViewById(R.id.group_display_name);
-        groupDescription = view.findViewById(R.id.group_display_description);
-        groupAddress = view.findViewById(R.id.group_address);
-        groupOwner = view.findViewById(R.id.group_owner);
+        groupName = view.findViewById(R.id.group_display_name_editable);
+        groupDescription = view.findViewById(R.id.group_display_description_editable);
+        groupAddress = view.findViewById(R.id.group_address_editable);
+        groupOwner = view.findViewById(R.id.group_owner_editable);
 
-        recycler = view.findViewById(R.id.group_attendees_view);
+        recycler = view.findViewById(R.id.group_attendees_view_editable);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        button = view.findViewById(R.id.open_map_button);
-        leaveGroupButton = view.findViewById(R.id.leave_group_button);
+        button = view.findViewById(R.id.open_map_button_editable);
+        deleteGroupButton = view.findViewById(R.id.delete_group_button);
+        editGroupButton = view.findViewById(R.id.edit_group_button);
+        editGroupButton.setIcon(requireActivity().getDrawable(R.drawable.ic_outline_edit_24));
 
         Bundle bundle = this.getArguments();
         if(bundle != null) {
@@ -109,6 +114,11 @@ public class GroupDisplayFragment extends Fragment {
         groupName.setText(group.getName());
         groupDescription.setText(group.getDescription());
         groupAddress.setText(group.getAddress());
+
+        groupName.setEnabled(false);
+        groupDescription.setEnabled(false);
+
+        editGroupButton.setOnClickListener(editGroupListener());
 
         button.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), FriendsTrackerActivity.class);
@@ -142,7 +152,8 @@ public class GroupDisplayFragment extends Fragment {
             recycler.setAdapter(adapter);
         });
 
-        leaveGroupButton.setOnClickListener(leaveGroupListener());
+
+        deleteGroupButton.setOnClickListener(deleteGroupListener());
 
     }
 
@@ -164,31 +175,87 @@ public class GroupDisplayFragment extends Fragment {
         }
     }
 
-    private View.OnClickListener leaveGroupListener() {
+    private View.OnClickListener deleteGroupListener() {
 
         return v -> {
-            List<String> participatingGroups = new ArrayList<>(user.getParticipatingGroupsIds());
-            participatingGroups.remove(groupID);
-            user.setParticipatingGroupsIds(participatingGroups);
 
-            List<String> attendees = new ArrayList<>(group.getAttendees());
-            attendees.remove(user.getUuid());
-            group.setAttendees(attendees);
+            List<String> ownedGroups = new ArrayList<>(user.getOwnedGroupsIds());
+            ownedGroups.remove(groupID);
+            user.setOwnedGroupsIds(ownedGroups);
 
-            user.saveUserToDB().thenAccept(aBoolean -> {
-                repository.storeGroup(group).thenAccept(aBoolean1 -> {
-                    if(aBoolean1) {
-                        FragmentManager fragmentManager = getParentFragmentManager();
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        fragmentManager.popBackStack();
-                        startActivity(intent);
+            userRepository.loadMultipleUsers(group.getAttendees()).thenAccept(users -> {
+                CompletableFuture<Boolean> allChanged = user.saveUserToDB();
+                for(int i = 0; i < users.size(); ++i) {
+
+                    User thisUser = users.get(i);
+
+                    if(!thisUser.getUuid().equals(group.getOwnerId())) {
+
+                        List<String> participatingGroups = new ArrayList<>(thisUser.getParticipatingGroupsIds());
+                        participatingGroups.remove(groupID);
+
+                        allChanged = Helpers.combine(allChanged, userRepository.updateParticipatingGroups(thisUser.getUuid(), participatingGroups));
+
                     }
-                    else {
-                        Log.d(TAG, "Error in updating attendees");
-                    }
+                }
+
+                allChanged.thenAccept(aBoolean -> {
+                    repository.deleteGroup(group);
+
+                    FragmentManager fragmentManager = getParentFragmentManager();
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    fragmentManager.popBackStack();
+                    startActivity(intent);
                 });
+
             });
+
         };
     }
+
+    private View.OnClickListener editGroupListener() {
+        return v -> {
+            editGroupButton.setIcon(requireActivity().getDrawable(R.drawable.ic_outline_check_24));
+            editGroupButton.setOnClickListener(this::saveChanges);
+
+            groupName.setEnabled(true);
+            groupName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_outline_edit_24, 0, 0, 0);
+
+            groupDescription.setEnabled(true);
+            groupDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_outline_edit_24, 0, 0, 0);
+
+        };
+    }
+
+    private void failurePopUp(String title, String message) {
+        new AlertDialog.Builder(requireActivity())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("Retry", ((dialog, which) -> dialog.cancel()))
+                .show();
+    }
+
+    private void saveChanges(View view) {
+        group.setName(groupName.getText().toString());
+        group.setDescription(groupDescription.getText().toString());
+
+        repository.storeGroup(group).thenAccept(aBoolean -> {
+            Snackbar.make(getActivity().findViewById(android.R.id.content), "Changes successfully saved", LENGTH_SHORT).show();
+            groupName.setEnabled(false);
+            groupDescription.setEnabled(false);
+
+            groupName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            groupDescription.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+
+            editGroupButton.setIcon(requireActivity().getDrawable(R.drawable.ic_outline_edit_24));
+            editGroupButton.setOnClickListener(editGroupListener());
+
+        }).exceptionally(exception -> {
+            failurePopUp("Error", "Fail to save group changes.\n Please disconnect, reconnect and try again" + exception.getMessage());
+            return null;
+        });
+    }
+
 
 }

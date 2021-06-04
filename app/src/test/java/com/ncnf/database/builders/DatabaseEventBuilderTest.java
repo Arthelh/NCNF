@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static com.ncnf.utilities.StringCodes.ADDRESS_KEY;
-import static com.ncnf.utilities.StringCodes.ATTENDEES_KEY;
+import static com.ncnf.utilities.StringCodes.MEMBERS_KEY;
 import static com.ncnf.utilities.StringCodes.DATE_KEY;
 import static com.ncnf.utilities.StringCodes.DESCRIPTION_KEY;
 import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
@@ -78,7 +78,7 @@ public class DatabaseEventBuilderTest {
         event.put(ADDRESS_KEY, this.address);
         event.put(VISIBILITY_KEY, "PUBLIC");
         event.put(TYPE_KEY, this.type);
-        event.put(ATTENDEES_KEY, this.attendees);
+        event.put(MEMBERS_KEY, this.attendees);
         event.put(DESCRIPTION_KEY, this.description);
         event.put(OWNER_KEY, this.ownerId);
         event.put(EMAIL_KEY, email);
@@ -114,7 +114,7 @@ public class DatabaseEventBuilderTest {
         group.put(ADDRESS_KEY, this.address);
         group.put(VISIBILITY_KEY, "PRIVATE");
         group.put(TYPE_KEY, this.type);
-        group.put(ATTENDEES_KEY, this.attendees);
+        group.put(MEMBERS_KEY, this.attendees);
         group.put(DESCRIPTION_KEY, this.description);
         group.put(OWNER_KEY, this.ownerId);
         group.put(INVITED_KEY, invited);

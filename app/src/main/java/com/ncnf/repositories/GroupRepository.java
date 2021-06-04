@@ -49,4 +49,14 @@ public class GroupRepository {
     public CompletableFuture<List<Group>> loadMultipleGroups(List<String> uuidList){
         return this.db.whereIn(GROUPS_COLLECTION_KEY, UUID_KEY, uuidList, Group.class);
     }
+
+    /**
+     * Deletes the Group from the Database
+     * @param group the Group object to delete
+     * @return A CompletableFuture wrapping a boolean indicating that the request was successful or not
+     */
+    public CompletableFuture<Boolean> deleteGroup(Group group){
+        return this.db.deleteDocument(GROUPS_COLLECTION_KEY + group.getUuid());
+    }
+
 }

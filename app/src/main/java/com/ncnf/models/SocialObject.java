@@ -62,7 +62,7 @@ public abstract class SocialObject implements Comparable<SocialObject> {
         this.location = location;
         this.address = address;
         this.attendees = attendees;
-        this.numOfAttendees = attendees.size();
+        this.numOfAttendees = (attendees == null) ? 0 : attendees.size();
         this.description = description;
     }
 
