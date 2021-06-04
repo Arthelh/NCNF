@@ -194,8 +194,8 @@ public class GroupFragmentOwnerTest {
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
         onView(withId(R.id.edit_group_button)).perform(click());
-        onView(withId(R.id.group_display_name_editable)).perform(replaceText("new username"));
-        onView(withId(R.id.group_display_description_editable)).perform(replaceText("new full name"));
+        onView(withId(R.id.group_display_name_editable)).perform(replaceText("Group Test"));
+        onView(withId(R.id.group_display_description_editable)).perform(replaceText("description here"));
 
         onView(withId(R.id.edit_group_button)).perform(click());
         onView(withId(R.id.group_display_name_editable)).check(matches(not(isEnabled())));
