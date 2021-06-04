@@ -80,7 +80,8 @@ public class GroupTest {
         assertEquals(group.getLocation(), geoPoint);
         assertEquals(group.getDescription(), description);
         assertEquals(group.getMembers().size(), 2);
-        assertEquals(group.getMembers().get(0), ownerId);
+        assertTrue(group.getMembers().contains(ownerId));
+        assertTrue(group.getMembers().contains("Invited1"));
 
     }
 

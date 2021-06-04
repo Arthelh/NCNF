@@ -36,6 +36,7 @@ import static com.ncnf.utilities.StringCodes.TYPE_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 import static com.ncnf.utilities.StringCodes.VISIBILITY_KEY;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DatabaseEventBuilderTest {
 
@@ -119,17 +120,18 @@ public class DatabaseEventBuilderTest {
         group.put(OWNER_KEY, this.ownerId);
         group.put(MEMBERS_KEY, invited);
 
-        Group event = groupBuilder.toObject(uuid, group);
+        Group group1 = groupBuilder.toObject(uuid, group);
 
-        assertEquals(event.getUuid().toString(), uuid);
-        assertEquals(event.getName(), name);
+        assertEquals(group1.getUuid().toString(), uuid);
+        assertEquals(group1.getName(), name);
 
-        assertDateEquals(event.getDate(), date);
-        assertEquals(event.getLocation(), location);
-        assertEquals(event.getAddress(), address);
-        assertEquals(event.getDescription(), description);
-        assertEquals(event.getOwnerId(), ownerId);
-        assertEquals(event.getMembers().get(0), "invited");
+        assertDateEquals(group1.getDate(), date);
+        assertEquals(group1.getLocation(), location);
+        assertEquals(group1.getAddress(), address);
+        assertEquals(group1.getDescription(), description);
+        assertEquals(group1.getOwnerId(), ownerId);
+        assertTrue(group1.getMembers().contains("invited"));
+        assertTrue(group1.getMembers().contains(ownerId));
 
     }
 
