@@ -16,6 +16,7 @@ import com.ncnf.R;
 import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Group;
 import com.ncnf.models.User;
+import com.ncnf.repositories.FriendsRepository;
 import com.ncnf.repositories.GroupRepository;
 import com.ncnf.repositories.UserRepository;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
@@ -53,6 +54,9 @@ public class GroupCreationActivity extends AppCompatActivity {
     @Inject
     public FirebaseDatabase databaseService;
 
+    @Inject
+    public FriendsRepository friendsRepository;
+
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private GroupEditingFragment groupEditionFragment;
@@ -70,12 +74,12 @@ public class GroupCreationActivity extends AppCompatActivity {
 
 
         if(savedInstanceState == null){
-            this.groupEditionFragment = new GroupEditingFragment();
-            this.friendSelectorFragment = new FriendSelectionGroupFragment();
+            this.groupEditionFragment = new GroupEditingFragment(this.user);
+            this.friendSelectorFragment = new FriendSelectionGroupFragment(this.user, this.friendsRepository);
         }
 
-        fragmentManager.beginTransaction().add(R.id.group_creation_fragment_container, this.friendSelectorFragment).hide(this.friendSelectorFragment).commit();
         fragmentManager.beginTransaction().add(R.id.group_creation_fragment_container, this.groupEditionFragment).hide(this.groupEditionFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.group_creation_fragment_container, this.friendSelectorFragment).hide(this.friendSelectorFragment).commit();
 
         fragmentManager.beginTransaction().show(this.groupEditionFragment).commit();
 
@@ -150,7 +154,7 @@ public class GroupCreationActivity extends AppCompatActivity {
             LocalDate date = this.groupEditionFragment.getGroupDate();
             GeoPoint meetingPoint = this.groupEditionFragment.getMeetingPointLocation();
             String name = this.groupEditionFragment.getGroupName();
-            boolean isOkay = time != null && date != null && meetingPoint != null && name != null;
+            boolean isOkay = time != null && date != null && name != null;
             if(!isOkay){
                 Snackbar.make(findViewById(android.R.id.content), "Please fill every field (bio is optional).", LENGTH_SHORT).show();
             } else {
@@ -170,8 +174,7 @@ public class GroupCreationActivity extends AppCompatActivity {
 
     private void closeAndGoHome(View view){
         Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
         finish();
+        startActivity(intent);
     }
-
 }

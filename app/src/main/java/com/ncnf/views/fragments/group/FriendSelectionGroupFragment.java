@@ -32,15 +32,18 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class FriendSelectionGroupFragment extends Fragment {
 
-    @Inject
-    public User user;
 
-    @Inject
-    public FriendsRepository friendsRepository;
+    private User user;
+    private FriendsRepository friendsRepository;
 
     private RecyclerView recycler;
     private TextView emptyRecyclerText;
     private UserListAdapter adapter;
+
+    public FriendSelectionGroupFragment(User user, FriendsRepository friendsRepository){
+        this.user = user;
+        this.friendsRepository = friendsRepository;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

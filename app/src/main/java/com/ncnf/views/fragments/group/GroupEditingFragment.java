@@ -70,9 +70,7 @@ import static java.lang.Math.min;
 @AndroidEntryPoint
 public class GroupEditingFragment extends Fragment {
 
-    @Inject
-    public User user;
-
+    private User user;
     private TextView meetingPoint;
     private GeoPoint userLocation;
     private GeoPoint meetingPointLocation;
@@ -91,7 +89,11 @@ public class GroupEditingFragment extends Fragment {
     private TextView meetingDate;
 
     private ImageView groupPicture;
-    public Bitmap bitMap;
+    private Bitmap bitMap;
+
+    public GroupEditingFragment(User user){
+        this.user = user;
+    }
 
     public LocalTime getGroupTime() {
         return time;
@@ -161,7 +163,7 @@ public class GroupEditingFragment extends Fragment {
         this.datePickerDialog = new DatePickerDialog(requireActivity(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, (view1, year, month, day) -> {
             this.date = LocalDate.of(year, month, day);
             this.meetingDate.setText(this.date.toString());
-        }, date.getYear(), date.getMonth().getValue(), date.getDayOfMonth());
+        }, date.getYear(), date.getMonth().getValue()-1, date.getDayOfMonth());
         this.datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         this.meetingDate.setOnClickListener(v -> setDate(v));
