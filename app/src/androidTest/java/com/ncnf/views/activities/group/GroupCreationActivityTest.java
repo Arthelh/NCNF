@@ -135,6 +135,8 @@ public class GroupCreationActivityTest {
                 .check(matches(isDisplayed()));
     }
 
+    /*
+
     @Test
     public void writingInAllField(){
         onView(withId(R.id.create_group_button)).check(matches(not(isEnabled())));
