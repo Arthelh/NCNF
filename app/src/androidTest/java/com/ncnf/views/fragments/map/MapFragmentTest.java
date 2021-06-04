@@ -19,9 +19,11 @@ import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
+import com.ncnf.authentication.firebase.FirebaseUserModule;
 import com.ncnf.models.Organization;
 import com.ncnf.repositories.EventRepository;
 import com.ncnf.repositories.OrganizationRepository;
@@ -34,6 +36,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
@@ -41,12 +44,14 @@ import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import dagger.hilt.android.testing.BindValue;
 import dagger.hilt.android.testing.HiltAndroidRule;
 import dagger.hilt.android.testing.HiltAndroidTest;
+import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -62,13 +67,16 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
+@UninstallModules(FirebaseUserModule.class)
 public final class MapFragmentTest {
 
     static private final EventRepository mockEventRepository = Mockito.mock(EventRepository.class);
     static private final OrganizationRepository mockOrgRepo = Mockito.mock(OrganizationRepository.class);
+    static private final FirebaseUser mockUser = Mockito.mock(FirebaseUser.class);
 
     static private final Event e1 = new Event("u1", "TestGeo", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", Event.Type.Conference, 0, 0, "email@test.com");
     static private final Event e2 = new Event("u2", "Another Fun event", LocalDateTime.now(), new GeoPoint(46.5338f, 6.5914f), "EPFL", "Math Conference", Event.Type.Conference, 0, 0, "email@test.com");
@@ -90,6 +98,9 @@ public final class MapFragmentTest {
     @BindValue
     public OrganizationRepository organizationRepository = mockOrgRepo;
 
+    @BindValue
+    public FirebaseUser user = mockUser;
+
     @BeforeClass
     static public void injectEvents() {
         CompletableFuture<List<Event>> future = CompletableFuture.completedFuture(events);
@@ -97,6 +108,9 @@ public final class MapFragmentTest {
 
         CompletableFuture<List<Organization>> orgFuture = CompletableFuture.completedFuture(organizations);
         when(mockOrgRepo.getOrganizationsNearby()).thenReturn(orgFuture);
+
+        when(mockUser.getUid()).thenReturn("u1");
+        when(mockOrgRepo.getByUUID(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
     }
 
     @Before
@@ -242,28 +256,29 @@ public final class MapFragmentTest {
 
     }
 
-//    @Test
-//    public final void testOrgInfoWindow(){
-//        onView(withId(R.id.map_switch_button)).perform(click());
-//
-//        UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-//
-//        UiObject marker = device.findObject(new UiSelector().descriptionContains(o1.getName()));
-//        try {
-//            marker.click();
-//            Rect markerRect = marker.getBounds();
-//            int x = markerRect.centerX();
-//            int y = markerRect.centerY() - (3 * markerRect.height() / 4);
-//            device.click(x, y);
-//            Thread.sleep(10000);
-//        } catch (UiObjectNotFoundException | InterruptedException e) {
-//            Assert.fail("Marker not found.");
-//        }
-//
-//        onView(withId(R.id.organization_display_name)).check(matches(withText(containsString(o1.getName()))));
-//
-//        Espresso.pressBack();
-//
-//        onView(withId(R.id.map_switch_button)).check(matches(withText(containsString("Switch"))));
-//    }
+    @Ignore
+    @Test
+    public final void testOrgInfoWindow(){
+        onView(withId(R.id.map_switch_button)).perform(click());
+
+        UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+
+        UiObject marker = device.findObject(new UiSelector().descriptionContains(o1.getName()));
+        try {
+            marker.click();
+            Rect markerRect = marker.getBounds();
+            int x = markerRect.centerX();
+            int y = markerRect.centerY() - (3 * markerRect.height() / 4);
+            device.click(x, y);
+            Thread.sleep(10000);
+        } catch (UiObjectNotFoundException | InterruptedException e) {
+            Assert.fail("Marker not found.");
+        }
+
+        onView(withId(R.id.organization_display_name)).check(matches(withText(containsString(o1.getName()))));
+
+        Espresso.pressBack();
+
+        onView(withId(R.id.map_switch_button)).check(matches(withText(containsString("Switch"))));
+    }
 }
