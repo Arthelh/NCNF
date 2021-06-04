@@ -75,6 +75,7 @@ public class StringCodes {
     /**
      * Keys related to organizations
      */
+    public static final String ORGANIZATIONS_IMAGE_PATH = "organizations";
     public static final String ORGANIZATIONS_COLLECTION_KEY = "organizations/";
     public static final String ORGANIZATION_UUID = "uuid";
     public static final String ORGANIZATION_NAME = "name";

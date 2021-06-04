@@ -10,6 +10,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.ncnf.R;
 import com.ncnf.views.fragments.bookmark.FragmentSelector;
 
+import java.util.Objects;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -29,5 +31,6 @@ public class BookMarkActivity extends AppCompatActivity {
                 (tab, position) -> tab.setText(fragmentSelector.getPageTitle(position))
         ).attach();
 
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
     }
 }

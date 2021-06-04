@@ -91,7 +91,7 @@ public class OrganizationTabFragment extends Fragment {
         
         organizations = new LinkedList<>();
 
-        adapter = new OrganizationListAdapter(organizations, this::onOrganizationClick);
+        adapter = new OrganizationListAdapter(requireContext(), organizations, this::onOrganizationClick);
         recycler.setAdapter(adapter);
 
         organizationRepository.getUserOrganizations(user.getUuid()).thenAccept(org -> {
