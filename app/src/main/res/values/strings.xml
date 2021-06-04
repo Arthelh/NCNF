@@ -85,7 +85,7 @@
 
     <string name="login">Login</string>
     <string name="email_hint">Email...</string>
-    <string name="confirm_password">Confirm Password</string>
+    <string name="confirm_password">Confirm password...</string>
     <string name="register">Register</string>
     <string name="firebaseNotifications">Registration</string>
     <string name="password_hint">Password...</string>
