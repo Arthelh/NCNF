@@ -139,7 +139,7 @@ public class GroupCreationActivityTest {
     public void writingInAllField(){
         onView(withId(R.id.create_group_button)).check(matches(not(isEnabled())));
 
-        onView(withId(R.id.group_name)).perform(replaceText("GroupName"));
+        onView(withId(R.id.group_name)).perform(replaceText("GroupName"), closeSoftKeyboard());
 
         onView(withId(R.id.date_text_group_creation)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
@@ -160,7 +160,7 @@ public class GroupCreationActivityTest {
     @Test
     public void creatingGroupWithNobodyIsImpossible(){
 
-        onView(withId(R.id.group_name)).perform(replaceText("GroupName"));
+        onView(withId(R.id.group_name)).perform(replaceText("GroupName"), closeSoftKeyboard());
 
         onView(withId(R.id.date_text_group_creation)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));

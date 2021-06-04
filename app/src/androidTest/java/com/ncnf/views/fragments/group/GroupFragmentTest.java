@@ -39,6 +39,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -140,7 +141,7 @@ public class GroupFragmentTest {
     @Test
     public void correctTextIsDisplayed(){
         onView(withId(R.id.group_name)).check(matches(withText("Group Test")));
-        onView(withId(R.id.group_num)).check(matches(withText("1 participant")));
+        onView(withId(R.id.group_num)).check(matches(withText(containsString("participant"))));
     }
 
     @Test
