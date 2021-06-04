@@ -32,13 +32,14 @@
                     android:background="#00000000"
                     android:padding="0dp"
                     app:icon="@drawable/ic_manage_accounts_black_24dp"
-                    android:text="Profile"
+                    android:text="@string/home_profile_button"
                     android:textColor="@color/black"
                     android:textAlignment="center"
                     app:iconGravity="top"
                     app:iconPadding="0dp"
                     app:iconSize="150dp"
-                    app:iconTint="@color/quantum_grey800" />
+                    app:iconTint="@color/quantum_grey800"
+                    tools:ignore="RtlCompat" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/homeFriendsButton"
@@ -50,13 +51,13 @@
                     android:padding="0dp"
                     app:icon="@drawable/ic_baseline_emoji_people_24"
                     app:iconGravity="top"
-                    android:text="Friends"
+                    android:text="@string/home_friends_button"
                     android:textColor="@color/black"
                     android:textAlignment="center"
                     app:iconPadding="0dp"
                     app:iconSize="150dp"
                     app:iconTint="@color/quantum_grey800"
-                    />
+                    tools:ignore="RtlCompat" />
 
             </LinearLayout>
 
@@ -74,15 +75,15 @@
                     android:gravity="center_vertical"
                     android:background="#00000000"
                     android:padding="0dp"
-                    app:icon="@drawable/ic_outline_public_24"
+                    app:icon="@drawable/ic_groups_black_24dp"
                     app:iconGravity="top"
-                    android:text="Find your friends"
+                    android:text="@string/home_groups_button"
                     android:textColor="@color/black"
                     android:textAlignment="center"
                     app:iconPadding="0dp"
                     app:iconSize="150dp"
                     app:iconTint="@color/quantum_grey800"
-                    />
+                    tools:ignore="RtlCompat" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/bookmark_home_button"
@@ -94,13 +95,13 @@
                     android:padding="0dp"
                     app:icon="@drawable/ic_outline_bookmarks_24"
                     app:iconGravity="top"
-                    android:text="Bookmark"
+                    android:text="@string/home_bookmark_button"
                     android:textColor="@color/black"
                     android:textAlignment="center"
                     app:iconPadding="0dp"
                     app:iconSize="150dp"
                     app:iconTint="@color/quantum_grey800"
-                    />
+                    tools:ignore="RtlCompat" />
 
             </LinearLayout>
 
