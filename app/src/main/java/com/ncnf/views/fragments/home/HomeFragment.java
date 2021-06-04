@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Intent intent = getActivity().getIntent();
         if(intent != null && intent.getExtras() != null) {
-            boolean gotDisconnected = (boolean) intent.getExtras().get("disconnected");
+            boolean gotDisconnected = intent.getExtras().getBoolean("disconnected");
             if (gotDisconnected) {
                 Snackbar.make(requireActivity().findViewById(android.R.id.content), "Successfully disconnected", LENGTH_SHORT).show();
             }
