@@ -141,17 +141,17 @@ public class GroupCreationActivityTest {
 
         onView(withId(R.id.group_name)).perform(replaceText("GroupName"), closeSoftKeyboard());
 
-        onView(withId(R.id.date_text_group_creation)).perform(click());
+        onView(withId(R.id.date_text_group_creation)).perform(scrollTo(), click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.date_text_group_creation)).check(matches(withText(containsString("2020-02-16"))));
 
-        onView(withId(R.id.time_text_group_creation)).perform(click());
+        onView(withId(R.id.time_text_group_creation)).perform(scrollTo(), click());
         onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.time_text_group_creation)).check(matches(withText(containsString("18:30"))));
 
-        onView(withId(R.id.next_step_group_creation_button)).perform(click());
+        onView(withId(R.id.next_step_group_creation_button)).perform(scrollTo(), click());
         onView(withId(R.id.group_name)).check(matches(not(isDisplayed())));
         onView(withId(R.id.friends_selector_group_recycler_view)).check(matches(isDisplayed()));
         onView(withId(R.id.create_group_button)).check(matches(isEnabled()));
@@ -162,12 +162,12 @@ public class GroupCreationActivityTest {
 
         onView(withId(R.id.group_name)).perform(replaceText("GroupName"), closeSoftKeyboard());
 
-        onView(withId(R.id.date_text_group_creation)).perform(click());
+        onView(withId(R.id.date_text_group_creation)).perform(scrollTo(), click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.date_text_group_creation)).check(matches(withText(containsString("2020-02-16"))));
 
-        onView(withId(R.id.time_text_group_creation)).perform(click());
+        onView(withId(R.id.time_text_group_creation)).perform(scrollTo(), click());
         onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.time_text_group_creation)).check(matches(withText(containsString("18:30"))));
