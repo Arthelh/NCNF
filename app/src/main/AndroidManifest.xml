@@ -29,11 +29,12 @@
             android:parentActivityName=".views.activities.main.MainActivity" />
         <activity
             android:name=".views.activities.group.GroupActivity"
+
             android:parentActivityName=".main.MainActivity" />
         <activity
             android:name=".views.activities.bookmark.BookMarkActivity"
             android:label="@string/title_activity_bookmark"
-            android:parentActivityName=".user.UserProfileActivity" />
+            android:parentActivityName=".views.activities.main.MainActivity" />
         <activity
             android:name=".views.activities.user.UserTabActivity"
             android:parentActivityName=".views.activities.main.MainActivity"
@@ -74,14 +75,7 @@
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" /> <!-- FEED -->
-        <activity
-            android:name=".views.fragments.organization.EventCreateFragment"
-            android:label="@string/title_event_creation"
-            android:parentActivityName=".views.activities.main.MainActivity" />
-        <activity
-            android:name=".views.activities.event.EventNewsActivity"
-            android:label="Publish a news"
-            android:parentActivityName=".views.activities.main.MainActivity" />
+
         <activity android:name=".views.activities.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
