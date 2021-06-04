@@ -95,6 +95,7 @@ public class SignUpFragment extends Fragment {
         }).thenRun(() -> {
             Intent intent = new Intent(getActivity(), activity);
             startActivity(intent);
+            requireActivity().finish();
         }).exceptionally(exception -> {
             Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + exception.getCause().getMessage());
             setException(exception.getCause().getMessage());
@@ -146,23 +147,22 @@ public class SignUpFragment extends Fragment {
     }
 
     private void showProgressBar(Boolean show){
-//        ProgressBar bar = getView().findViewById(R.id.progressBar);
-//        if(show){
-//            bar.setVisibility(View.VISIBLE);
-//        } else {
-//            bar.setVisibility(View.INVISIBLE);
-//        }
+        ProgressBar bar = getView().findViewById(R.id.sign_up_spinner);
+        if(show){
+            bar.setVisibility(View.VISIBLE);
+        } else {
+            bar.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setException(String s){
         AlertDialog.Builder popup = new AlertDialog.Builder(getActivity());
         popup.setCancelable(true);
         popup.setTitle(POPUP_TITLE);
-//        popup.setMessage(s);
+        popup.setMessage(s);
         popup.setPositiveButton(POPUP_POSITIVE_BUTTON, (dialog, which) -> {
             dialog.cancel();
         });
         popup.show();
-//        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 }

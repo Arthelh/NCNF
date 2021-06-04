@@ -83,6 +83,7 @@ public class SignInFragment extends Fragment {
             Log.d(DEBUG_TAG,"Successful login for " + email);
             Intent intent = new Intent(getActivity(), activity);
             startActivity(intent);
+            requireActivity().finish();
         }).exceptionally(exception -> {
             Log.d(DEBUG_TAG,"Unsuccessful login for " + email + " : " + exception.getCause().getMessage());
 
@@ -117,12 +118,12 @@ public class SignInFragment extends Fragment {
     }
 
     private void showProgressBar(Boolean show){
-//        ProgressBar bar = getView().findViewById(R.id.progressBar2);
-//        if(show){
-//            bar.setVisibility(View.VISIBLE);
-//        } else {
-//            bar.setVisibility(View.INVISIBLE);
-//        }
+        ProgressBar bar = getView().findViewById(R.id.sign_in_spinner);
+        if(show){
+            bar.setVisibility(View.VISIBLE);
+        } else {
+            bar.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setException(String s){
@@ -134,6 +135,5 @@ public class SignInFragment extends Fragment {
             dialog.cancel();
         });
         popup.show();
-//        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 }
