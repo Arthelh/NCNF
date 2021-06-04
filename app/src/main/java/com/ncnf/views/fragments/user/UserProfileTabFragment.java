@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -274,13 +275,18 @@ public class UserProfileTabFragment extends Fragment {
         user.setFullName(fullName.getText().toString());
         user.setUsername(username.getText().toString());
 
+        ProgressBar spinner = requireView().findViewById(R.id.user_spinner);
+        spinner.setVisibility(View.VISIBLE);
+
         user.saveUserToDB().thenAccept(userFieldsChanged -> {
             if (userFieldsChanged) {
                 Snackbar.make(getActivity().findViewById(android.R.id.content), "Changes successfully saved", LENGTH_SHORT).show();
+                spinner.setVisibility(View.GONE);
                 resetFields();
             }
         }).exceptionally(exception -> {
             failurePopUp("Error", "Fail to save your profile changes.\n Please disconnect, reconnect and try again" + exception.getMessage());
+            spinner.setVisibility(View.GONE);
             return null;
         });
     }
