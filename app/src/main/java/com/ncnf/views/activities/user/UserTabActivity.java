@@ -3,6 +3,7 @@ package com.ncnf.views.activities.user;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -14,6 +15,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.ncnf.R;
 import com.ncnf.views.fragments.organization.OrganizationTabFragment;
 import com.ncnf.views.fragments.user.UserProfileTabFragment;
+
+import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -34,6 +37,8 @@ public class UserTabActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.user_tabs);
 
         new TabLayoutMediator(tabLayout, viewPager,(tab, position) -> tab.setText(tabNames[position])).attach();
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
     }
 
     private class ViewPagerFragmentAdapter extends FragmentStateAdapter {
