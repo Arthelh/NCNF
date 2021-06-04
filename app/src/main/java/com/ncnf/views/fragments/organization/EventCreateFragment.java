@@ -1,5 +1,6 @@
 package com.ncnf.views.fragments.organization;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -26,11 +27,19 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
@@ -42,6 +51,7 @@ import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.storage.firebase.FirebaseFileStore;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.InputValidator;
+import com.ncnf.utilities.map.MapUtilities;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -67,6 +77,8 @@ import static com.ncnf.utilities.StringCodes.POPUP_POSITIVE_BUTTON;
 import static com.ncnf.utilities.StringCodes.POPUP_TITLE;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 @AndroidEntryPoint
 public class EventCreateFragment extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -83,6 +95,8 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
     @Inject
     public OrganizationRepository organizationRepository;
 
+    private ActivityResultLauncher<Intent> searchBarLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> updateEventLocation(result));
+
     private Organization organization;
     private String uuid;
     private String userEmail;
@@ -91,6 +105,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
     private Event.Type eventType;
     private LocalDate eventDate = LocalDate.now();
     private LocalTime eventTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
+    private GeoPoint eventLocation;
     private int selYear, selMonth, selDay, selHour, selMin;
     private static final int PICK_IMAGE = 100;
     private ImageView pictureView;
@@ -221,7 +236,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
                         eventUUID,
                         eventName.getText().toString(),
                         LocalDateTime.of(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute()),
-                        getLocationFromAddress(eventAddress.getText().toString()),
+                        eventLocation,
                         eventAddress.getText().toString(),
                         eventDescription.getText().toString(),
                         eventType,
@@ -247,30 +262,19 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
                 });
             }
         });
+
+        this.eventAddress.setOnClickListener(this::launchAddressSearchBar);
     }
 
     //Helpers
-    public GeoPoint getLocationFromAddress(String strAddress){
+    public void updateEventLocation(ActivityResult result){
 
-        Geocoder coder = new Geocoder(requireContext());
-        List<Address> address;
-
-        try {
-            address = coder.getFromLocationName(strAddress,5);
-            if (address==null) {
-                return null;
-            }
-            Address coordinates = address.get(0);
-            coordinates.getLatitude();
-            coordinates.getLongitude();
-
-            return new GeoPoint((double) (coordinates.getLatitude()),
-                    (double) (coordinates.getLongitude()));
-        } catch (Exception e){
-            return null;
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            Place place = Autocomplete.getPlaceFromIntent(result.getData());
+            String meetingPointAddress = place.getName() + ", " + place.getAddress();
+            this.eventLocation = new GeoPoint(place.getLatLng().latitude, place.getLatLng().longitude);
+            this.eventAddress.setText(meetingPointAddress);
         }
-
-
     }
 
     private void openGallery(){
@@ -342,6 +346,16 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // do nothing
+    }
+
+    public void launchAddressSearchBar(View view){
+        List<Place.Field> fields = Arrays.asList(Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
+
+        Autocomplete.IntentBuilder intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields);
+
+        intent.setCountries(MapUtilities.supported_countries);
+
+        searchBarLauncher.launch(intent.build(getActivity()));
     }
 
 }
