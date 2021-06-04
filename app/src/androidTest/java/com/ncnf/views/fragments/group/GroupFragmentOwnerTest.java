@@ -190,7 +190,7 @@ public class GroupFragmentOwnerTest {
 
     @Test
     public void changeFieldsWorks(){
-        when(user1.saveUserToDB()).thenReturn(CompletableFuture.completedFuture(true));
+        when(repository.storeGroup(g)).thenReturn(CompletableFuture.completedFuture(true));
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
         onView(withId(R.id.edit_group_button)).perform(click());
