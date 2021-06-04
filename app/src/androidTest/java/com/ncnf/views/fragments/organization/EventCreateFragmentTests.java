@@ -1,10 +1,13 @@
 package com.ncnf.views.fragments.organization;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import androidx.test.espresso.contrib.PickerActions;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -45,7 +48,9 @@ import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -98,6 +103,16 @@ public class EventCreateFragmentTests {
 
         onView(withId(R.id.set_contact_email)).perform(click(), closeSoftKeyboard()).check(matches(hasErrorText("This field cannot be empty")));
     }
+
+    /**
+    @Test
+    public void openGalleryTest(){
+        onView(withId(R.id.set_event_image)).perform(scrollTo(), click());
+        Intents.intended(hasAction(Intent.ACTION_PICK));
+    }
+     **/
+
+
 
     @Test
     public void eventFormValidatesWrongInput() {
@@ -152,5 +167,40 @@ public class EventCreateFragmentTests {
         onView(withId(R.id.use_personal_email_checkbox)).perform(scrollTo(), click());
         onView(withId(R.id.set_contact_email)).check(matches(withText("johnny@bar.com")));
     }
+
+    @Test
+    public void popupShownOnFail() {
+        when(firebaseFileStore.uploadImage(any(Bitmap.class))).thenReturn(CompletableFuture.completedFuture(true));
+        CompletableFuture future = new CompletableFuture();
+        future.completeExceptionally(new Exception());
+
+        when(eventRepository.storeEvent(any(Event.class))).thenReturn(future);
+        when(organizationRepository.addEventToOrganization(anyString(), anyString())).thenReturn(future);
+
+        onView(withId(R.id.set_event_name)).perform(scrollTo(), replaceText("Conference"));
+        onView(withId(R.id.set_event_description)).perform(scrollTo(), replaceText("Math are fun!"));
+        onView(withId(R.id.set_event_address)).perform(scrollTo(), replaceText("Empire State Building"));
+        onView(withId(R.id.set_event_price)).perform(scrollTo(), replaceText("10"));
+        onView(withId(R.id.set_min_age)).perform(scrollTo(), replaceText("18"));
+        onView(withId(R.id.set_contact_email)).perform(scrollTo(), replaceText("foo@bar.com"));
+        // Spinner
+        onView(withId(R.id.select_event_type)).perform(scrollTo(), click());
+        onData(allOf(is(instanceOf(String.class)), is("Movie"))).perform(click());
+        // Date
+        onView(withId(R.id.set_event_date_button)).perform(scrollTo(), click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
+        onView(withId(android.R.id.button1)).perform(click()); // click OK
+        // Time
+        onView(withId(R.id.set_event_time_button)).perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(20, 0));
+        onView(withId(android.R.id.button1)).perform(click()); // click OK
+
+        onView(withId(R.id.validate_event)).perform(scrollTo());
+        onView(withId(R.id.validate_event)).perform(click());
+
+        onView(withText("Connection Error")).check(matches(isDisplayed()));
+
+    }
+
 
 }

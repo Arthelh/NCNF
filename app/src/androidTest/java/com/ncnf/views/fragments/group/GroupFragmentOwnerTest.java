@@ -18,8 +18,11 @@ import com.ncnf.repositories.GroupRepository;
 import com.ncnf.repositories.UserRepository;
 import com.ncnf.views.activities.group.FriendsTrackerActivity;
 import com.ncnf.views.activities.group.GroupActivity;
+import com.ncnf.views.activities.main.MainActivity;
 
 import org.hamcrest.Matchers;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,6 +52,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.StringContains.containsString;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
@@ -87,11 +92,15 @@ public class GroupFragmentOwnerTest {
         l.add(gUuid.toString());
 
         when(user1.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user1));
+        when(user1.saveUserToDB()).thenReturn(CompletableFuture.completedFuture(true));
 
         ArrayList<Group> l2 = new ArrayList<>();
         l2.add(g);
 
+        when(repository2.loadMultipleUsers(any())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
         when(user1.getUuid()).thenReturn("u1");
+
+        when(repository2.updateParticipatingGroups(anyString(), anyList())).thenReturn(CompletableFuture.completedFuture(true));
 
         when(repository2.loadUser(eq("u1"))).thenReturn(CompletableFuture.completedFuture(user1));
 
@@ -103,6 +112,33 @@ public class GroupFragmentOwnerTest {
 
         when(repository2.getUserFullName(eq("u1"))).thenReturn(CompletableFuture.completedFuture("John"));
 
+    }
+
+    @Before
+    public void init() {
+        Intents.init();
+    }
+
+    @After
+    public void release() {
+        Intents.release();
+    }
+
+    @Test
+    public void changingDatesWorks() {
+
+        onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.edit_group_button)).perform(click());
+
+        onView(withId(R.id.group_date_editable)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.group_date_editable)).check(matches(withText(Matchers.containsString("2020-03-16"))));
+
+        onView(withId(R.id.group_time_editable)).perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.group_time_editable)).check(matches(withText(Matchers.containsString("18:30"))));
     }
 
     @Test
@@ -177,15 +213,23 @@ public class GroupFragmentOwnerTest {
 
     @Test
     public void mapActivityOpens(){
-        Intents.init();
-
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
         onView(withId(R.id.group_display_name_editable)).check(matches(withText("Group Test")));
         onView(withId(R.id.open_map_button_editable)).perform(click());
         Intents.intended(hasComponent(FriendsTrackerActivity.class.getName()));
 
-        Intents.release();
+    }
+
+    @Test
+    public void deleteSendsBackToHome(){
+
+        onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+        onView(withId(R.id.delete_group_button)).perform(click());
+
+        Intents.intended(hasComponent(MainActivity.class.getName()));
+
     }
 
     @Test
