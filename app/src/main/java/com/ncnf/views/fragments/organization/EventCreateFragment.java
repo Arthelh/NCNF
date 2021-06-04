@@ -75,6 +75,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import static android.app.Activity.RESULT_OK;
 import static com.ncnf.utilities.StringCodes.POPUP_POSITIVE_BUTTON;
 import static com.ncnf.utilities.StringCodes.POPUP_TITLE;
+import static com.ncnf.views.fragments.organization.OrganizationTabFragment.ORGANIZATION_UUID_KEY;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.max;
@@ -95,9 +96,9 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
     @Inject
     public OrganizationRepository organizationRepository;
 
-    private ActivityResultLauncher<Intent> searchBarLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> updateEventLocation(result));
+    private ActivityResultLauncher<Intent> searchBarLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::updateEventLocation);
 
-    private Organization organization;
+    private String organizationUUID;
     private String uuid;
     private String userEmail;
     private String userUUID;
@@ -133,7 +134,9 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
 
-        organizationRepository.getByUUID(this.uuid).thenAccept(o -> this.organization = o.get(0));
+        //organizationRepository.getByUUID(this.uuid).thenAccept(o -> this.organization = o.get(0));
+        Intent intent = this.getActivity().getIntent();
+        this.organizationUUID = intent.getStringExtra(ORGANIZATION_UUID_KEY);
 
         Button validate =v.findViewById(R.id.validate_event);
 
@@ -232,7 +235,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
 
                 DateAdapter date = new DateAdapter(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute());
                 Event event = new Event(
-                        organization.getUuid().toString(),
+                        organizationUUID,
                         eventUUID,
                         eventName.getText().toString(),
                         LocalDateTime.of(eventDate.getYear(), eventDate.getMonthValue(), eventDate.getDayOfMonth(), eventTime.getHour(), eventTime.getMinute()),
@@ -255,7 +258,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
                 CompletableFuture.allOf(
                         firebaseFileStore.uploadImage(bitmap),
                         eventRepository.storeEvent(event),
-                        organizationRepository.addEventToOrganization(organization.getUuid().toString(), eventUUID.toString())
+                        organizationRepository.addEventToOrganization(organizationUUID, eventUUID.toString())
                 ).thenAccept(t -> nextStep()).exceptionally(e -> {
                     failToCreateEvent(e.getMessage());
                     return null;
