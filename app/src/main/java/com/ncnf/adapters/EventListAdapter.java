@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ncnf.R;
 import com.ncnf.models.Event;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
-import com.ncnf.utilities.event.EventRelevanceCalculator;
 import com.ncnf.models.SocialObject;
 import com.ncnf.utilities.DateAdapter;
 
@@ -30,32 +29,20 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Soci
     private List<Event> events;
     private List<Event> eventsFull;
     private final OnSocialObjListener onSocialObjListener;
-    private SortingMethod sortingMethod;
     protected final Context context;
-
-    public enum SortingMethod {
-        DATE, RELEVANCE
-    }
 
     public interface OnSocialObjListener {
         void onEventClick(Event event);
     }
 
-    public EventListAdapter(Context context, List<Event> items, OnSocialObjListener onSocialObjListener, SortingMethod sortingMethod) {
+    public EventListAdapter(Context context, List<Event> items, OnSocialObjListener onSocialObjListener) {
         //ensure proper copy of the List
 
-        this.sortingMethod = SortingMethod.DATE;
+        events = new LinkedList<>(items);
+        Collections.sort(events);
+        eventsFull = new LinkedList<>(items);
+        Collections.sort(eventsFull);
 
-        if (sortingMethod == SortingMethod.DATE) {
-            events = new LinkedList<>(items);
-            Collections.sort(events);
-            eventsFull = new LinkedList<>(items);
-            Collections.sort(eventsFull);
-        } else {
-            EventRelevanceCalculator e = new EventRelevanceCalculator(items);
-            events = e.getSortedList();
-            this.eventsFull = new LinkedList<>(events);
-        }
 
         this.onSocialObjListener = onSocialObjListener;
         this.context = context;
@@ -84,7 +71,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Soci
         events.add(0, Event);
         eventsFull.add(0, Event);
 
-        orderBy(sortingMethod);
+        orderBy();
 
         // Notify the insertion so the view can be refreshed
         notifyItemInserted(events.indexOf(Event));
@@ -162,9 +149,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Soci
         private void setEventImage(Event event){
             FirebaseCacheFileStore fileStore = new FirebaseCacheFileStore();
             fileStore.setContext(context);
-            fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));
+            fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getOwnerId()));
             fileStore.downloadImage(image, BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.default_event_bg));
+                    R.drawable.default_event_header_picture));
         }
     }
 
@@ -189,16 +176,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Soci
     }
 
 
-    public void orderBy(SortingMethod sortingMethod) {
+    public void orderBy() {
         // RELEVANCE & DEFAULT CASE
-        if (sortingMethod == SortingMethod.DATE) {
-            Collections.sort(events);
-            Collections.sort(eventsFull);
-        } else {
-            EventRelevanceCalculator e = new EventRelevanceCalculator(events);
-            events = e.getSortedList();
-            this.eventsFull = new LinkedList<>(events);
-        }
+        Collections.sort(events);
+        Collections.sort(eventsFull);
+
 
         // Notify the insertion so the view can be refreshed
         notifyDataSetChanged();

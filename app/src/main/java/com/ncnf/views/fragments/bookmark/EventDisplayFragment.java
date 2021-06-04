@@ -18,9 +18,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.adapters.EventListAdapter;
 import com.ncnf.models.Event;
+import com.ncnf.repositories.UserRepository;
 import com.ncnf.views.fragments.event.EventFragment;
 import com.ncnf.models.User;
 
@@ -40,13 +42,14 @@ public class EventDisplayFragment extends Fragment implements EventListAdapter.O
     private List<Event> objToDisplay;
     private EventListAdapter adapter;
     private RecyclerView.LayoutManager lManager;
-    private final String collection;
 
     @Inject
-    public User user;
+    public FirebaseUser user;
 
-    public EventDisplayFragment(String collection){
-        this.collection = collection;
+    @Inject
+    public UserRepository userRepository;
+
+    public EventDisplayFragment(){
     }
 
     @Nullable
@@ -66,28 +69,17 @@ public class EventDisplayFragment extends Fragment implements EventListAdapter.O
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter
-        adapter = new EventListAdapter(getContext(), objToDisplay, this::onEventClick, EventListAdapter.SortingMethod.DATE);
+        adapter = new EventListAdapter(getContext(), objToDisplay, this::onEventClick);
         recycler.setAdapter(adapter);
-        getEventList(view.findViewById(R.id.SavedEventsRecyclerView));
 
-        user.loadUserFromDB();
-    }
-
-    private void getEventList(View view){
-        if(user != null){
-            CompletableFuture list;
-            if(collection == SAVED_EVENTS_KEY){
-                list = user.getSavedEvents();
-            } else {
-                list = user.getParticipatingGroups();
-            }
-
-            list.thenAccept(objects -> {
-                if(objects != null){
-                    this.adapter.setEvents((List)objects);
-                }
+        user.getUid();
+        userRepository.loadUser(user.getUid()).thenAccept(user ->{
+            user.getSavedEvents().thenAccept(list -> {
+               if(list != null){
+                   this.adapter.setEvents(list);
+               }
             });
-        }
+        });
     }
 
     @Override

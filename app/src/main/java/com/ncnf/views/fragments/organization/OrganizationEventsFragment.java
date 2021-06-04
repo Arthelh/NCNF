@@ -89,7 +89,7 @@ public class OrganizationEventsFragment extends Fragment {
             organizationRepository.getOrganizationEvents(o.get(0).getUuid().toString()).thenAccept(le -> {
                 this.eventsList.clear();
                 this.eventsList.addAll(le);
-                this.adapter = new EventListAdapter(getContext(), this.eventsList, this::onEventClick, EventListAdapter.SortingMethod.DATE);
+                this.adapter = new EventListAdapter(getContext(), this.eventsList, this::onEventClick);
                 this.recyclerView.setAdapter(adapter);
             }).exceptionally(e -> {e.printStackTrace(); return null;});
         }).exceptionally(e -> {e.printStackTrace(); return null;});

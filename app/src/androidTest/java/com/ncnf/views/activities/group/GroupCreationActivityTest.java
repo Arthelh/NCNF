@@ -52,8 +52,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
-import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -63,8 +61,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.ncnf.views.activities.friends.FriendsActivityTest.friendsRepository;
-import static com.ncnf.views.fragments.user.UserProfileTabFragment.email_popup_input_text;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
@@ -138,21 +134,24 @@ public class GroupCreationActivityTest {
 
     @Ignore
     @Test
-    public void writingInAllField(){
+    public void writingInAllField() throws InterruptedException {
         onView(withId(R.id.create_group_button)).check(matches(not(isEnabled())));
 
         onView(withId(R.id.group_name)).perform(replaceText("GroupName"), closeSoftKeyboard());
 
+        Thread.sleep(100);
         onView(withId(R.id.date_text_group_creation)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.date_text_group_creation)).check(matches(withText(containsString("2020-02-16"))));
 
+        Thread.sleep(100);
         onView(withId(R.id.time_text_group_creation)).perform(click());
         onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.time_text_group_creation)).check(matches(withText(containsString("18:30"))));
 
+        Thread.sleep(100);
         onView(withId(R.id.next_step_group_creation_button)).perform(click());
         onView(withId(R.id.group_name)).check(matches(not(isDisplayed())));
         onView(withId(R.id.friends_selector_group_recycler_view)).check(matches(isDisplayed()));
@@ -161,20 +160,22 @@ public class GroupCreationActivityTest {
 
     @Ignore
     @Test
-    public void creatingGroupWithNobodyIsImpossible(){
+    public void creatingGroupWithNobodyIsImpossible() throws InterruptedException {
 
         onView(withId(R.id.group_name)).perform(replaceText("GroupName"), closeSoftKeyboard());
-
+        Thread.sleep(100);
         onView(withId(R.id.date_text_group_creation)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.date_text_group_creation)).check(matches(withText(containsString("2020-02-16"))));
 
+        Thread.sleep(100);
         onView(withId(R.id.time_text_group_creation)).perform(click());
         onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.time_text_group_creation)).check(matches(withText(containsString("18:30"))));
 
+        Thread.sleep(100);
         onView(withId(R.id.next_step_group_creation_button)).perform(click());
         onView(withId(R.id.group_name)).check(matches(not(isDisplayed())));
         onView(withId(R.id.friends_selector_group_recycler_view)).check(matches(isDisplayed()));
@@ -188,23 +189,27 @@ public class GroupCreationActivityTest {
 
     @Ignore
     @Test
-    public void canGoBackToEditing(){
+    public void canGoBackToEditing() throws InterruptedException {
         onView(withId(R.id.group_name)).perform(replaceText("GroupName"));
 
+        Thread.sleep(100);
         onView(withId(R.id.date_text_group_creation)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.date_text_group_creation)).check(matches(withText(containsString("2020-02-16"))));
 
+        Thread.sleep(100);
         onView(withId(R.id.time_text_group_creation)).perform(click());
         onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.time_text_group_creation)).check(matches(withText(containsString("18:30"))));
 
+        Thread.sleep(100);
         onView(withId(R.id.next_step_group_creation_button)).perform(click());
         onView(withId(R.id.group_name)).check(matches(not(isDisplayed())));
         onView(withId(R.id.friends_selector_group_recycler_view)).check(matches(isDisplayed()));
 
+        Thread.sleep(100);
         onView(withId(R.id.next_step_group_creation_button)).perform(click());
         onView(withId(R.id.group_name)).check(matches(isDisplayed()));
         onView(withId(R.id.friends_selector_group_recycler_view)).check(matches(not(isDisplayed())));
@@ -269,20 +274,12 @@ public class GroupCreationActivityTest {
 
         onView(withId(R.id.friends_group_selector_text)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
+
     */
-
-
 
     @Test
     public void importingPhotosWorks(){
         onView(withId(R.id.group_picture)).perform(click());
         Intents.intended(hasAction(Intent.ACTION_PICK));
     }
-/*
-    @Test
-    public void closeButtonWorks(){
-        onView(withId(R.id.close_group_creation_button)).perform(click());
-        Intents.intended(hasComponent(MainActivity.class.getName()));
-    }
-    */
 }

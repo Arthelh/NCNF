@@ -142,7 +142,7 @@ public class GroupFragmentTest {
     @Test
     public void correctTextIsDisplayed(){
         onView(withId(R.id.group_name)).check(matches(withText("Group Test")));
-        onView(withId(R.id.group_num)).check(matches(withText(containsString("participant"))));
+        onView(withId(R.id.group_num)).check(matches(withText("2 members")));
     }
 
     @Test

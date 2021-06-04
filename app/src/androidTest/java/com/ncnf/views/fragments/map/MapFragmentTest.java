@@ -108,6 +108,7 @@ public final class MapFragmentTest {
 
         CompletableFuture<List<Organization>> orgFuture = CompletableFuture.completedFuture(organizations);
         when(mockOrgRepo.getOrganizationsNearby()).thenReturn(orgFuture);
+        when(mockOrgRepo.loadOrganization(anyString())).thenReturn(CompletableFuture.completedFuture(o1));
 
         when(mockUser.getUid()).thenReturn("u1");
         when(mockOrgRepo.getByUUID(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));

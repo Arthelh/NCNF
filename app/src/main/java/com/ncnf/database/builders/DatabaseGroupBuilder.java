@@ -38,7 +38,6 @@ public class DatabaseGroupBuilder extends DatabaseObjectBuilder<Group>{
         LocalDateTime datetime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         GeoPoint location = (GeoPoint) data.get(LOCATION_KEY);
         String address = data.get(ADDRESS_KEY).toString();
-        List<String> attendees = (List<String>) data.get(MEMBERS_KEY);
         String description = (String) data.get(DESCRIPTION_KEY);
         List<String> invited = (List<String>) data.get(MEMBERS_KEY);
 

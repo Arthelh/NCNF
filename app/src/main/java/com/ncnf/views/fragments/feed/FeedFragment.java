@@ -94,7 +94,7 @@ public class FeedFragment extends Fragment {
         if (eventList.isEmpty()){
             actualizeEvents();
         } else {
-            adapter = new EventListAdapter(getContext(), eventList, this::onEventClick, EventListAdapter.SortingMethod.DATE);
+            adapter = new EventListAdapter(getContext(), eventList, this::onEventClick);
             recycler.setAdapter(adapter);
         }
     }
@@ -152,10 +152,10 @@ public class FeedFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.dateOrder :
-                adapter.orderBy(EventListAdapter.SortingMethod.DATE);
+                adapter.orderBy();
                 break;
             case R.id.relevanceOrder :
-                adapter.orderBy(EventListAdapter.SortingMethod.RELEVANCE);
+                adapter.orderBy();
                 break;
         }
         return true;
@@ -183,7 +183,7 @@ public class FeedFragment extends Fragment {
                     result.add(e);
             }
             spinner.setVisibility(View.GONE);
-            adapter = new EventListAdapter(getContext(), result, this::onEventClick, EventListAdapter.SortingMethod.DATE);
+            adapter = new EventListAdapter(getContext(), result, this::onEventClick);
             recycler.setAdapter(adapter);
 
         }).exceptionally(e -> {

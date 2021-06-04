@@ -141,6 +141,7 @@ public class FriendsTrackerActivityTest {
         Intents.release();
     }
 
+    @Ignore
     @Test
     public void findsCurrentUser() {
 
@@ -161,8 +162,6 @@ public class FriendsTrackerActivityTest {
 
         assertTrue("User marker exists", marker.waitForExists(10000));
     }
-
-
 
     @Test
     public void testWithBoundService() throws TimeoutException {
