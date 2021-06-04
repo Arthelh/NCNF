@@ -79,6 +79,7 @@ public class BookMarkActivityTest {
 
         when(firebaseUser.getUid()).thenReturn("u1");
         when(organizationRepository.getByUUID(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
+        when(organizationRepository.loadOrganization(anyString())).thenReturn(CompletableFuture.completedFuture(o1));
         when(user.getSavedEvents()).thenReturn(CompletableFuture.completedFuture(events));
         when(user.getParticipatingGroups()).thenReturn(CompletableFuture.completedFuture(groups));
     }
@@ -87,6 +88,8 @@ public class BookMarkActivityTest {
     public void eventFormValidatesEmptyInput() throws InterruptedException {
         onView(withId(R.id.bookmark_view_pager)).perform(swipeLeft());
         onView(withId(R.id.bookmark_view_pager)).perform(swipeRight());
+
+        Thread.sleep(2000);
 
         onView(withId(R.id.bookmark_view_pager)).perform(click());
         onView(withId(R.id.EventPage)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
