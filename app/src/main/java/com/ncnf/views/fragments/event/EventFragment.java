@@ -72,7 +72,6 @@ public class EventFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         initSaveCalendar(view);
-        initPublishButtons(view);
         initSaveToBookmarkButton(view);
     }
 
@@ -144,33 +143,5 @@ public class EventFragment extends Fragment {
             return null;
         });
 
-    }
-
-    private void initPublishButtons(View view) {
-        // By default, the button is gone
-        Button button = view.findViewById(R.id.button_publish_event_news);
-        button.setVisibility(View.GONE);
-
-        // On button click, open the news publish form
-        button.setOnClickListener(b -> {
-            Bundle args = new Bundle();
-            args.putString(UUID_KEY, event.getUuid().toString());
-
-            Fragment frag = new EventNewsFragment();
-            frag.setArguments(args);
-
-            getParentFragmentManager().beginTransaction()
-                .replace(((ViewGroup) requireView().getParent()).getId(), frag, null)
-                .addToBackStack(null)
-                .commit();
-        });
-
-        // The button is visible only to admin of the organization
-        organizationRepository.getByUUID(event.getOwnerId()).thenAccept(organizations -> {
-            Organization organization = organizations.get(0);
-            if (organization.getAdminIds().contains(user.getUid())) {
-                button.setVisibility(View.VISIBLE);
-            }
-        });
     }
 }
