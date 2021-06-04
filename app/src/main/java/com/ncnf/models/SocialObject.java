@@ -132,9 +132,4 @@ public abstract class SocialObject implements Comparable<SocialObject> {
      * @return CompletableFuture containing the Firebase's response : true if successful
      */
     abstract public CompletableFuture<Boolean> store(FirebaseDatabase db);
-
-    //TODO WTF is this doing here? Why is there a static method, that takes a DBS, in an abstract class, where it only is used for events??????
-    public static CompletableFuture<Boolean> addNews(FirebaseDatabase db, String uuid, String value) {
-        return db.updateArrayField(EVENTS_COLLECTION_KEY + uuid, NEWS_KEY, value);
-    }
 }

@@ -57,9 +57,18 @@
                                 android:id="@+id/eventAddToCalendarButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Save to calendar"
+                                android:text="@string/event_save_to_calendar_button"
                                 android:textSize="10dp"
                                 app:icon="@drawable/ic_baseline_event_24"
+                                android:backgroundTint="@color/black"/>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/button_publish_event_news"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="24dp"
+                                android:text="@string/button_publish_news"
+                                tools:text="Publish news"
                                 android:backgroundTint="@color/black"/>
                         </LinearLayout>
 
