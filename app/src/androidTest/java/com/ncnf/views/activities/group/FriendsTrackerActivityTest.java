@@ -148,7 +148,7 @@ public class FriendsTrackerActivityTest {
 
         assertTrue("User marker exists", marker.waitForExists(5000));
     }
-
+    
     @Ignore
     @Test
     public void findsOtherUser() {
