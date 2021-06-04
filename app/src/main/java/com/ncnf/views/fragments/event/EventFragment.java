@@ -28,6 +28,11 @@ import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.SaveToCalendar;
 import com.ncnf.utilities.StringCodes;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -115,7 +120,12 @@ public class EventFragment extends Fragment {
 
         // Set Event Date
         TextView date = view.findViewById(R.id.eventDate);
-        date.setText(new DateAdapter(event.getDate()).toString());
+        LocalDateTime eventDate = event.getDate();
+        date.setText(eventDate.format(DateTimeFormatter.ofPattern("EEE'.' dd MMMM yyyy")));
+
+        // Set Event Time
+        TextView time = view.findViewById(R.id.eventTime);
+        time.setText(eventDate.format(DateTimeFormatter.ofPattern("HH:mm")));
 
         // Set Event address
         TextView address = view.findViewById(R.id.eventAddress);
