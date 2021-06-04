@@ -151,7 +151,7 @@ public class GroupCreationActivityTest {
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.time_text_group_creation)).check(matches(withText(containsString("18:30"))));
 
-        onView(withId(R.id.next_step_group_creation_button)).perform(scrollTo(), click());
+        onView(withId(R.id.next_step_group_creation_button)).perform(click());
         onView(withId(R.id.group_name)).check(matches(not(isDisplayed())));
         onView(withId(R.id.friends_selector_group_recycler_view)).check(matches(isDisplayed()));
         onView(withId(R.id.create_group_button)).check(matches(isEnabled()));
