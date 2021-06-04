@@ -26,6 +26,7 @@ import com.ncnf.utilities.user.LocationService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
@@ -137,6 +138,7 @@ public class FriendsTrackerActivityTest {
         Intents.release();
     }
 
+    @Ignore
     @Test
     public void findsCurrentUser() {
 
@@ -147,7 +149,7 @@ public class FriendsTrackerActivityTest {
         assertTrue("User marker exists", marker.waitForExists(5000));
     }
 
-    /*
+    @Ignore
     @Test
     public void findsOtherUser() {
 
@@ -157,7 +159,7 @@ public class FriendsTrackerActivityTest {
 
         assertTrue("User marker exists", marker.waitForExists(10000));
     }
-    */
+
 
 
     @Test

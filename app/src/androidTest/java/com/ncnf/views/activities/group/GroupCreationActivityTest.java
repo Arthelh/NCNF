@@ -51,8 +51,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
-import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -62,8 +60,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.ncnf.views.activities.friends.FriendsActivityTest.friendsRepository;
-import static com.ncnf.views.fragments.user.UserProfileTabFragment.email_popup_input_text;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
@@ -143,12 +139,12 @@ public class GroupCreationActivityTest {
 
         onView(withId(R.id.group_name)).perform(replaceText("GroupName"), closeSoftKeyboard());
 
-        onView(withId(R.id.date_text_group_creation)).perform(scrollTo(), click());
+        onView(withId(R.id.date_text_group_creation)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.date_text_group_creation)).check(matches(withText(containsString("2020-02-16"))));
 
-        onView(withId(R.id.time_text_group_creation)).perform(scrollTo(), click());
+        onView(withId(R.id.time_text_group_creation)).perform(click());
         onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.time_text_group_creation)).check(matches(withText(containsString("18:30"))));
@@ -164,12 +160,12 @@ public class GroupCreationActivityTest {
 
         onView(withId(R.id.group_name)).perform(replaceText("GroupName"), closeSoftKeyboard());
 
-        onView(withId(R.id.date_text_group_creation)).perform(scrollTo(), click());
+        onView(withId(R.id.date_text_group_creation)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.date_text_group_creation)).check(matches(withText(containsString("2020-02-16"))));
 
-        onView(withId(R.id.time_text_group_creation)).perform(scrollTo(), click());
+        onView(withId(R.id.time_text_group_creation)).perform(click());
         onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
         onView(withId(android.R.id.button1)).perform(click());
         onView(withId(R.id.time_text_group_creation)).check(matches(withText(containsString("18:30"))));
