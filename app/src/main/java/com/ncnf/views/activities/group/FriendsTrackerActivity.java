@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 import javax.inject.Inject;
 
@@ -134,10 +135,6 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     }
 
-    public void setFriendsUUID(List<String> newIds) {
-        this.friendsUUID = new ArrayList<>(newIds);
-    }
-
     private void startMap() {
 
         mapView.getMapAsync(googleMap -> {
@@ -224,27 +221,31 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
             if(userId.equals(user.getUuid())) {
                 if(i >= markers.size()) {
-
                     markers.put(userId, user.getLocation());
                     bitmapSetChanged();
+                }
+                else {
+                    markers.put(userId, user.getLocation());
+                    clusterMarkers.get(i).setPosition(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()));
+                    groupAttendeeMarkerRenderer.updatePosition(clusterMarkers.get(i));
                 }
             }
             else {
                 CompletableFuture<GeoPoint> field = userRepository.getUserPosition(userId);
                 int finalI = i;
                 field.thenAccept(point -> {
+                        if (!markers.keySet().contains(userId)) {
 
-                    if (!markers.keySet().contains(userId)) {
+                            markers.put(userId, point);
+                            bitmapSetChanged();
+                        } else {
+                            markers.put(userId, point);
+                            clusterMarkers.get(finalI).setPosition(new LatLng(point.getLatitude(), point.getLongitude()));
+                            groupAttendeeMarkerRenderer.updatePosition(clusterMarkers.get(finalI));
 
-                        markers.put(userId, point);
-                        bitmapSetChanged();
-                    } else {
-                        markers.put(userId, point);
-                        clusterMarkers.get(finalI).setPosition(new LatLng(point.getLatitude(), point.getLongitude()));
-                        groupAttendeeMarkerRenderer.updatePosition(clusterMarkers.get(finalI));
                     }
 
-                });
+                }).exceptionally(throwable -> null);
             }
         }
 

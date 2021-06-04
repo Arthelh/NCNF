@@ -101,6 +101,8 @@ public class FriendsTrackerActivityTest {
     @BeforeClass
     static public void injects() {
         when(user1.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user1));
+        when(user1.getLocation()).thenReturn(new GeoPoint(0, 0));
+
         when(user1.getUuid()).thenReturn("0");
         when(user2.getUuid()).thenReturn("1");
         ArrayList<Group> l = new ArrayList<>();
@@ -108,12 +110,13 @@ public class FriendsTrackerActivityTest {
 
         ArrayList<String> s = new ArrayList<>();
         s.add("1");
+        s.add("0");
         when(g.getMembers()).thenReturn(s);
 
         when(groupRepository1.loadGroup(gUuid.toString())).thenReturn(CompletableFuture.completedFuture(g));
        // when(user1.getParticipatingGroupsIds().contains("0")).thenReturn(true);
 
-        when(userRepository1.getUserFullName(eq("0"))).thenReturn(CompletableFuture.completedFuture("Johm"));
+        when(userRepository1.getUserFullName(eq("0"))).thenReturn(CompletableFuture.completedFuture("John"));
         when(userRepository1.getUserPosition(eq("0"))).thenReturn(CompletableFuture.completedFuture(new GeoPoint(0, 0)));
 
         when(userRepository1.getUserFullName(eq("1"))).thenReturn(CompletableFuture.completedFuture("Taylor"));

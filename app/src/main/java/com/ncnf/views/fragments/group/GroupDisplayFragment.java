@@ -31,6 +31,8 @@ import com.ncnf.views.fragments.user.PublicProfileFragment;
 import com.ncnf.views.fragments.user.UserProfileTabFragment;
 
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -63,6 +65,9 @@ public class GroupDisplayFragment extends Fragment {
     private TextView groupDescription;
     private TextView groupOwner;
 
+    private TextView groupDate;
+    private TextView groupTime;
+
     private RecyclerView recycler;
     private UserListAdapter adapter;
 
@@ -83,6 +88,8 @@ public class GroupDisplayFragment extends Fragment {
         groupDescription = view.findViewById(R.id.group_display_description);
         groupAddress = view.findViewById(R.id.group_address);
         groupOwner = view.findViewById(R.id.group_owner);
+        groupDate = view.findViewById(R.id.group_date);
+        groupTime = view.findViewById(R.id.group_time);
 
         recycler = view.findViewById(R.id.group_attendees_view);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -109,6 +116,12 @@ public class GroupDisplayFragment extends Fragment {
         groupName.setText(group.getName());
         groupDescription.setText(group.getDescription());
         groupAddress.setText(group.getAddress());
+
+        LocalDate date = LocalDate.of(group.getDate().getYear(), group.getDate().getMonth(), group.getDate().getDayOfMonth());
+        groupDate.setText(date.toString());
+
+        LocalTime time = LocalTime.of(group.getDate().getHour(), group.getDate().getMinute());
+        groupTime.setText(time.toString());
 
         button.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), FriendsTrackerActivity.class);
@@ -171,9 +184,9 @@ public class GroupDisplayFragment extends Fragment {
             participatingGroups.remove(groupID);
             user.setParticipatingGroupsIds(participatingGroups);
 
-            List<String> attendees = new ArrayList<>(group.getAttendees());
+            List<String> attendees = new ArrayList<>(group.getMembers());
             attendees.remove(user.getUuid());
-            group.setAttendees(attendees);
+            group.setMembers(attendees);
 
             user.saveUserToDB().thenAccept(aBoolean -> {
                 repository.storeGroup(group).thenAccept(aBoolean1 -> {

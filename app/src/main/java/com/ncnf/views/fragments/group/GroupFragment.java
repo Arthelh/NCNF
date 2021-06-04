@@ -37,7 +37,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class GroupFragment extends Fragment {
 
     @Inject
-    public FirebaseUser user;
+    public User user;
 
     @Inject
     public GroupRepository repository;
@@ -74,9 +74,8 @@ public class GroupFragment extends Fragment {
 
     private void setUpGroupsView() {
 
-        userRepository.loadUser(user.getUid()).thenAccept(user -> {
-            List<String> allGroups = new ArrayList<>(user.getOwnedGroupsIds());
-            allGroups.addAll(user.getParticipatingGroupsIds());
+        user.loadUserFromDB().thenAccept(user -> {
+            List<String> allGroups = new ArrayList<>(user.getParticipatingGroupsIds());
             CompletableFuture<List<Group>> groupsFuture = repository.loadMultipleGroups(allGroups);
 
             groupsFuture.thenAccept(groups -> {
@@ -98,7 +97,7 @@ public class GroupFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString("GROUP_ID", g.getUuid().toString());
 
-        if(g.getOwnerId().equals(user.getUid())) {
+        if(g.getOwnerId().equals(user.getUuid())) {
             GroupDisplayFragmentOwner nextFrag= new GroupDisplayFragmentOwner();
             nextFrag.setArguments(bundle);
 

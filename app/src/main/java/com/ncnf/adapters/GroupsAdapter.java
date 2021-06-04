@@ -85,7 +85,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 
         private void setTextFields(Group g) {
             groupName.setText(g.getName());
-            int num = g.getAttendees().size();
+            int num = g.getMembers().size();
             groupParticipants.setText(num + " participants");
         }
 

@@ -15,7 +15,6 @@ import com.ncnf.repositories.UserRepository;
 import com.ncnf.views.activities.group.FriendsTrackerActivity;
 import com.ncnf.views.activities.group.GroupActivity;
 
-
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,7 +45,7 @@ import static org.mockito.Mockito.when;
 
 @UninstallModules(CurrentUserModule.class)
 @HiltAndroidTest
-public class GroupFragmentTest {
+public class GroupFragmentOwnerTest {
 
     static private final User user1 = Mockito.mock(User.class);
     static private final GroupRepository repository1 = Mockito.mock(GroupRepository.class);
@@ -74,12 +73,15 @@ public class GroupFragmentTest {
     @BeforeClass
     static public void injects() {
         when(repository2.loadUser(anyString())).thenReturn(CompletableFuture.completedFuture(user1));
-        when(user1.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user1));
         ArrayList<String> l = new ArrayList<>();
         l.add(gUuid.toString());
 
+        when(user1.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user1));
+
         ArrayList<Group> l2 = new ArrayList<>();
         l2.add(g);
+
+        when(user1.getUuid()).thenReturn("u1");
 
         when(repository2.loadUser(eq("u1"))).thenReturn(CompletableFuture.completedFuture(user1));
 
@@ -99,7 +101,7 @@ public class GroupFragmentTest {
         when(user1.getUsername()).thenReturn("");
         when(user1.getEmail()).thenReturn("test@test.com");
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_owner)).check(matches(withText("test@test.com")));
+        onView(withId(R.id.group_owner_editable)).check(matches(withText("test@test.com")));
     }
 
     @Test
@@ -110,7 +112,7 @@ public class GroupFragmentTest {
         when(user1.getEmail()).thenReturn("test@test.com");
 
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_owner)).check(matches(withText("John")));
+        onView(withId(R.id.group_owner_editable)).check(matches(withText("John")));
     }
 
     @Test
@@ -121,7 +123,7 @@ public class GroupFragmentTest {
         when(user1.getEmail()).thenReturn("test@test.com");
 
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_owner)).check(matches(withText("@johnnn")));
+        onView(withId(R.id.group_owner_editable)).check(matches(withText("@johnnn")));
     }
 
     @Test
@@ -131,7 +133,7 @@ public class GroupFragmentTest {
         when(user1.getEmail()).thenReturn("test@test.com");
 
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_owner)).check(matches(withText("John (@johnnn)")));
+        onView(withId(R.id.group_owner_editable)).check(matches(withText("John (@johnnn)")));
     }
 
     @Test
@@ -148,17 +150,17 @@ public class GroupFragmentTest {
     @Test
     public void groupFragmentOpens(){
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_display_name)).check(matches(withText("Group Test")));
-        onView(withId(R.id.group_display_description)).check(matches(withText("description here")));
-        onView(withId(R.id.group_address)).check(matches(withText("random address")));
-        onView(withId(R.id.group_attendees_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.group_display_name_editable)).check(matches(withText("Group Test")));
+        onView(withId(R.id.group_display_description_editable)).check(matches(withText("description here")));
+        onView(withId(R.id.group_address_editable)).check(matches(withText("random address")));
+        onView(withId(R.id.group_attendees_view_editable)).check(matches(isDisplayed()));
     }
 
     @Test
     public void groupFragmentCloses(){
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_display_name)).check(matches(withText("Group Test")));
-        onView(withId(R.id.group_attendees_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.group_display_name_editable)).check(matches(withText("Group Test")));
+        onView(withId(R.id.group_attendees_view_editable)).check(matches(isDisplayed()));
         Espresso.pressBack();
         onView(withId(R.id.group_recycler_view)).check(matches(isDisplayed()));
     }
@@ -168,8 +170,8 @@ public class GroupFragmentTest {
         Intents.init();
 
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_display_name)).check(matches(withText("Group Test")));
-        onView(withId(R.id.open_map_button)).perform(click());
+        onView(withId(R.id.group_display_name_editable)).check(matches(withText("Group Test")));
+        onView(withId(R.id.open_map_button_editable)).perform(click());
         Intents.intended(hasComponent(FriendsTrackerActivity.class.getName()));
 
         Intents.release();
