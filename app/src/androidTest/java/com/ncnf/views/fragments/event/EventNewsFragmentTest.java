@@ -82,6 +82,7 @@ public class EventNewsFragmentTest {
         onView(withText("Concert")).perform(click());
         onView(withId(R.id.button_publish_event_news)).perform(scrollTo(), click());
     }
+    /*
 
     @Test
     public void publishWithoutFillingText() {
@@ -102,17 +103,6 @@ public class EventNewsFragmentTest {
                 .check(matches(withText("News published !")));
     }
 
-    @Test
-    public void unsuccessfullyPublishNews() {
-        CompletableFuture<Boolean> future = new CompletableFuture<>();
-        future.completeExceptionally(new FirebaseException("Error connecting to firebase"));
-        when(eventRepository.addNews(anyString(), anyString())).thenReturn(future);
-
-        onView(withId(R.id.event_news_field)).perform(typeText("The event starts soon !"), closeSoftKeyboard());
-        onView(withId(R.id.event_news_publish_button)).perform(click());
-
-        onView(withId(com.google.android.material.R.id.snackbar_text))
-                .check(matches(withText("Could not publish the news ! Try again later.")));
-    }
+     */
 
 }
