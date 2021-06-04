@@ -82,6 +82,8 @@ public class EventFragmentTest {
     public void setup(){
         when(user.getUid()).thenReturn("u1");
         when(organizationRepository.getByUUID(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
+        when(organizationRepository.loadOrganization(anyString())).thenReturn(CompletableFuture.completedFuture(o1));
+
 
         onView(withId(R.id.navigation_feed)).perform(click());
         onView(withId(R.id.feed_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
@@ -108,7 +110,7 @@ public class EventFragmentTest {
     @Test
     public void test_owner(){
         setup();
-        onView(withId(R.id.eventOrganization)).check(matches(withText(containsString(e1.getEmail()))));
+        onView(withId(R.id.eventOrganization)).check(matches(withText(containsString(o1.getName()))));
     }
 
     @Test
@@ -122,6 +124,7 @@ public class EventFragmentTest {
         // the user is not an admin of the event's organization
         when(user.getUid()).thenReturn("not an admin");
         when(organizationRepository.getByUUID(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
+        when(organizationRepository.loadOrganization(anyString())).thenReturn(CompletableFuture.completedFuture(o1));
 
         onView(withId(R.id.navigation_feed)).perform(click());
         onView(withId(R.id.feed_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));

@@ -73,6 +73,7 @@ public class EventNewsFragmentTest {
     public void setup() throws InterruptedException {
         when(organizationRepository.getByUUID(anyString())).thenReturn(CompletableFuture.completedFuture(organizations));
         when(organizationRepository.getOrganizationEvents(anyString())).thenReturn(CompletableFuture.completedFuture(events));
+        when(organizationRepository.loadOrganization(anyString())).thenReturn(CompletableFuture.completedFuture(o1));
         when(user.getUid()).thenReturn("u1");
         when(user.getEmail()).thenReturn("johnny@bar.com");
 
