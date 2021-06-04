@@ -18,6 +18,10 @@ import com.ncnf.utilities.InputValidator;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 import static android.graphics.BitmapFactory.decodeResource;
 import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 

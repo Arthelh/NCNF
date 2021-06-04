@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ncnf.R;
 import com.ncnf.views.fragments.bookmark.EventDisplayFragment;
 
+import java.util.Objects;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -20,5 +22,6 @@ public class BookMarkActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.fragmentBookmarkContainer, new EventDisplayFragment()).commit();
 
 
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
     }
 }

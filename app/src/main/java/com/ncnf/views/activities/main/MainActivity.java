@@ -18,6 +18,8 @@ import com.ncnf.views.fragments.home.HomeFragment;
 import com.ncnf.views.fragments.map.MapFragment;
 import com.ncnf.views.activities.settings.SettingsActivity;
 
+import java.util.Objects;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
 
         if(savedInstanceState == null){
             this.homeFragment = new HomeFragment();
