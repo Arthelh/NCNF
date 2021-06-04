@@ -138,6 +138,7 @@
     <string name="add_organization_button_text">Add Organization</string>
     <string name="add_event_organization_button">Create Event</string>
     <string name="button_publish_news">Publish news</string>
+    <string name="event_save_to_calendar_button">Save to calendar</string>
 
 
 </resources>
