@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
 import com.ncnf.models.SocialObject;
 import com.ncnf.repositories.OrganizationRepository;
+import com.ncnf.repositories.UserRepository;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.SaveToCalendar;
@@ -42,9 +44,12 @@ public class EventFragment extends Fragment {
     public FirebaseUser user;
 
     @Inject
-    public OrganizationRepository organizationRepository;
+    public UserRepository userRepository;
 
     private final Event event;
+
+    @Inject
+    public OrganizationRepository organizationRepository;
 
     public EventFragment(Event event){
         this.event = event;
@@ -63,6 +68,7 @@ public class EventFragment extends Fragment {
         initViews(view);
         initSaveCalendar(view);
         initPublishButtons(view);
+        initSaveToBookmarkButton(view);
     }
 
     private void initSaveCalendar(View view){
@@ -72,6 +78,19 @@ public class EventFragment extends Fragment {
             if (calendarIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
                 startActivity(calendarIntent);
             }
+        });
+    }
+
+    private void initSaveToBookmarkButton(View view){
+        Button saveToBookmarkButton = view.findViewById(R.id.eventSaveToBookmarkButton);
+
+        saveToBookmarkButton.setOnClickListener(v -> {
+            userRepository.addBookmarkEventToUser(this.user.getUid(), this.event.getUuid().toString()).thenAccept(res -> {
+                Toast.makeText(getActivity(), "Saved to bookmark", Toast.LENGTH_SHORT).show();
+            }).exceptionally(e -> {
+                Toast.makeText(getActivity(), "Error saving the Event", Toast.LENGTH_SHORT).show();
+                return null;
+            });
         });
     }
 
