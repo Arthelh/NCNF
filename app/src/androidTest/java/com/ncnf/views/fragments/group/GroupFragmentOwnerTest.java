@@ -1,6 +1,10 @@
 package com.ncnf.views.fragments.group;
 
+import android.widget.DatePicker;
+import android.widget.TimePicker;
+
 import androidx.test.espresso.Espresso;
+import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -15,6 +19,7 @@ import com.ncnf.repositories.UserRepository;
 import com.ncnf.views.activities.group.FriendsTrackerActivity;
 import com.ncnf.views.activities.group.GroupActivity;
 
+import org.hamcrest.Matchers;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,11 +38,16 @@ import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -170,11 +180,29 @@ public class GroupFragmentOwnerTest {
         Intents.init();
 
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
         onView(withId(R.id.group_display_name_editable)).check(matches(withText("Group Test")));
         onView(withId(R.id.open_map_button_editable)).perform(click());
         Intents.intended(hasComponent(FriendsTrackerActivity.class.getName()));
 
         Intents.release();
+    }
+
+    @Test
+    public void changeFieldsWorks(){
+        when(user1.saveUserToDB()).thenReturn(CompletableFuture.completedFuture(true));
+        onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+        onView(withId(R.id.edit_group_button)).perform(click());
+        onView(withId(R.id.group_display_name_editable)).perform(replaceText("new username"));
+        onView(withId(R.id.group_display_description_editable)).perform(replaceText("new full name"));
+
+        onView(withId(R.id.edit_group_button)).perform(click());
+        onView(withId(R.id.group_display_name_editable)).check(matches(not(isEnabled())));
+        onView(withId(R.id.group_display_description_editable)).check(matches(not(isEnabled())));
+
+        onView(Matchers.allOf(withId(com.google.android.material.R.id.snackbar_text), withText("Changes successfully saved")))
+                .check(matches(isDisplayed()));
     }
 
 }

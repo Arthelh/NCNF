@@ -53,7 +53,6 @@ public class HomeFragment extends Fragment {
 
         getView().findViewById(R.id.homeProfileButton).setOnClickListener(this::gotToProfile);
         getView().findViewById(R.id.homeFriendsButton).setOnClickListener(this::goToFriends);
-        getView().findViewById(R.id.create_group).setOnClickListener(this::goToGroupCreation);
         getView().findViewById(R.id.track_friends_button).setOnClickListener(v -> gpsIsEnabled());
         getView().findViewById(R.id.bookmark_home_button).setOnClickListener(this::goToBookmark);
     }
