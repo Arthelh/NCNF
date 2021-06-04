@@ -1,13 +1,17 @@
 package com.ncnf.views.fragments.map;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -22,15 +26,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.button.MaterialButton;
 import com.ncnf.R;
 import com.ncnf.repositories.EventRepository;
 import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.utilities.map.MapHandler;
-import com.ncnf.utilities.map.SearchBarHandler;
+import com.ncnf.utilities.map.MapUtilities;
 import com.ncnf.utilities.settings.Settings;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -49,12 +57,11 @@ public class MapFragment extends Fragment{
     private MapView mapView;
 
     private MapHandler mapHandler;
-    private SearchBarHandler searchBarHandler;
+    private MaterialButton searchButton;
 
+    private ActivityResultLauncher<Intent> searchBarLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::updateUserLocation);
 
     //Toolbar and location services for it
-    private MaterialSearchBar materialSearchBar;
-    private PlacesClient placesClient;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private ActivityResultLauncher<String> requestPermissionLauncher;
 
@@ -81,7 +88,10 @@ public class MapFragment extends Fragment{
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
-        materialSearchBar = requireView().findViewById(R.id.searchBarMap);
+        Places.initialize(getContext(), "AIzaSyCRFxgUBUvyw9myry2shM_dw8VphTtEyJ4");
+
+        searchButton = requireView().findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(this::launchAddressSearchBar);
 
         // Initialize Google Map with the callback onMapReady
         mapView = requireView().findViewById(R.id.map);
@@ -90,13 +100,10 @@ public class MapFragment extends Fragment{
             mMap = googleMap;
 
             mapHandler = new MapHandler((AppCompatActivity) requireActivity(), mMap, getChildFragmentManager(), eventRepository, organizationRepository);
-            searchBarHandler = new SearchBarHandler(getActivity(), materialSearchBar, mapHandler);
 
             mapHandler.show_markers();
 
             mMap.setContentDescription("MAP_WITH_EVENTS");
-
-            setup_search_bar();
 
             map_ready = true;
         });
@@ -133,20 +140,24 @@ public class MapFragment extends Fragment{
         }
     }
 
+    public void updateUserLocation(ActivityResult result){
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            Place place = Autocomplete.getPlaceFromIntent(result.getData());
+            Settings.setUserPosition(place.getLatLng());
+            Log.d("debug", "Got here 2");
+        }
+    }
 
-    /*
-    This method comes for the most part from a youtube tutorial: https://www.youtube.com/watch?v=ifoVBdtXsv0
-     */
-    private void setup_search_bar(){
-        //Initialize Places element
-        Places.initialize(requireActivity(), "AIzaSyCRFxgUBUvyw9myry2shM_dw8VphTtEyJ4");
-        placesClient = Places.createClient(requireActivity());
-        final AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+    public void launchAddressSearchBar(View view){
+        List<Place.Field> fields = Arrays.asList(Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
 
-        searchBarHandler.createOnSearchActionListener();
+        Autocomplete.IntentBuilder intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields);
 
-        //Configure materialSearchBar behavior
-        searchBarHandler.createTextChangeListener(token, placesClient);
+        intent.setCountries(MapUtilities.supported_countries);
+
+        Log.d("debug", "Got here 1");
+
+        searchBarLauncher.launch(intent.build(getActivity()));
     }
 
 }
