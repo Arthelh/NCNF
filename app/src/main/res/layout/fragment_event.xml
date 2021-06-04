@@ -63,12 +63,21 @@
                                 android:backgroundTint="@color/black"/>
 
                             <com.google.android.material.button.MaterialButton
+                                android:id="@+id/eventSaveToBookmarkButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/save_to_bookmark"
+                                android:textSize="10sp"
+                                app:icon="@drawable/ic_baseline_bookmark_add_24"
+                                android:backgroundTint="@color/black"/>
+
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/button_publish_event_news"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="24dp"
                                 android:text="@string/button_publish_news"
-                                tools:text="Publish news"
+                                android:textSize="10sp"
+                                app:icon="@drawable/ic_baseline_add_24"
                                 android:backgroundTint="@color/black"/>
                         </LinearLayout>
 
@@ -206,7 +215,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Swisstech Convention Center, 1024 Ecublens"
+                        android:text="Event address"
                         android:paddingStart="20dp"
                         android:paddingEnd="50dp"
                         android:textSize="18sp"/>
@@ -230,7 +239,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="CLIC, EPFL"
+                        android:text=""
                         android:paddingStart="20dp"
                         android:paddingEnd="50dp"
                         android:textSize="18sp"/>
