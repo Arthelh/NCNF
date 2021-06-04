@@ -87,7 +87,7 @@ public class GroupCreationActivity extends AppCompatActivity {
         closeButton = findViewById(R.id.close_group_creation_button);
         createButton = findViewById(R.id.create_group_button);
         createButton.setVisibility(View.INVISIBLE);
-
+        createButton.setEnabled(false);
         nextStepButton.setOnClickListener(this::switchViews);
         closeButton.setOnClickListener(this::closeAndGoHome);
         createButton.setOnClickListener(this::createGroup);
@@ -162,19 +162,21 @@ public class GroupCreationActivity extends AppCompatActivity {
                 nextStepButton.setIcon(getDrawable(R.drawable.ic_baseline_arrow_back_24));
                 firstStep = false;
                 createButton.setVisibility(View.VISIBLE);
+                createButton.setEnabled(true);
             }
         } else {
             fragmentManager.beginTransaction().hide(this.friendSelectorFragment).show(this.groupEditionFragment).commit();
             nextStepButton.setIcon(getDrawable(R.drawable.ic_baseline_arrow_forward_24));
             firstStep = true;
             createButton.setVisibility(View.INVISIBLE);
+            createButton.setEnabled(false);
         }
 
     }
 
     private void closeAndGoHome(View view){
-        Intent intent = new Intent(this, MainActivity.class);
         finish();
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }

@@ -1,11 +1,13 @@
 package com.ncnf.views.activities.group;
 
 import android.content.Intent;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -57,6 +59,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.ncnf.views.activities.friends.FriendsActivityTest.friendsRepository;
@@ -64,6 +67,7 @@ import static com.ncnf.views.fragments.user.UserProfileTabFragment.email_popup_i
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.when;
@@ -109,6 +113,7 @@ public class GroupCreationActivityTest {
         List<User> users = new ArrayList<>();
         users.add(u1);
         when(mockedFriendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
+        //mockedFriendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
         when(mockedUser.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(mockedUser));
     }
 
@@ -132,6 +137,7 @@ public class GroupCreationActivityTest {
 
     @Test
     public void writingInAllField(){
+        onView(withId(R.id.create_group_button)).check(matches(not(isEnabled())));
 
         onView(withId(R.id.group_name)).perform(replaceText("GroupName"));
 
@@ -148,14 +154,126 @@ public class GroupCreationActivityTest {
         onView(withId(R.id.next_step_group_creation_button)).perform(click());
         onView(withId(R.id.group_name)).check(matches(not(isDisplayed())));
         onView(withId(R.id.friends_selector_group_recycler_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.create_group_button)).check(matches(isEnabled()));
     }
+
+    @Test
+    public void creatingGroupWithNobodyIsImpossible(){
+
+        onView(withId(R.id.group_name)).perform(replaceText("GroupName"));
+
+        onView(withId(R.id.date_text_group_creation)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.date_text_group_creation)).check(matches(withText(containsString("2020-02-16"))));
+
+        onView(withId(R.id.time_text_group_creation)).perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.time_text_group_creation)).check(matches(withText(containsString("18:30"))));
+
+        onView(withId(R.id.next_step_group_creation_button)).perform(click());
+        onView(withId(R.id.group_name)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.friends_selector_group_recycler_view)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.create_group_button)).check(matches(isEnabled()));
+        onView(withId(R.id.create_group_button)).perform(click());
+
+        onView(Matchers.allOf(withId(com.google.android.material.R.id.snackbar_text), withText(containsString("You can't"))))
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void canGoBackToEditing(){
+        onView(withId(R.id.group_name)).perform(replaceText("GroupName"));
+
+        onView(withId(R.id.date_text_group_creation)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.date_text_group_creation)).check(matches(withText(containsString("2020-02-16"))));
+
+        onView(withId(R.id.time_text_group_creation)).perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.time_text_group_creation)).check(matches(withText(containsString("18:30"))));
+
+        onView(withId(R.id.next_step_group_creation_button)).perform(click());
+        onView(withId(R.id.group_name)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.friends_selector_group_recycler_view)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.next_step_group_creation_button)).perform(click());
+        onView(withId(R.id.group_name)).check(matches(isDisplayed()));
+        onView(withId(R.id.friends_selector_group_recycler_view)).check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void createsCorrectlyAGroup(){
+        when(groupRepository.storeGroup(any())).thenReturn(CompletableFuture.completedFuture(true));
+        when(mockedUser.addOwnedGroup(any())).thenReturn(CompletableFuture.completedFuture(true));
+        when(mockedUser.addParticipatingGroup(any())).thenReturn(CompletableFuture.completedFuture(true));
+        when(mockedFirebaseDatabase.updateArrayField(anyString(), anyString(), anyObject())).thenReturn(CompletableFuture.completedFuture(true));
+
+
+        onView(withId(R.id.group_name)).perform(replaceText("GroupName"));
+
+        onView(withId(R.id.date_text_group_creation)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.date_text_group_creation)).check(matches(withText(containsString("2020-02-16"))));
+
+        onView(withId(R.id.time_text_group_creation)).perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.time_text_group_creation)).check(matches(withText(containsString("18:30"))));
+
+        onView(withId(R.id.next_step_group_creation_button)).perform(click());
+        onView(withId(R.id.group_name)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.friends_selector_group_recycler_view)).check(matches(isDisplayed()));
+
+
+        onView(withId(R.id.create_group_button)).check(matches(isEnabled()));
+        onView(withId(R.id.check_friend_button)).perform(click());
+        onView(withId(R.id.create_group_button)).perform(click());
+        Intents.intended(hasComponent(GroupActivity.class.getName()));
+
+    }
+
+    /**
+     * To perform the following test, you must uncomment line 114 and comment line 115
+     */
+    /*
+    @Test
+    public void hasNoFriendsToAdd(){
+        when(mockedFriendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
+
+        onView(withId(R.id.group_name)).perform(replaceText("GroupName"));
+
+        onView(withId(R.id.date_text_group_creation)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.date_text_group_creation)).check(matches(withText(containsString("2020-02-16"))));
+
+        onView(withId(R.id.time_text_group_creation)).perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.time_text_group_creation)).check(matches(withText(containsString("18:30"))));
+
+        onView(withId(R.id.next_step_group_creation_button)).perform(click());
+        onView(withId(R.id.group_name)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.friends_selector_group_recycler_view)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.friends_group_selector_text)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+    }
+    */
+
+
 
     @Test
     public void importingPhotosWorks(){
         onView(withId(R.id.group_picture)).perform(click());
         Intents.intended(hasAction(Intent.ACTION_PICK));
     }
-    /*
+/*
     @Test
     public void closeButtonWorks(){
         onView(withId(R.id.close_group_creation_button)).perform(click());
