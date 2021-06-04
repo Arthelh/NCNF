@@ -3,6 +3,8 @@ package com.ncnf.utilities.map;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +17,7 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.ncnf.R;
 import com.ncnf.models.Organization;
 import com.ncnf.repositories.EventRepository;
 import com.ncnf.repositories.OrganizationRepository;
@@ -168,15 +171,20 @@ public class MapHandler {
     private void queryAndAddEvents(){
         final List<Event> result = new ArrayList<>();
 
+        ProgressBar spinner = context.findViewById(R.id.map_spinner);
+        spinner.setVisibility(View.VISIBLE);
+
         CompletableFuture<List<Event>> completableFuture = eventRepository.getEventsNearBy();
         completableFuture.thenAccept(eventList -> {
 
             result.addAll(eventList);
+            spinner.setVisibility(View.GONE);
             addEventMarkers(result);
 
         }).exceptionally(e -> {
 
             Log.d(DEBUG_TAG, e.getMessage());
+            spinner.setVisibility(View.GONE);
             return null;
 
         });
@@ -185,15 +193,20 @@ public class MapHandler {
     private void queryAndAddOrgs(){
         final List<Organization> result = new ArrayList<>();
 
+        ProgressBar spinner = context.findViewById(R.id.map_spinner);
+        spinner.setVisibility(View.VISIBLE);
+
         CompletableFuture<List<Organization>> completableFuture = organizationRepository.getOrganizationsNearby();
         completableFuture.thenAccept(organizations -> {
 
             result.addAll(organizations);
+            spinner.setVisibility(View.GONE);
             addOrganizationMarkers(result);
 
         }).exceptionally(e -> {
 
             Log.d(DEBUG_TAG, e.getMessage());
+            spinner.setVisibility(View.GONE);
             return null;
 
         });
