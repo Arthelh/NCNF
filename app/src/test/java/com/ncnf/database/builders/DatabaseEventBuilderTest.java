@@ -5,7 +5,6 @@ import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.models.Event;
 import com.ncnf.models.EventTag;
 import com.ncnf.models.Group;
-import com.ncnf.models.SocialObject;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,10 +40,10 @@ import static org.junit.Assert.assertEquals;
 public class DatabaseEventBuilderTest {
 
     private DatabaseEventBuilder eventBuilder = new DatabaseEventBuilder();
-    private DatabaseGroupBuilder groupbuilder = new DatabaseGroupBuilder();
+    private DatabaseGroupBuilder groupBuilder = new DatabaseGroupBuilder();
 
-    Map<String, Object> publicEvent;
-    Map<String, Object> privateEvent;
+    Map<String, Object> event;
+    Map<String, Object> group;
     String ownerId = "ownerId";
     String uuid = UUID.randomUUID().toString();
     String name = "name";
@@ -65,30 +64,30 @@ public class DatabaseEventBuilderTest {
 
     @Before
     public void setup() {
-        publicEvent = new HashMap<>();
-        privateEvent = new HashMap<>();
+        event = new HashMap<>();
+        group = new HashMap<>();
     }
 
     @Test
-    public void loadPublic() {
-        publicEvent.put(OWNER_KEY, ownerId);
-        publicEvent.put(UUID_KEY, this.uuid);
-        publicEvent.put(NAME_KEY, this.name);
-        publicEvent.put(DATE_KEY, timestamp);
-        publicEvent.put(LOCATION_KEY, this.location);
-        publicEvent.put(ADDRESS_KEY, this.address);
-        publicEvent.put(VISIBILITY_KEY, "PUBLIC");
-        publicEvent.put(TYPE_KEY, this.type);
-        publicEvent.put(ATTENDEES_KEY, this.attendees);
-        publicEvent.put(DESCRIPTION_KEY, this.description);
-        publicEvent.put(OWNER_KEY, this.ownerId);
-        publicEvent.put(EMAIL_KEY, email);
+    public void loadEvent() {
+        event.put(OWNER_KEY, ownerId);
+        event.put(UUID_KEY, this.uuid);
+        event.put(NAME_KEY, this.name);
+        event.put(DATE_KEY, timestamp);
+        event.put(LOCATION_KEY, this.location);
+        event.put(ADDRESS_KEY, this.address);
+        event.put(VISIBILITY_KEY, "PUBLIC");
+        event.put(TYPE_KEY, this.type);
+        event.put(ATTENDEES_KEY, this.attendees);
+        event.put(DESCRIPTION_KEY, this.description);
+        event.put(OWNER_KEY, this.ownerId);
+        event.put(EMAIL_KEY, email);
 
-        publicEvent.put(MIN_AGE_KEY, minAge);
-        publicEvent.put(PRICE_KEY, price);
-        publicEvent.put(TAGS_LIST_KEY, eventTags);
+        event.put(MIN_AGE_KEY, minAge);
+        event.put(PRICE_KEY, price);
+        event.put(TAGS_LIST_KEY, eventTags);
 
-        Event event = eventBuilder.toObject(uuid, publicEvent);
+        Event event = eventBuilder.toObject(uuid, this.event);
 
         assertEquals(event.getUuid().toString(), uuid);
         assertEquals(event.getName(), name);
@@ -106,22 +105,21 @@ public class DatabaseEventBuilderTest {
 
 
     @Test
-    public void loadPrivate() {
-        privateEvent.put(OWNER_KEY, ownerId);
-        privateEvent.put(UUID_KEY, this.uuid);
-        privateEvent.put(NAME_KEY, this.name);
-        privateEvent.put(DATE_KEY, timestamp);
-        privateEvent.put(LOCATION_KEY, this.location);
-        privateEvent.put(ADDRESS_KEY, this.address);
-        privateEvent.put(VISIBILITY_KEY, "PRIVATE");
-        privateEvent.put(TYPE_KEY, this.type);
-        privateEvent.put(ATTENDEES_KEY, this.attendees);
-        privateEvent.put(DESCRIPTION_KEY, this.description);
-        privateEvent.put(OWNER_KEY, this.ownerId);
+    public void loadGroup() {
+        group.put(OWNER_KEY, ownerId);
+        group.put(UUID_KEY, this.uuid);
+        group.put(NAME_KEY, this.name);
+        group.put(DATE_KEY, timestamp);
+        group.put(LOCATION_KEY, this.location);
+        group.put(ADDRESS_KEY, this.address);
+        group.put(VISIBILITY_KEY, "PRIVATE");
+        group.put(TYPE_KEY, this.type);
+        group.put(ATTENDEES_KEY, this.attendees);
+        group.put(DESCRIPTION_KEY, this.description);
+        group.put(OWNER_KEY, this.ownerId);
+        group.put(INVITED_KEY, invited);
 
-        privateEvent.put(INVITED_KEY, invited);
-
-        Group event = (Group) groupbuilder.toObject(uuid, privateEvent);
+        Group event = groupBuilder.toObject(uuid, group);
 
         assertEquals(event.getUuid().toString(), uuid);
         assertEquals(event.getName(), name);
@@ -129,7 +127,6 @@ public class DatabaseEventBuilderTest {
         assertDateEquals(event.getDate(), date);
         assertEquals(event.getLocation(), location);
         assertEquals(event.getAddress(), address);
-        assertEquals(event.getType().toString(), type);
         assertEquals(event.getAttendees().get(0), attendees.get(0));
         assertEquals(event.getDescription(), description);
         assertEquals(event.getOwnerId(), ownerId);
@@ -138,19 +135,18 @@ public class DatabaseEventBuilderTest {
     }
 
     @Test
-    public void privateToMapWorks() {
-        SocialObject.Type type = SocialObject.Type.Movie;
+    public void groupToMapWorks() {
         UUID uuid = UUID.randomUUID();
 
-        Group group = new Group(ownerId, uuid, name, date, location, address, type, attendees, description, invited);
-        Map<String, Object> map = groupbuilder.toMap(group);
-        assertEquals(groupbuilder.toObject(uuid.toString(), map), group);
+        Group group = new Group(ownerId, uuid, name, date, location, address, attendees, description, invited);
+        Map<String, Object> map = groupBuilder.toMap(group);
+        assertEquals(groupBuilder.toObject(uuid.toString(), map), group);
 
     }
 
     @Test
-    public void publicToMapWorks() {
-        SocialObject.Type type = SocialObject.Type.Movie;
+    public void eventToMapWorks() {
+        Event.Type type = Event.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
         Event event = new Event(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, eventTags, email);

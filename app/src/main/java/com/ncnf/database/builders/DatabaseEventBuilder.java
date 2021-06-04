@@ -6,7 +6,6 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.models.Event;
 import com.ncnf.models.EventTag;
-import com.ncnf.models.SocialObject;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -26,8 +25,6 @@ import static com.ncnf.utilities.StringCodes.DATE_KEY;
 import static com.ncnf.utilities.StringCodes.DESCRIPTION_KEY;
 import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
 import static com.ncnf.utilities.StringCodes.GEOHASH_KEY;
-import static com.ncnf.utilities.StringCodes.LAT_KEY;
-import static com.ncnf.utilities.StringCodes.LNG_KEY;
 import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
 import static com.ncnf.utilities.StringCodes.MIN_AGE_KEY;
 import static com.ncnf.utilities.StringCodes.NAME_KEY;
@@ -51,8 +48,8 @@ public class DatabaseEventBuilder extends DatabaseObjectBuilder<Event> {
         LocalDateTime datetime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         GeoPoint location = (GeoPoint) data.getOrDefault(LOCATION_KEY, new GeoPoint(0, 0));
         String address = data.getOrDefault(ADDRESS_KEY, "").toString();
-        String typeStr = data.getOrDefault(TYPE_KEY, SocialObject.Type.NOTHING).toString();
-        SocialObject.Type type = SocialObject.Type.valueOf(typeStr);
+        String typeStr = data.getOrDefault(TYPE_KEY, Event.Type.NOTHING).toString();
+        Event.Type type = Event.Type.valueOf(typeStr);
         List<String> attendees = (List<String>) data.getOrDefault(ATTENDEES_KEY, new ArrayList<>());
         String description = (String) data.getOrDefault(DESCRIPTION_KEY, "");
 

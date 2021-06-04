@@ -34,3 +34,4 @@ public class EventTag {
         return otherEventTag.getName().toLowerCase().trim().equals(name.toLowerCase().trim());
     }
 }
+

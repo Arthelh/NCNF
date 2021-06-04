@@ -79,6 +79,10 @@ public class FriendsListAdapter extends UserListAdapter {
             }
         }
 
+        /**
+         * Send a friend request to a user and show it to the user
+         * @param u User to whom we want to send a request
+         */
         private void sendAddFriendRequest(User u){
             friendsRepository.request(myUuid, u.getUuid()).thenAccept(response -> {
                 showDoneButton();
@@ -86,6 +90,10 @@ public class FriendsListAdapter extends UserListAdapter {
             }).exceptionally(exception -> null);
         }
 
+        /**
+         * Remove a user from friend list and show it to the user
+         * @param u User to remove
+         */
         private void removeFriend(User u){
             friendsRepository.removeFriend(myUuid, u.getUuid()).thenAccept(response -> {
                 removeItem(u);

@@ -3,7 +3,6 @@ package com.ncnf.utilities.event;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.models.Event;
 import com.ncnf.models.EventTag;
-import com.ncnf.models.SocialObject;
 
 import org.junit.Test;
 
@@ -18,7 +17,7 @@ public class EventRelevanceCalculatorTests {
     LocalDateTime date = LocalDateTime.of(2021, 3, 11, 12, 0);
     GeoPoint geoPoint = new GeoPoint(0., 0.);
     String address = "north pole";
-    SocialObject.Type type = SocialObject.Type.Conference;
+    Event.Type type = Event.Type.Conference;
     String description = "SocialObject description goes here";
     String ownerId = "00";
 

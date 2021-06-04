@@ -15,7 +15,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.adapters.UserListAdapter;
 import com.ncnf.models.Group;
@@ -30,7 +29,6 @@ import com.ncnf.views.fragments.user.UserProfileTabFragment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 import javax.inject.Inject;
 

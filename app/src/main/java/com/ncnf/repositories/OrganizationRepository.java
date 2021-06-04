@@ -20,7 +20,6 @@ import static com.ncnf.utilities.StringCodes.ORGANIZED_EVENTS;
 import static com.ncnf.utilities.StringCodes.OWNER_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
 import static com.ncnf.utilities.StringCodes.USER_ORGANIZATIONS;
-import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 
 public class OrganizationRepository {
@@ -37,36 +36,9 @@ public class OrganizationRepository {
     }
 
     /**
-     * Loads the Organization from Database
-     * @param uuid the unique identifier of the Organization
-     * @return A CompletableFuture wrapping the loaded Organization
-     */
-    public CompletableFuture<Organization> loadOrganization(String uuid){
-        return this.db.getDocument(ORGANIZATIONS_COLLECTION_KEY + uuid, Organization.class);
-    }
-
-    /**
-     * Stores the Organization to Database
-     * @param organization the Organization object to store
-     * @return A CompletableFuture wrapping a boolean indicating that the request was successful or not
-     */
-    public CompletableFuture<Boolean> storeOrganization(Organization organization){
-        return this.db.setDocument(ORGANIZATIONS_COLLECTION_KEY + organization.getUuid(), organization);
-    }
-
-    /**
-     * Loads multiple Organization objects from Database
-     * @param uuidList the list of Organization unique identifiers to load
-     * @return A CompletableFuture wrapping a list containing the loaded Organization objects
-     */
-    public CompletableFuture<List<Organization>> loadMultipleOrganizations(List<String> uuidList){
-        return this.db.whereIn(ORGANIZATIONS_COLLECTION_KEY, UUID_KEY, uuidList, Organization.class);
-    }
-
-    /**
-     * Get the organization a user belongs to
-     * @param uuid the user identifier
-     * @return a future organization
+     * Get all the organizations where the user is an administrator
+     * @param uuid User's identifier
+     * @return CompletableFuture containing a list of organizations
      */
     public CompletableFuture<List<Organization>> getUserOrganizations(String uuid) {
         return db.whereArrayContains(ORGANIZATIONS_COLLECTION_KEY, ADMIN_KEY, uuid, Organization.class);
@@ -74,9 +46,9 @@ public class OrganizationRepository {
 
     /**
      * Add a new admin to an organization
-     * @param user_id a user identifier
-     * @param organization_id an organization identifier
-     * @return whether the update succeed
+     * @param user_id User's identifier
+     * @param organization_id Organization's identifier
+     * @return CompletableFuture containing the Firebase's response : true if all the operations succeeded
      */
     public CompletableFuture<Boolean> addUserToOrganization(String user_id, String organization_id) {
         CompletableFuture<Boolean> r1 =
@@ -92,23 +64,38 @@ public class OrganizationRepository {
     }
 
     /**
-     * Fetch an organization given its name
-     * @param name name of the organization
-     * @return an organization
+     * Retrieve all organizations whose name is equal to the given one
+     * @param name Name we want to match
+     * @return CompletableFuture containing a list of organizations that fulfills the condition
      */
     public CompletableFuture<List<Organization>> getByName(String name){
         return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_NAME, name, Organization.class);
     }
 
-    public CompletableFuture<List<Organization>> getByUUID(String uuid){
-        return db.whereEqualTo(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_UUID, uuid, Organization.class);
+    /**
+     * Retrieve all organizations whose uuid is equal to the given one
+     * @param organization_id Identifier we want to match
+     * @return CompletableFuture containing a list of organizations that fulfills the condition
+     */
+    public CompletableFuture<List<Organization>> getByUUID(String organization_id){
+        return db.whereEqualTo(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_UUID, organization_id, Organization.class);
     }
 
+    /**
+     * Retrieve all events organized by the organization with thr given ID
+     * @param organization_id Organization whose events are wanted
+     * @return CompletableFuture containing a list of the wanted events
+     */
     public CompletableFuture<List<Event>> getOrganizationEvents(String organization_id) {
         return db.whereEqualTo(EVENTS_COLLECTION_KEY, OWNER_KEY, organization_id, Event.class);
     }
 
 
+    /**
+     * Retrieve all organizations whose token is equal to the given one
+     * @param token Token we want to match
+     * @return CompletableFuture containing a list of organizations that fulfills the condition
+     */
     public CompletableFuture<List<Organization>> getOrganizationsWithToken(String token){
         return db.withFieldContaining(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_ADMIN_TOKEN, token, Organization.class);
     }
@@ -122,7 +109,7 @@ public class OrganizationRepository {
      * Returns all organization that are in a radius set in the settings around the current user position
      * @return A CompletableFuture wrapping a list containing the nearby Organization objects
      */
-    public CompletableFuture<List<Organization>> getOrgsNearby(){
+    public CompletableFuture<List<Organization>> getOrganizationsNearby(){
         return db.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, ORGANIZATIONS_COLLECTION_KEY, Organization.class);
     }
 }

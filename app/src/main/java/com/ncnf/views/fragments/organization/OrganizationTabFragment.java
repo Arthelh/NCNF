@@ -174,7 +174,7 @@ public class OrganizationTabFragment extends Fragment {
                         throw new IllegalStateException("Too many organizations using the same token");
                     }
                 }).exceptionally(e -> {
-                    displayPopUp(v, "No organization found");
+                    displayPopUp("No organization found");
                     return null;
                 });
                 dialog.dismiss();
@@ -190,7 +190,7 @@ public class OrganizationTabFragment extends Fragment {
         return true;
     }
 
-    private void displayPopUp(View view, String errorText) {
+    private void displayPopUp(String errorText) {
 
         // inflate the layout of the popup window
         View popupView = layoutInflater.inflate(R.layout.popup_invalid_organization, null);
