@@ -55,7 +55,7 @@
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/eventAddToCalendarButton"
-                                android:layout_width="wrap_content"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:text="@string/event_save_to_calendar_button"
                                 android:textSize="10dp"
@@ -64,7 +64,7 @@
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/eventSaveToBookmarkButton"
-                                android:layout_width="wrap_content"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:text="@string/save_to_bookmark"
                                 android:textSize="10sp"
@@ -73,11 +73,11 @@
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/button_publish_event_news"
-                                android:layout_width="wrap_content"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
-                                android:text="@string/button_publish_news"
+                                android:text="@string/event_publish_news_button"
                                 android:textSize="10sp"
-                                app:icon="@drawable/ic_baseline_add_24"
+                                app:icon="@drawable/ic_baseline_post_add_24"
                                 android:backgroundTint="@color/black"/>
                         </LinearLayout>
 
@@ -169,9 +169,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="255dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="20dp">
+                android:paddingTop="20dp"
+                android:background="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -244,6 +245,7 @@
                         android:paddingEnd="50dp"
                         android:textSize="18sp"/>
                 </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
