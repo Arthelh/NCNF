@@ -9,6 +9,8 @@ import com.ncnf.R;
 import com.ncnf.models.User;
 import com.ncnf.views.fragments.group.GroupFragment;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -24,6 +26,7 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         getSupportFragmentManager().beginTransaction().add(R.id.group_fragment_holder, new GroupFragment()).commit();
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
     }
 
 

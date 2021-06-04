@@ -18,6 +18,8 @@ import com.ncnf.views.fragments.organization.OrganizationEventsFragment;
 import com.ncnf.views.fragments.organization.OrganizationTabFragment;
 import com.ncnf.views.fragments.organization.OrganizationViewFragment;
 
+import java.util.Objects;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -44,6 +46,8 @@ public class OrganizationProfileActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.organization_tabs);
 
         new TabLayoutMediator(tabLayout, viewPager,(tab, position) -> tab.setText(tabNames[position])).attach();
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
     }
 
 

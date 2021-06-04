@@ -37,7 +37,6 @@ public class OrganizationEventsFragment extends Fragment {
     @Inject
     public OrganizationRepository organizationRepository;
 
-    private Organization organization;
     private String uuid;
 
     private RecyclerView recyclerView;
@@ -104,7 +103,7 @@ public class OrganizationEventsFragment extends Fragment {
         eventCreateFrag.setArguments(args);
 
         getParentFragmentManager().beginTransaction()
-                .replace(((ViewGroup) requireView().getParent()).getId(), eventCreateFrag, null)
+                .replace(R.id.organization_events_container, eventCreateFrag, null)
                 .addToBackStack(FRAGMENT_ORGANIZATION_TAG)
                 .commit();
     }
@@ -114,24 +113,10 @@ public class OrganizationEventsFragment extends Fragment {
         //It doesn't so create new corresponding Fragment
         EventFragment eventFrag = new EventFragment(e);
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                getParentFragmentManager().popBackStack();
-                recyclerView.setVisibility(View.VISIBLE);
-                this.setEnabled(false);
-            }
-        };
-
-        recyclerView.setVisibility(View.INVISIBLE);
-
         getParentFragmentManager().beginTransaction()
-                .hide(this)
-                .replace(((ViewGroup) requireView().getParent()).getId(), eventFrag)
-                .addToBackStack(null)
+                .replace(R.id.organization_events_container, eventFrag, null)
+                .addToBackStack(FRAGMENT_ORGANIZATION_TAG)
                 .commit();
-
-        requireActivity().getOnBackPressedDispatcher().addCallback(callback);
     }
 
 }

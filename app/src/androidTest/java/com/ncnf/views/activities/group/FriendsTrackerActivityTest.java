@@ -160,8 +160,6 @@ public class FriendsTrackerActivityTest {
         assertTrue("User marker exists", marker.waitForExists(10000));
     }
 
-
-
     @Test
     public void testWithBoundService() throws TimeoutException {
         // Create the service Intent.
