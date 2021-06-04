@@ -61,23 +61,12 @@
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/friends_profile_button"
-                                android:layout_width="wrap_content"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:text="@string/friends"
                                 android:textSize="10dp"
                                 app:icon="@drawable/ic_outline_group_24"
                                 android:backgroundTint="@color/black"/>
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/bookmark_profile_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="@string/bookmark"
-                                android:textSize="10dp"
-                                app:icon="@drawable/ic_outline_bookmarks_24"
-                                android:backgroundTint="@color/black"
-                                android:layout_marginTop="20dp"/>
 
 
                         </LinearLayout>

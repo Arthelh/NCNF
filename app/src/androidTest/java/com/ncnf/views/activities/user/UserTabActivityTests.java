@@ -139,12 +139,6 @@ public class UserTabActivityTests {
     }
 
     @Test
-    public void bookmarkButtonOpensBookmark(){
-        onView(withId(R.id.bookmark_profile_button)).perform(click());
-        Intents.intended(hasComponent(BookMarkActivity.class.getName()));
-    }
-
-    @Test
     public void openGalleryTest(){
         onView(withId(R.id.edit_profile_picture_button)).perform(click());
         Intents.intended(hasAction(Intent.ACTION_PICK));

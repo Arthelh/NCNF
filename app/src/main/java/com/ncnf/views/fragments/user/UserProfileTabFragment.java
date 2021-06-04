@@ -130,7 +130,6 @@ public class UserProfileTabFragment extends Fragment {
         initUser();
 
         requireView().findViewById(R.id.friends_profile_button).setOnClickListener(this::openFriendsTab);
-        requireView().findViewById(R.id.bookmark_profile_button).setOnClickListener(this::openBookmark);
         requireView().findViewById(R.id.edit_profile_button).setOnClickListener(this::changeProfileState);
         requireView().findViewById(R.id.edit_profile_picture_button).setOnClickListener(this::changeProfilePicture);
     }
