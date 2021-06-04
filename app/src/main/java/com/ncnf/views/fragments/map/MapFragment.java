@@ -51,6 +51,7 @@ public class MapFragment extends Fragment{
     private MapHandler mapHandler;
     private SearchBarHandler searchBarHandler;
 
+
     //Toolbar and location services for it
     private MaterialSearchBar materialSearchBar;
     private PlacesClient placesClient;
