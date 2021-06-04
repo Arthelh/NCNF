@@ -54,15 +54,6 @@ public class OrganizationRepository {
     }
 
     /**
-     * Loads multiple Organization objects from Database
-     * @param uuidList the list of Organization unique identifiers to load
-     * @return A CompletableFuture wrapping a list containing the loaded Organization objects
-     */
-    public CompletableFuture<List<Organization>> loadMultipleOrganizations(List<String> uuidList){
-        return this.db.whereIn(ORGANIZATIONS_COLLECTION_KEY, ORGANIZATION_UUID, uuidList, Organization.class);
-    }
-
-    /**
      * Get all the organizations where the user is an administrator
      * @param uuid User's identifier
      * @return CompletableFuture containing a list of organizations
