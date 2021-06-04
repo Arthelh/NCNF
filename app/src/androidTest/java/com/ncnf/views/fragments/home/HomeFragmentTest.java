@@ -5,6 +5,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.rule.GrantPermissionRule;
 
 import com.ncnf.R;
+import com.ncnf.views.activities.bookmark.BookMarkActivity;
 import com.ncnf.views.activities.group.GroupActivity;
 import com.ncnf.views.activities.login.LoginActivity;
 import com.ncnf.views.activities.friends.FriendsActivity;
@@ -81,5 +82,15 @@ public final class HomeFragmentTest {
         onView(withId(android.R.id.button1)).check(matches(isClickable())).perform(click());
         Intents.intended(hasComponent(LoginActivity.class.getName()));
         Intents.intended(hasExtra(NEXT_ACTIVITY_EXTRA_KEY, GroupActivity.class));
+    }
+
+    @Test
+    public void bookmarkActivityOpensTest() {
+        onView(withId(R.id.bookmark_home_button)).perform(click());
+        onView(withId(android.R.id.button2)).perform(click());
+        onView(withId(R.id.bookmark_home_button)).perform(click());
+        onView(withId(android.R.id.button1)).check(matches(isClickable())).perform(click());
+        Intents.intended(hasComponent(LoginActivity.class.getName()));
+        Intents.intended(hasExtra(NEXT_ACTIVITY_EXTRA_KEY, BookMarkActivity.class));
     }
 }
