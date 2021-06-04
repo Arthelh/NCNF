@@ -20,7 +20,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.ncnf.utilities.StringCodes.ADDRESS_KEY;
-import static com.ncnf.utilities.StringCodes.ATTENDEES_KEY;
+import static com.ncnf.utilities.StringCodes.MEMBERS_KEY;
 import static com.ncnf.utilities.StringCodes.DATE_KEY;
 import static com.ncnf.utilities.StringCodes.DESCRIPTION_KEY;
 import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
@@ -50,7 +50,7 @@ public class DatabaseEventBuilder extends DatabaseObjectBuilder<Event> {
         String address = data.getOrDefault(ADDRESS_KEY, "").toString();
         String typeStr = data.getOrDefault(TYPE_KEY, Event.Type.NOTHING).toString();
         Event.Type type = Event.Type.valueOf(typeStr);
-        List<String> attendees = (List<String>) data.getOrDefault(ATTENDEES_KEY, new ArrayList<>());
+        List<String> attendees = (List<String>) data.getOrDefault(MEMBERS_KEY, new ArrayList<>());
         String description = (String) data.getOrDefault(DESCRIPTION_KEY, "");
 
         int minAge = 0;
@@ -76,7 +76,7 @@ public class DatabaseEventBuilder extends DatabaseObjectBuilder<Event> {
         map.put(LOCATION_KEY, event.getLocation());
         map.put(ADDRESS_KEY, event.getAddress());
         map.put(TYPE_KEY, event.getType().toString());
-        map.put(ATTENDEES_KEY, event.getAttendees());
+        map.put(MEMBERS_KEY, event.getAttendees());
         map.put(DESCRIPTION_KEY, event.getDescription());
         map.put(OWNER_KEY, event.getOwnerId());
 

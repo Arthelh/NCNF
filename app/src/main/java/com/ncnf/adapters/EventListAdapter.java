@@ -101,7 +101,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Soci
                 for (SocialObject s : eventsFull) {
                     if(s instanceof Event){
                         Event event = (Event) s;
-                        if (event.filterTags(input)) {
+                        if (event.getName().contains(input)) {
                             filteredList.add(s);
                         }
                     }

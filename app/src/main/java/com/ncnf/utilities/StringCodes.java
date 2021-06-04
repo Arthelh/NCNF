@@ -53,7 +53,7 @@ public class StringCodes {
     public static final String LOCATION_KEY ="location";
     public static final String TYPE_KEY = "type";
     public static final String VISIBILITY_KEY = "visibility";
-    public static final String ATTENDEES_KEY = "attendees";
+    public static final String MEMBERS_KEY = "members";
     public static final String DESCRIPTION_KEY = "description";
     public static final String OWNER_KEY = "owner";
     public static final String MIN_AGE_KEY = "min_age";
@@ -72,7 +72,6 @@ public class StringCodes {
     public static final String GROUPS_COLLECTION_KEY = "groups/";
     public static final String OWNED_GROUPS_KEY = "owned_groups";
     public static final String PARTICIPATING_GROUPS_KEY = "participating_groups";
-    public static final String MEMBERS_KEY = "members";
     /**
      * Keys related to organizations
      */

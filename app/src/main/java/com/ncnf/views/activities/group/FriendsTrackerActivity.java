@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 import javax.inject.Inject;
 
@@ -129,9 +130,6 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         thisGroup.thenAccept(group -> {
             if(group != null) {
                 friendsUUID = new ArrayList<>(group.getMembers());
-                if(!user.getParticipatingGroupsIds().contains(groupId)) {
-                    friendsUUID.add(user.getUuid());
-                }
                 meetingPoint = group.getLocation();
 
                 getImagesForClusters();
@@ -226,28 +224,32 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             String userId = friendsUUID.get(i);
 
             if(userId.equals(user.getUuid())) {
-                if(i >= markers.size()) {
-
+                if(!markers.keySet().contains(userId)) {
                     markers.put(userId, user.getLocation());
                     bitmapSetChanged();
+                } else {
+                    markers.put(userId, user.getLocation());
+                    clusterMarkers.get(i).setPosition(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()));
+                    groupAttendeeMarkerRenderer.updatePosition(clusterMarkers.get(i));
                 }
-            }
-            else {
+            } else {
                 CompletableFuture<GeoPoint> field = userRepository.getUserPosition(userId);
                 int finalI = i;
                 field.thenAccept(point -> {
+                    if(point != null) {
+                        if (!markers.keySet().contains(userId)) {
 
-                    if (!markers.keySet().contains(userId)) {
+                            markers.put(userId, point);
+                            bitmapSetChanged();
+                        } else {
+                            markers.put(userId, point);
+                            clusterMarkers.get(finalI).setPosition(new LatLng(point.getLatitude(), point.getLongitude()));
+                            groupAttendeeMarkerRenderer.updatePosition(clusterMarkers.get(finalI));
 
-                        markers.put(userId, point);
-                        bitmapSetChanged();
-                    } else {
-                        markers.put(userId, point);
-                        clusterMarkers.get(finalI).setPosition(new LatLng(point.getLatitude(), point.getLongitude()));
-                        groupAttendeeMarkerRenderer.updatePosition(clusterMarkers.get(finalI));
+                        }
                     }
 
-                });
+                }).exceptionally(throwable -> {throwable.printStackTrace(); return null;});
             }
         }
 
@@ -335,6 +337,9 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
         return false;
     }
 
+    /**
+     * function getImagesForClusters gets the profile pictures of all users in the group from the database
+     */
     public void getImagesForClusters() {
 
         for(int i = 0; i < friendsUUID.size(); ++i) {
@@ -358,9 +363,8 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     }
 
     private void bitmapSetChanged() {
-        if(images.keySet().size() == friendsUUID.size() && markers.keySet().size() == friendsUUID.size()) {
+        if(images.keySet().size() == friendsUUID.size()) {
             addMapMarkers();
-
         }
     }
 

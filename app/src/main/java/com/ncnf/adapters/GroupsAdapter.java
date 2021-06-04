@@ -85,13 +85,8 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
 
         private void setTextFields(Group g) {
             groupName.setText(g.getName());
-            if(g.getMembers().size() == 0) {
-                groupParticipants.setText("1 members");
-            }
-            else {
-                int num = g.getMembers().size() + 1;
-                groupParticipants.setText(num + " members");
-            }
+            int num = g.getMembers().size();
+            groupParticipants.setText(num + " participants");
         }
 
         private void setItemListener(Group g, GroupsAdapter.OnGroupClickListener listener){

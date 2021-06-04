@@ -1,6 +1,10 @@
 package com.ncnf.views.fragments.group;
 
+import android.widget.DatePicker;
+import android.widget.TimePicker;
+
 import androidx.test.espresso.Espresso;
+import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -14,8 +18,11 @@ import com.ncnf.repositories.GroupRepository;
 import com.ncnf.repositories.UserRepository;
 import com.ncnf.views.activities.group.FriendsTrackerActivity;
 import com.ncnf.views.activities.group.GroupActivity;
+import com.ncnf.views.activities.main.MainActivity;
 
-
+import org.hamcrest.Matchers;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -34,19 +41,26 @@ import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.StringContains.containsString;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 @UninstallModules(CurrentUserModule.class)
 @HiltAndroidTest
-public class GroupFragmentTest {
+public class GroupFragmentOwnerTest {
 
     static private final User user1 = Mockito.mock(User.class);
     static private final GroupRepository repository1 = Mockito.mock(GroupRepository.class);
@@ -74,12 +88,19 @@ public class GroupFragmentTest {
     @BeforeClass
     static public void injects() {
         when(repository2.loadUser(anyString())).thenReturn(CompletableFuture.completedFuture(user1));
-        when(user1.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user1));
         ArrayList<String> l = new ArrayList<>();
         l.add(gUuid.toString());
 
+        when(user1.loadUserFromDB()).thenReturn(CompletableFuture.completedFuture(user1));
+        when(user1.saveUserToDB()).thenReturn(CompletableFuture.completedFuture(true));
+
         ArrayList<Group> l2 = new ArrayList<>();
         l2.add(g);
+
+        when(repository2.loadMultipleUsers(any())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
+        when(user1.getUuid()).thenReturn("u1");
+
+        when(repository2.updateParticipatingGroups(anyString(), anyList())).thenReturn(CompletableFuture.completedFuture(true));
 
         when(repository2.loadUser(eq("u1"))).thenReturn(CompletableFuture.completedFuture(user1));
 
@@ -93,13 +114,40 @@ public class GroupFragmentTest {
 
     }
 
+    @Before
+    public void init() {
+        Intents.init();
+    }
+
+    @After
+    public void release() {
+        Intents.release();
+    }
+
+    @Test
+    public void changingDatesWorks() {
+
+        onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.edit_group_button)).perform(click());
+
+        onView(withId(R.id.group_date_editable)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2020, 3, 16));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.group_date_editable)).check(matches(withText(Matchers.containsString("2020-03-16"))));
+
+        onView(withId(R.id.group_time_editable)).perform(click());
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(18, 30));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.group_time_editable)).check(matches(withText(Matchers.containsString("18:30"))));
+    }
+
     @Test
     public void showsUserEmail() {
         when(user1.getFullName()).thenReturn("");
         when(user1.getUsername()).thenReturn("");
         when(user1.getEmail()).thenReturn("test@test.com");
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_owner)).check(matches(withText("test@test.com")));
+        onView(withId(R.id.group_owner_editable)).check(matches(withText("test@test.com")));
     }
 
     @Test
@@ -110,7 +158,7 @@ public class GroupFragmentTest {
         when(user1.getEmail()).thenReturn("test@test.com");
 
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_owner)).check(matches(withText("John")));
+        onView(withId(R.id.group_owner_editable)).check(matches(withText("John")));
     }
 
     @Test
@@ -121,7 +169,7 @@ public class GroupFragmentTest {
         when(user1.getEmail()).thenReturn("test@test.com");
 
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_owner)).check(matches(withText("@johnnn")));
+        onView(withId(R.id.group_owner_editable)).check(matches(withText("@johnnn")));
     }
 
     @Test
@@ -131,7 +179,7 @@ public class GroupFragmentTest {
         when(user1.getEmail()).thenReturn("test@test.com");
 
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_owner)).check(matches(withText("John (@johnnn)")));
+        onView(withId(R.id.group_owner_editable)).check(matches(withText("John (@johnnn)")));
     }
 
     @Test
@@ -142,37 +190,63 @@ public class GroupFragmentTest {
     @Test
     public void correctTextIsDisplayed(){
         onView(withId(R.id.group_name)).check(matches(withText("Group Test")));
-        onView(withId(R.id.group_num)).check(matches(withText("1 participants")));
+        onView(withId(R.id.group_num)).check(matches(withText(containsString("participant"))));
     }
 
     @Test
     public void groupFragmentOpens(){
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_display_name)).check(matches(withText("Group Test")));
-        onView(withId(R.id.group_display_description)).check(matches(withText("description here")));
-        onView(withId(R.id.group_address)).check(matches(withText("random address")));
-        onView(withId(R.id.group_attendees_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.group_display_name_editable)).check(matches(withText("Group Test")));
+        onView(withId(R.id.group_display_description_editable)).check(matches(withText("description here")));
+        onView(withId(R.id.group_address_editable)).check(matches(withText("random address")));
+        onView(withId(R.id.group_attendees_view_editable)).check(matches(isDisplayed()));
     }
 
     @Test
     public void groupFragmentCloses(){
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_display_name)).check(matches(withText("Group Test")));
-        onView(withId(R.id.group_attendees_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.group_display_name_editable)).check(matches(withText("Group Test")));
+        onView(withId(R.id.group_attendees_view_editable)).check(matches(isDisplayed()));
         Espresso.pressBack();
         onView(withId(R.id.group_recycler_view)).check(matches(isDisplayed()));
     }
 
     @Test
     public void mapActivityOpens(){
-        Intents.init();
-
         onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.group_display_name)).check(matches(withText("Group Test")));
-        onView(withId(R.id.open_map_button)).perform(click());
+
+        onView(withId(R.id.group_display_name_editable)).check(matches(withText("Group Test")));
+        onView(withId(R.id.open_map_button_editable)).perform(click());
         Intents.intended(hasComponent(FriendsTrackerActivity.class.getName()));
 
-        Intents.release();
+    }
+
+    @Test
+    public void deleteSendsBackToHome(){
+
+        onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+        onView(withId(R.id.delete_group_button)).perform(click());
+
+        Intents.intended(hasComponent(MainActivity.class.getName()));
+
+    }
+
+    @Test
+    public void changeFieldsWorks(){
+        when(repository.storeGroup(g)).thenReturn(CompletableFuture.completedFuture(true));
+        onView(withId(R.id.group_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+        onView(withId(R.id.edit_group_button)).perform(click());
+        onView(withId(R.id.group_display_name_editable)).perform(replaceText("Group Test"));
+        onView(withId(R.id.group_display_description_editable)).perform(replaceText("description here"));
+
+        onView(withId(R.id.edit_group_button)).perform(click());
+        onView(withId(R.id.group_display_name_editable)).check(matches(not(isEnabled())));
+        onView(withId(R.id.group_display_description_editable)).check(matches(not(isEnabled())));
+
+        onView(Matchers.allOf(withId(com.google.android.material.R.id.snackbar_text), withText("Changes successfully saved")))
+                .check(matches(isDisplayed()));
     }
 
 }

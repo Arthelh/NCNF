@@ -13,7 +13,7 @@ import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 
 public class Group extends SocialObject {
 
-    private final List<String> members;
+    private List<String> members;
 
     /**
      * Public constructor used to create a new group
@@ -72,6 +72,13 @@ public class Group extends SocialObject {
      */
     public List<String> getMembers() {
         return members;
+    }
+
+    /**
+     * Setter for the attribute
+     */
+    public void setMembers(List<String> newMembers) {
+        this.members = new ArrayList<>(newMembers);
     }
 
     @Override

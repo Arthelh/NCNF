@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.ncnf.utilities.StringCodes.ADDRESS_KEY;
-import static com.ncnf.utilities.StringCodes.ATTENDEES_KEY;
+import static com.ncnf.utilities.StringCodes.MEMBERS_KEY;
 import static com.ncnf.utilities.StringCodes.DATE_KEY;
 import static com.ncnf.utilities.StringCodes.DESCRIPTION_KEY;
 import static com.ncnf.utilities.StringCodes.LOCATION_KEY;

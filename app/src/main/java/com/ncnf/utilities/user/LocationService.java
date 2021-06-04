@@ -136,19 +136,10 @@ public class LocationService extends Service {
 
     private void saveUserLocation(final GeoPoint location, String uuid){
 
-        try{
-            dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, location).thenAccept(aBoolean -> {
-                if (aBoolean) {
-                    Log.d(TAG, "onComplete: \ninserted user location into database." +
-                            "\n latitude: " + location.getLatitude() +
-                            "\n longitude: " + location.getLongitude());
-                }
-            });
-        }catch (Exception e){
-            Log.e(TAG, "saveUserLocation: User instance is null, stopping location service.");
-            Log.e(TAG, "saveUserLocation: Exception: "  + e.getMessage() );
+        dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, location).exceptionally(throwable ->{
             stopSelf();
-        }
+            return null;
+        });
 
     }
 
