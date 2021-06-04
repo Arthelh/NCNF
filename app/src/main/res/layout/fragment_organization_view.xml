@@ -1,66 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".views.activities.user.UserTabActivity"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:id="@+id/userProfileRoot">
 
-    <ImageView
-        android:id="@+id/organization_display_picture"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="31dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginBottom="54dp"
-        app:layout_constraintBottom_toTopOf="@+id/organization_display_email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/organization_display_name"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+    <ScrollView
+        android:id="@+id/scrollable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/organization_display_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="51dp"
-        android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/organization_display_postal"
-        app:layout_constraintStart_toStartOf="@+id/organization_display_postal"
-        app:layout_constraintTop_toBottomOf="@+id/organization_display_picture" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/organization_display_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginBottom="126dp"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/organization_display_postal"
-        app:layout_constraintTop_toBottomOf="@+id/organization_display_postal" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="380dp">
 
-    <TextView
-        android:id="@+id/organization_display_postal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="47dp"
-        android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/organization_display_phone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/organization_display_email" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:background="@color/navigation_bar_background"
+                    android:orientation="vertical"
+                    android:paddingTop="30dp">
 
-    <TextView
-        android:id="@+id/organization_display_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="152dp"
-        android:layout_marginTop="54dp"
-        android:layout_marginEnd="150dp"
-        android:layout_marginBottom="36dp"
-        android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/organization_display_picture"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/organization_display_picture"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20dp"
+                        android:paddingLeft="30dp"
+                        android:gravity="center">
+
+                        <include
+                            android:id="@+id/organization_profile_picture"
+                            layout="@layout/organization_picture_view"
+                            android:visibility="visible" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="400dp"
+                    android:layout_height="150dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="250dp"
+                    android:scrollbars="vertical"
+                    app:cardCornerRadius="20dp"
+                    app:cardBackgroundColor="@color/unselected_icon_color">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:padding="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/edit_profile_button"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_margin="15dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="#00000000"
+                            android:padding="0dp"
+                            android:visibility="gone"
+                            app:icon="@drawable/ic_outline_edit_24"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconSize="40dp"
+                            app:iconTint="@color/quantum_grey800"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/edit_organization_picture_button"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_margin="15dp"
+                            android:layout_marginStart="24dp"
+                            android:background="#00000000"
+                            android:padding="0dp"
+                            android:visibility="gone"
+                            app:icon="@drawable/ic_outline_portrait_24"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconSize="40dp"
+                            app:iconTint="@color/quantum_grey800"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/organization_profile_full_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="20dp"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textColor="#fff"
+                            android:textSize="21sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/edit_profile_button"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/edit_organization_picture_button"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="255dp"
+                android:orientation="vertical"
+                android:paddingTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="50dp">
+
+                    <ImageView
+                        android:id="@+id/email_icon_user_profile"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_email_black" />
+
+                    <TextView
+                        android:id="@+id/organization_profile_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@android:color/transparent"
+                        android:hint="Email Address"
+                        android:paddingBottom="30dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="50dp">
+
+                    <ImageView
+                        android:id="@+id/organization_profile_address_icon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_location_24" />
+
+                    <TextView
+                        android:id="@+id/organization_profile_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@android:color/transparent"
+                        android:hint="Email Address"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="0dp"
+                        android:paddingRight="20dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="50dp">
+
+                    <ImageView
+                        android:id="@+id/organization_profile_phone_icon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_baseline_local_phone_24" />
+
+                    <TextView
+                        android:id="@+id/organization_profile_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:hint="edit your birthdate"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="50dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="50dp">
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
