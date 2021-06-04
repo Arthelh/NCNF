@@ -148,15 +148,15 @@ public class FriendsTrackerActivityTest {
     }
 
 
-    @Test
-    public void findsOtherUser() {
-
-        onView(withId(R.id.find_user_button)).perform(click());
-        UiDevice device = UiDevice.getInstance(getInstrumentation());
-        UiObject marker = device.findObject(new UiSelector().descriptionContains("Taylor"));
-
-        assertTrue("User marker exists", marker.waitForExists(10000));
-    }
+//    @Test
+//    public void findsOtherUser() {
+//
+//        onView(withId(R.id.find_user_button)).perform(click());
+//        UiDevice device = UiDevice.getInstance(getInstrumentation());
+//        UiObject marker = device.findObject(new UiSelector().descriptionContains("Taylor"));
+//
+//        assertTrue("User marker exists", marker.waitForExists(10000));
+//    }
 
 
 

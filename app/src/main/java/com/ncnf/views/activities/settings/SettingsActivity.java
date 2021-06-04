@@ -17,6 +17,7 @@ import com.ncnf.utilities.settings.Settings;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -56,6 +57,8 @@ public class SettingsActivity extends AppCompatActivity {
         minDateSelection.setOnClickListener(createDateOnClickListener(true));
 
         maxDateSelection.setOnClickListener(createDateOnClickListener(false));
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
     }
 
     private void setText() {

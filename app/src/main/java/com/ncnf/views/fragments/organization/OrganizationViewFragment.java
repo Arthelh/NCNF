@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,10 +15,15 @@ import com.google.android.material.textview.MaterialTextView;
 import com.ncnf.R;
 import com.ncnf.models.Organization;
 import com.ncnf.repositories.OrganizationRepository;
+import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+
+import static android.graphics.BitmapFactory.decodeResource;
+import static com.ncnf.utilities.StringCodes.ORGANIZATIONS_IMAGE_PATH;
+import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 
 @AndroidEntryPoint
 public class OrganizationViewFragment extends Fragment {
@@ -25,13 +31,16 @@ public class OrganizationViewFragment extends Fragment {
     @Inject
     public OrganizationRepository organizationRepository;
 
+    @Inject
+    public FirebaseCacheFileStore fileStore;
+
     private Organization organization;
     private String uuid;
 
-    private MaterialTextView orgName;
-    private MaterialTextView orgEmail;
-    private MaterialTextView orgPhone;
-    private MaterialTextView orgAddress;
+    private TextView orgName;
+    private TextView orgEmail;
+    private TextView orgPhone;
+    private TextView orgAddress;
     
     private ImageView orgPicture;
 
@@ -58,11 +67,11 @@ public class OrganizationViewFragment extends Fragment {
     }
 
     private void initView(){
-        orgName = requireView().findViewById(R.id.organization_display_name);
-        orgAddress = requireView().findViewById(R.id.organization_display_postal);
-        orgEmail = requireView().findViewById(R.id.organization_display_email);
-        orgPhone = requireView().findViewById(R.id.organization_display_phone);
-        orgPicture = requireView().findViewById(R.id.organization_display_picture);
+        orgName = requireView().findViewById(R.id.organization_profile_full_name);
+        orgAddress = requireView().findViewById(R.id.organization_profile_address);
+        orgEmail = requireView().findViewById(R.id.organization_profile_email);
+        orgPhone = requireView().findViewById(R.id.organization_profile_phone);
+        orgPicture = requireView().findViewById(R.id.organization_profile_picture_image);
     }
 
     private void fillViews(){
@@ -70,7 +79,9 @@ public class OrganizationViewFragment extends Fragment {
         orgAddress.setText(organization.getAddress());
         orgEmail.setText(organization.getEmail());
         orgPhone.setText(organization.getPhoneNumber());
-        //TODO add picture;
+        fileStore.setContext(this.getContext());
+        fileStore.setPath(ORGANIZATIONS_IMAGE_PATH, organization.getUuid() + ".jpg");
+        fileStore.downloadImage(orgPicture, decodeResource(this.getResources(), R.drawable.default_profile_picture));
         //orgPicture
     }
 }
