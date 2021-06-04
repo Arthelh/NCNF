@@ -231,6 +231,7 @@ public final class MapFragmentTest {
         });
     }
 
+    @Ignore
     @Test
     public final void testInfoWindow(){
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
