@@ -15,6 +15,8 @@ import com.ncnf.R;
 import com.ncnf.views.fragments.friends.FriendsFragment;
 import com.ncnf.views.fragments.friends.FriendsRequestsFragment;
 
+import java.util.Objects;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -41,6 +43,8 @@ public class FriendsActivity extends AppCompatActivity {
         new TabLayoutMediator(tabs, viewPager,
                 (tab, position) -> tab.setText(fragmentSelector.getPageTitle(position))
         ).attach();
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
     }
 
     private static class FragmentSelector extends FragmentStateAdapter {

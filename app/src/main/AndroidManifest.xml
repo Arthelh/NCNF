@@ -23,13 +23,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NCNF"
         android:usesCleartextTraffic="true">
+        <activity android:name=".views.activities.group.GroupCreationActivity"></activity>
         <activity
             android:name=".views.activities.friends.FriendsActivity"
+            android:parentActivityName=".views.activities.main.MainActivity" />
+        <activity
+            android:name=".views.activities.group.GroupActivity"
             android:parentActivityName=".views.activities.main.MainActivity"/>
         <activity
             android:name=".views.activities.bookmark.BookMarkActivity"
             android:label="@string/title_activity_bookmark"
-            android:parentActivityName=".user.UserProfileActivity" />
+            android:parentActivityName=".views.activities.main.MainActivity" />
         <activity
             android:name=".views.activities.user.UserTabActivity"
             android:parentActivityName=".views.activities.main.MainActivity"
@@ -42,6 +46,9 @@
             android:parentActivityName=".views.activities.main.MainActivity"
             tools:ignore="MissingClass" />
         <activity android:name=".views.activities.settings.SettingsActivity" />
+        <activity
+            android:name=".views.activities.organization.OrganizationProfileActivity"
+            android:parentActivityName=".views.activities.user.UserTabActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -63,17 +70,11 @@
         <service
             android:name=".utilities.user.LocationService"
             android:stopWithTask="true" />
+
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" /> <!-- FEED -->
-        <activity
-            android:name=".views.activities.group.GroupCreateActivity"
-            android:label="@string/title_event_creation"
-            android:parentActivityName=".views.activities.main.MainActivity" />
-        <activity
-            android:name=".views.activities.event.EventNewsActivity"
-            android:label="Publish a news"
-            android:parentActivityName=".views.activities.main.MainActivity" />
+
         <activity android:name=".views.activities.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,6 +1,8 @@
 package com.ncnf.views.fragments.user;
 
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +14,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
-import com.ncnf.storage.firebase.CacheFileStore;
+import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.models.User;
+
+import java.time.LocalDate;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static android.graphics.BitmapFactory.decodeFile;
 import static android.graphics.BitmapFactory.decodeResource;
 import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 
@@ -27,9 +30,11 @@ import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 public class PublicProfileFragment extends Fragment {
 
     @Inject
-    public CacheFileStore fileStore;
+    public FirebaseCacheFileStore fileStore;
 
     private User user;
+
+    public PublicProfileFragment(){}
 
     public PublicProfileFragment(User user){
         this.user = user;
@@ -51,22 +56,39 @@ public class PublicProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Change with event UUID
-        ImageView imageView = getView().findViewById(R.id.event_picture);
-        fileStore.setContext(this.getContext());
-        fileStore.setPath(USER_IMAGE_PATH, user.getUuid() + ".jpg");
-        fileStore.downloadImage(imageView, decodeResource(this.getContext().getResources(), R.drawable.default_profile_picture));
+        if (user != null) {
+            // Change with event UUID
+            ImageView profilePicture = requireView().findViewById(R.id.personal_profile_picture);
+            fileStore.setContext(this.getContext());
+            fileStore.setPath(USER_IMAGE_PATH, user.getUuid() + ".jpg");
+            fileStore.downloadImage(profilePicture, decodeResource(this.getResources(), R.drawable.default_profile_picture));
 
-        TextView name = getView().findViewById(R.id.public_profile_name);
-        name.setText(user.getFullName());
+            TextView email = getView().findViewById(R.id.publicProfileEmail);
+            email.setText(user.getEmail());
 
-        TextView username = getView().findViewById(R.id.public_profile_username);
-        username.setText(user.getUsername());
+            TextView fullName = getView().findViewById(R.id.publicProfileFullName);
+            fullName.setText(user.getFullName());
+            String fullNameStr = user.getFullName();
+            if(!fullNameStr.isEmpty()){
+                fullName.setText(fullNameStr);
+            }
 
-        TextView email = getView().findViewById(R.id.profile_email_placeholder);
-        email.setText(user.getEmail());
+            TextView username = getView().findViewById(R.id.publicProfileUsername);
+            username.setText(user.getUsername());
+            String usernameStr = user.getUsername();
+            if(!usernameStr.isEmpty()){
+                SpannableString ss = new SpannableString("@" + usernameStr);
+                ss.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                username.setText(ss);
+            }
 
-        TextView birthDate = getView().findViewById(R.id.profile_birth_date_placeholder);
-        birthDate.setText(user.getBirthDate().toString());
+            TextView birthDate = getView().findViewById(R.id.publicProfileBirthDay);
+            LocalDate birthDateObj = user.getBirthDate();
+            if(!(birthDateObj == null)){
+                birthDate.setText(birthDateObj.toString());
+            }
+
+            email.setEnabled(false);
+        }
     }
 }

@@ -23,6 +23,7 @@ public class StringCodes {
     public static final String NEXT_ACTIVITY_EXTRA_KEY = "next_activity";
     public final static String POPUP_TITLE = "Connection Error";
     public final static String POPUP_POSITIVE_BUTTON = "Retry";
+    public final static String GROUP_ID_EXTRA_KEY = "GROUP_ID";
 
     /**
      * Keys related to users
@@ -31,7 +32,6 @@ public class StringCodes {
     public static final String USERS_COLLECTION_KEY = "users/";
     public static final String USERNAME_KEY = "username";
     public static final String FULL_NAME_KEY = "first_name";
-    public static final String LAST_NAME_KEY = "last_name";
     public static final String BIRTH_DATE_KEY = "year_of_birth";
     public static final String EMAIL_KEY = "email";
     public static final String FRIENDS_KEY = "friends";
@@ -53,7 +53,7 @@ public class StringCodes {
     public static final String LOCATION_KEY ="location";
     public static final String TYPE_KEY = "type";
     public static final String VISIBILITY_KEY = "visibility";
-    public static final String ATTENDEES_KEY = "attendees";
+    public static final String MEMBERS_KEY = "members";
     public static final String DESCRIPTION_KEY = "description";
     public static final String OWNER_KEY = "owner";
     public static final String MIN_AGE_KEY = "min_age";
@@ -75,13 +75,21 @@ public class StringCodes {
     /**
      * Keys related to organizations
      */
+    public static final String ORGANIZATIONS_IMAGE_PATH = "organizations";
     public static final String ORGANIZATIONS_COLLECTION_KEY = "organizations/";
+    public static final String ORGANIZATION_UUID = "uuid";
     public static final String ORGANIZATION_NAME = "name";
     public static final String ORGANIZATION_EMAIL = "email";
     public static final String ORGANIZATION_ADMIN_TOKEN = "token";
-    public static final String ORGANIZED_EVENTS_KEY = "organized_events";
+    public static final String ORGANIZED_EVENTS = "organized_events";
     public static final String PHONE_NB_KEY = "phone_number";
     public static final String ADMIN_KEY = "admins";
+
+    /**
+     * Keys related to images
+     */
+    public static final int IMG_PICK_CODE = 1000;
+
 
     /**
      * Keys related to tests

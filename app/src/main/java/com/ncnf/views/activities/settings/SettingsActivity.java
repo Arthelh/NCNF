@@ -17,6 +17,7 @@ import com.ncnf.utilities.settings.Settings;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -56,6 +57,8 @@ public class SettingsActivity extends AppCompatActivity {
         minDateSelection.setOnClickListener(createDateOnClickListener(true));
 
         maxDateSelection.setOnClickListener(createDateOnClickListener(false));
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
     }
 
     private void setText() {
@@ -132,14 +135,14 @@ public class SettingsActivity extends AppCompatActivity {
             selMonth = month;
             selDay = dayOfMonth;
             if (isMin) {
-                minDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth);
+                minDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth); //First second of the day for min day
                 minDateTextView.setText(minDate.toString());
                 if (minDate.isAfter(maxDate)) {
                     maxDate = minDate;
                     maxDateTextView.setText(maxDate.toString());
                 }
             } else {
-                maxDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth);
+                maxDate = LocalDate.of(selYear, Month.of(selMonth + 1), dayOfMonth); //Last second of the day for max day
                 maxDateTextView.setText(maxDate.toString());
                 if (maxDate.isBefore(minDate)) {
                     minDate = maxDate;

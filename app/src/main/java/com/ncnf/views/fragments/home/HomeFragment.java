@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,17 +20,17 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
+import com.ncnf.views.activities.bookmark.BookMarkActivity;
+import com.ncnf.views.activities.group.GroupActivity;
+import com.ncnf.views.activities.group.GroupCreationActivity;
 import com.ncnf.views.activities.login.LoginActivity;
 import com.ncnf.views.activities.friends.FriendsActivity;
-import com.ncnf.views.activities.group.FriendsTrackerActivity;
 
-import com.ncnf.views.activities.group.GroupCreateActivity;
-import com.ncnf.views.activities.event.EventNewsActivity;
 import com.ncnf.views.activities.user.UserTabActivity;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.NEXT_ACTIVITY_EXTRA_KEY;
-import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 public class HomeFragment extends Fragment {
 
@@ -38,7 +39,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Intent intent = getActivity().getIntent();
         if(intent != null && intent.getExtras() != null) {
-            boolean gotDisconnected = (boolean) intent.getExtras().get("disconnected");
+            boolean gotDisconnected = intent.getExtras().getBoolean("disconnected");
             if (gotDisconnected) {
                 Snackbar.make(requireActivity().findViewById(android.R.id.content), "Successfully disconnected", LENGTH_SHORT).show();
             }
@@ -51,18 +52,21 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         getView().findViewById(R.id.homeProfileButton).setOnClickListener(this::gotToProfile);
-        getView().findViewById(R.id.homeCreateEventButton).setOnClickListener(this::goToEventCreation);
-        getView().findViewById(R.id.homeEventNewsButton).setOnClickListener(this::goToEventNews);
         getView().findViewById(R.id.homeFriendsButton).setOnClickListener(this::goToFriends);
         getView().findViewById(R.id.track_friends_button).setOnClickListener(v -> gpsIsEnabled());
+        getView().findViewById(R.id.bookmark_home_button).setOnClickListener(this::goToBookmark);
     }
 
-    public void gotToProfile(View view){
+    private void gotToProfile(View view){
         goToActivity(UserTabActivity.class);
     }
 
-    public void goToEventCreation(View view){
-        goToActivity(GroupCreateActivity.class);
+    private void goToFriends(View view){
+        goToActivity(FriendsActivity.class);
+    }
+
+    private void goToBookmark(View view){
+        goToActivity(BookMarkActivity.class);
     }
 
     private void goToActivity(Class<?> activity){
@@ -72,17 +76,6 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getContext(), activity);
             startActivity(intent);
         }
-    }
-
-    public void goToFriends(View view){
-        goToActivity(FriendsActivity.class);
-    }
-
-    // Temporary
-    public void goToEventNews(View view){
-        Intent intent = new Intent(getContext(), EventNewsActivity.class);
-        intent.putExtra(UUID_KEY, "361f8d6f-ccf0-4ee3-a596-d62a910874f6");
-        startActivity(intent);
     }
 
     private boolean isConnected(){
@@ -143,7 +136,7 @@ public class HomeFragment extends Fragment {
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             locationServicesEnabled = true;
-            goToActivity(FriendsTrackerActivity.class);
+            goToActivity(GroupActivity.class);
         } else {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -157,7 +150,7 @@ public class HomeFragment extends Fragment {
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
                 if(locationServicesEnabled){
-                    goToActivity(FriendsTrackerActivity.class);
+                    goToActivity(GroupActivity.class);
                 }
                 else {
                     getLocationPermission();

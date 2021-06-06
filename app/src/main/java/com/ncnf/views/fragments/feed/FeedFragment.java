@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -24,12 +25,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.ncnf.R;
-
-import com.ncnf.adapters.EventAdapter;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.adapters.EventListAdapter;
+import com.ncnf.models.Event;
+import com.ncnf.repositories.EventRepository;
 import com.ncnf.utilities.map.MapUtilities;
 import com.ncnf.utilities.settings.Settings;
-import com.ncnf.models.Event;
 import com.ncnf.views.fragments.event.EventFragment;
 
 import java.util.ArrayList;
@@ -42,20 +42,16 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
-import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
 
 @AndroidEntryPoint
 public class FeedFragment extends Fragment {
 
     @Inject
-    public DatabaseService databaseService;
+    public EventRepository eventRepository;
 
-    private RecyclerView.LayoutManager lManager;
     private RecyclerView recycler;
-    private EventAdapter adapter;
+    private EventListAdapter adapter;
     private List<Event> eventList = new ArrayList<>();
-
-    private static final String CHANNEL_NAME = "events_to_be_shown";
 
     public FeedFragment(){
         super();
@@ -88,17 +84,17 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Get the RecyclerView
-        recycler = (RecyclerView) requireView().findViewById(R.id.feed_recycler_view);
+        recycler = requireView().findViewById(R.id.feed_recycler_view);
 
         // Use LinearLayout as the layout manager
-        lManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager lManager = new LinearLayoutManager(getActivity());
         recycler.setLayoutManager(lManager);
 
         // Set the custom adapter
         if (eventList.isEmpty()){
             actualizeEvents();
         } else {
-            adapter = new EventAdapter(getContext(), eventList, this::onEventClick, EventAdapter.SortingMethod.DATE);
+            adapter = new EventListAdapter(getContext(), eventList, this::onEventClick);
             recycler.setAdapter(adapter);
         }
     }
@@ -110,14 +106,12 @@ public class FeedFragment extends Fragment {
 
         ConstraintLayout feedContainer = globalWindow.findViewById(R.id.feed_event_container);
         FrameLayout feedFrame = globalWindow.findViewById(R.id.feed_event_fragment);
-        //Button feedButton = globalWindow.findViewById(R.id.feed_event_button);
 
         recycler.setVisibility(View.INVISIBLE);
 
         feedContainer.setBackgroundResource(R.drawable.main_background_gradient);
         feedContainer.setVisibility(View.VISIBLE);
         feedFrame.setVisibility(View.VISIBLE);
-        //feedButton.setVisibility(View.VISIBLE);
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.feed_event_fragment, fragment).commit();
@@ -128,12 +122,6 @@ public class FeedFragment extends Fragment {
                 destroyChildFragment(fragmentManager, fragment, feedContainer, this);
             }
         };
-
-        /**
-        feedButton.setOnClickListener(v -> {
-            destroyChildFragment(fragmentManager, fragment, feedContainer, callback);
-        });
-         **/
 
         requireActivity().getOnBackPressedDispatcher().addCallback(callback);
     }
@@ -164,10 +152,10 @@ public class FeedFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.dateOrder :
-                adapter.orderBy(EventAdapter.SortingMethod.DATE);
+                adapter.orderBy();
                 break;
             case R.id.relevanceOrder :
-                adapter.orderBy(EventAdapter.SortingMethod.RELEVANCE);
+                adapter.orderBy();
                 break;
         }
         return true;
@@ -183,20 +171,24 @@ public class FeedFragment extends Fragment {
     private void actualizeEvents(){
         final List<Event> result = new ArrayList<>();
 
-        CompletableFuture<List<Event>> completableFuture = databaseService.geoQuery(Settings.getUserPosition(), Settings.getCurrentMaxDistance() * 1000, EVENTS_COLLECTION_KEY, Event.class);
+        ProgressBar spinner = requireView().findViewById(R.id.feed_spinner);
+        spinner.setVisibility(View.VISIBLE);
+
+        CompletableFuture<List<Event>> completableFuture = eventRepository.getEventsNearBy();
         completableFuture.thenAccept(eventList -> {
 
             for (Event e : eventList){
                 LatLng eventPosition = new LatLng(e.getLocation().getLatitude(), e.getLocation().getLongitude());
-                if (MapUtilities.position_in_range(Settings.getUserPosition(), eventPosition))
+                if (MapUtilities.position_in_range(Settings.getUserPosition(), eventPosition) && Settings.dateInRange(e.getDate().toLocalDate()))
                     result.add(e);
             }
-            adapter = new EventAdapter(getContext(), result, this::onEventClick, EventAdapter.SortingMethod.DATE);
+            spinner.setVisibility(View.GONE);
+            adapter = new EventListAdapter(getContext(), result, this::onEventClick);
             recycler.setAdapter(adapter);
 
         }).exceptionally(e -> {
-
             Log.d(DEBUG_TAG, e.getMessage());
+            spinner.setVisibility(View.GONE);
             return null;
 
         });
