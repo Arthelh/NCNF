@@ -2,6 +2,7 @@
 
 ## Beltan
 
+This week I finished a few bug fixes for the product which went fine and didn't take much more time than expected. The most of the work this week was doing the final modifications with the rest of the team and trying to get Cirrus to work. This took way more time than expected
 
 ## David
 
