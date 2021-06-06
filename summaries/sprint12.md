@@ -27,5 +27,5 @@ This last week of the semester was quite a rush, especially with Cirrus issues. 
 For the last week, I work on moving the ability to publish news in the event itself instead of an ugly button on the home screen. I then work with the team on fixing the last bugs in the app. Unfortunately, finishing and publishing the app took us more time than expected, mostly because of Cirrus continuous integration. We underestimate that part.
 
 ## Overall team
-
+The end of the week was a bit tough : we had several PR to merge with the main and only had one day left. In addition to that, Cirrus wasn't very cooperative. Thanks to the additional time provided, we manage to get everything done.
 
