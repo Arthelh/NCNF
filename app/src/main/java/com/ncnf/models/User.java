@@ -4,7 +4,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.authentication.firebase.FirebaseAuthentication;
 import com.ncnf.database.firebase.FirebaseDatabase;
-import com.ncnf.authentication.firebase.CurrentUserModule;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -279,10 +278,6 @@ public class User {
     public CompletableFuture<Boolean> createEvent(Event event){
         return event.store(this.db)
                 .exceptionally(exception -> false); // TODO: handle exception
-    }
-
-    public void signOut() {
-        CurrentUserModule.signOut();
     }
 
     public CompletableFuture<Boolean> changeEmail(FirebaseAuthentication auth, String email){

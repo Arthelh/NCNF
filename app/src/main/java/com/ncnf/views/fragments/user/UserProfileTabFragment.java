@@ -35,8 +35,10 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.authentication.firebase.FirebaseAuthentication;
+import com.ncnf.repositories.UserRepository;
 import com.ncnf.views.activities.bookmark.BookMarkActivity;
 import com.ncnf.views.activities.friends.FriendsActivity;
 import com.ncnf.views.activities.main.MainActivity;
@@ -65,7 +67,10 @@ import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 public class UserProfileTabFragment extends Fragment {
 
     @Inject
-    public User user;
+    public FirebaseUser firebaseUser;
+
+    @Inject
+    public UserRepository userRepository;
 
     @Inject
     public FirebaseNotifications firebaseNotifications;
@@ -75,6 +80,8 @@ public class UserProfileTabFragment extends Fragment {
 
     @Inject
     public FirebaseAuthentication auth;
+
+    private User user;
 
     private LocalDate birthDay;
 
@@ -153,8 +160,9 @@ public class UserProfileTabFragment extends Fragment {
     private void initUser() {
         fileStore.setContext(requireActivity());
 
-        this.user.loadUserFromDB().thenAccept(u -> {
+        userRepository.loadUser(firebaseUser.getUid()).thenAccept(user -> {
             if (user != null) {
+                this.user = user;
                 fileStore.setPath(USER_IMAGE_PATH, user.getUuid() + ".jpg");
                 fileStore.downloadImage(profilePicture, decodeResource(this.getResources(), R.drawable.default_profile_picture));
 
@@ -201,7 +209,7 @@ public class UserProfileTabFragment extends Fragment {
     public void logOut() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.putExtra("disconnected", true);
-        this.user.signOut();
+        auth.logOut();
         startActivity(intent);
     }
 
