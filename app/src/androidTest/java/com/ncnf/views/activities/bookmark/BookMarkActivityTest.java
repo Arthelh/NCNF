@@ -48,18 +48,16 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
-@UninstallModules({CurrentUserModule.class, FirebaseUserModule.class})
+@UninstallModules(FirebaseUserModule.class)
 public class BookMarkActivityTest {
 
     private static List<Event> events = new ArrayList<>();
     private static final Event event = new Event("EPFL", "EPFL event", LocalDateTime.of(2021, 03, 11, 0, 0), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", Event.Type.Conference, 0, 0, "test@email.com");
 
-    @BindValue
-    public static User user = Mockito.mock(User.class);
+    private static User user = Mockito.mock(User.class);
 
     @BindValue
     public static FirebaseUser firebaseUser = Mockito.mock(FirebaseUser.class);
-
 
     @BindValue
     public static UserRepository userRepository = Mockito.mock(UserRepository.class);
