@@ -73,7 +73,6 @@ public class EventNewsFragmentTest {
         onView(withId(R.id.organization_view_pager)).perform(swipeLeft());
         Thread.sleep(2000); // necessary because of the swipe
         onView(withText("Concert")).perform(click());
-        onView(withId(R.id.button_publish_event_news)).perform(scrollTo(), click());
     }
     /*
 
