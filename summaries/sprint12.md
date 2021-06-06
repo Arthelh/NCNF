@@ -17,6 +17,7 @@ This week was a bit tough with the final deadline. Because I didn't do a lot las
 
 
 ## Jérémie 
+This last week of the semester was quite a rush, especially with Cirrus issues. I worked on the refont of various UI (login, event page) and added a button to save events to my bookmark. I also fixed some bugs with the login backend and UI.
 
 
 ## Keran (Scrum Master)
