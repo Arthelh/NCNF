@@ -129,7 +129,7 @@ public class OrganizationTabFragmentTests {
         onView(withId(R.id.organization_list_recyclerview)).check(new RecyclerViewItemCountAssertion(1));
     }
 
-    @Ignore
+    //@Ignore
     @Test
     public void typeEmptyString() throws InterruptedException {
         when(organizationRepository.getUserOrganizations(anyString())).thenReturn(CompletableFuture.completedFuture(new ArrayList<>()));
