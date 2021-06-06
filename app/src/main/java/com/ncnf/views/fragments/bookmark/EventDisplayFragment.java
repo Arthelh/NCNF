@@ -1,6 +1,7 @@
 package com.ncnf.views.fragments.bookmark;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
 
 @AndroidEntryPoint
@@ -76,6 +78,7 @@ public class EventDisplayFragment extends Fragment implements EventListAdapter.O
         userRepository.loadUser(user.getUid()).thenAccept(user ->{
             user.getSavedEvents().thenAccept(list -> {
                if(list != null){
+                   Log.d(DEBUG_TAG, "Size " + list.size());
                    this.adapter.setEvents(list);
                }
             });
