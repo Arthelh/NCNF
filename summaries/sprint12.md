@@ -15,6 +15,8 @@ This week was a bit tough with the final deadline. Because I didn't do a lot las
 
 ## Emmanuelle
 
+This week I made the groups leavable for regular group users and editable as well as deletable for the owner of the group. I also added some tests to try to get our overall code coverage up, since we had to remove quite a few tests that never passed on Cirrus.
+
 
 ## Jérémie 
 This last week of the semester was quite a rush, especially with Cirrus issues. I worked on the refont of various UI (login, event page) and added a button to save events to my bookmark. I also fixed some bugs with the login backend and UI.
