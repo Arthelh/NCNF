@@ -131,7 +131,7 @@ public class UserTabActivityTests {
         Intents.intended(hasComponent(MainActivity.class.getName()));
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void friendsButtonOpensFriendsActivity(){
         when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
