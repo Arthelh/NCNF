@@ -16,22 +16,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-<!--    <androidx.appcompat.widget.AppCompatImageButton-->
-<!--        android:id="@+id/find_user_button"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="24dp"-->
-<!--        android:layout_marginBottom="24dp"-->
-<!--        android:src="@android:drawable/ic_menu_compass"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/friends_map"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/friends_map"-->
-<!--        style="@style/Theme.NCNF.BlueButton"/>-->
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/find_user_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/circle_button_shape"
         android:checkable="true"
@@ -39,6 +28,6 @@
         app:icon="@drawable/gps_button_selector"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
-        app:layout_constraintTop_toTopOf="@id/friends_map"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/friends_map"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
