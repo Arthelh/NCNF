@@ -16,8 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.adapters.GroupsAdapter;
 import com.ncnf.models.Group;
@@ -30,7 +28,6 @@ import com.ncnf.views.activities.group.GroupCreationActivity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 import javax.inject.Inject;
 

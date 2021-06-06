@@ -97,7 +97,7 @@ public class FirebaseDatabase implements Database {
 
         this.db.document(documentPath).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                DocumentSnapshot document = (DocumentSnapshot) task.getResult();
+                DocumentSnapshot document = task.getResult();
 
                 T result = (T) registry.get(documentType).toObject(document.getId(), document.getData());
                 futureResponse.complete(result);

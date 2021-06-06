@@ -13,6 +13,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -103,10 +104,10 @@ public class InputValidatorTests {
     public void setErrorMsgWorksTest(){
         EditText editText = new EditText(ctx);
         InputValidator.setErrorMsg(editText, "error");
-        assertTrue(editText.getError().equals("error"));
+        assertEquals("error", editText.getError());
 
         Button button = new Button(ctx);
         InputValidator.setErrorMsg(button, "error");
-        assertTrue(button.getError().equals("error"));
+        assertEquals("error", button.getError());
     }
 }

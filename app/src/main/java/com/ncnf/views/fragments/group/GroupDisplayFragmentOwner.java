@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,13 +53,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static android.content.ContentValues.TAG;
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -97,7 +94,7 @@ public class GroupDisplayFragmentOwner extends Fragment {
     private GeoPoint meetingPointLocation;
     private GeoPoint userLocation;
 
-    private ActivityResultLauncher<Intent> searchBarLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> updateGroupLocation(result));
+    private final ActivityResultLauncher<Intent> searchBarLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> updateGroupLocation(result));
 
     private RecyclerView recycler;
     private UserListAdapter adapter;

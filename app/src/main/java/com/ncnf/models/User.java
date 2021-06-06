@@ -51,13 +51,13 @@ public class User {
      * @param fullName User's full name
      * @param friendsIds List of ID of the User's friends
      * @param ownedGroupsIds List of ID of the User's owned group
-     * @param participatingGroups
+     * @param participatingGroupsIds List of ID of the groups in which the User is
      * @param savedEventsIds List of ID of the User's saved event
      * @param notifications Boolean indicating whether the user receives notification or not
      * @param birthDate User's birthdate
      * @param location User's location
      */
-    public User(FirebaseDatabase db, String uuid, String username, String email, String fullName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> participatingGroups, List<String> savedEventsIds, boolean notifications, LocalDate birthDate, GeoPoint location) {
+    public User(FirebaseDatabase db, String uuid, String username, String email, String fullName, List<String> friendsIds, List<String> ownedGroupsIds, List<String> participatingGroupsIds, List<String> savedEventsIds, boolean notifications, LocalDate birthDate, GeoPoint location) {
         if(isInvalidString(uuid) || isInvalidString(email)){
             throw new IllegalArgumentException();
         }
@@ -71,7 +71,7 @@ public class User {
         this.savedEventsIds = savedEventsIds;
         this.birthDate = birthDate;
         this.notifications = notifications;
-        this.participatingGroupsIds = participatingGroups;
+        this.participatingGroupsIds = participatingGroupsIds;
         this.location = location;
     }
 

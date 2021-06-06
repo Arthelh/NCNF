@@ -9,8 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -35,16 +33,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
 import com.ncnf.models.Event;
-import com.ncnf.models.Organization;
 import com.ncnf.models.SocialObject;
 import com.ncnf.repositories.EventRepository;
 import com.ncnf.repositories.OrganizationRepository;
@@ -78,8 +73,6 @@ import static com.ncnf.utilities.StringCodes.POPUP_TITLE;
 import static com.ncnf.views.fragments.organization.OrganizationTabFragment.ORGANIZATION_UUID_KEY;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 
 @AndroidEntryPoint
 public class EventCreateFragment extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -96,7 +89,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
     @Inject
     public OrganizationRepository organizationRepository;
 
-    private ActivityResultLauncher<Intent> searchBarLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::updateEventLocation);
+    private final ActivityResultLauncher<Intent> searchBarLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::updateEventLocation);
 
     private String organizationUUID;
     private String uuid;
@@ -173,7 +166,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
         // Time Selection
 
         Button timeSelection = v.findViewById(R.id.set_event_time_button);
-        TextView timeDisplay = (TextView) v.findViewById(R.id.display_event_time);
+        TextView timeDisplay = v.findViewById(R.id.display_event_time);
         timeSelection.setFocusable(false);
 
         timeSelection.setOnClickListener(view -> {
@@ -216,7 +209,7 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
 
         // Set price
 
-        eventPrice.setOnEditorActionListener((TextView.OnEditorActionListener) (ve, actionId, event) -> {
+        eventPrice.setOnEditorActionListener((ve, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 String s = eventPrice.getText().toString().contains("€") ? eventPrice.getText().toString().replaceAll("€", "") : eventPrice.getText().toString();
                 double price = parseDouble(s);

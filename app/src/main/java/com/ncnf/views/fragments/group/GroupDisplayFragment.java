@@ -22,11 +22,8 @@ import com.ncnf.models.Group;
 import com.ncnf.models.User;
 import com.ncnf.repositories.GroupRepository;
 import com.ncnf.repositories.UserRepository;
-import com.ncnf.utilities.Helpers;
 import com.ncnf.views.activities.group.FriendsTrackerActivity;
-import com.ncnf.views.activities.group.GroupActivity;
 import com.ncnf.views.activities.main.MainActivity;
-import com.ncnf.views.fragments.home.HomeFragment;
 import com.ncnf.views.fragments.user.PublicProfileFragment;
 import com.ncnf.views.fragments.user.UserProfileTabFragment;
 
@@ -36,8 +33,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 import javax.inject.Inject;
 

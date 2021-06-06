@@ -1,29 +1,20 @@
 package com.ncnf.views.activities.group;
 
 import android.content.Intent;
-import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.User;
-import com.ncnf.notifications.firebase.FirebaseNotifications;
 import com.ncnf.repositories.FriendsRepository;
 import com.ncnf.repositories.GroupRepository;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
-import com.ncnf.views.activities.bookmark.BookMarkActivity;
-import com.ncnf.authentication.firebase.FirebaseUserModule;
-import com.ncnf.views.activities.friends.FriendsActivity;
-import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.authentication.firebase.CurrentUserModule;
-import com.ncnf.views.activities.user.UserTabActivity;
 
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -35,20 +26,13 @@ import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.mockito.Mockito;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import javax.inject.Inject;
-
 import dagger.hilt.android.testing.BindValue;
 import dagger.hilt.android.testing.HiltAndroidRule;
-import dagger.hilt.android.testing.HiltAndroidTest;
-import dagger.hilt.android.testing.UninstallModules;
 
-import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
@@ -58,7 +42,6 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
-import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
@@ -66,7 +49,6 @@ import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.when;
 
 import dagger.hilt.android.testing.HiltAndroidTest;

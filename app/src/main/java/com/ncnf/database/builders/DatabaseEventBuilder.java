@@ -53,7 +53,7 @@ public class DatabaseEventBuilder extends DatabaseObjectBuilder<Event> {
         List<String> attendees = (List<String>) data.getOrDefault(MEMBERS_KEY, new ArrayList<>());
         String description = (String) data.getOrDefault(DESCRIPTION_KEY, "");
 
-        int minAge = 0;
+        int minAge;
         if(data.get(MIN_AGE_KEY) instanceof Long){
             minAge = ((Long) data.get(MIN_AGE_KEY)).intValue();
         } else {

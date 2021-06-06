@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static com.ncnf.utilities.StringCodes.ADDRESS_KEY;
-import static com.ncnf.utilities.StringCodes.MEMBERS_KEY;
 import static com.ncnf.utilities.StringCodes.DATE_KEY;
 import static com.ncnf.utilities.StringCodes.DESCRIPTION_KEY;
 import static com.ncnf.utilities.StringCodes.EMAIL_KEY;
@@ -40,8 +39,8 @@ import static org.junit.Assert.assertTrue;
 
 public class DatabaseEventBuilderTest {
 
-    private DatabaseEventBuilder eventBuilder = new DatabaseEventBuilder();
-    private DatabaseGroupBuilder groupBuilder = new DatabaseGroupBuilder();
+    private final DatabaseEventBuilder eventBuilder = new DatabaseEventBuilder();
+    private final DatabaseGroupBuilder groupBuilder = new DatabaseGroupBuilder();
 
     Map<String, Object> event;
     Map<String, Object> group;

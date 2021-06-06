@@ -1,9 +1,5 @@
 package com.ncnf.views.activities.login;
 
-import android.view.View;
-import android.widget.EditText;
-
-import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
@@ -11,8 +7,6 @@ import com.google.firebase.FirebaseException;
 import com.ncnf.R;
 import com.ncnf.authentication.firebase.FirebaseAuthentication;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,16 +28,11 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.ncnf.utilities.StringCodes.BADLY_FORMATTED_EMAIL_STRING;
 import static com.ncnf.utilities.StringCodes.EMPTY_FIELD_STRING;
 import static com.ncnf.utilities.StringCodes.INVALID_PASSWORD_STRING;
 import static com.ncnf.utilities.StringCodes.PASSWORDS_DO_NOT_MATCH_STRING;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -69,9 +58,6 @@ public class LoginActivityTest {
     public void setup(){
         hiltRule.inject();
     }
-
-    @After
-    public void cleanup(){ }
 
     @Test
     public void signInFragmentEmptyInputTest() throws InterruptedException {

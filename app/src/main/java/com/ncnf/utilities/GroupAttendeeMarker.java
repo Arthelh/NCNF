@@ -19,9 +19,9 @@ public class GroupAttendeeMarker implements ClusterItem {
     private String title;
     private String snippet;
 
-    private String user;
+    private final String user;
 
-    private Bitmap bitmap;
+    private final Bitmap bitmap;
 
     public GroupAttendeeMarker(LatLng position, String title, String snippet, String user, Bitmap bitmap) {
         this.user = user;

@@ -19,25 +19,19 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.models.Event;
-import com.ncnf.models.Organization;
 import com.ncnf.models.SocialObject;
 import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.repositories.UserRepository;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
-import com.ncnf.utilities.DateAdapter;
 import com.ncnf.utilities.SaveToCalendar;
 import com.ncnf.utilities.StringCodes;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-
-import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
 @AndroidEntryPoint
 public class EventFragment extends Fragment {

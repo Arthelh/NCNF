@@ -2,7 +2,6 @@ package com.ncnf.models;
 
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.firebase.FirebaseDatabase;
-import com.ncnf.models.Organization;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -32,15 +32,15 @@ public class OrganizationTests {
         Organization org1 = new Organization("Test1", new GeoPoint(1,1), "address", "foo@bar.com", "phone", "first_owner");
         Organization org2 = new Organization("Test1", new GeoPoint(1,1), "address", "foo@bar.com", "phone", "first_owner");
         UUID uuid = UUID.randomUUID();
-        Organization o1 = new Organization(uuid,"Test1", new GeoPoint(1,1), "address", "foo@bar.com", "phone", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
-        Organization o2 = new Organization(uuid,"Test 2", new GeoPoint(1,1), "address", "foo@bar.com", "phone", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
+        Organization o1 = new Organization(uuid,"Test1", new GeoPoint(1,1), "address", "foo@bar.com", "phone", Arrays.asList("originalOwner"), new ArrayList<>());
+        Organization o2 = new Organization(uuid,"Test 2", new GeoPoint(1,1), "address", "foo@bar.com", "phone", Arrays.asList("originalOwner"), new ArrayList<>());
 
-        assertTrue(org1.equals(org1));
-        assertFalse(org1.equals(org2));
-        assertFalse(org1.equals(null));
-        assertFalse(org1.equals(new ArrayList<>()));
-        assertTrue(o1.equals(o2));
-        assertTrue(o1.hashCode() == Objects.hash(uuid));
+        assertEquals(org1, org1);
+        assertNotEquals(org1, org2);
+        assertNotEquals(null, org1);
+        assertNotEquals(org1, new ArrayList<>());
+        assertEquals(o1, o2);
+        assertEquals(o1.hashCode(), Objects.hash(uuid));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class OrganizationTests {
         String address = "address";
         String email = "email";
         String phoneNumber = "phone_number";
-        List<String> adminIds =  Arrays.asList(new String[]{"first_owner"});
+        List<String> adminIds =  Arrays.asList("first_owner");
 
         Organization org = new Organization(name, new GeoPoint(1,1), address, email, phoneNumber, "first_owner");
         assertEquals(org.getName(), name);
@@ -80,7 +80,7 @@ public class OrganizationTests {
         assertEquals(org.getPhoneNumber(), phoneNumber2);
 
         assertEquals(org.getAdminIds(), adminIds);
-        List<String> adminIds2 =  Arrays.asList(new String[]{"original"});
+        List<String> adminIds2 =  Arrays.asList("original");
         org.setAdminIds(adminIds2);
         assertEquals(org.getAdminIds(), adminIds2);
 
@@ -127,7 +127,7 @@ public class OrganizationTests {
         String event3 = "third_event3";
 
         Organization org = new Organization("Test1", new GeoPoint(1,1), "address", "foo@bar.com","phone", admin1);
-        assertTrue(org.getEventIds().size() == 0);
+        assertEquals(0, org.getEventIds().size());
 
         assertTrue(org.addEvent(event2) && org.getEventIds().size() == 1 && org.getEventIds().contains(event2));
 
@@ -143,7 +143,7 @@ public class OrganizationTests {
     @Test
     public void saveToDBWorks(){
         when(db.setDocument(anyString(), any())).thenReturn(CompletableFuture.completedFuture(true));
-        Organization org1 = new Organization(null, "name", new GeoPoint(0,0), "address", "email", "phoneNumber", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
+        Organization org1 = new Organization(null, "name", new GeoPoint(0,0), "address", "email", "phoneNumber", Arrays.asList("originalOwner"), new ArrayList<>());
         CompletableFuture<Boolean> future = org1.saveToDB(db);
         try {
             assertFalse(future.get());
@@ -151,7 +151,7 @@ public class OrganizationTests {
             Assert.fail("Something went wrong with the future");
         }
 
-        Organization org2 = new Organization(UUID.randomUUID(), "name", new GeoPoint(0,0), "address", "email", "phoneNumber", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
+        Organization org2 = new Organization(UUID.randomUUID(), "name", new GeoPoint(0,0), "address", "email", "phoneNumber", Arrays.asList("originalOwner"), new ArrayList<>());
         org2.setAdminIds(new ArrayList<>());
         future = org2.saveToDB(db);
         try {
@@ -160,7 +160,7 @@ public class OrganizationTests {
             Assert.fail("Something went wrong with the future");
         }
 
-        Organization org3 = new Organization(UUID.randomUUID(), "name", new GeoPoint(0,0), "address", "email", "phoneNumber", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
+        Organization org3 = new Organization(UUID.randomUUID(), "name", new GeoPoint(0,0), "address", "email", "phoneNumber", Arrays.asList("originalOwner"), new ArrayList<>());
         future = org3.saveToDB(db);
         try {
             assertTrue(future.get());

@@ -24,7 +24,7 @@ public class GroupAttendeeMarkerRenderer extends DefaultClusterRenderer<GroupAtt
     private final ImageView view;
     private final int markerWidth;
     private final int markerHeight;
-    private Context context;
+    private final Context context;
 
 
     public GroupAttendeeMarkerRenderer(Context context, GoogleMap map, ClusterManager<GroupAttendeeMarker> clusterManager) {

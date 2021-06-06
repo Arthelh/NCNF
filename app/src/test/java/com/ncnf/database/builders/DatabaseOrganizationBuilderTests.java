@@ -27,21 +27,19 @@ import static org.junit.Assert.assertTrue;
 
 public class DatabaseOrganizationBuilderTests {
 
-    private final FirebaseDatabase db = Mockito.mock(FirebaseDatabase.class);
-
     private final DatabaseOrganizationBuilder builder = new DatabaseOrganizationBuilder();
 
     private final Map<String, Object> data = new HashMap<>();
-    private UUID uuid = UUID.randomUUID();
-    private String name = "name";
-    private String address = "address";
-    private String email = "foo@bar.com";
-    private GeoPoint location = new GeoPoint(1,1);
-    private String phoneNb = "phoneNb";
-    private List<String> admins = new ArrayList<>();
-    private String admin1 = "admin1";
-    private List<String> events = new ArrayList<>();
-    private String event1 = "event1";
+    private final UUID uuid = UUID.randomUUID();
+    private final String name = "name";
+    private final String address = "address";
+    private final String email = "foo@bar.com";
+    private final GeoPoint location = new GeoPoint(1,1);
+    private final String phoneNb = "phoneNb";
+    private final List<String> admins = new ArrayList<>();
+    private final String admin1 = "admin1";
+    private final List<String> events = new ArrayList<>();
+    private final String event1 = "event1";
 
 
     @Before

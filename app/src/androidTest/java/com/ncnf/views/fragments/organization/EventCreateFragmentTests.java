@@ -1,13 +1,10 @@
 package com.ncnf.views.fragments.organization;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import androidx.test.espresso.contrib.PickerActions;
-import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -48,7 +45,6 @@ import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
@@ -66,8 +62,8 @@ import static org.mockito.Mockito.when;
 @UninstallModules({FirebaseUserModule.class})
 public class EventCreateFragmentTests {
 
-    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    private ActivityScenarioRule<OrganizationProfileActivity> scenarioRule = new ActivityScenarioRule<>(OrganizationProfileActivity.class);
+    private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private final ActivityScenarioRule<OrganizationProfileActivity> scenarioRule = new ActivityScenarioRule<>(OrganizationProfileActivity.class);
 
     private final Organization o1 = new Organization(UUID.randomUUID(), "EPFL", new GeoPoint(0, 0), "Ecublens", "ncnf@epfl.ch", "08008008080", Collections.singletonList("u1"), new ArrayList<>());
     private final List<Organization> organizations = Collections.singletonList(o1);
@@ -103,16 +99,6 @@ public class EventCreateFragmentTests {
 
         onView(withId(R.id.set_contact_email)).perform(click(), closeSoftKeyboard()).check(matches(hasErrorText("This field cannot be empty")));
     }
-
-    /**
-    @Test
-    public void openGalleryTest(){
-        onView(withId(R.id.set_event_image)).perform(scrollTo(), click());
-        Intents.intended(hasAction(Intent.ACTION_PICK));
-    }
-     **/
-
-
 
     @Test
     public void eventFormValidatesWrongInput() {

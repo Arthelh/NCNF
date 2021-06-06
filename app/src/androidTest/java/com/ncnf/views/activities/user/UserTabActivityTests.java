@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.models.User;
 import com.ncnf.notifications.firebase.FirebaseNotifications;
-import com.ncnf.views.activities.bookmark.BookMarkActivity;
 import com.ncnf.authentication.firebase.FirebaseUserModule;
 import com.ncnf.views.activities.friends.FriendsActivity;
 import com.ncnf.views.activities.main.MainActivity;
@@ -66,7 +65,7 @@ public class UserTabActivityTests {
 
     private static final User mockUser = Mockito.mock(User.class);
     private static final FirebaseUser mockFirebaseUser = Mockito.mock(FirebaseUser.class);
-    private Exception exception = new Exception("There was an error.");
+    private final Exception exception = new Exception("There was an error.");
 
     private static final List<User> users = Collections.singletonList(mockUser);
 

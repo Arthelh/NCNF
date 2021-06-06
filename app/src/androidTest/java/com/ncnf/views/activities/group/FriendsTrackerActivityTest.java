@@ -64,7 +64,7 @@ public class FriendsTrackerActivityTest {
     static private final UserRepository userRepository1 = Mockito.mock(UserRepository.class);
 
     private static final List<String> users = Collections.singletonList("1");
-    static private UUID gUuid = UUID.randomUUID();
+    static private final UUID gUuid = UUID.randomUUID();
     static Intent intent;
     static {
         intent = new Intent(ApplicationProvider.getApplicationContext(), FriendsTrackerActivity.class);
@@ -75,7 +75,7 @@ public class FriendsTrackerActivityTest {
 
 
     private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    private static GeoPoint p1 = new GeoPoint(0.03, 0.03);
+    private static final GeoPoint p1 = new GeoPoint(0.03, 0.03);
 
 
     static private final Group g = Mockito.mock(Group.class);

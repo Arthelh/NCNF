@@ -33,7 +33,7 @@ import static com.ncnf.utilities.StringCodes.NEXT_ACTIVITY_EXTRA_KEY;
 @HiltAndroidTest
 public final class HomeFragmentTest {
 
-    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
 
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);

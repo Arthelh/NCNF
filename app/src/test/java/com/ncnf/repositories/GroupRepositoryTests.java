@@ -21,7 +21,7 @@ public class GroupRepositoryTests {
     private final GroupRepository groupRepository = new GroupRepository(mockDatabase);
 
     private List<User> users;
-    private Group group = new Group("userUUID", UUID.randomUUID(), "group name", LocalDateTime.now(), new GeoPoint(0., 0.), "address", "description", new ArrayList<>());
+    private final Group group = new Group("userUUID", UUID.randomUUID(), "group name", LocalDateTime.now(), new GeoPoint(0., 0.), "address", "description", new ArrayList<>());
 
     @Before
     public void setup() {
@@ -30,7 +30,4 @@ public class GroupRepositoryTests {
         users = Arrays.asList(u1, u2);
     }
 
-    @Test
-    public void loadGroupWorks(){
-    }
 }

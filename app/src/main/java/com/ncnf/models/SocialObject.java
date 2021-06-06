@@ -4,14 +4,8 @@ import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.firebase.FirebaseDatabase;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-
-import static com.ncnf.utilities.StringCodes.EVENTS_COLLECTION_KEY;
-import static com.ncnf.utilities.StringCodes.NEWS_KEY;
 
 public abstract class SocialObject implements Comparable<SocialObject> {
 

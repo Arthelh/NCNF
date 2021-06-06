@@ -2,7 +2,6 @@ package com.ncnf.views.fragments.event;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
-import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.R;
@@ -15,7 +14,6 @@ import com.ncnf.views.activities.organization.OrganizationProfileActivity;
 
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.mockito.Mockito;
 
@@ -33,24 +31,19 @@ import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
-import static androidx.test.espresso.action.ViewActions.typeText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @HiltAndroidTest
 @UninstallModules({FirebaseUserModule.class})
 public class EventNewsFragmentTest {
 
-    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    private ActivityScenarioRule<OrganizationProfileActivity> scenarioRule = new ActivityScenarioRule<>(OrganizationProfileActivity.class);
+    private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private final ActivityScenarioRule<OrganizationProfileActivity> scenarioRule = new ActivityScenarioRule<>(OrganizationProfileActivity.class);
 
     private final Organization o1 = new Organization(UUID.randomUUID(), "EPFL", new GeoPoint(0, 0), "Ecublens", "ncnf@epfl.ch", "08008008080", Collections.singletonList("u1"), new ArrayList<>());
     private final List<Organization> organizations = Collections.singletonList(o1);

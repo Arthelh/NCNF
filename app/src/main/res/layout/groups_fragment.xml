@@ -4,7 +4,7 @@
     android:id="@+id/groups_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".user.groups.GroupFragment">
+    tools:context=".views.fragments.group.GroupFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

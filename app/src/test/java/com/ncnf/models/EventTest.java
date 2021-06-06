@@ -173,7 +173,7 @@ public class EventTest {
         assertEquals(event.getOwnerId(), "EPFL-IC");
         assertEquals(event.getEmail(), "newEmail@test.ch");
         assertEquals(event.getNumOfAttendees(), 1);
-        assertTrue(event.getAttendees().size() == attendees.size());
+        assertEquals(event.getAttendees().size(), attendees.size());
         for(int i = 0; i < attendees.size(); ++i) {
             assertEquals(attendees.get(i), event.getAttendees().get(i));
         }

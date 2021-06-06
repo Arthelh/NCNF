@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ncnf.R;
 import com.ncnf.adapters.EventListAdapter;
 import com.ncnf.models.Event;
-import com.ncnf.models.Organization;
 import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.views.fragments.event.EventFragment;
 

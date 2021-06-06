@@ -4,7 +4,6 @@ import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
-import com.ncnf.models.User;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +28,7 @@ import static org.mockito.Mockito.when;
 
 public class OrganizationRepositoryTests {
 
-    private static FirebaseDatabase firebaseDatabase = Mockito.mock(FirebaseDatabase.class);
+    private static final FirebaseDatabase firebaseDatabase = Mockito.mock(FirebaseDatabase.class);
     Event event1 = new Event("ownerId1", "name1", LocalDateTime.now(),  new GeoPoint(0., 0.), "address", "description", Event.Type.OTHER, 0, 0, "test@email.com");
     private final Organization o1 = new Organization("EPFL", new GeoPoint(1,1), "Ecublens", "epfl@bar.com", "08008008080", "Vetterli");
     private final List<Organization> organizations = Collections.singletonList(o1);

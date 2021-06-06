@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,24 +26,18 @@ import com.ncnf.repositories.FriendsRepository;
 import com.ncnf.repositories.GroupRepository;
 import com.ncnf.views.activities.group.GroupActivity;
 import com.ncnf.views.fragments.user.PublicProfileFragment;
-import com.ncnf.views.fragments.user.UserProfileTabFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-
-import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-
-import static android.content.ContentValues.TAG;
 
 @AndroidEntryPoint
 public class FriendSelectionGroupFragment extends Fragment {
 
 
-    private User user;
-    private FriendsRepository friendsRepository;
+    private final User user;
+    private final FriendsRepository friendsRepository;
     private GroupRepository groupRepository;
 
     private RecyclerView recycler;

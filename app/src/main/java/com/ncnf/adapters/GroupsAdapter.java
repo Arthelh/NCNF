@@ -18,8 +18,8 @@ import java.util.List;
 public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder>{
 
 
-    private Context context;
-    private List<Group> groups;
+    private final Context context;
+    private final List<Group> groups;
     private final GroupsAdapter.OnGroupClickListener listener;
 
     public interface OnGroupClickListener {
@@ -47,8 +47,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
     @Override
     public GroupsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.group_row, parent, false);
-        GroupsAdapter.ViewHolder viewHolder = new GroupsAdapter.ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.ViewHolder
         return groups.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView groupName;
         TextView groupParticipants;

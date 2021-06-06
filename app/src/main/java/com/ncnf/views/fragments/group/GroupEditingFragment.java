@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -21,29 +20,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.libraries.places.api.model.LocationBias;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.type.DateTime;
 import com.ncnf.R;
-import com.ncnf.authentication.firebase.CurrentUserModule;
 import com.ncnf.models.User;
-import com.ncnf.repositories.UserRepository;
-import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -51,30 +42,23 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static android.graphics.BitmapFactory.decodeResource;
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
-import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.IMG_PICK_CODE;
-import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 @AndroidEntryPoint
 public class GroupEditingFragment extends Fragment {
 
-    private User user;
+    private final User user;
     private TextView meetingPoint;
     private GeoPoint userLocation;
     private GeoPoint meetingPointLocation;
-    private ActivityResultLauncher<Intent> searchBarLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> updateGroupLocation(result));
+    private final ActivityResultLauncher<Intent> searchBarLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> updateGroupLocation(result));
 
     public TextView groupName;
 

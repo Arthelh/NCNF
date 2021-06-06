@@ -90,7 +90,7 @@ public class FirebaseCacheFileStoreTests {
         CompletableFuture<byte[]> future = fileStore.download();
 
         try {
-            assertArrayEquals(data, (byte[]) future.get());
+            assertArrayEquals(data, future.get());
         } catch (ExecutionException | InterruptedException e) {
             Assert.fail("The future did not complete correctly !");
         }

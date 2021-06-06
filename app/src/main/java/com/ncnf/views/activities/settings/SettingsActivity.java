@@ -85,7 +85,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private MaterialButtonToggleGroup.OnButtonCheckedListener createOnButtonCheckedListener() {
-        MaterialButtonToggleGroup.OnButtonCheckedListener oBCL = (group, checkedId, isChecked) -> {
+        return (group, checkedId, isChecked) -> {
             if (isChecked) {
                 group.setSelectionRequired(true);
                 switch (checkedId) {
@@ -105,7 +105,6 @@ public class SettingsActivity extends AppCompatActivity {
                 maxDateTextView.setText(maxDate.toString());
             }
         };
-        return oBCL;
     }
 
     private SeekBar.OnSeekBarChangeListener createOnSeekBarChangeListener() {

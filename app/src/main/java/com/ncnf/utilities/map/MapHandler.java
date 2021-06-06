@@ -215,7 +215,7 @@ public class MapHandler {
     /**
      * Set the clustering of markers on the map
      */
-    private class CustomRender<T extends ClusterItem> extends DefaultClusterRenderer<T>{
+    private static class CustomRender<T extends ClusterItem> extends DefaultClusterRenderer<T>{
         public CustomRender(Context context, GoogleMap map, ClusterManager clusterManager){
             super(context, map, clusterManager);
         }
