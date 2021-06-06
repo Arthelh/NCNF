@@ -19,9 +19,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.adapters.EventListAdapter;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Event;
 import com.ncnf.repositories.UserRepository;
 import com.ncnf.views.fragments.event.EventFragment;
@@ -49,6 +51,9 @@ public class EventDisplayFragment extends Fragment implements EventListAdapter.O
     public FirebaseUser user;
 
     @Inject
+    public FirebaseDatabase firebaseDatabase;
+
+    @Inject
     public UserRepository userRepository;
 
     public EventDisplayFragment(){
@@ -74,13 +79,12 @@ public class EventDisplayFragment extends Fragment implements EventListAdapter.O
         adapter = new EventListAdapter(getContext(), objToDisplay, this::onEventClick);
         recycler.setAdapter(adapter);
 
-        user.getUid();
         userRepository.loadUser(user.getUid()).thenAccept(user ->{
+            user.setDB(this.firebaseDatabase);
             user.getSavedEvents().thenAccept(list -> {
-               if(list != null){
-                   Log.d(DEBUG_TAG, "Size " + list.size());
+                if(list != null){
                    this.adapter.setEvents(list);
-               }
+                }
             });
         });
     }
