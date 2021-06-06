@@ -132,7 +132,7 @@ public class GroupCreationActivityTest {
                 .check(matches(isDisplayed()));
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void writingInAllField() throws InterruptedException {
         onView(withId(R.id.create_group_button)).check(matches(not(isEnabled())));
@@ -158,7 +158,7 @@ public class GroupCreationActivityTest {
         onView(withId(R.id.create_group_button)).check(matches(isEnabled()));
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void creatingGroupWithNobodyIsImpossible() throws InterruptedException {
 
@@ -187,7 +187,7 @@ public class GroupCreationActivityTest {
                 .check(matches(isDisplayed()));
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void canGoBackToEditing() throws InterruptedException {
         onView(withId(R.id.group_name)).perform(replaceText("GroupName"));
@@ -215,7 +215,7 @@ public class GroupCreationActivityTest {
         onView(withId(R.id.friends_selector_group_recycler_view)).check(matches(not(isDisplayed())));
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void createsCorrectlyAGroup(){
         when(groupRepository.storeGroup(any())).thenReturn(CompletableFuture.completedFuture(true));
