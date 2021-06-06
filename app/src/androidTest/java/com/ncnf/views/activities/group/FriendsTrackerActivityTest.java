@@ -141,7 +141,7 @@ public class FriendsTrackerActivityTest {
         Intents.release();
     }
 
-    @Ignore
+    //@Ignore
     @Test
     public void findsCurrentUser() {
 
@@ -152,7 +152,7 @@ public class FriendsTrackerActivityTest {
         assertTrue("User marker exists", marker.waitForExists(5000));
     }
 
-    @Ignore
+    //@Ignore
     @Test
     public void findsOtherUser() {
 
