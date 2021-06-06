@@ -53,25 +53,6 @@
                             layout="@layout/user_picture_view"
                             android:visibility="visible" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center">
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/friends_profile_button"
-                                android:layout_width="200dp"
-                                android:layout_height="wrap_content"
-                                android:text="@string/friends"
-                                android:textSize="10dp"
-                                app:icon="@drawable/ic_outline_group_24"
-                                android:backgroundTint="@color/black"/>
-
-
-                        </LinearLayout>
-
-
                     </LinearLayout>
 
                 </LinearLayout>

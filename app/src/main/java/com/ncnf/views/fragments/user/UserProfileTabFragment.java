@@ -129,7 +129,6 @@ public class UserProfileTabFragment extends Fragment {
 
         initUser();
 
-        requireView().findViewById(R.id.friends_profile_button).setOnClickListener(this::openFriendsTab);
         requireView().findViewById(R.id.edit_profile_button).setOnClickListener(this::changeProfileState);
         requireView().findViewById(R.id.edit_profile_picture_button).setOnClickListener(this::changeProfilePicture);
     }
@@ -203,16 +202,6 @@ public class UserProfileTabFragment extends Fragment {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.putExtra("disconnected", true);
         this.user.signOut();
-        startActivity(intent);
-    }
-
-    public void openFriendsTab(View view){
-        Intent intent = new Intent(requireActivity(), FriendsActivity.class);
-        startActivity(intent);
-    }
-
-    public void openBookmark(View view){
-        Intent intent = new Intent(requireActivity(), BookMarkActivity.class);
         startActivity(intent);
     }
 
