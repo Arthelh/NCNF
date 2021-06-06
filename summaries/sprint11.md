@@ -8,6 +8,7 @@ My time estimate were way off this week because of the weird issues I encountere
 
 ## David
 
+This week I finished the organization part of the user profile. I fixed some bugs with the fragments replacements and displays. Next week I'll work on the design of th organization profile.
 
 
 ## Eloi 

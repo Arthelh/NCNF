@@ -7,6 +7,7 @@
     <string name="main_event_creation_button">Create Event</string>
     <string name="main_placeholder_event_view">PH Event</string>
     <string name="find_your_friends_button">Find your friends</string>
+    <string name="create_group_button">Create a new group</string>
 
     <!-- Strings used for Map Activity -->
     <string name="map_switch_button">Switch between Events and Venues</string>
@@ -15,6 +16,7 @@
     <string name="map_settings_button">Settings</string>
     <string name="map_marker_arrow">Arrow</string>
     <string name="map_feed_button">Back to Map</string>
+    <string name="map_toolbar_error">Error trying to find a place. Please check network connection and try again.</string>
 
     <!-- String used for Feed Fragment -->
     <string name="feed_event_button">Back to Feed</string>
@@ -74,7 +76,7 @@
     <string name="date_of_birth">Date of birth...</string>
     <string name="save">Save</string>
     <string name="name">Name</string>
-    <string name="tag">Tag</string>
+    <string name="eventTag">Tag</string>
     <string name="socialObject">Event</string>
     <string name="id">ID</string>
     <string name="data">Data</string>
@@ -84,9 +86,9 @@
 
     <string name="login">Login</string>
     <string name="email_hint">Email...</string>
-    <string name="confirm_password">Confirm Password</string>
+    <string name="confirm_password">Confirm password...</string>
     <string name="register">Register</string>
-    <string name="registration">Registration</string>
+    <string name="firebaseNotifications">Registration</string>
     <string name="password_hint">Password...</string>
     <string name="i_m_an_organizer">I\'m an organizer</string>
     <string name="home_profile_button">Profile</string>
@@ -135,6 +137,16 @@
     <string name="friend_request_decline_text">The request was declined !</string>
     <string name="add_to_calendar_button" />
     <string name="add_organization_button_text">Add Organization</string>
+    <string name="add_event_organization_button">Create Event</string>
+    <string name="button_publish_news">Publish news</string>
+
+    <string name="hint_org_edit_name">Edit Organization name</string>
+    <string name="home_groups_button">Groups</string>
+    <string name="home_bookmark_button">Bookmark</string>
+    <string name="event_save_to_calendar_button">Save to calendar</string>
+    <string name="add_to_calendar">Add to calendar</string>
+    <string name="save_to_bookmark">Save to bookmark</string>
+    <string name="event_publish_news_button">Publish news</string>
 
 
 </resources>

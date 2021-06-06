@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/create_new_event"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EAEAEA">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="30dp">
+
+        <TextView
+            android:id="@+id/pageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Create a new event"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/set_event_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:hint="Event Name"
+            android:inputType="textPersonName"
+            android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pageTitle" />
+
+        <EditText
+            android:id="@+id/set_event_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Description"
+            android:inputType="textPersonName"
+            android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/set_event_name" />
+
+        <TextView
+            android:id="@+id/display_event_date"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:ems="10"
+            android:hint="Event Date "
+            android:inputType="time"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/set_event_description" />
+
+        <Button
+            android:id="@+id/set_event_date_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0.9"
+            android:scaleY="0.9"
+            android:text="Set Date"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/display_event_date"
+            app:layout_constraintStart_toStartOf="@+id/set_event_time_button"
+            app:layout_constraintTop_toTopOf="@+id/display_event_date" />
+
+        <TextView
+            android:id="@+id/display_event_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:hint="Event Time"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/display_event_date" />
+
+        <Button
+            android:id="@+id/set_event_time_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0.9"
+            android:scaleY="0.9"
+            android:text="Set Time"
+            app:layout_constraintBottom_toBottomOf="@+id/display_event_time"
+            app:layout_constraintStart_toStartOf="@+id/use_personal_email_checkbox"
+            app:layout_constraintTop_toTopOf="@+id/display_event_time" />
+
+        <EditText
+            android:id="@+id/set_event_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="32dp"
+            android:ems="10"
+            android:hint="Event Address"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/display_event_time" />
+
+        <EditText
+            android:id="@+id/set_contact_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Contact Email"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/set_event_address" />
+
+        <CheckBox
+            android:id="@+id/use_personal_email_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Use personal"
+            app:layout_constraintBottom_toBottomOf="@+id/set_contact_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/set_contact_email" />
+
+        <EditText
+            android:id="@+id/set_min_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:hint="Minimum Age"
+            android:inputType="number"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/set_contact_email" />
+
+        <EditText
+            android:id="@+id/set_event_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Event Price"
+            android:inputType="numberDecimal"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/set_min_age"
+            app:layout_constraintStart_toStartOf="@+id/use_personal_email_checkbox"
+            app:layout_constraintTop_toTopOf="@+id/set_min_age" />
+
+        <ImageButton
+            android:id="@+id/set_event_image"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="32dp"
+            android:background="#00FFFFFF"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_event_type"
+            app:srcCompat="@drawable/default_event_header_picture" />
+
+        <Button
+            android:id="@+id/validate_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/set_event_image" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#68000000"
+            android:text="  Event Image  "
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/set_event_image"
+            app:layout_constraintTop_toTopOf="@+id/set_event_image" />
+
+        <Spinner
+            android:id="@+id/select_event_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:scaleX="1"
+            android:scaleY="1"
+            app:layout_constraintStart_toStartOf="@+id/textView10"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:hint="Event Type :"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/set_min_age" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

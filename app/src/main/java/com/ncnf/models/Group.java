@@ -1,7 +1,7 @@
 package com.ncnf.models;
 
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,26 +13,72 @@ import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 
 public class Group extends SocialObject {
 
-    public DatabaseService databaseService;
+    private List<String> members;
 
-    private final List<String> invited;
-
-    public Group(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description, Type type) {
-        super(ownerId, name, date, location, address, type, description);
-        invited = new ArrayList<>();
+    /**
+     * Public constructor used to create a new group
+     * @param ownerId Identifier of the owner of this group
+     * @param name Name of the group
+     * @param date Date during which the group will take place
+     * @param location Meeting point of the group (GPS coordinates)
+     * @param address Address corresponding the location of the group
+     * @param description Description of the group
+     */
+    public Group(String ownerId, String name, LocalDateTime date, GeoPoint location, String address, String description) {
+        super(ownerId, name, date, location, address, description);
+        this.members = new ArrayList<>();
+        this.members.add(0, ownerId);
     }
 
-    public Group(String ownerId, UUID id, String name, LocalDateTime date, GeoPoint location, String address, Type type, List<String> attendees, String description, List<String> invited) {
-        super(ownerId, id, name, date, location, address, type, attendees, description);
-        this.invited = invited;
+    /**
+     * Public constructor used to create an group from an already existing group
+     * @param ownerId Identifier of the owner of this group
+     * @param id Unique identifier of the group
+     * @param name Name of the group
+     * @param date Date during which the group will take place
+     * @param location Meeting point of the group (GPS coordinates)
+     * @param address Address corresponding the location of the group
+     * @param description Description of the group
+     * @param members List of IDs of the people
+     */
+    public Group(String ownerId, UUID id, String name, LocalDateTime date, GeoPoint location, String address, String description, List<String> members) {
+        super(id, ownerId, name, date, location, address, description);
+        this.members = members == null ? new ArrayList<>() : members;
+        addMember(ownerId);
     }
 
-    public void invite(String user) {
-        invited.add(user);
+    /**
+     * Add a user as member of the group
+     * @param userId ID of the user to add
+     */
+    public void addMember(String userId) {
+        if(userId != null && !members.contains(userId)){
+            members.add(userId);
+        }
     }
 
-    public List<String> getInvited() {
-        return invited;
+    /**
+     * Remove member of the group
+     * @param userId ID of the user to remove
+     */
+    public void removeMember(String userId){
+        if(userId != null){
+            members.remove(userId);
+        }
+    }
+
+    /**
+     * Getter for the attribute
+     */
+    public List<String> getMembers() {
+        return members;
+    }
+
+    /**
+     * Setter for the attribute
+     */
+    public void setMembers(List<String> newMembers) {
+        this.members = new ArrayList<>(newMembers);
     }
 
     @Override
@@ -47,8 +93,12 @@ public class Group extends SocialObject {
         return getDate().compareTo(otherGroup.getDate());
     }
 
-    public CompletableFuture<Boolean> store(DatabaseService db){
+    /**
+     * Store the group in the given database service
+     * @param db Database service used to store the event
+     * @return CompletableFuture containing the Firebase's response : true if successful
+     */
+    public CompletableFuture<Boolean> store(FirebaseDatabase db){
         return db.setDocument(GROUPS_COLLECTION_KEY + this.getUuid(), this);
     }
-
 }

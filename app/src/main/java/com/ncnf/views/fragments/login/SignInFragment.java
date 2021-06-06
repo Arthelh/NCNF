@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
-import com.ncnf.authentication.firebase.AuthenticationService;
+import com.ncnf.authentication.firebase.FirebaseAuthentication;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -35,11 +35,10 @@ import static com.ncnf.utilities.StringCodes.POPUP_TITLE;
 @AndroidEntryPoint
 public class SignInFragment extends Fragment {
     @Inject
-    AuthenticationService auth;
+    FirebaseAuthentication auth;
 
     private EditText email;
     private EditText password;
-    private TextView exceptionText;
     private Button loginButton;
     private final Class<?> activity;
 
@@ -84,10 +83,11 @@ public class SignInFragment extends Fragment {
             Log.d(DEBUG_TAG,"Successful login for " + email);
             Intent intent = new Intent(getActivity(), activity);
             startActivity(intent);
+            requireActivity().finish();
         }).exceptionally(exception -> {
-            Log.d(DEBUG_TAG,"Unsuccessful login for " + email + " : " + exception.getMessage());
+            Log.d(DEBUG_TAG,"Unsuccessful login for " + email + " : " + exception.getCause().getMessage());
 
-            setException(exception.getMessage());
+            setException(exception.getCause().getMessage());
             showProgressBar(false);
             return null;
         });
@@ -114,12 +114,11 @@ public class SignInFragment extends Fragment {
     private void getItemsFromView(){
         this.email = getView().findViewById(R.id.signInEmail);
         this.password = getView().findViewById(R.id.signInPassword);
-        this.exceptionText = getView().findViewById(R.id.exceptionSignIn);
         this.loginButton = getView().findViewById(R.id.signInLoginButton);
     }
 
     private void showProgressBar(Boolean show){
-        ProgressBar bar = getView().findViewById(R.id.progressBar2);
+        ProgressBar bar = getView().findViewById(R.id.sign_in_spinner);
         if(show){
             bar.setVisibility(View.VISIBLE);
         } else {
@@ -136,6 +135,5 @@ public class SignInFragment extends Fragment {
             dialog.cancel();
         });
         popup.show();
-//        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 }

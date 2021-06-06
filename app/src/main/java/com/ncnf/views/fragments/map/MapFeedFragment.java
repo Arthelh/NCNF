@@ -2,7 +2,6 @@ package com.ncnf.views.fragments.map;
 
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.FrameLayout;
 
 import androidx.activity.OnBackPressedCallback;
@@ -47,30 +46,15 @@ public class MapFeedFragment extends FeedFragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.map_feed_fragment, fragment).addToBackStack(null).commit();
 
-        /**
+
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                destroyChildFragment(fragmentManager, feedButton, feedContainer, this);
+                fragmentManager.popBackStack();
+                this.setEnabled(false);
             }
         };
 
-        feedButton.setOnClickListener(v -> {
-            destroyChildFragment(fragmentManager, feedButton, feedContainer, callback);
-        });
-
-
         requireActivity().getOnBackPressedDispatcher().addCallback(callback);
-         **/
-    }
-
-    private void destroyChildFragment(FragmentManager fragmentManager, Button button, ConstraintLayout feedContainer, OnBackPressedCallback callback){
-        fragmentManager.popBackStack();
-        button.setText("Back to Map");
-        button.setOnClickListener(v -> {
-            fragmentManager.popBackStack();
-            feedContainer.setVisibility(View.GONE);
-        });
-        callback.setEnabled(false);
     }
 }

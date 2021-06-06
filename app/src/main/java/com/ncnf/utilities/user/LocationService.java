@@ -25,13 +25,14 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.firestore.GeoPoint;
-import com.ncnf.database.firebase.DatabaseService;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.authentication.firebase.CurrentUserModule;
 import com.ncnf.models.User;
 
 import static android.content.ContentValues.TAG;
-import static com.ncnf.utilities.StringCodes.LOCATION_KEY;
 import static com.ncnf.utilities.StringCodes.USERS_COLLECTION_KEY;
+import static com.ncnf.utilities.StringCodes.USER_LOCATION_KEY;
+
 
 /**
  * This class was done thanks to the youtube Tutorial by CodingWithMitch.
@@ -42,7 +43,7 @@ public class LocationService extends Service {
 
     private FusedLocationProviderClient mFusedLocationClient;
 
-    private DatabaseService dbs;
+    private FirebaseDatabase dbs;
 
     private final static long UPDATE_INTERVAL = 3 * 1000;  /* 3 secs */
     private final static long FASTEST_INTERVAL = 2000; /* 2 sec */
@@ -57,7 +58,7 @@ public class LocationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        this.dbs = new DatabaseService();
+        this.dbs = new FirebaseDatabase();
 
 
         this.mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -117,7 +118,7 @@ public class LocationService extends Service {
                                     if (user1 != null) {
                                         GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                                         saveUserLocation(geoPoint, user1.getUuid());
-                                        user1.setLoc(geoPoint);
+                                        user1.setLocation(geoPoint);
                                     } else {
                                         stopSelf();
                                     }
@@ -135,19 +136,10 @@ public class LocationService extends Service {
 
     private void saveUserLocation(final GeoPoint location, String uuid){
 
-        try{
-            dbs.updateField(USERS_COLLECTION_KEY + uuid, LOCATION_KEY, location).thenAccept(aBoolean -> {
-                if (aBoolean) {
-                    Log.d(TAG, "onComplete: \ninserted user location into database." +
-                            "\n latitude: " + location.getLatitude() +
-                            "\n longitude: " + location.getLongitude());
-                }
-            });
-        }catch (Exception e){
-            Log.e(TAG, "saveUserLocation: User instance is null, stopping location service.");
-            Log.e(TAG, "saveUserLocation: Exception: "  + e.getMessage() );
+        dbs.updateField(USERS_COLLECTION_KEY + uuid, USER_LOCATION_KEY, location).exceptionally(throwable ->{
             stopSelf();
-        }
+            return null;
+        });
 
     }
 
@@ -158,7 +150,4 @@ public class LocationService extends Service {
             return LocationService.this;
         }
     }
-
-
-
 }

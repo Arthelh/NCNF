@@ -6,35 +6,22 @@
     android:layout_height="match_parent"
     tools:context="com.ncnf.views.activities.login.LoginActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/loginTabs"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-89dp">
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/loginButton"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/login" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/registerButton"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/register" />
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/fragment_container_view"
-        android:layout_width="match_parent"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/loginViewPager"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        tools:layout_editor_absoluteX="0dp" />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginTabs" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,10 @@
 package com.ncnf.models;
 
 import com.google.firebase.firestore.GeoPoint;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Organization;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,14 +12,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class OrganizationTests {
+
+    FirebaseDatabase db = mock(FirebaseDatabase.class);
 
     @Test
     public void constructorEqualsHashTest(){
@@ -27,18 +35,12 @@ public class OrganizationTests {
         Organization o1 = new Organization(uuid,"Test1", new GeoPoint(1,1), "address", "foo@bar.com", "phone", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
         Organization o2 = new Organization(uuid,"Test 2", new GeoPoint(1,1), "address", "foo@bar.com", "phone", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            Organization o = new Organization(uuid,"Test1", new GeoPoint(1,1), "address", "foo@bar.com", "phone", new ArrayList<>(), new ArrayList<>());
-        });
-
-
         assertTrue(org1.equals(org1));
         assertFalse(org1.equals(org2));
         assertFalse(org1.equals(null));
         assertFalse(org1.equals(new ArrayList<>()));
         assertTrue(o1.equals(o2));
         assertTrue(o1.hashCode() == Objects.hash(uuid));
-
     }
 
     @Test
@@ -50,7 +52,6 @@ public class OrganizationTests {
         String email = "email";
         String phoneNumber = "phone_number";
         List<String> adminIds =  Arrays.asList(new String[]{"first_owner"});
-        List<String>  events = new ArrayList<>();
 
         Organization org = new Organization(name, new GeoPoint(1,1), address, email, phoneNumber, "first_owner");
         assertEquals(org.getName(), name);
@@ -82,6 +83,14 @@ public class OrganizationTests {
         List<String> adminIds2 =  Arrays.asList(new String[]{"original"});
         org.setAdminIds(adminIds2);
         assertEquals(org.getAdminIds(), adminIds2);
+
+        assertTrue(org.getEventIds().isEmpty());
+        List<String> events = new ArrayList<>();
+        events.add("firstEvent");
+        org.setEventIds(events);
+        assertEquals(org.getEventIds(), events);
+        assertEquals(events.get(0), org.getEventIds().get(0));
+
 
     }
 
@@ -129,5 +138,34 @@ public class OrganizationTests {
         assertTrue(org.removeEvent(event2) && org.getEventIds().size() == 0 && !org.getEventIds().contains(event2));
 
         assertTrue(!org.addEvent(null) && org.getEventIds().size() == 0 && !org.getEventIds().contains(null));
+    }
+
+    @Test
+    public void saveToDBWorks(){
+        when(db.setDocument(anyString(), any())).thenReturn(CompletableFuture.completedFuture(true));
+        Organization org1 = new Organization(null, "name", new GeoPoint(0,0), "address", "email", "phoneNumber", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
+        CompletableFuture<Boolean> future = org1.saveToDB(db);
+        try {
+            assertFalse(future.get());
+        } catch (Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
+
+        Organization org2 = new Organization(UUID.randomUUID(), "name", new GeoPoint(0,0), "address", "email", "phoneNumber", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
+        org2.setAdminIds(new ArrayList<>());
+        future = org2.saveToDB(db);
+        try {
+            assertFalse(future.get());
+        } catch (Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
+
+        Organization org3 = new Organization(UUID.randomUUID(), "name", new GeoPoint(0,0), "address", "email", "phoneNumber", Arrays.asList(new String[]{"originalOwner"}), new ArrayList<>());
+        future = org3.saveToDB(db);
+        try {
+            assertTrue(future.get());
+        } catch (Exception e){
+            Assert.fail("Something went wrong with the future");
+        }
     }
 }

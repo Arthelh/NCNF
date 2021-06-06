@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.ncnf.R;
-import com.ncnf.authentication.firebase.AuthenticationService;
+import com.ncnf.authentication.firebase.FirebaseAuthentication;
 import com.ncnf.authentication.firebase.CurrentUserModule;
 import com.ncnf.models.User;
 
@@ -42,15 +42,11 @@ import static com.ncnf.utilities.StringCodes.POPUP_TITLE;
 public class SignUpFragment extends Fragment {
 
     @Inject
-    AuthenticationService auth;
-
-    private Boolean isOrganizer = false;
+    FirebaseAuthentication auth;
 
     private EditText email;
     private EditText password;
     private EditText confirmPassword;
-    private TextView exceptionText;
-    private Button organizerButton;
     private Button registerButton;
 
     private final Class<?> activity;
@@ -75,13 +71,6 @@ public class SignUpFragment extends Fragment {
         showProgressBar(false);
 
         registerButton.setOnClickListener(v -> signUp());
-        organizerButton.setOnClickListener(v -> {
-            if(isOrganizer){
-                setPrivateUserView();
-            } else {
-                setOrganizerView();
-            }
-        });
     }
 
     public void signUp() {
@@ -106,12 +95,12 @@ public class SignUpFragment extends Fragment {
         }).thenRun(() -> {
             Intent intent = new Intent(getActivity(), activity);
             startActivity(intent);
+            requireActivity().finish();
         }).exceptionally(exception -> {
-            Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + exception.getMessage());
-            setException(exception.getMessage());
+            Log.d(DEBUG_TAG,"Unsuccessful register for " + email + " : " + exception.getCause().getMessage());
+            setException(exception.getCause().getMessage());
             Log.d(DEBUG_TAG, "Deleting user.");
             this.auth.delete();
-            setException("Couldn't create a new user : please try again");
             return null;
         }).thenRun(() -> showProgressBar(false));
     }
@@ -120,8 +109,6 @@ public class SignUpFragment extends Fragment {
         this.email = getView().findViewById(R.id.signUpEmail);
         this.password = getView().findViewById(R.id.signUpPassword);
         this.confirmPassword = getView().findViewById(R.id.signUpConfirmPassword);
-        this.exceptionText = getView().findViewById(R.id.InformationSignUp);
-        this.organizerButton = getView().findViewById(R.id.organizerButton);
         this.registerButton = getView().findViewById(R.id.signUpRegisterButton);
     }
 
@@ -160,7 +147,7 @@ public class SignUpFragment extends Fragment {
     }
 
     private void showProgressBar(Boolean show){
-        ProgressBar bar = getView().findViewById(R.id.progressBar);
+        ProgressBar bar = getView().findViewById(R.id.sign_up_spinner);
         if(show){
             bar.setVisibility(View.VISIBLE);
         } else {
@@ -172,26 +159,10 @@ public class SignUpFragment extends Fragment {
         AlertDialog.Builder popup = new AlertDialog.Builder(getActivity());
         popup.setCancelable(true);
         popup.setTitle(POPUP_TITLE);
-//        popup.setMessage(s);
+        popup.setMessage(s);
         popup.setPositiveButton(POPUP_POSITIVE_BUTTON, (dialog, which) -> {
             dialog.cancel();
         });
         popup.show();
-//        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
-
-    private void setOrganizerView(){
-        isOrganizer = true;
-        ((TextView)getActivity().findViewById(R.id.InformationSignUp)).setText("Organizer Registration");
-        email.setHint("Business Email..");
-        organizerButton.setText("I'm a regular user...");
-    }
-
-    private void setPrivateUserView(){
-        isOrganizer = false;
-        ((TextView)getActivity().findViewById(R.id.InformationSignUp)).setText("Register");
-        email.setHint("Email..");
-        organizerButton.setText("I'm an organizer...");
-    }
-
 }
