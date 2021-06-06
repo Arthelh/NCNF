@@ -239,7 +239,6 @@ public class EventCreateFragment extends Fragment implements AdapterView.OnItemS
                         new LinkedList<>(),
                         parseInt(minAge.getText().toString()),
                         parseDouble(eventPrice.getText().toString()),
-                        new LinkedList<>(),
                         eventEmail.getText().toString());
 
                 firebaseFileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid()));

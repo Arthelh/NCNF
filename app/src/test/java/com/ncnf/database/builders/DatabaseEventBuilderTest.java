@@ -3,7 +3,6 @@ package com.ncnf.database.builders;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.models.Event;
-import com.ncnf.models.EventTag;
 import com.ncnf.models.Group;
 
 import org.junit.Before;
@@ -30,7 +29,6 @@ import static com.ncnf.utilities.StringCodes.MIN_AGE_KEY;
 import static com.ncnf.utilities.StringCodes.NAME_KEY;
 import static com.ncnf.utilities.StringCodes.OWNER_KEY;
 import static com.ncnf.utilities.StringCodes.PRICE_KEY;
-import static com.ncnf.utilities.StringCodes.TAGS_LIST_KEY;
 import static com.ncnf.utilities.StringCodes.TYPE_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 import static com.ncnf.utilities.StringCodes.VISIBILITY_KEY;
@@ -58,7 +56,6 @@ public class DatabaseEventBuilderTest {
 
     int minAge = 0;
     double price = 0;
-    List<EventTag> eventTags = new ArrayList<>(Collections.singleton(new EventTag("\uD83C\uDFB8", "Rock Music")));
 
     List<String> invited = new ArrayList<>(Collections.singleton("invited"));
 
@@ -85,7 +82,6 @@ public class DatabaseEventBuilderTest {
 
         event.put(MIN_AGE_KEY, minAge);
         event.put(PRICE_KEY, price);
-        event.put(TAGS_LIST_KEY, eventTags);
 
         Event event = eventBuilder.toObject(uuid, this.event);
 
@@ -149,7 +145,7 @@ public class DatabaseEventBuilderTest {
         Event.Type type = Event.Type.Movie;
         UUID uuid = UUID.randomUUID();
 
-        Event event = new Event(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, eventTags, email);
+        Event event = new Event(ownerId, uuid, name, date, location, address, description, type, attendees, minAge, price, email);
         Map<String, Object> map = eventBuilder.toMap(event);
         assertEquals(eventBuilder.toObject(uuid.toString(), map), event);
 

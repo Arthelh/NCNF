@@ -70,15 +70,6 @@
                                 android:textSize="10sp"
                                 app:icon="@drawable/ic_baseline_bookmark_add_24"
                                 android:backgroundTint="@color/black"/>
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/button_publish_event_news"
-                                android:layout_width="200dp"
-                                android:layout_height="wrap_content"
-                                android:text="@string/event_publish_news_button"
-                                android:textSize="10sp"
-                                app:icon="@drawable/ic_baseline_post_add_24"
-                                android:backgroundTint="@color/black"/>
                         </LinearLayout>
 
                     </LinearLayout>
