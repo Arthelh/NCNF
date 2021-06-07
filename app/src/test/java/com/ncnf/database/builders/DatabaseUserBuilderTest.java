@@ -20,14 +20,13 @@ import static org.junit.Assert.assertEquals;
 
 public class DatabaseUserBuilderTest {
 
-    private DatabaseUserBuilder builder = new DatabaseUserBuilder();
+    private final DatabaseUserBuilder builder = new DatabaseUserBuilder();
     private FirebaseDatabase db;
 
     String uuid = "UUID";
     String username = "username";
     String email = "test@test.com";
     String firstName = "Test";
-    String lastName = "Test";
     List<String> friends = new ArrayList<>(Collections.singleton("testFriendUUID"));
     List<String> ownedGroups = new ArrayList<>(Collections.singleton("testOwnedUUID"));
     List<String> participatingGroups = new ArrayList<>(Collections.singleton("testGroupUUID"));

@@ -32,11 +32,6 @@ public class UserRepositoryTests {
 
     private List<Event> events;
 
-    @Before
-    public void setup() {
-
-    }
-
     @Test
     public void loadUserWorks(){
         when(mockDatabase.getDocument(anyString(), any())).thenReturn(CompletableFuture.completedFuture(u1));

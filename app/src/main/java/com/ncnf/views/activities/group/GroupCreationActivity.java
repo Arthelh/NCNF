@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.button.MaterialButton;
@@ -18,7 +17,6 @@ import com.ncnf.models.Group;
 import com.ncnf.models.User;
 import com.ncnf.repositories.FriendsRepository;
 import com.ncnf.repositories.GroupRepository;
-import com.ncnf.repositories.UserRepository;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 import com.ncnf.views.activities.main.MainActivity;
 import com.ncnf.views.fragments.group.FriendSelectionGroupFragment;
@@ -36,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
 import static com.ncnf.utilities.Helpers.combine;
-import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.GROUPS_COLLECTION_KEY;
 
 @AndroidEntryPoint

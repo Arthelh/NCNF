@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NCNF"
         android:usesCleartextTraffic="true">
-        <activity android:name=".views.activities.group.GroupCreationActivity"></activity>
+        <activity android:name=".views.activities.group.GroupCreationActivity" />
         <activity
             android:name=".views.activities.friends.FriendsActivity"
             android:parentActivityName=".views.activities.main.MainActivity" />

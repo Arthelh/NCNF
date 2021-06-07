@@ -5,7 +5,6 @@ import com.firebase.geofire.GeoLocation;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 import com.ncnf.models.Event;
-import com.ncnf.models.EventTag;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +29,6 @@ import static com.ncnf.utilities.StringCodes.MIN_AGE_KEY;
 import static com.ncnf.utilities.StringCodes.NAME_KEY;
 import static com.ncnf.utilities.StringCodes.OWNER_KEY;
 import static com.ncnf.utilities.StringCodes.PRICE_KEY;
-import static com.ncnf.utilities.StringCodes.TAGS_LIST_KEY;
 import static com.ncnf.utilities.StringCodes.TYPE_KEY;
 import static com.ncnf.utilities.StringCodes.UUID_KEY;
 
@@ -53,17 +51,16 @@ public class DatabaseEventBuilder extends DatabaseObjectBuilder<Event> {
         List<String> attendees = (List<String>) data.getOrDefault(MEMBERS_KEY, new ArrayList<>());
         String description = (String) data.getOrDefault(DESCRIPTION_KEY, "");
 
-        int minAge = 0;
+        int minAge;
         if(data.get(MIN_AGE_KEY) instanceof Long){
             minAge = ((Long) data.get(MIN_AGE_KEY)).intValue();
         } else {
             minAge = (int) data.get(MIN_AGE_KEY);
         }
         double price = (double) data.getOrDefault(PRICE_KEY, 0);
-        List<EventTag> eventTags = (List<EventTag>) data.getOrDefault(TAGS_LIST_KEY, new ArrayList<>());
         String email = data.getOrDefault(EMAIL_KEY, "").toString();
         //TODO : should serialize / deserialize tags before adding them
-        return new Event(ownerId, UUID.fromString(uuidStr), name, datetime, location, address, description, type, attendees, minAge, price, eventTags, email);
+        return new Event(ownerId, UUID.fromString(uuidStr), name, datetime, location, address, description, type, attendees, minAge, price, email);
     }
 
     @Override
@@ -88,7 +85,6 @@ public class DatabaseEventBuilder extends DatabaseObjectBuilder<Event> {
 
         map.put(MIN_AGE_KEY, event.getMinAge());
         map.put(PRICE_KEY, event.getPrice());
-        map.put(TAGS_LIST_KEY, event.getEventTags());
         map.put(EMAIL_KEY, event.getEmail());
 
         return map;

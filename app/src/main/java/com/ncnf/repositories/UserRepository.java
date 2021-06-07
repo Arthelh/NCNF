@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import static com.ncnf.utilities.StringCodes.FULL_NAME_KEY;
 import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_KEY;
 import static com.ncnf.utilities.StringCodes.NOTIFICATIONS_TOKEN_KEY;
-import static com.ncnf.utilities.StringCodes.OWNED_GROUPS_KEY;
 import static com.ncnf.utilities.StringCodes.PARTICIPATING_GROUPS_KEY;
 import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
 import static com.ncnf.utilities.StringCodes.USERNAME_KEY;

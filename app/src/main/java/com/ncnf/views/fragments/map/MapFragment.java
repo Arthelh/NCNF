@@ -60,7 +60,7 @@ public class MapFragment extends Fragment{
     private MapHandler mapHandler;
     private MaterialButton searchButton;
 
-    private ActivityResultLauncher<Intent> searchBarLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::updateUserLocation);
+    private final ActivityResultLauncher<Intent> searchBarLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::updateUserLocation);
 
     //Toolbar and location services for it
     private FusedLocationProviderClient fusedLocationProviderClient;

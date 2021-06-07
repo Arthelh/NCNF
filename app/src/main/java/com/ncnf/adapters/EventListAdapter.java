@@ -27,7 +27,7 @@ import java.util.List;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.SocialObjViewHolder> implements Filterable {
     private List<Event> events;
-    private List<Event> eventsFull;
+    private final List<Event> eventsFull;
     private final OnSocialObjListener onSocialObjListener;
     protected final Context context;
 
@@ -132,10 +132,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Soci
 
         public SocialObjViewHolder(View v, OnSocialObjListener e) {
             super(v);
-            socialObject = (TextView) v.findViewById(R.id.set_event_name);
-            date = (TextView) v.findViewById(R.id.event_date);
-            description = (TextView) v.findViewById(R.id.event_descr);
-            CardView imageHolder = (CardView) v.findViewById(R.id.event_card_image);
+            socialObject = v.findViewById(R.id.set_event_name);
+            date = v.findViewById(R.id.event_date);
+            description = v.findViewById(R.id.event_descr);
+            CardView imageHolder = v.findViewById(R.id.event_card_image);
             image = imageHolder.findViewById(R.id.event_picture);
             //add timestamp
         }

@@ -36,7 +36,6 @@ public class EventTest {
     List<String> attendees = new ArrayList<>();
     int minAge = 0;
     int price = 0;
-    List<EventTag> eventTags = new ArrayList<>();
 
     FirebaseDatabase db;
     Event mainEvent;
@@ -46,7 +45,7 @@ public class EventTest {
     @Before
     public void setup(){
         db = Mockito.mock(FirebaseDatabase.class);
-        mainEvent = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, eventTags, "test@email.com");
+        mainEvent = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, "test@email.com");
         response = CompletableFuture.completedFuture(true);
     }
 
@@ -83,11 +82,8 @@ public class EventTest {
     @Test
     public void secondaryConstructorTest(){
         attendees.add("Attendee1");
-        EventTag eventTag = new EventTag("\uD83C\uDFB8", "Rock Music");
-        eventTags.add(eventTag);
 
-
-        Event event = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, eventTags, "test@email.com");
+        Event event = new Event(ownerID, uuid, name, date, geoPoint, address, description, type, attendees, minAge, price, "test@email.com");
         assertEquals(event.getUuid(), uuid);
         assertEquals(event.getOwnerId(), ownerID);
         assertEquals(event.getDate(), date);
@@ -99,9 +95,6 @@ public class EventTest {
         assertEquals(event.getNumOfAttendees(), 1);
         assertEquals(event.getAttendees().get(0), "Attendee1");
         assertEquals(event.getAttendees().size(), 1);
-
-        assertEquals(event.getEventTags().size(), 1);
-        assertEquals(event.getEventTags().get(0), eventTag);
 
     }
 
@@ -121,32 +114,6 @@ public class EventTest {
         Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
         event.setMinAge(18);
         assertEquals(event.getMinAge(), 18);
-    }
-
-    @Test
-    public void addTagWorks() {
-        Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
-        EventTag eventTag = new EventTag("\uD83C\uDFB8", "Rock Music");
-        event.addTag(eventTag);
-        assertTrue(event.getEventTags().contains(eventTag));
-    }
-
-    @Test
-    public void setTagWorks() {
-        List<EventTag> list = new ArrayList<EventTag>();
-        EventTag eventTag = new EventTag("\uD83C\uDFB8", "Rock Music");
-        EventTag eventTag2 = new EventTag("\uD83C\uDFB8", "Folk Music");
-        list.add(eventTag);
-        list.add(eventTag2);
-        Event event = new Event(ownerID,name, date, geoPoint,address,description, type, 0 , 0, "test@email.com");
-        event.setEventTags(list);
-
-        List<EventTag> result = event.getEventTags();
-        assertEquals(result.size(), list.size());
-        for(int i = 0; i < result.size(); ++i) {
-            assertEquals(list.get(i), result.get(i));
-        }
-
     }
 
     @Test
@@ -173,22 +140,10 @@ public class EventTest {
         assertEquals(event.getOwnerId(), "EPFL-IC");
         assertEquals(event.getEmail(), "newEmail@test.ch");
         assertEquals(event.getNumOfAttendees(), 1);
-        assertTrue(event.getAttendees().size() == attendees.size());
+        assertEquals(event.getAttendees().size(), attendees.size());
         for(int i = 0; i < attendees.size(); ++i) {
             assertEquals(attendees.get(i), event.getAttendees().get(i));
         }
-    }
-
-    @Test
-    public void filterTagsWorks() {
-        Event event = new Event("ownerId", name, date, geoPoint,address,description, type, 0, 0, "test@email.com");
-        EventTag eventTag = new EventTag("\uD83C\uDFB8", "Rock Music");
-        EventTag eventTag2 = new EventTag("\uD83C\uDFB8", "Folk Music");
-        event.addTag(eventTag);
-        event.addTag(eventTag2);
-
-        assertTrue(event.filterTags(eventTag2.getName()));
-        assertFalse(event.filterTags("example"));
     }
 
     @Test

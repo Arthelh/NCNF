@@ -60,7 +60,7 @@ public class FeedFragmentTest {
     static private final OrganizationRepository organizationRepository = Mockito.mock(OrganizationRepository.class);
     static private final FirebaseUser user = Mockito.mock(FirebaseUser.class);
 
-    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
 
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(MainActivity.class));

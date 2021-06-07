@@ -9,14 +9,10 @@ import com.ncnf.R;
 import com.ncnf.authentication.firebase.CurrentUserModule;
 import com.ncnf.authentication.firebase.FirebaseUserModule;
 import com.ncnf.models.Event;
-import com.ncnf.models.Group;
-import com.ncnf.models.Organization;
 import com.ncnf.models.User;
-import com.ncnf.repositories.OrganizationRepository;
 import com.ncnf.repositories.UserRepository;
 import com.ncnf.storage.firebase.FirebaseCacheFileStore;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,12 +21,8 @@ import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-
-import javax.inject.Inject;
 
 import dagger.hilt.android.testing.BindValue;
 import dagger.hilt.android.testing.HiltAndroidRule;
@@ -39,8 +31,6 @@ import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.swipeLeft;
-import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -51,7 +41,7 @@ import static org.mockito.Mockito.when;
 @UninstallModules(FirebaseUserModule.class)
 public class BookMarkActivityTest {
 
-    private static List<Event> events = new ArrayList<>();
+    private static final List<Event> events = new ArrayList<>();
     private static final Event event = new Event("EPFL", "EPFL event", LocalDateTime.of(2021, 03, 11, 0, 0), new GeoPoint(46.518689, 6.568067), "Rolex Learning Center, 1015 Ecublens", "SocialObject description goes here", Event.Type.Conference, 0, 0, "test@email.com");
 
     private static User user = Mockito.mock(User.class);
@@ -65,7 +55,7 @@ public class BookMarkActivityTest {
     @BindValue
     FirebaseCacheFileStore fileStore = Mockito.mock(FirebaseCacheFileStore.class);
 
-    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     @Rule
     public RuleChain testRule = RuleChain.outerRule(hiltRule).around(new ActivityScenarioRule<>(BookMarkActivity.class));
 

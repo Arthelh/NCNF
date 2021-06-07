@@ -41,7 +41,6 @@ import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -66,10 +65,10 @@ public class GroupFragmentOwnerTest {
     static private final GroupRepository repository1 = Mockito.mock(GroupRepository.class);
     static private final UserRepository repository2 = Mockito.mock(UserRepository.class);
 
-    static private UUID gUuid = UUID.randomUUID();
+    static private final UUID gUuid = UUID.randomUUID();
     static private final Group g = new Group("u1",gUuid, "Group Test", LocalDateTime.now(), new GeoPoint(-0.03, -0.03), "random address", "description here", new ArrayList<>());
 
-    private HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    private final HiltAndroidRule hiltRule = new HiltAndroidRule(this);
 
     private final ActivityScenarioRule scenario = new ActivityScenarioRule<>(GroupActivity.class);
 

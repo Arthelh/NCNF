@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -142,9 +143,9 @@ public class UserTests {
         assertEquals(user.getOwnedGroupsIds(), empty);
         assertEquals(user.getSavedEventsIds(), empty);
         assertEquals(user.getParticipatingGroupsIds(), empty);
-        assertEquals(user.getBirthDate(), null);
+        assertNull(user.getBirthDate());
         assertFalse(user.getNotifications());
-        assertEquals(user.getLocation(), null);
+        assertNull(user.getLocation());
 
 
         user.setUsername(username);
@@ -228,7 +229,7 @@ public class UserTests {
         when(db.getDocument(anyString(), anyObject())).thenReturn(future);
         CompletableFuture<User> loaded = user.loadUserFromDB();
         try {
-            assertEquals(loaded.get(), null);
+            assertNull(loaded.get());
         } catch(Exception e){
             assertNotNull(e);
         }
@@ -245,7 +246,7 @@ public class UserTests {
 
         CompletableFuture<List<User>> query = user2.getAllUsersLike(user.getUsername());
         try {
-            assertTrue(query.get().size() == 1);
+            assertEquals(1, query.get().size());
             assertEquals(query.get().get(0).getUsername(), user2.getUsername());
         } catch(Exception e){
             Assert.fail("Something went wrong with the future");
@@ -298,7 +299,7 @@ public class UserTests {
 
         CompletableFuture<List<Group>> future = user.getOwnedGroups();
         try {
-            assertTrue(future.get().size() == 1);
+            assertEquals(1, future.get().size());
             assertEquals(group, future.get().get(0));
             assertEquals(future.get().get(0).getOwnerId(), ownerID);
         } catch(Exception e){
@@ -326,7 +327,7 @@ public class UserTests {
 
         CompletableFuture<List<Event>> future = user.getSavedEvents();
         try {
-            assertTrue(future.get().size() == 1);
+            assertEquals(1, future.get().size());
             assertEquals(event, future.get().get(0));
             assertEquals(future.get().get(0).getOwnerId(), ownerID);
         } catch(Exception e){

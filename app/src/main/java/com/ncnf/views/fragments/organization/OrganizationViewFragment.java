@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.textview.MaterialTextView;
 import com.ncnf.R;
 import com.ncnf.models.Organization;
 import com.ncnf.repositories.OrganizationRepository;
@@ -23,7 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 import static android.graphics.BitmapFactory.decodeResource;
 import static com.ncnf.utilities.StringCodes.ORGANIZATIONS_IMAGE_PATH;
-import static com.ncnf.utilities.StringCodes.USER_IMAGE_PATH;
 
 @AndroidEntryPoint
 public class OrganizationViewFragment extends Fragment {

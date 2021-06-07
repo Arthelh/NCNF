@@ -39,13 +39,14 @@ import com.ncnf.utilities.GroupAttendeeMarkerRenderer;
 import com.ncnf.utilities.user.LocationService;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
 
 import javax.inject.Inject;
 
@@ -84,12 +85,12 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     private List<String> friendsUUID;
     private Map<String, GeoPoint> markers;
-    private Map<String, Bitmap> images = new HashMap<>();
+    private final Map<String, Bitmap> images = new HashMap<>();
 
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private FusedLocationProviderClient myFusedLocationClient;
 
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
     private Runnable runnable;
     private static final int LOCATION_UPDATE_INTERVAL = 3000;
 
@@ -102,7 +103,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
 
     private ClusterManager clusterManager;
     private GroupAttendeeMarkerRenderer groupAttendeeMarkerRenderer;
-    private ArrayList<GroupAttendeeMarker> clusterMarkers = new ArrayList<>();
+    private final ArrayList<GroupAttendeeMarker> clusterMarkers = new ArrayList<>();
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -225,7 +226,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
             String userId = friendsUUID.get(i);
 
             if(userId.equals(user.getUuid())) {
-                if(!markers.keySet().contains(userId)) {
+                if(!markers.containsKey(userId)) {
                     markers.put(userId, user.getLocation());
                     bitmapSetChanged();
                 } else {
@@ -238,7 +239,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
                 int finalI = i;
                 field.thenAccept(point -> {
                     if(point != null) {
-                        if (!markers.keySet().contains(userId)) {
+                        if (!markers.containsKey(userId)) {
 
                             markers.put(userId, point);
                             bitmapSetChanged();
@@ -301,7 +302,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);

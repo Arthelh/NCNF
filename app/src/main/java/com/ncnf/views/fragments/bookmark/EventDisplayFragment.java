@@ -1,7 +1,6 @@
 package com.ncnf.views.fragments.bookmark;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.adapters.EventListAdapter;
@@ -27,18 +25,14 @@ import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Event;
 import com.ncnf.repositories.UserRepository;
 import com.ncnf.views.fragments.event.EventFragment;
-import com.ncnf.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
-import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
 
 @AndroidEntryPoint
 public class EventDisplayFragment extends Fragment implements EventListAdapter.OnSocialObjListener {
@@ -70,7 +64,7 @@ public class EventDisplayFragment extends Fragment implements EventListAdapter.O
         super.onViewCreated(view, savedInstanceState);
 
         objToDisplay = new ArrayList<>();
-        RecyclerView recycler = (RecyclerView) view.findViewById(R.id.SavedEventsRecyclerView);
+        RecyclerView recycler = view.findViewById(R.id.SavedEventsRecyclerView);
         // Use LinearLayout as the layout manager
         lManager = new LinearLayoutManager(getActivity());
         recycler.setLayoutManager(lManager);

@@ -7,7 +7,8 @@ import java.time.Month;
 import java.util.Calendar;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 public class DateAdapterTest {
 
@@ -32,7 +33,7 @@ public class DateAdapterTest {
 
     @Test
     public void toDateReturnsNull() {
-        assertEquals(DateAdapter.toDate(""), null);
+        assertNull(DateAdapter.toDate(""));
     }
 
     @Test
@@ -40,10 +41,10 @@ public class DateAdapterTest {
         String date = "2000/01/25 12:45";
         LocalDateTime dateTime = DateAdapter.toDate(date);
         System.out.println(dateTime.getYear());
-        assertTrue(dateTime.getYear() == 2000);
-        assertTrue(dateTime.getMonth() == Month.JANUARY);
-        assertTrue(dateTime.getDayOfMonth() == 25);
-        assertTrue(dateTime.getHour() == 12);
-        assertTrue(dateTime.getMinute() == 45);
+        assertEquals(2000, dateTime.getYear());
+        assertSame(dateTime.getMonth(), Month.JANUARY);
+        assertEquals(25, dateTime.getDayOfMonth());
+        assertEquals(12, dateTime.getHour());
+        assertEquals(45, dateTime.getMinute());
     }
 }

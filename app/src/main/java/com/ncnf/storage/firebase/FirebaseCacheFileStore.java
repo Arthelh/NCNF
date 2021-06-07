@@ -60,7 +60,6 @@ public class FirebaseCacheFileStore extends FirebaseFileStore {
 
     /**
      * Try to find the file in the cache and download it if the file is not present.
-     * @return
      */
     @Override
     public CompletableFuture<byte[]> download() {

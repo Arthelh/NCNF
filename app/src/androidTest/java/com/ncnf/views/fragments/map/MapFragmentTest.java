@@ -2,7 +2,6 @@ package com.ncnf.views.fragments.map;
 
 import android.graphics.Rect;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.SeekBar;
 
 import androidx.test.espresso.Espresso;
@@ -21,7 +20,6 @@ import androidx.test.uiautomator.Until;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.GeoPoint;
-import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.ncnf.R;
 import com.ncnf.authentication.firebase.FirebaseUserModule;
 import com.ncnf.models.Organization;
@@ -44,7 +42,6 @@ import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -55,11 +52,9 @@ import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;

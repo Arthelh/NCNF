@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +21,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.ncnf.R;
 import com.ncnf.views.activities.bookmark.BookMarkActivity;
 import com.ncnf.views.activities.group.GroupActivity;
-import com.ncnf.views.activities.group.GroupCreationActivity;
 import com.ncnf.views.activities.login.LoginActivity;
 import com.ncnf.views.activities.friends.FriendsActivity;
 
 import com.ncnf.views.activities.user.UserTabActivity;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
-import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.NEXT_ACTIVITY_EXTRA_KEY;
 
 public class HomeFragment extends Fragment {
@@ -147,29 +144,23 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ENABLE_GPS: {
-                if(locationServicesEnabled){
-                    goToActivity(GroupActivity.class);
-                }
-                else {
-                    getLocationPermission();
-                }
+        if (requestCode == PERMISSIONS_REQUEST_ENABLE_GPS) {
+            if (locationServicesEnabled) {
+                goToActivity(GroupActivity.class);
+            } else {
+                getLocationPermission();
             }
         }
 
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         locationServicesEnabled = false;
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    locationServicesEnabled = true;
-                }
+        if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {// If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                locationServicesEnabled = true;
             }
         }
     }

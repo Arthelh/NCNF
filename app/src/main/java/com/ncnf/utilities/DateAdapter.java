@@ -1,5 +1,7 @@
 package com.ncnf.utilities;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -118,6 +120,7 @@ public class DateAdapter {
 
     }
 
+    @NotNull
     @Override
     public String toString() {
         String thisMinute = minute + "";

@@ -92,8 +92,8 @@ public class  MarkerInfoWindowManager implements GoogleMap.InfoWindowAdapter, Cl
     }
 
     private void renderInfoWindow(){
-        TextView tvTitle = (TextView) markerWindow.findViewById(R.id.marker_title);
-        TextView tvSnippet = (TextView) markerWindow.findViewById(R.id.marker_snippet);
+        TextView tvTitle = markerWindow.findViewById(R.id.marker_title);
+        TextView tvSnippet = markerWindow.findViewById(R.id.marker_snippet);
 
         tvTitle.setText(item.getTitle());
         tvSnippet.setText(item.getSnippet());

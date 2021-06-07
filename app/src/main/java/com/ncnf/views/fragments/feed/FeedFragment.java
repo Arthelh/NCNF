@@ -152,8 +152,6 @@ public class FeedFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.dateOrder :
-                adapter.orderBy();
-                break;
             case R.id.relevanceOrder :
                 adapter.orderBy();
                 break;
