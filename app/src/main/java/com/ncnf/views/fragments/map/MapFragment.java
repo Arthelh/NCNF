@@ -24,6 +24,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -127,6 +128,7 @@ public class MapFragment extends Fragment{
     public void returnToLocation(View view) {
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
             fusedLocationProviderClient.getLastLocation().addOnCompleteListener(task -> {
                 Location gpsLocation = task.getResult();
                 if (gpsLocation != null) {

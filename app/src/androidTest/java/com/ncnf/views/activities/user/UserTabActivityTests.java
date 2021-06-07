@@ -130,15 +130,6 @@ public class UserTabActivityTests {
         Intents.intended(hasComponent(MainActivity.class.getName()));
     }
 
-    @Ignore
-    @Test
-    public void friendsButtonOpensFriendsActivity(){
-        when(friendsRepository.getFriends(anyString())).thenReturn(CompletableFuture.completedFuture(users));
-
-        onView(withId(R.id.friends_profile_button)).perform(click());
-        Intents.intended(hasComponent(FriendsActivity.class.getName()));
-    }
-
     @Test
     public void openGalleryTest(){
         onView(withId(R.id.edit_profile_picture_button)).perform(click());

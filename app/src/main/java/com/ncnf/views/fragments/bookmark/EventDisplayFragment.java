@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.adapters.EventListAdapter;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Event;
 import com.ncnf.repositories.UserRepository;
 import com.ncnf.views.fragments.event.EventFragment;
@@ -32,6 +33,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+
 @AndroidEntryPoint
 public class EventDisplayFragment extends Fragment implements EventListAdapter.OnSocialObjListener {
 
@@ -41,6 +43,9 @@ public class EventDisplayFragment extends Fragment implements EventListAdapter.O
 
     @Inject
     public FirebaseUser user;
+
+    @Inject
+    public FirebaseDatabase firebaseDatabase;
 
     @Inject
     public UserRepository userRepository;
@@ -68,12 +73,12 @@ public class EventDisplayFragment extends Fragment implements EventListAdapter.O
         adapter = new EventListAdapter(getContext(), objToDisplay, this::onEventClick);
         recycler.setAdapter(adapter);
 
-        user.getUid();
         userRepository.loadUser(user.getUid()).thenAccept(user ->{
+            user.setDB(this.firebaseDatabase);
             user.getSavedEvents().thenAccept(list -> {
-               if(list != null){
+                if(list != null){
                    this.adapter.setEvents(list);
-               }
+                }
             });
         });
     }

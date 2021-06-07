@@ -149,7 +149,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Soci
         private void setEventImage(Event event){
             FirebaseCacheFileStore fileStore = new FirebaseCacheFileStore();
             fileStore.setContext(context);
-            fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getOwnerId()));
+            fileStore.setPath(SocialObject.IMAGE_PATH, String.format(SocialObject.IMAGE_NAME, event.getUuid().toString()));
             fileStore.downloadImage(image, BitmapFactory.decodeResource(context.getResources(),
                     R.drawable.default_event_header_picture));
         }

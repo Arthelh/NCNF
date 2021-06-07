@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.maps.android.clustering.ClusterManager;
 import com.ncnf.R;
@@ -77,7 +78,7 @@ public class FriendsTrackerActivity extends AppCompatActivity implements OnMapRe
     @Inject
     public FirebaseCacheFileStore fileStore;
 
-    private AppCompatImageButton findUserButton;
+    private MaterialButton findUserButton;
 
     private GoogleMap mMap;
     private MapView mapView;
