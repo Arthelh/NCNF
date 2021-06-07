@@ -26,12 +26,10 @@ This week, I worked mainly on improving the aesthetics of the UI for displaying 
 
 It took me a little bit more than the expected time but overall this was a good week.
 
-
-
 ## Keran (Scrum Master)
 
-
+This week, I first fix a bug in the cache filestore. Namely, uploading a file did not invalidated the cache. Then, I worked on the organization flow: add an organization, view them and manage them. The time spent was hard to estimate because the testing was difficult. The navigation between nested fragments brought some problems. I was also the scrum master.
 
 ## Overall team
 
-
+The week was crucial because the team needed to finish the crucial features to focus on the details the last week. Overall, most of the goals were accomplished and the sprint backlog was almost empty. Only left was the creation of groups, which is still a work in progress. The team held its two weekly meeting, which were short and efficient. We had some interesting discussion was were the priorities for the end and to agree on the overall app design and layout.
