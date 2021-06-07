@@ -16,8 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
+import com.ncnf.authentication.firebase.FirebaseAuthentication;
 import com.ncnf.models.Event;
 import com.ncnf.models.Organization;
 import com.ncnf.models.SocialObject;
@@ -45,8 +47,7 @@ public class EventFragment extends Fragment {
     @Inject
     public FirebaseCacheFileStore fileStore;
 
-    @Inject
-    public FirebaseUser user;
+    public FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @Inject
     public UserRepository userRepository;
@@ -88,14 +89,18 @@ public class EventFragment extends Fragment {
     private void initSaveToBookmarkButton(View view){
         Button saveToBookmarkButton = view.findViewById(R.id.eventSaveToBookmarkButton);
 
-        saveToBookmarkButton.setOnClickListener(v -> {
-            userRepository.addBookmarkEventToUser(this.user.getUid(), this.event.getUuid().toString()).thenAccept(res -> {
-                Toast.makeText(getActivity(), "Saved to bookmark", Toast.LENGTH_SHORT).show();
-            }).exceptionally(e -> {
-                Toast.makeText(getActivity(), "Error saving the Event", Toast.LENGTH_SHORT).show();
-                return null;
+        if(firebaseAuth.getCurrentUser() == null){
+            saveToBookmarkButton.setVisibility(View.GONE);
+        } else {
+            saveToBookmarkButton.setOnClickListener(v -> {
+                userRepository.addBookmarkEventToUser(firebaseAuth.getCurrentUser().getUid(), this.event.getUuid().toString()).thenAccept(res -> {
+                    Toast.makeText(getActivity(), "Saved to bookmark", Toast.LENGTH_SHORT).show();
+                }).exceptionally(e -> {
+                    Toast.makeText(getActivity(), "Error saving the Event", Toast.LENGTH_SHORT).show();
+                    return null;
+                });
             });
-        });
+        }
     }
 
     private void initViews(View view){

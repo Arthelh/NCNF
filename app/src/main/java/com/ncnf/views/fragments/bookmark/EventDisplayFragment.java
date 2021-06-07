@@ -1,6 +1,7 @@
 package com.ncnf.views.fragments.bookmark;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 import com.ncnf.R;
 import com.ncnf.adapters.EventListAdapter;
+import com.ncnf.database.firebase.FirebaseDatabase;
 import com.ncnf.models.Event;
 import com.ncnf.repositories.UserRepository;
 import com.ncnf.views.fragments.event.EventFragment;
@@ -34,6 +37,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+import static com.ncnf.utilities.StringCodes.DEBUG_TAG;
 import static com.ncnf.utilities.StringCodes.SAVED_EVENTS_KEY;
 
 @AndroidEntryPoint
@@ -45,6 +49,9 @@ public class EventDisplayFragment extends Fragment implements EventListAdapter.O
 
     @Inject
     public FirebaseUser user;
+
+    @Inject
+    public FirebaseDatabase firebaseDatabase;
 
     @Inject
     public UserRepository userRepository;
@@ -72,12 +79,12 @@ public class EventDisplayFragment extends Fragment implements EventListAdapter.O
         adapter = new EventListAdapter(getContext(), objToDisplay, this::onEventClick);
         recycler.setAdapter(adapter);
 
-        user.getUid();
         userRepository.loadUser(user.getUid()).thenAccept(user ->{
+            user.setDB(this.firebaseDatabase);
             user.getSavedEvents().thenAccept(list -> {
-               if(list != null){
+                if(list != null){
                    this.adapter.setEvents(list);
-               }
+                }
             });
         });
     }
