@@ -117,8 +117,7 @@ public class GroupFragment extends Fragment {
                     .addToBackStack("tag")
                     .commit();
 
-        }
-        else {
+        } else {
             GroupDisplayFragment nextFrag= new GroupDisplayFragment();
             nextFrag.setArguments(bundle);
 

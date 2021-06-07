@@ -243,9 +243,6 @@ public final class MapFragmentTest {
         onView(allOf(withId(R.id.set_event_name), withText("TestGeo"))).perform(click());
 
         Espresso.pressBack();
-
-        onView(withId(R.id.map_switch_button)).check(matches(withText(containsString("Switch"))));
-
     }
 
     @Ignore
@@ -270,7 +267,5 @@ public final class MapFragmentTest {
         onView(withId(R.id.organization_profile_full_name)).check(matches(withText(containsString(o1.getName()))));
 
         Espresso.pressBack();
-
-        onView(withId(R.id.map_switch_button)).check(matches(withText(containsString("Switch"))));
     }
 }
